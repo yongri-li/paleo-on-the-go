@@ -1,0 +1,88 @@
+<script>
+  var parts = {}
+
+  parts = {{ section.settings | json }}
+
+  {% assign bloop = 0 %}
+  {% for block in section.blocks %}
+    parts['{{ block.type }}'] = parts['{{ block.type }}'] || []
+    parts['{{ block.type }}'].push({{ block.settings | json }})
+  {% endfor %}
+
+  window.Scoutside.portal.parts = parts
+</script>
+
+{% schema %}
+  {
+    "name": "Portal Parts",
+    "blocks": [
+      {
+        "type": "navigation",
+        "name": "Navigation",
+        "settings": [
+          {
+            "id": "text",
+            "type": "text",
+            "label": "Item Text"
+          },
+          {
+            "id": "url",
+            "type": "url",
+            "label": "Item Url (only for external links)"
+          },
+          {
+            "type": "select",
+            "id": "page",
+            "label": "Page",
+            "options": [
+              {
+                "value": "shipment",
+                "label": "Shipment"
+              },
+              {
+                "value": "shipments",
+                "label": "Shipments"
+              },
+              {
+                "value": "details",
+                "label": "Details"
+              },
+              {
+                "value": "orders",
+                "label": "Orders"
+              },
+              {
+                "value": "signout",
+                "label": "Sign Out"
+              },
+              {
+                "value": "external",
+                "label": "External"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "visibility",
+            "label": "Visibility",
+            "default": "all_users",
+            "options": [
+              {
+                "value": "all_users",
+                "label": "All Users"
+              },
+              {
+                "value": "shopify_users",
+                "label": "Shopify Users"
+              },
+              {
+                "value": "recharge_users",
+                "label": "Recharge Users"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

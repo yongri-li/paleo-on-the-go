@@ -1,0 +1,74 @@
+.c-headerMain {
+  width: 100%;
+  background-color: $color-white;
+  border-bottom: 1px solid rgba($color-black, .15);
+}
+
+.c-headerMain__wrapper {
+  @include flex($justify: space-between, $align: stretch);
+}
+
+.c-headerMain__logo {
+  @include flex;
+  padding: 12px 10px;
+  margin-left: -10px;
+  @include media-desktop-up {
+    padding: 12px 15px;
+    margin-left: -15px;
+  }
+  @include hover-fade;
+}
+
+.c-headerMain__logoBox {
+  margin: 0;
+}
+
+.c-headerMain__logoImage {
+  display: block;
+  height: 50px;
+}
+
+.c-headerMain__logoText {
+  @include text-heading;
+  font-size: 28px;
+}
+
+.c-headerMain__primary,
+.c-headerMain__secondary {
+  @include flex;
+  @include text-body;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+.c-headerMain__primaryLink,
+.c-headerMain__secondaryLink {
+  padding: 0 10px;
+  @include media-desktop-up {
+    padding: 0 15px;
+  }
+}
+
+.c-headerMain__cart,
+.c-headerMain__account {
+  height: 100%;
+  padding: 0 10px;
+  @include flex;
+  @include media-desktop-up {
+    padding: 0 15px;
+  }
+  @include hover-fade;
+}
+
+.c-headerMain__cartImage,
+.c-headerMain__accountImage {
+  display: block;
+  height: 24px;
+}
+
+.c-headerMain__cart {
+  margin-right: -10px;
+  @include media-desktop-up {
+    margin-right: -15px;
+  }
+}

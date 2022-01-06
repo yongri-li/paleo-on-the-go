@@ -1,0 +1,27 @@
+mode: development
+
+# Dev Marc
+development:
+  theme_id: 128586973383
+  password: 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
+  store: https://paleo-on-the-go-sandbox.myshopify.com
+  timeout: 60s
+  ignore_files:
+    - config/settings_data.json
+#
+# Staging
+# staging:
+#   theme_id: 127362662572
+#   password: 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
+#   store: fresh-meal-plan.myshopify.com
+#   ignore_files:
+#     - config/settings_data.json
+
+# Live
+# production:
+#   theme_id: 127651938476
+#   password: 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
+#   store: fresh-meal-plan.myshopify.com
+#   ignore_files:
+#     - config/settings_data.json
+#

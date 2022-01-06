@@ -1,0 +1,87 @@
+<script>
+  var shipments = {}
+
+  shipments = {{ section.settings | json }}
+
+  {% assign bloop = 0 %}
+  {% for block in section.blocks %}
+    shipments['{{ block.type }}'] = shipments['{{ block.type }}'] || []
+    shipments['{{ block.type }}'].push({{ block.settings | json }})
+  {% endfor %}
+
+  window.Scoutside.portal.shipments = shipments
+</script>
+
+{% schema %}
+  {
+    "name": "Portal Shipments",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Loyalty"
+      },
+      {
+        "id": "loyalty_image_small",
+        "type": "image_picker",
+        "label": "Image Small"
+      },
+      {
+        "id": "loyalty_image_large",
+        "type": "image_picker",
+        "label": "Image Large"
+      },
+      {
+        "id": "loyalty_heading",
+        "type": "text",
+        "label": "Heading - Variables: {{ customer_name }}",
+        "default": "{{ loyalty_heading }}"
+      },
+      {
+        "id": "loyalty_text_points",
+        "type": "text",
+        "label": "Text Points - Variables: {{ points }}",
+        "default": "{{ loyalty_text_points }}"
+      },
+      {
+        "id": "loyalty_text_tier",
+        "type": "text",
+        "label": "Text Tier - Variables: {{ tier }}, {{ points }}",
+        "default": "{{ loyalty_text_tier }}"
+      },
+      {
+        "id": "loyalty_button_rewards",
+        "type": "text",
+        "label": "Rewards Button",
+        "default": "{{ loyalty_rewards_button }}"
+      },
+      {
+        "id": "loyalty_button_points",
+        "type": "text",
+        "label": "Points Button",
+        "default": "{{ loyalty_points_button }}"
+      },
+      {
+        "type": "header",
+        "content": "Referral"
+      },
+      {
+        "id": "referral_preheading",
+        "type": "text",
+        "label": "Referral Preheading",
+        "default": "{{ referral_preheading }}"
+      },
+      {
+        "id": "referral_heading",
+        "type": "text",
+        "label": "Referral Heading",
+        "default": "{{ referral_heading }}"
+      },
+      {
+        "id": "referral_button",
+        "type": "text",
+        "label": "Referral Button",
+        "default": "{{ referral_button }}"
+      }
+    ]
+  }
+{% endschema %}
