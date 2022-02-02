@@ -1,0 +1,8 @@
+{
+	"sections": {
+		"main": {
+			"type":"widget-test"
+		}
+	},
+	"order":["main"]
+}
