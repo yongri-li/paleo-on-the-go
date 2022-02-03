@@ -1,4 +1,22 @@
-Hello from section file
+Hello from section file vueerd
+
+
+<script>
+  window.Scoutside = window.Scoutside || {}
+  window.Scoutside.testVue = window.Scoutside.testVue || {}
+  
+  let testVue = {{ section.settings | json }}
+
+  {%- comment -%}
+  {% for block in section.blocks %}
+    testVue['{{ block.type }}'] = testVue['{{ block.type }}'] || []
+    testVue['{{ block.type }}'].push({{ block.settings | json }})
+  {% endfor %}
+  {%- endcomment -%}
+
+  window.Scoutside.testVue = testVue
+</script>
+
 
 {% schema %}
   {
@@ -13,7 +31,14 @@ Hello from section file
         "id": "id_link_list",
         "type": "link_list",
         "label": "Test Settings LInk LIst 1"
-      }
+      },
+      {
+        "id": "text_two",
+        "type": "text",
+        "label": "ONe more text"
+      }      
     ]
   }
 {% endschema %}
+
+

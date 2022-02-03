@@ -1,7 +1,7 @@
 @mixin text-body {
   font-family: $font-body;
-  line-height: 1.75;
-  font-weight: 600;
+  line-height: 1.4;
+  font-weight: 400;
   @include media-mobile-down {
     line-height: 1.5;
   }
@@ -9,8 +9,8 @@
 
 @mixin text-heading {
   font-family: $font-heading;
-  line-height: 1.25;
-  font-weight: 900;
+  line-height: 1.125;
+  font-weight: 700;
   @include media-mobile-down {
     line-height: 1.15;
   }

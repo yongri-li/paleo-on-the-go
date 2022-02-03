@@ -1,14 +1,15 @@
+p,
 .c-p1 {
   display: block;
   @include text-body;
-  font-size: 22px;
+  font-size: 18px;
   margin: 0 0 20px;
 }
 
 .c-p2 {
   display: block;
   @include text-body;
-  font-size: 18px;
+  font-size: 1rem;
   margin: 0 0 15px;
 }
 

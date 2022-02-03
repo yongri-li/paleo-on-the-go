@@ -11,7 +11,17 @@
   </div>
 </section>
 
-{% schema %}
+
+<v-general id="v-general"
+  class="v-widget"
+  data-vue-general
+></v-general>
+
+{{ 'widget-general.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'widget-general.js' | asset_url }}"></script>
+
+
+{%- schema -%}
   {
     "name": "Reviews",
     "settings": [
@@ -65,4 +75,10 @@
       }
     ]
   }
-{% endschema %}
+{%- endschema -%}
+
+<style>
+	.c-reviewsSection__cta {
+		color: purple;
+	}
+</style>

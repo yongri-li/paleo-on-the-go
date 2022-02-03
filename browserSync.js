@@ -1,22 +1,23 @@
-const yaml = require('js-yaml');
-const fs = require('fs');
-const browserSync = require("browser-sync");
+const yaml = require('js-yaml')
+const fs = require('fs')
+const browserSync = require('browser-sync')
 
 try {
-  const config = yaml.safeLoad(fs.readFileSync('./config.yml', 'utf8'));
+  const config = yaml.safeLoad(fs.readFileSync('./config.yml', 'utf8'))
   const env = config[config.mode]
   browserSync.init({
     proxy: `${env.store}?preview_theme_id=${env.theme_id}`,
-    files: "browserUpdate.js",
+    files: 'browserUpdate.js',
     snippetOptions: {
       rule: {
-          match: /<\/body>/i,
-          fn: function (snippet, match) {
-              return snippet + match;
-          }
+        match: /<\/body>/i,
+        fn: function(snippet, match) {
+          return snippet + match
+        }
       }
     }
-  });
+  })
+  location.reload()
 } catch (e) {
-  console.log(e);
+  console.log(e)
 }
