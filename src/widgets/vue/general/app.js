@@ -2,7 +2,7 @@ import Vue from 'vue'
 import mixins from '@shared/mixins'
 import plugins from '@shared/plugins'
 import store from './store'
-import General from './components/General.vue'
+import General from './General.vue'
 
 /* Register Filters */
 // filters.forEach(filter => {
