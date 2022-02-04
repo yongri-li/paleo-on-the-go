@@ -27,11 +27,25 @@
 				<p class="c-p2">Secondary pargraphs</p>
 			</section>
 
-			<div class="color__div" v-for="color in colors">
+			<!-- 			<div class="color__div" v-for="color in colors">
 				<div :class="color">{{ color }}</div>
 			</div>
+ -->
 
-			<ColorBlock />
+			<c-button class="c-button c-button--isDefault c-button--isBlack" text="Default isBlack Button" />
+			<c-button class="c-button c-button--isDefault c-button--isPrimary" text="Get Started" />
+			<c-button class="c-button c-button--isDefault c-button--isSecondary" text="isSecondary Button" />
+			<c-button class="c-button c-button--isHollow c-button--isBlack" text="isHollow Button" />
+			<c-button class="c-button c-button--isHollow c-button--isPrimary" text="isHollow Button" />
+			<c-button class="c-button c-button--isHollow c-button--isSecondary" text="isHollow Button" />
+
+			<section class="color__div">
+				<div v-for="color in colors">
+					<cColorBlock :color="color" />
+				</div>
+			</section>
+
+			<c-menu />
 
 			<!-- 			<div class="color__div" v-for="color in colors">
 				<c-colorBlock :class="color" :testPara="color" />
@@ -48,11 +62,13 @@
 </template>
 
 <script>
-import cColorBlock from './cColorBlock.vue'
+import cColorBlock from './components/cColorBlock.vue'
+import cButton from '@shared/components/core/cButton.vue'
+import cMenu from '@shared/components/core/cMenu.vue'
 
 export default {
 	name: 'General',
-	components: { cColorBlock },
+	components: { cColorBlock, cButton, cMenu },
 	data() {
 		return {
 			...window.Scoutside.testVue
@@ -76,21 +92,8 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
-/**/
-
-.color__div {
-	&--black {
-		color: $color-black;
-	}
-	&--black {
-		color: $color-black;
-	}
-	&--black {
-		color: $color-black;
-	}
-	&--black {
-		color: $color-black;
-	}
-}
+<style lang="scss">
+/*section {
+	color: $color-black;;
+}*/
 </style>

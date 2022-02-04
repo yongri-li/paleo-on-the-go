@@ -4,7 +4,7 @@
   @include flex($display: inline-flex, $justify: center, $align: center);
   width: auto;
   font-family: $font-body;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 600;
   line-height: normal;
   transition-property: background-color, border, color, box-shadow;
@@ -13,17 +13,20 @@
   overflow: hidden;
   user-select: none;
   &:disabled {
-    opacity: .5;
+    opacity: 0.5;
     pointer-events: none;
   }
-  &:hover { cursor: pointer; }
+  &:hover {
+    cursor: pointer;
+  }
 }
 
-.c-button--isDefault, 
+.c-button--isDefault,
 .c-button--isHollow {
   padding: 18px 40px;
   text-transform: capitalize;
-  border-radius: 5px;
+  border-radius: none;
+  min-width: 200px;
   .c-form--isNarrow & {
     width: 100%;
     max-width: 400px;
@@ -46,29 +49,29 @@
     border: 1px solid $color-black;
     color: $color-white;
     &:hover {
-      background-color: darken($color-black, 10%);
-      border-color: darken($color-black, 10%);
-      color: $color-white;
+      background-color: $color-white;
+      border-color: $color-white;
+      color: $color-black;
     }
   }
   &.c-button--isPrimary {
     background-color: $color-primary;
     border: 1px solid $color-primary;
-    color: $color-white;
+    color: $color-black;
     &:hover {
-      background-color: darken($color-primary, 10%);
-      border-color: darken($color-primary, 10%);
-      color: $color-white;
+      background-color: $color-black;
+      border-color: $color-black;
+      color: $color-primary;
     }
   }
   &.c-button--isSecondary {
     background-color: $color-secondary;
     border: 1px solid $color-secondary;
-    color: $color-white;
+    color: $color-black;
     &:hover {
-      background-color: darken($color-secondary, 5%);
-      border-color: darken($color-secondary, 5%);
-      color: $color-white;
+      background-color: $color-black;
+      border-color: $color-black;
+      color: $color-secondary;
     }
   }
 }

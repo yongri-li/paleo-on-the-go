@@ -1,17 +1,48 @@
 <template>
-	<section class="color__div">
-		<div class="color__div--black">black</div>
-		<div class="color__div--yellow">yello</div>
-		<div class="color__div--green">green</div>
-		<div class="color__div--grey">grey</div>
-		<div class="color__div--ecru">ecru</div>
-	</section>
+	<div :class="`color__div--${color}`">{{ color }}</div>
 </template>
 
 <script>
 export default {
 	//name: 'cColorBlock'
+	props: {
+		color: {
+			type: String
+		}
+	}
 }
 </script>
 
-<style></style>
+<style lang="scss">
+.color__div {
+	&--black {
+		background-color: $color-black;
+		height: 100px;
+		width: 100px;
+	}
+
+	&--yellow {
+		background-color: $color-primary;
+		height: 100px;
+		width: 100px;
+	}
+
+	&--green {
+		background-color: $color-secondary;
+		height: 100px;
+		width: 100px;
+	}
+
+	&--grey {
+		background-color: $color-grey;
+		height: 100px;
+		width: 100px;
+	}
+
+	&--ecru {
+		background-color: $color-ecru;
+		height: 100px;
+		width: 100px;
+	}
+}
+</style>
