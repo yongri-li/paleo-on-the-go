@@ -31,17 +31,17 @@
 }
 
 .c-menu {
-  background-color: $color-off-white;
+  background-color: $color-ecru;
   font-size: 15px;
   font-weight: 600;
-  border-bottom: 1px solid $color-ivory;
-  color: $color-off-black;
+  border-bottom: 1px solid $color-white;
+  color: $color-black;
   text-align: center;
   @include media-desktop-up {
     text-align: left;
     border-radius: 74px;
     border: 0;
-    box-shadow: 0 0 0 1px $color-paleo;
+    box-shadow: 0 0 0 1px $color-primary;
   }
   &:not(.c-menu--open) {
     cursor: pointer;
@@ -58,14 +58,14 @@
     .c-menu__carat svg {
       transform: rotate(180deg);
       path {
-        fill: $color-broccoli;
-        stroke: $color-broccoli;
+        fill: $color-secondary;
+        stroke: $color-secondary;
       }
     }
   }
   .c-filters &:not(.c-menu--open) {
-    background-color: $color-pearl;
-    box-shadow: 0 0 0 1px $color-off-black;
+    background-color: $color-white;
+    box-shadow: 0 0 0 1px $color-black;
   }
   .c-menu__carat svg {
     margin-left: 12px;
@@ -73,7 +73,7 @@
       position: absolute;
       top: 18px;
       right: 22px;
-      fill: $color-off-black;
+      fill: $color-black;
       margin: 0;
     }
   }

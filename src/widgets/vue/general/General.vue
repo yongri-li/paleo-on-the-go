@@ -47,16 +47,37 @@
 
 			<c-menu />
 
-			<!-- 			<div class="color__div" v-for="color in colors">
-				<c-colorBlock :class="color" :testPara="color" />
-			</div> -->
-			<!-- 			<section class="color__div">
-				<div class="color__div--black">black</div>
-				<div class="color__div--yellow">yello</div>
-				<div class="color__div--green">green</div>
-				<div class="color__div--grey">grey</div>
-				<div class="color__div--ecru">ecru</div>
-			</section> -->
+			<!-- 			<nav role="navigation">
+				<ul>
+					<li>
+						<a href="#" aria-haspopup="true">Two</a>
+						<ul class="dropdown" aria-label="submenu">
+							<li><a href="#">Sub-1</a></li>
+							<li><a href="#">Sub-2</a></li>
+							<li><a href="#">Sub-3</a></li>
+						</ul>
+					</li>
+				</ul>
+			</nav> -->
+
+			<!-- <nav> -->
+			<!-- 			<nav :class="['c-dropdown', { 'is-open': isOpen }]" @click="isOpen = !isOpen">
+				<header>This is the top</header>
+				<section class="c-dropdown--wrap">
+					<div><a href="#">One Clk</a></div>
+					<div>Tow</div>
+					<div>Three</div>
+				</section>
+			</nav> -->
+
+			<c-dropdown :items="listItems" />
+
+			<br />
+			<br />
+			<br />
+			<br />
+
+			<!-- /// -->
 		</div>
 	</div>
 </template>
@@ -65,18 +86,23 @@
 import cColorBlock from './components/cColorBlock.vue'
 import cButton from '@shared/components/core/cButton.vue'
 import cMenu from '@shared/components/core/cMenu.vue'
+import cDropdown from '@shared/components/core/cDropdown.vue'
 
 export default {
 	name: 'General',
-	components: { cColorBlock, cButton, cMenu },
+	components: { cColorBlock, cButton, cMenu, cDropdown },
 	data() {
 		return {
-			...window.Scoutside.testVue
+			...window.Scoutside.testVue,
+			isOpen: false
 		}
 	},
 	computed: {
 		colors() {
 			return ['black', 'yellow', 'green', 'grey', 'ecru']
+		},
+		listItems() {
+			return ['Item One', 'Item Two', 'Yo yo yo!']
 		}
 		// heroModule() {
 		// 	return {
@@ -96,4 +122,101 @@ export default {
 /*section {
 	color: $color-black;;
 }*/
+
+/*nav.c-dropdown {
+	display: flex;
+	flex-direction: column;
+	position: relative;
+	width: 150px;
+
+	section .wrap {
+		position: absolute;
+		width: 100%;
+		top: 0;
+		left: 0;
+		pointer-events: none;
+	}
+
+	section div {
+		background: orange;
+		opacity: 0;
+		min-width: 5rem;
+		transition: opacity 1s ease;
+	}
+
+	section:hover {
+		cursor: pointer;
+
+		.wrap {
+			display: block;
+			pointer-events: auto;
+		}
+	}
+
+	section:hover div {
+		opacity: 1;
+	}
+}*/
+
+a {
+	text-decoration: none;
+}
+
+ul {
+	background: darkorange;
+	list-style: none;
+	margin: 0;
+	padding-left: 0;
+}
+
+li {
+	color: #fff;
+	background: darkorange;
+	display: block;
+	float: left;
+	padding: 1rem;
+	position: relative;
+	text-decoration: none;
+	transition-duration: 0.5s;
+}
+
+li a {
+	color: #fff;
+}
+
+li:hover,
+li:focus-within {
+	background: red;
+	cursor: pointer;
+}
+
+li:focus-within a {
+	outline: none;
+}
+
+ul li ul {
+	background: orange;
+	visibility: hidden;
+	opacity: 0;
+	min-width: 5rem;
+	position: absolute;
+	transition: all 0.5s ease;
+	margin-top: 1rem;
+	left: 0;
+	display: none;
+}
+
+ul li:hover > ul,
+ul li:focus-within > ul,
+ul li ul:hover,
+ul li ul:focus {
+	visibility: visible;
+	opacity: 1;
+	display: block;
+}
+
+ul li ul li {
+	clear: both;
+	width: 100%;
+}
 </style>

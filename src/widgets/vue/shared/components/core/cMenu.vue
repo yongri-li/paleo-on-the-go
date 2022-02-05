@@ -12,7 +12,7 @@
       <div class="c-menu__selection" @click.stop="$emit('toggle')">
         {{ title }}:&nbsp;<span v-if="!open">
           <template>test here</template><template>Show Things I Like</template
-          ><template>Remove Things I Dislike</template><template>one more</template>
+          ><template>Remove Things I Dislike asas</template><template>one moreeee</template>
         </span>
         <!--         <div class="c-menu__carat">
           <c-icon icon="chevron" />

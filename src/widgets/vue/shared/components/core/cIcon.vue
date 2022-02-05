@@ -9,7 +9,7 @@ export default {
     return { svg: false }
   },
   mounted() {
-    this.svg = require(`./icons/${this.icon}`).default
+    //this.svg = require(`./icons/${this.icon}`).default
   }
 }
 </script>
