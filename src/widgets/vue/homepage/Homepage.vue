@@ -83,14 +83,13 @@
 </template>
 
 <script>
-// import cColorBlock from './components/cColorBlock.vue'
 import cColorBlock from '@shared/components/parts/cColorBlock.vue'
 import cButton from '@shared/components/core/cButton.vue'
 import cMenu from '@shared/components/core/cMenu.vue'
 import cDropdown from '@shared/components/core/cDropdown.vue'
 
 export default {
-	name: 'General',
+	name: 'Homepage',
 	components: { cColorBlock, cButton, cMenu, cDropdown },
 	data() {
 		return {
