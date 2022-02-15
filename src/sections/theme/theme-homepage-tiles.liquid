@@ -1,0 +1,85 @@
+<section class="c-tilesSection o-containerLarge u-textCenter">
+  <div class="u-hideMobileDown">
+    <ul class="c-tilesSection__tiles">
+      {% for block in section.blocks %}
+        <li class="c-tilesSection__tile">
+          <div class="c-tile">
+            <img class="c-tile__image" src="{{ block.settings.image | img_url: 'master' }}" />
+            {%- if block.settings.title != blank -%}
+              <h4 class="c-h4 c-tile__title">
+                {{ block.settings.title }}
+              </h4>
+            {%- endif -%}
+            {{ block.settings.text }}
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  
+  <div class="c-tilesSection__slider u-relative u-hideDesktopUp">
+    <div data-copy-tile-slider>
+      {% for block in section.blocks %}
+        <div class="c-tilesSection__tile">
+          <div class="c-tile">
+            <img class="c-tile__image" src="{{ block.settings.image | img_url: 'master' }}" />
+            {%- if block.settings.title != blank -%}
+              <h4 class="c-h4 c-tile__title">
+                {{ block.settings.title }}
+              </h4>
+            {%- endif -%}
+            {{ block.settings.text }}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<script>
+  if (document.querySelector('[data-copy-tile-slider]')) {
+  const copyTiles = tns({
+    container: '[data-copy-tile-slider]',
+    items: 1,
+    slideBy: 1,
+    autoplay: true,
+    controls: false,
+    autoplayButtonOutput: false
+  })
+}
+</script>
+
+{% schema %}
+  {
+    "name": "Copy Tiles",
+    "blocks":[
+      {
+        "type": "tile",
+        "name": "Tile",
+        "settings": [
+          {
+            "id": "image",
+            "type": "image_picker",
+            "label": "Image"
+          },
+          {
+            "id": "title",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "text",
+            "type": "richtext",
+            "label": "Text"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Copy Tiles",
+        "category": "Homepage"
+      }
+    ]
+  }
+{% endschema %}

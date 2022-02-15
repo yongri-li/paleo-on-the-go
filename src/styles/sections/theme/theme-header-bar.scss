@@ -1,3 +1,25 @@
+.c-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  .c-headerMain__logo,
+  .c-headerMain__logoBox {
+    transition: all 250ms;
+  }
+
+  &.scrolled {
+    .c-headerMain__logo {
+      padding-top: 5px;
+      padding-bottom: 8px;
+    }
+
+    .c-headerMain__logoBox {
+      transform: scale(0.9275);
+    }
+  }
+}
+
 .c-headerBar {
   background-color: $color-primary;
 }

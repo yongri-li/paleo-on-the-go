@@ -3,10 +3,10 @@
 }
 
 .o-containerLarge {
-  width: calc(100% - 40px);
-  max-width: 1400px;
+  width: calc(100% - 20px);
+  max-width: 1600px;
   margin: 0 auto;
   @include media-tablet-up {
-    width: calc(100% - 60px);
+    width: 92vw;
   }
 }

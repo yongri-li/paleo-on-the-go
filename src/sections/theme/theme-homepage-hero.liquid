@@ -1,0 +1,180 @@
+<article class="c-heroMain js-homepage">
+
+  <section class="c-hero__ctaWrap">
+    <h1 class="c-h1">{{ section.settings.heading }}</h1>
+    <p>{{ section.settings.subheading }}</p>
+    <div class="spacer--md"></div>
+    <a href="https://www.target.com" target="_blank" class="c-button c-button--isDefault c-button--isPrimary c-button--lrg">
+      {{section.settings.cta_text}}
+    </a>
+  </section>
+
+  <section 
+    class="c-hero__imgWrap" 
+    style="background-image: url('{{section.settings.bg_image | img_url: 'master' }}')">
+  </section>
+
+</article>
+
+<marquee scrollamount="15">
+  {% for block in section.blocks %}
+    <span>{{ block.settings.marquee_word }}</span>
+    <span class="circle-dot"></span>
+  {% endfor %}
+  {% for block in section.blocks %}
+    <span>{{ block.settings.marquee_word }}</span>
+    <span class="circle-dot"></span>
+  {% endfor %}
+</marquee>
+
+
+<style>
+  .shopify-section {
+    position: relative;
+  }
+
+  .c-heroMain {
+    display: flex;
+    /*height: 100vh;*/
+    height: calc(100vh - 65px);
+    min-height: 500px;
+
+    background-color: #efede6;
+  }
+
+  .c-button {
+    display: block;
+    text-align: center;
+  }
+
+  .spacer--md {
+    height: 1.5rem;
+  }
+
+  .c-hero__ctaWrap {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    padding: 3rem;    
+  }
+
+  .c-hero__imgWrap {
+    flex: 2;
+    background-size: cover;
+  }
+
+  marquee {
+    position: absolute;
+    bottom: 0;
+    background-color: #8eceab;
+    padding: 0.75rem 0;
+  }
+
+  marquee span {
+    font: 700 17px 'Sumo', serif;
+    text-transform: uppercase;
+  }
+
+  .circle-dot {
+    display: inline-block;
+    width: 0.5rem;
+    height: 0.5rem;
+    vertical-align: middle;
+    background: #231f20;
+    border-radius: 50%;
+    margin: 0px 2rem;
+  }  
+ 
+/*  .moving-text:hover{
+    animation-play-state: paused;
+  }
+
+  @keyframes marquee{
+    0%{transform: translateX(100%);}
+    100%{transform: translateX(-100%);}
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .moving-text{
+      animation: marquee 15s linear infinite;
+    }
+  }  */
+
+</style>
+
+<script>
+  document.addEventListener('scroll', e => {
+    let scrollPosition = window.scrollY
+    const header = document.querySelector('.c-header')
+
+    scrollPosition > 0
+    ? header.classList.add('scrolled')
+    : header.classList.remove('scrolled')
+  });  
+</script>
+
+
+{%- schema -%}
+  {
+    "name": "Hero Section",
+    "settings": [
+      {
+        "id": "heading",
+        "type": "text",
+        "label": "Heading"
+      },
+      {
+        "id": "subheading",
+        "type": "text",
+        "label": "Subheading"
+      },
+      {
+        "id": "cta_text",
+        "type": "text",
+        "label": "CTA Text",
+        "default": "Get Started"
+      },      
+      {
+        "id": "cta_url",
+        "type": "url",
+        "label": "CTA URL"
+      },
+      {
+        "id": "bg_image_mobile",
+        "type": "image_picker",
+        "label": "Background Image (Mobile)"
+      },
+      {
+        "id": "bg_image",
+        "type": "image_picker",
+        "label": "Background Image (Desktop)"
+      }      
+    ],
+    "blocks": [
+        {
+          "type": "text",
+          "name": "Marquee Elements",
+          "settings": [           
+            {
+              "id": "marquee_word",
+              "type": "text",
+              "label": "Marquee Word"
+            }
+          ]
+        }
+    ],
+    "presets": [
+      {
+        "name": "Hero Section",
+        "category": "Homepage"
+      }
+    ]
+  }
+{%- endschema -%}
+
+<style>
+  .c-reviewsSection__cta {
+    color: purple;
+  }
+</style>

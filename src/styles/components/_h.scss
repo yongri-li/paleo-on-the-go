@@ -34,6 +34,7 @@
   display: block;
   @include text-heading;
   font-size: 2rem;
+  text-transform: uppercase;
   margin: 0 0 16px;
   &.c-h3--isLabel {
     text-transform: uppercase;
@@ -47,9 +48,8 @@
 
 .c-h4 {
   display: block;
-  @include text-heading;
-  font-size: 1.85rem;
-  text-transform: uppercase;
+  font-family: 'Sumo';
+  font-size: 1.75rem;
   margin: 0 0 12px;
   &.c-h4--isLabel {
     text-transform: uppercase;
@@ -68,8 +68,9 @@
   font-weight: 500;
   margin: 0 0 10px;
   &.c-h5--isLabel {
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 1px;
   }
 
   @include media-mobile-down {
@@ -86,4 +87,8 @@
     text-transform: uppercase;
     letter-spacing: 2px;
   }
+}
+
+.isBold {
+  font-weight: 700;
 }

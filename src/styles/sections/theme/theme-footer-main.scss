@@ -1,6 +1,139 @@
 .c-footerMain {
+  position: relative;
   width: 100%;
-  padding: 100px 0;
-  // background-color: darken($color-white, 4%);
+  padding: 3.5rem 0;
   background-color: $color-black;
+  color: $color-white;
+
+  @include media-mobile-down {
+    padding-bottom: 5rem;
+
+    .c-footerMain__socialMediaLinks {
+      margin-bottom: 2rem;
+    }
+
+    .c-footerMain__contact {
+      position: absolute;
+      bottom: 1rem;
+    }
+
+    .c-h4 {
+      display: flex;
+      justify-content: space-between;
+    }
+  }
+
+  .c-footerMain__wrapper {
+    display: flex;
+    grid-gap: 1rem;
+    justify-content: space-evenly;
+    margin: 0 auto;
+
+    // width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+
+    .c-footerMain__leftBrandContact {
+      min-width: clamp(300px, 25%, 400px);
+    }
+
+    .c-footerMain__logoBox {
+      margin-bottom: 1.5rem;
+    }
+
+    .c-footerMain__wrapperSub {
+      display: flex;
+      flex: 1;
+      flex-wrap: wrap;
+    }
+
+    @include media-mobile-down {
+      flex-direction: column;
+
+      .c-footerMain__wrapperSub {
+        flex-direction: column;
+      }
+    }
+
+    .c-footerMain__mainMenu {
+      flex: 1 1 220px;
+
+      .c-footerMain__subMenu {
+        font-size: 1rem;
+        padding-bottom: 2rem;
+
+        a {
+          display: block;
+          padding: 0.75rem 0;
+        }
+
+        @include media-mobile-down {
+          display: none;
+          padding-left: 1rem;
+        }
+      }
+
+      .icon-opened,
+      .icon-closed {
+        display: none;
+      }
+
+      @include media-mobile-down {
+        flex: 1;
+
+        .icon-closed {
+          display: block;
+        }
+
+        &.open {
+          .c-footerMain__subMenu,
+          .icon-opened {
+            display: block;
+          }
+
+          .icon-closed {
+            display: none;
+          }
+        }
+      }
+    }
+
+    .c-h4 {
+      font-size: 22px;
+      font-weight: 400;
+      letter-spacing: 0.5px;
+      color: $color-primary;
+    }
+
+    .c-footerMain__socialMediaLinks {
+      a {
+        margin-right: 0.65rem;
+      }
+    }
+
+    .isBold {
+      margin: 2.5rem 0 0.5rem;
+    }
+
+    .c-footerLegal__copyright {
+      text-transform: uppercase;
+      font-size: 12px;
+    }
+
+    a {
+      transition: color 175ms;
+
+      svg path {
+        transition: fill 175ms;
+      }
+
+      &:hover {
+        color: $color-primary;
+
+        svg path {
+          fill: $color-primary;
+        }
+      }
+    }
+  }
 }
