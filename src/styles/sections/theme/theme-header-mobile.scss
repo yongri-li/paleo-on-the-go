@@ -16,7 +16,7 @@
   background-color: $color-ecru;
   height: 70px;
 
-  //@include media-tablet-down { display: block; }
+  // @include media-tablet-down { display: block; }
   @include media-tablet-down {
     display: flex;
     align-items: center;
@@ -161,7 +161,7 @@
 .c-headerMobile__account {
   margin-bottom: 1rem;
 
-  // color: $color-broccoli;
+  //  color: $color-broccoli;
   background: transparent;
   // border: 2px solid $color-broccoli;
 
