@@ -15,7 +15,7 @@
 </head>
 <body class="o-body" data-body>
   {% include 'theme-header' %}
-  <main class="o-main" data-main>
+  <main class="o-main {% if template == 'index' %}o-homepage{% endif %}" data-main>
     {{ content_for_layout }}
   </main>
   {% include 'theme-footer' %}

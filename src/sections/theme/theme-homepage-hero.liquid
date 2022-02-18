@@ -1,22 +1,22 @@
-<article class="c-heroMain js-homepage">
+<article class="c-homeHero js-homepage">
 
-  <section class="c-hero__ctaWrap">
+  <section class="c-homeHero__ctaWrap">
     <h1 class="c-h1">{{ section.settings.heading }}</h1>
     <p>{{ section.settings.subheading }}</p>
-    <div class="spacer--md"></div>
+    <div class="u-spacer--md u-hideTabletDown"></div>
     <a href="https://www.target.com" target="_blank" class="c-button c-button--isDefault c-button--isPrimary c-button--lrg">
       {{section.settings.cta_text}}
     </a>
   </section>
 
   <section 
-    class="c-hero__imgWrap" 
+    class="c-homeHero__imgWrap"
     style="background-image: url('{{section.settings.bg_image | img_url: 'master' }}')">
   </section>
 
 </article>
 
-<marquee scrollamount="15">
+<marquee class="marquee" scrollamount="15">
   {% for block in section.blocks %}
     <span>{{ block.settings.marquee_word }}</span>
     <span class="circle-dot"></span>
@@ -32,75 +32,6 @@
   .shopify-section {
     position: relative;
   }
-
-  .c-heroMain {
-    display: flex;
-    /*height: 100vh;*/
-    height: calc(100vh - 65px);
-    min-height: 500px;
-
-    background-color: #efede6;
-  }
-
-  .c-button {
-    display: block;
-    text-align: center;
-  }
-
-  .spacer--md {
-    height: 1.5rem;
-  }
-
-  .c-hero__ctaWrap {
-    flex: 1;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-    padding: 3rem;    
-  }
-
-  .c-hero__imgWrap {
-    flex: 2;
-    background-size: cover;
-  }
-
-  marquee {
-    position: absolute;
-    bottom: 0;
-    background-color: #8eceab;
-    padding: 0.75rem 0;
-  }
-
-  marquee span {
-    font: 700 17px 'Sumo', serif;
-    text-transform: uppercase;
-  }
-
-  .circle-dot {
-    display: inline-block;
-    width: 0.5rem;
-    height: 0.5rem;
-    vertical-align: middle;
-    background: #231f20;
-    border-radius: 50%;
-    margin: 0px 2rem;
-  }  
- 
-/*  .moving-text:hover{
-    animation-play-state: paused;
-  }
-
-  @keyframes marquee{
-    0%{transform: translateX(100%);}
-    100%{transform: translateX(-100%);}
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    .moving-text{
-      animation: marquee 15s linear infinite;
-    }
-  }  */
-
 </style>
 
 <script>

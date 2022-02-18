@@ -1,26 +1,15 @@
 .c-tilesSection {
   padding: 32px 12px 12px;
-  border-bottom: 1px solid $color-paleo;
+  max-width: 1440px;
+  // border-bottom: 1px solid $color-paleo;
   @include media-desktop-up {
     padding: 54px 0;
   }
 }
 
-// asdad
-.c-tilesSection__small-heading {
-  margin-bottom: 12px;
-}
-
-.c-tilesSection__heading {
-  margin-bottom: 42px;
-  @include media-desktop-up {
-    margin-bottom: 56px;
-  }
-}
-
 .c-tilesSection__tile {
   .c-tile {
-    max-width: 280px;
+    max-width: 400px;
     margin: 0 auto;
   }
 }
@@ -29,8 +18,8 @@
   display: grid;
   @include media-desktop-up {
     grid-template-columns: repeat(3, 1fr);
-    grid-gap: 90px;
-    max-width: 1028px;
+    grid-gap: 4rem;
+    // max-width: 1028px;
     margin: 0 auto;
   }
 }
@@ -56,8 +45,6 @@
 }
 
 .c-tile__title {
-  font-size: 18px;
-  font-weight: 400;
-  color: $color-broccoli;
-  margin-bottom: 20px;
+  font-size: 1.85rem;
+  margin-top: 1rem;
 }

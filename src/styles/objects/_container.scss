@@ -10,3 +10,12 @@
     width: 92vw;
   }
 }
+
+.o-containerMedium {
+  width: 96vw;
+  max-width: 1440px;
+  margin: 0 auto;
+  @include media-tablet-up {
+    width: 84vw;
+  }
+}

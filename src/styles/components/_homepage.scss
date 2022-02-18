@@ -1,0 +1,421 @@
+// TOP HERO SECTION ***
+// .o-homepage {
+//   text-align: center;
+// }
+
+.c-homeHero__ctaWrap {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  padding: 3rem;
+
+  @include media-tablet-down {
+    text-align: center;
+    padding: 1.5rem 0;
+
+    p {
+      padding: 0 1.25rem;
+    }
+
+    .c-button {
+      margin: 0 auto;
+    }
+  }
+}
+
+.c-homeHero__imgWrap {
+  flex: 2;
+  background-size: cover;
+}
+
+marquee {
+  position: absolute;
+  bottom: 0;
+  background-color: #8eceab;
+  padding: 0.75rem 0;
+}
+
+marquee span {
+  font: 700 17px 'Sumo', serif;
+  text-transform: uppercase;
+}
+
+.circle-dot {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  vertical-align: middle;
+  background: #231f20;
+  border-radius: 50%;
+  margin: 0px 2rem;
+}
+
+// HERO SECTION ***
+.c-hero__imgBg {
+  display: flex;
+  background-size: cover;
+  place-content: center;
+  flex-direction: column;
+  height: 35vh;
+  min-height: 360px;
+  place-items: center;
+
+  .c-hero__imgBg--copy {
+    display: flex;
+    margin-bottom: 1rem;
+
+    h2 {
+      margin: 0 1rem;
+    }
+  }
+}
+
+.c-homeHero {
+  display: flex;
+  /*height: 100vh;*/
+  height: calc(100vh - 106px);
+  min-height: 500px;
+
+  background-color: #efede6;
+
+  @include media-tablet-down {
+    flex-direction: column-reverse;
+    margin-bottom: 4rem;
+    height: auto;
+
+    .marquee {
+      bottom: -2rem;
+    }
+
+    .c-homeHero__imgWrap {
+      min-height: 260px;
+    }
+  }
+}
+
+// PLANS GRID SECTION ***
+.c-homePlans {
+  position: relative;
+  text-align: center;
+  margin-top: 5rem;
+
+  &__floatingBadge {
+    position: absolute;
+    max-width: 150px;
+    top: -80px;
+    left: unset;
+    transform: translateX(-50%);
+
+    @include media-tablet-down {
+      display: none;
+    }
+  }
+
+  &__subs-title {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font: 600 17px 'Roboto', sans-serif;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    background-color: $color-ecru;
+    padding: 0 1rem;
+
+    @include media-tablet-down {
+      display: none;
+    }
+  }
+
+  &__inner {
+    background-color: $color-ecru;
+    width: 84vw;
+    max-width: 1440px;
+    padding: 4rem 3rem 2rem;
+    margin: 0 auto;
+
+    @include media-tablet-down {
+      padding: 0.5rem;
+      width: 100vw;
+
+      .c-plansGrid__plan {
+        padding-bottom: 1rem;
+
+        button {
+          display: none;
+        }
+      }
+
+      .c-plansGrid__plan:nth-of-type(3) {
+        grid-column: 1/3;
+      }
+    }
+
+    h2 {
+      margin-bottom: 1rem;
+    }
+
+    > div:first-child {
+      max-width: 662px;
+      margin: 0 auto;
+
+      p {
+        max-width: 600px;
+        margin: 0 auto;
+      }
+    }
+  }
+
+  .c-plansGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 0.5rem;
+    padding: 0;
+
+    margin-bottom: 1.5rem;
+
+    @include media-desktop-up {
+      border: 1px solid $color-black;
+      grid-template-columns: repeat(3, 1fr);
+      grid-gap: 2.5rem;
+      padding: 1rem;
+    }
+
+    &__plan {
+      background-color: $color-white;
+
+      .c-h2 {
+        margin: 1rem 0 0.75rem;
+      }
+
+      span {
+        padding: 0.25rem 1rem;
+        background-color: $color-ltgreen;
+        border-radius: 1rem;
+        font-weight: 600;
+      }
+
+      .c-button {
+        margin: 2rem auto;
+      }
+    }
+  }
+}
+
+// MENU GRID SECTION ***
+
+.c-homeMenu {
+  margin: clamp(3rem, 8vw, 7rem) 0;
+}
+
+.c-homeMenu__flex {
+  display: flex;
+  grid-gap: 3rem;
+
+  @include media-tablet-down {
+    flex-direction: column;
+  }
+
+  .c-h2 {
+    margin: 0;
+  }
+
+  .c-homeFaqs__item {
+    width: 100%;
+  }
+
+  &--item {
+    flex: 1;
+  }
+
+  &--item.isGrid {
+    display: flex;
+    grid-gap: 3rem;
+    flex: 2;
+
+    > div {
+      flex: 1;
+
+      p {
+        color: $color-grey;
+        font-size: 1rem;
+      }
+
+      h4 {
+        margin: 0.5rem 0 0;
+      }
+    }
+
+    .inner-div__items {
+      flex: 1;
+      margin-bottom: 1.5rem;
+    }
+  }
+}
+
+// FAQs SECTION ***
+.c-homeFaqs {
+  padding: 2rem 0;
+  margin: 3rem 0 4rem;
+
+  &__item {
+    border-bottom: 1px solid $color-black;
+
+    @include media-desktop-up {
+      width: 90%;
+      margin-left: auto;
+    }
+
+    button {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      background-color: $color-white;
+      border: none;
+      text-align: left;
+      outline: none;
+      padding: 1.25rem 0;
+      font: 400 1.375rem 'Roboto', sans-serif;
+      transition: 300ms;
+
+      &:hover {
+        background-color: $color-ecru;
+      }
+    }
+
+    .active .icon-closed,
+    .icon-opened {
+      display: none;
+    }
+
+    .active .icon-opened {
+      display: block;
+    }
+
+    .panel-answer {
+      background-color: $color-white;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 175ms ease-out;
+
+      p {
+        padding: 1rem 0;
+      }
+    }
+  }
+}
+
+// SPLIT SECTIONS ***
+.c-homeSplit {
+  display: flex;
+  grid-gap: 3.5rem;
+  width: 84vw;
+  max-width: 1440px;
+  margin: 0 auto;
+
+  &__left,
+  &__right {
+    flex: 1;
+  }
+
+  &__right div {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+    max-width: 85%;
+    padding: 4rem;
+
+    img {
+      max-width: 150px;
+      margin-bottom: 1.5rem;
+    }
+
+    .clamp-size__h2 {
+      font-size: clamp(2.5rem, 2.55vw, 2.85rem);
+    }
+
+    .c-button {
+      margin-top: 1rem;
+    }
+  }
+}
+
+// TESTIMONIAL SLIDER ***
+.c-homeTestimonial__slider {
+  padding: 4.5rem 0 5.5rem;
+
+  &--bgIcon {
+    position: absolute;
+    top: -2.5rem;
+    z-index: -1;
+
+    svg {
+      max-width: 38vw;
+    }
+  }
+
+  .tns-nav {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    left: 0;
+    bottom: 3rem;
+
+    button {
+      height: 12px;
+      width: 12px;
+      border: none;
+      border-radius: 100%;
+      background: $color-black;
+      margin: 0 0.75rem;
+
+      &.tns-nav-active {
+        background-color: $color-primary;
+      }
+    }
+  }
+
+  .tns-inner {
+    text-align: center;
+  }
+
+  .tns-item {
+    img {
+      max-width: 150px;
+      border-radius: 100%;
+      margin: 1rem auto;
+    }
+
+    &__quote {
+      width: 50%;
+      min-width: 300px;
+      max-width: 1200px;
+      margin: 1.5rem auto;
+    }
+
+    &__quoteIcon {
+      margin: 3rem auto;
+    }
+  }
+}
+
+// EXTRA UTIL STYLES ***
+.c-button {
+  display: block;
+  text-align: center;
+}
+
+.u-highlightText--secondary {
+  color: $color-secondary;
+}
+
+// MEDIA QUERY AREAS ***
+@include media-tablet-down {
+  .c-homeSplit {
+    width: 100vw;
+  }
+}

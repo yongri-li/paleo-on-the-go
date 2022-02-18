@@ -6,9 +6,9 @@
           <div class="c-tile">
             <img class="c-tile__image" src="{{ block.settings.image | img_url: 'master' }}" />
             {%- if block.settings.title != blank -%}
-              <h4 class="c-h4 c-tile__title">
+              <h3 class="c-h3 c-tile__title">
                 {{ block.settings.title }}
-              </h4>
+              </h3>
             {%- endif -%}
             {{ block.settings.text }}
           </div>
@@ -18,15 +18,15 @@
   </div>
   
   <div class="c-tilesSection__slider u-relative u-hideDesktopUp">
-    <div data-copy-tile-slider>
+    <div data-tile-slider>
       {% for block in section.blocks %}
         <div class="c-tilesSection__tile">
           <div class="c-tile">
             <img class="c-tile__image" src="{{ block.settings.image | img_url: 'master' }}" />
             {%- if block.settings.title != blank -%}
-              <h4 class="c-h4 c-tile__title">
+              <h3 class="c-h3 c-tile__title">
                 {{ block.settings.title }}
-              </h4>
+              </h3>
             {%- endif -%}
             {{ block.settings.text }}
           </div>
@@ -36,18 +36,6 @@
   </div>
 </section>
 
-<script>
-  if (document.querySelector('[data-copy-tile-slider]')) {
-  const copyTiles = tns({
-    container: '[data-copy-tile-slider]',
-    items: 1,
-    slideBy: 1,
-    autoplay: true,
-    controls: false,
-    autoplayButtonOutput: false
-  })
-}
-</script>
 
 {% schema %}
   {

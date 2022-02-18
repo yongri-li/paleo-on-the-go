@@ -1,0 +1,50 @@
+<article class="c-homeTestimonial__slider u-relative">
+  <span class="c-homeTestimonial__slider--bgIcon">
+    {% render 'testimonial-slider__bg' %}
+  </span>
+  <div data-testimony-slider>    
+    {% for block in section.blocks %}
+      <section>
+        <div class="tns-item__quoteIcon">{%- render 'icon-quote' -%}</div> 
+        <div class="tns-item__quote">{{ block.settings.quote }}</div>
+        <div><img src="{{ block.settings.avatar_image | img_url: 'master' }}" alt=""></div>
+        <div><h6 class="c-h6">{{ block.settings.user_name }}</h6></div>
+      </section>
+    {% endfor %}
+  </div>
+</article>
+
+{% schema %}
+  {
+    "name": "Sliders",
+    "blocks":[
+      {
+        "type": "tile",
+        "name": "Tile",
+        "settings": [
+          {
+            "id": "quote",
+            "type": "richtext",
+            "label": "User Quote"
+          },          
+          {
+            "id": "avatar_image",
+            "type": "image_picker",
+            "label": "User Avatar"
+          },
+          {
+            "id": "user_name",
+            "type": "text",
+            "label": "User Name"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Testimony Slider",
+        "category": "Homepage"
+      }
+    ]
+  }
+{% endschema %}

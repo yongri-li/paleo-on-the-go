@@ -49,11 +49,15 @@
 .c-h4 {
   display: block;
   font-family: 'Sumo';
-  font-size: 1.75rem;
+  font-size: 1.85rem;
   margin: 0 0 12px;
   &.c-h4--isLabel {
     text-transform: uppercase;
     letter-spacing: 2px;
+  }
+  &.isSmaller {
+    font-size: 25px;
+    font-weight: 400;
   }
 
   @include media-mobile-down {
@@ -81,10 +85,10 @@
 .c-h6 {
   display: block;
   @include text-heading;
-  font-size: 14px;
+  font-size: 1.85rem;
+  text-transform: uppercase;
   margin: 0 0 8px;
   &.c-h6--isLabel {
-    text-transform: uppercase;
     letter-spacing: 2px;
   }
 }

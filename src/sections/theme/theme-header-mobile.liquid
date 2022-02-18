@@ -1,0 +1,192 @@
+{{ 'theme-header-mobile.css' | asset_url | stylesheet_tag }}
+
+{% assign logo_text = "{{ logo_text }}" %}
+{% assign promo_text = "{{ promo_text }}" %}
+{% assign login_text = "{{ login_text }}" %}
+{% assign account_text = "{{ account_text }}" %}
+{% assign bundle_text = "{{ bundle_text }}" %}
+
+{% if section.settings.logo_text != blank %}{% assign logo_text = section.settings.logo_text %}{% endif %}
+{% if section.settings.promo_text != blank %}{% assign promo_text = section.settings.promo_text %}{% endif %}
+{% if section.settings.login_text != blank %}{% assign login_text = section.settings.login_text %}{% endif %}
+{% if section.settings.account_text != blank %}{% assign account_text = section.settings.account_text %}{% endif %}
+{% if section.settings.bundle_text != blank %}{% assign bundle_text = section.settings.bundle_text %}{% endif %}
+
+<div class="c-headerMobile" data-header-main>
+    <div class="c-headerMobile__main o-containerLarge">
+      <div class="c-headerMobile__icon">
+          <span class="icon open" onclick="openNavv()">{% render 'icon-mobile-open' %}</span>
+          <span class="icon close" onclick="closeNav()">{% render 'icon-mobile-close' %}</span>
+      </div>
+      <a href="/" class="c-headerMobile__logo">
+          <h1 class="c-headerMobile__logoBox">
+              {% if section.settings.logo_image %}
+              <img class="c-headerMobile__logoImage" 
+                  src="{{ section.settings.logo_image | img_url: 'master' }}"
+                  alt="{{ section.settings.logo_image.alt }}" 
+              />
+              {% else %}
+              <span class="c-headerMobile__logoText">{{ logo_text }}</span>
+              {% endif %}
+          </h1>
+      </a>
+  <!--     <div class="c-headerMobile__spacer">&nbsp;</div> -->
+    </div>
+
+    <div class="c-headerMobile__menu" id="mobile-nav">
+      <div class="c-headerMobile__primary">
+          {% if linklists[section.settings.menu_list].links.size > 0 %}
+          <ul class="c-headerMobile__menuNav-primaryLinks">
+              {% for link in linklists[section.settings.menu_list].links %}
+              <li class="c-headerMobile__menuNavItem{% if link.active %}--active{% endif %}"><a href="{{ link.url }}" class="c-headerMobile__menuNavLink">{{ link.title }}</a></li>
+              {% endfor %}
+          </ul>
+          {% endif %}
+
+          {% if linklists[section.settings.secondary_menu_list].links.size > 0 %}
+          <ul class="c-headerMobile__menuNav-secondaryLinks">
+              {% for link in linklists[section.settings.secondary_menu_list].links %}
+              <li class="c-headerMobile__menuNavItem{% if link.active %}--active{% endif %}"><a href="{{ link.url }}" class="c-headerMobile__menuNavLink">{{ link.title }}</a></li>
+              {% endfor %}
+          </ul>
+          {% endif %}
+
+          {% if section.settings.show_promo %}
+            <a href="{{ section.settings.promo_link }}" class="c-headerMobile__promo">
+                <span class="c-headerMobile__promoText">{{ promo_text }}</span>
+            </a>
+          {% endif %}
+      </div>
+      
+      <div class="c-headerMobile__secondary">
+      {% if customer %}
+          <a href="/account" class="c-headerMobile__account">
+          <span class="c-headerMobile__accountText">{{ account_text }}</span>
+          </a>
+      {% else %}
+          <a href="/account/login" class="c-headerMobile__account">
+          <span class="c-headerMobile__accountText">{{ login_text }}</span>
+          </a>
+      {% endif %}
+          <div class="c-headerMobile__bundle" data-bundle-trigger>
+              <span class="c-headerMobile__bundleText">{{ bundle_text }}</span>
+          </div>
+      </div>
+    </div>
+</div>
+
+<script>
+
+// let scrollP;
+var scrollP;
+
+function openNavv() {
+  scrollP = window.pageYOffset;
+  var mobileNav = document.getElementById("mobile-nav");
+  var body = document.querySelector('body');
+  document.querySelector('.c-headerMobile__icon').classList.add('open');
+  mobileNav.style.left = "0";
+  setTimeout(function(){
+    body.style.position = "fixed";
+  }, 500);
+}
+
+function closeNav() {
+  document.getElementById("mobile-nav").style.left = "-100%";
+  document.querySelector('.c-headerMobile__icon').classList.remove('open');
+  document.querySelector('body').style.position = "initial";
+  window.scrollTo(0, scrollP);  
+}
+
+</script>
+
+<style>
+  .close {
+    z-index: 100000000;
+    position: absolute;
+    top: -32px;
+  }
+
+  a.c-headerMobile__menuNavLink:active,
+  a.c-headerMobile__menuNavLink:hover {
+    opacity: 0.9;
+  }
+</style>
+
+{% schema %}
+  {
+    "name": "Header Mobile",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Logo"
+      },
+      {
+        "id": "logo_image",
+        "type": "image_picker",
+        "label": "Logo Image"
+      },
+      {
+        "id": "logo_text",
+        "type": "text",
+        "label": "Logo Text"
+      },
+      {
+        "type": "header",
+        "content": "Menus"
+      },
+      {
+        "type": "link_list",
+        "id": "menu_list",
+        "label": "Main Menu List"
+      },
+      {
+        "type": "link_list",
+        "id": "secondary_menu_list",
+        "label": "Secondary Menu List"
+      },
+      {
+        "type": "header",
+        "content": "Promo"
+      },
+      {
+        "id": "show_promo",
+        "type": "checkbox",
+        "label": "Show"
+      },
+      {
+        "id": "promo_text",
+        "type": "text",
+        "label": "Promo Text"
+      },
+      {
+        "id": "promo_link",
+        "type": "url",
+        "label": "Promo Link"
+      },
+      {
+        "type": "header",
+        "content": "Account"
+      },
+      {
+        "id": "login_text",
+        "type": "text",
+        "label": "Login Text"
+      },
+      {
+        "id": "account_text",
+        "type": "text",
+        "label": "Account Text"
+      },
+      {
+        "type": "header",
+        "content": "Bundle"
+      },
+      {
+        "id": "bundle_text",
+        "type": "text",
+        "label": "Bundle Text"
+      }
+    ]
+  }
+{% endschema %}

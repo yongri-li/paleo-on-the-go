@@ -1,0 +1,67 @@
+<main class="c-homeFaqs">  
+  <article class="o-containerMedium">
+    <h2 class="c-h1"><span class="u-highlightText--secondary">Common</span> Questions</h2>
+    {%- for block in section.blocks -%}
+      <section class="c-homeFaqs__item">
+        <button>
+          {{block.settings.question}}
+          <span class="icon-opened">{% render 'icon-menu-open' %}</span>
+          <span class="icon-closed">{% render 'icon-menu-closed' %}</span>
+        </button>
+        <div class="panel-answer">
+          <p>{{block.settings.answer}}</p>
+        </div>
+      </section>
+    {%- endfor -%}
+  </article>
+</main>
+
+
+<script>
+  const faqsWrapper = document.querySelectorAll('.c-homeFaqs__item button');
+
+  faqsWrapper.forEach((item) => {
+    item.addEventListener('click', function(e) {
+      this.classList.toggle('active')
+      const panel = this.nextElementSibling
+
+      panel.style.maxHeight
+      ? panel.style.maxHeight = null
+      : panel.style.maxHeight = panel.scrollHeight + 'px'
+    })
+  });
+</script>
+
+
+{% schema %}
+  {
+    "name": "FAQ Section",
+    "settings": [
+    //    
+    ],
+    "blocks": [
+      {
+        "type": "home_faq",
+        "name": "FAQs",
+        "settings": [           
+          {
+            "id": "question",
+            "type": "text",
+            "label": "Question"
+          },
+          {
+            "id": "answer",
+            "type": "textarea",
+            "label": "Answer"
+          }          
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Home FAQs",
+        "category": "Homepage"
+      }
+    ]      
+  }
+{% endschema %}

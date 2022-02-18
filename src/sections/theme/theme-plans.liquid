@@ -1,0 +1,101 @@
+{% assign customerTags = customer.tags | join:',' %}
+
+{% unless customerTags == 'Active Subscriber' %}
+  <article class="c-homePlans">
+
+    <span class="c-homePlans__floatingBadge">
+      <img src="{{ section.settings.badge_image | img_url: 'master' }}" alt="">  
+    </span>    
+
+    <div class="c-homePlans__inner">
+      <div>
+        <h2 class="c-h1">{{section.settings.title}}</h2>
+        <p>{{section.settings.copy}}</p>
+      </div>
+
+      <div class="u-spacer--xl"></div>
+
+      <div class="u-relative">
+        <div class="c-homePlans__subs-title">
+          Subscribe &amp; Save
+        </div>
+
+        <div class="c-plansGrid">
+          {% for block in section.blocks %}
+
+            <section class="c-plansGrid__plan">
+              <img src="{{ block.settings.image | img_url: 'master' }}" alt="">
+              <h2 class="c-h2">10 Items</h2>
+              <div>
+                <span>10% Savings</span>
+              </div>
+              <button class="c-button c-button--isDefault c-button--isPrimary">{{block.settings.button}}</button>
+            </section>
+
+          {% endfor %}
+        </div>  
+      </div>
+
+      <h4 class="c-h4 isSmaller">{{section.settings.lower_callout}}</h4>
+      <a href="{{section.settings.onetimes_url}}">Buy One Time</a>
+    </div>
+  </article>
+{% endunless %}
+
+{% schema %}
+  {
+    "name": "Plans",
+    "settings": [
+      {
+        "id": "badge_image",
+        "type": "image_picker",
+        "label": "Badge Image"
+      },      
+      {
+        "id": "title",
+        "type": "text",
+        "label": "Title",
+        "default": "Your Plan, Your Way"
+      },
+      {
+        "id": "copy",
+        "type": "richtext",
+        "label": "Copy"
+      },
+      {
+        "id": "lower_callout",
+        "type": "text",
+        "label": "Lower Callout"
+      },
+      {
+        "id": "onetimes_url",
+        "type": "url",
+        "label": "Onetimes URL"
+      }                   
+    ],
+    "blocks":[
+      {
+        "type": "tile",
+        "name": "Plan",
+        "settings": [
+          {
+            "id": "image",
+            "type": "image_picker",
+            "label": "Image"
+          },
+          {
+            "id": "button",
+            "type": "text",
+            "label": "Button Text"
+          }        
+        ]
+      }
+    ],    
+    "presets": [
+      {
+        "name": "Plans",
+        "category": "Homepage"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,62 @@
+<article>
+  <section 
+    class="c-hero__imgBg" 
+    style="background-image: url('{{section.settings.bg_image | img_url: 'master' }}')">
+
+    <div class="c-hero__imgBg--copy">
+      <svg width="77" height="6" viewBox="0 0 77 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M77 0H0V6H77V0Z" fill="#231F20"/>
+      </svg>
+      <h2 class="c-h1">{{ section.settings.title }}</h2>
+      <svg width="83" height="45" viewBox="0 0 83 45" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M83 22.5193L39.9507 0L20.4626 19.6129H0V25.3871H20.4626L39.9507 45L83 22.5193ZM41.081 7.12149L64.8176 19.5359H28.706L41.081 7.12149ZM64.8176 25.3486L41.081 37.7631L28.706 25.4256L64.8176 25.3486Z" fill="#231F20"/>
+      </svg>
+    </div>
+
+    <a href="{{ section.settings.button_url }}" 
+      class="c-button c-button--isDefault c-button--isPrimary">
+      {{ section.settings.button_text }}
+    </a>
+  </section>
+</article>
+
+
+{% schema %}
+  {
+    "name": "Bottom Hero",
+    "settings": [
+      {
+        "id": "title",
+        "type": "text",
+        "label": "Title",
+        "default": "Hungry?"
+      },
+      {
+        "id": "bg_image_mobile",
+        "type": "image_picker",
+        "label": "Background Image (Mobile)"
+      },
+      {
+        "id": "bg_image",
+        "type": "image_picker",
+        "label": "Background Image (Desktop)"
+      },
+      {
+        "id": "button_text",
+        "type": "text",
+        "label": "Button Text"
+      },
+      {
+        "id": "button_url",
+        "type": "url",
+        "label": "Button URL"
+      }                                            
+    ],    
+    "presets": [
+      {
+        "name": "Bottom Hero",
+        "category": "Homepage"
+      }
+    ]
+  }
+{% endschema %}

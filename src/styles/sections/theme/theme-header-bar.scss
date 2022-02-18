@@ -10,18 +10,18 @@
 
   &.scrolled {
     .c-headerMain__logo {
-      padding-top: 5px;
-      padding-bottom: 8px;
+      padding-top: 4px;
+      padding-bottom: 6px;
     }
 
     .c-headerMain__logoBox {
-      transform: scale(0.9275);
+      transform: scale(0.85);
     }
   }
 }
 
 .c-headerBar {
-  background-color: $color-primary;
+  background-color: $color-black;
 }
 
 .c-headerBar__wrapper {
