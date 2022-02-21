@@ -4,21 +4,23 @@
       v-if="!ready"
     />
     <div class="c-details__content" v-if="ready">
-      <c-h class="c-details__heading"
+      <c-h class="c-details__heading u-hideMobileDown"
         v-if="content.page_heading"
-        tag="h1"
-        level="1"
+        tag="h4"
+        level="4"
         :text="content.page_heading"
+        :modifiers="['isBolder']"
       />
       <div class="c-details__box">
-        <div class="c-details__boxSingle">
+        <div class="c-details__boxSingle"
+          v-if="customerRecharge"
+        >
           <c-detailsBlock class="c-details__boxItem"
-            v-if="customerRecharge"
             :heading="content.billing_label"
           >
-            <c-p class="class-details__boxText"
+            <c-p class="c-details__boxText"
               tag="address"
-              level="3"
+              level="2"
               v-html="_buildAddress({
                 address: customerRecharge.billingAddress,
                 options: {
@@ -26,8 +28,10 @@
                   provinceName: 'short'
                 }
               })"
+              :modifiers="['isBolder']"
             />
             <c-button class="c-details__boxButton"
+              v-if="content.billing_edit"
               :text="content.billing_edit"
               :modifiers="['isUnderline', 'isPrimary']"
               @click="UI_SET_SIDEBAR({ 
@@ -41,17 +45,23 @@
           <c-detailsBlock class="c-details__boxItem"
             :heading="content.email_label"
           >
-            <c-p class="class-details__boxText"
+            <c-p class="c-details__boxText"
               tag="p"
-              level="3"
-              v-html="customerShopify.email"
+              level="2"
+              v-if="customerShopify.email"
+              :text="customerShopify.email"
+              :modifiers="['isBolder']"
             />
           </c-detailsBlock>
           <c-detailsBlock class="c-details__boxItem"
             :heading="content.password_label"
           >
-            <span class="class-details__boxText"
-              v-html="content.password_placeholder"
+            <c-p class="c-details__boxText"
+              tag="p"
+              level="2"
+              v-if="content.password_placeholder"
+              :text="content.password_placeholder"
+              :modifiers="['isBolder']"
             />
             <c-button class="c-details__boxButton"
               :text="content.password_edit"
@@ -66,25 +76,21 @@
             v-if="customerRecharge"
             :heading="content.payment_label"
           >
-            <span class="class-details__boxText"
-              v-html="content.payment_placeholder"
+            <c-p class="c-details__boxText"
+              tag="p"
+              level="2"
+              v-if="content.payment_placeholder"
+              :text="content.payment_placeholder"
+              :modifiers="['isBolder']"
             />
             <c-button class="c-details__boxButton"
+              v-if="content.payment_edit"
               :text="content.payment_edit"
               :modifiers="['isUnderline', 'isPrimary']"
               @click="UI_SET_SIDEBAR({ 
                 component: 'cSidebarPayment',
                 content: sidebarContent.payment
               })"
-            />
-          </c-detailsBlock>
-          <c-detailsBlock class="c-details__boxItem"
-            v-if="customerRecharge"
-            :heading="content.notifications_label"
-          >
-            <c-button class="c-details__boxButton"
-              :text="content.notifications_edit"
-              :modifiers="['isUnderline', 'isPrimary']"
             />
           </c-detailsBlock>
         </div>
@@ -94,9 +100,9 @@
       >
         <c-h class="c-details__boxHeading"
           v-if="content.plans_heading"
-          tag="h5"
-          level="5"
-          :modifiers="['isLabel']"
+          tag="h6"
+          level="6"
+          :modifiers="['isEyebrow']"
           :text="content.plans_heading"
         />
         <div class="c-details__boxSingle"
@@ -109,6 +115,7 @@
                 v-html="address.address1"
               />
               <span class="c-details__boxShips"
+                v-if="content.plans_text_next"
                 v-html="content.plans_text_next"
               />
               <span class="c-details__boxDate"
@@ -116,12 +123,13 @@
               />
             </div>
             <c-button class="c-details__boxButton"
+              v-if="content.plans_button_cancel"
               :text="content.plans_button_cancel"
               :modifiers="['isUnderline', 'isPrimary']"
               @click="UI_SET_SIDEBAR({ 
-                component: 'cSidebarCancel',
-                content: sidebarContent.cancel,
-                settings: { address: address }
+                component: 'cSidebarRetention',
+                content: sidebarContent.retention,
+                settings: { addressId: address.id }
               })"
             />
           </c-detailsBlock>
@@ -136,6 +144,7 @@
                 v-html="address.address1"
               />
               <span class="c-details__boxShips"
+                v-if="content.plans_text_last"
                 v-html="content.plans_text_last"
               />
               <span class="c-details__boxDate"
@@ -148,7 +157,7 @@
               @click="UI_SET_SIDEBAR({ 
                 component: 'cSidebarActivate',
                 content: sidebarContent.activate,
-                settings: { address: address }
+                settings: { addressId: address.id }
               })"
             />
           </c-detailsBlock>
@@ -189,9 +198,9 @@ export default {
       const billing = this.$store.getters['customize/customizeSidebarByPrefix']('billing_')
       const password = this.$store.getters['customize/customizeSidebarByPrefix']('password_')
       const payment = this.$store.getters['customize/customizeSidebarByPrefix']('payment_')
-      const cancel = this.$store.getters['customize/customizeSidebarByPrefix']('cancel_')
+      const retention = this.$store.getters['customize/customizeSidebarByPrefix']('retention_')
       const activate = this.$store.getters['customize/customizeSidebarByPrefix']('activate_')
-      return { billing, password, payment, cancel, activate }
+      return { billing, password, payment, retention, activate }
     },
     addressList() {
       return this.$store.getters['customer/customerAddressesWithStatus']
@@ -230,26 +239,23 @@ export default {
   .c-details {
     max-width: 1000px;
     margin: 0 auto;
-    padding: 30px 0 60px;
-    @include media-desktop-up {
-      padding-top: 40px;
-    }
+    padding: 40px 0 60px;
   }
   .c-details__heading {
     color: $color-secondary;
+    margin-bottom: 30px;
   }
   .c-details__box {
-    padding: 15px 20px 0;
-    @include shadow-card;
+    @include box-card;
+    padding-bottom: 0;
     background-color: $color-white;
-    border-radius: 3px;
     &.c-details__box--isAddresses {
       margin-top: 40px;
     }
   }
   .c-details__boxSingle,
   .c-details__boxGroup {
-    padding-bottom: 20px;
+    padding-bottom: 25px;
   }
   .c-details__boxGroup {
     @include grid($columns: 1fr, $auto-flow: row, $gap: 30px 20px);
@@ -257,31 +263,38 @@ export default {
       grid-template-columns: 1fr 1fr;
     }
   }
-  .class-details__boxText {
-    font-size: 15px;
+  .c-details__boxHeading {
+    margin-bottom: 15px;
+  }
+  .c-details__boxText {
+    line-height: 1.5;
     margin: 0;
   }
   .c-details__boxContent {
     @include flex($direction: column, $align: flex-start);
   }
   .c-details__boxAddress,
-  .c-details__boxShips {
+  .c-details__boxShips,
+  .c-details__boxDate {
     display: block;
-    @include text-heading;
+    font-family: $font-body;
   }
   .c-details__boxAddress {
     margin-bottom: 4px;
-    font-size: 20px;
+    font-size: 22px;
+    text-transform: capitalize;
     font-weight: 700;
   }
   .c-details__boxShips {
+    margin-bottom: 6px;
     font-size: 16px;
     text-transform: uppercase;
     font-weight: 800;
+    letter-spacing: 1px;
   }
   .c-details__boxDate {
     display: block;
-    @include text-body;
-    font-size: 16px;
+    font-size: 18px;
+    font-weight: 600;
   }
 </style>

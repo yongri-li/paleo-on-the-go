@@ -1,4 +1,7 @@
+import { _sortItemsByCharge, _buildCharges } from '@vue/portal/utils'
+
 export default {
+  customerAddresses: state => state.resources.addresses,
   customerAddressById: state => id => {
     const { addresses } = state.resources
     if(addresses) {

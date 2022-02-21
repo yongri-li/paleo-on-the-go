@@ -133,7 +133,7 @@
       :loading="loading"
       :success="status === 'success'"
       :attributes="{ 
-        disabled: status === 'success' 
+        disabled: disabled || status === 'success'
       }"
       :text="{
         default: content.button_text,
@@ -148,6 +148,7 @@
 </template>
 
 <script>
+import deepEqual from 'deep-equal'
 import { mapGetters, mapActions } from 'vuex'
 import cAlert from '@shared/components/core/cAlert.vue'
 import cField from '@shared/components/core/cField.vue'
@@ -188,6 +189,14 @@ export default {
   },
   computed: {
     ...mapGetters('customer', ['customerRecharge']),
+    addressFields() {
+      const { firstName, lastName, billingAddress } = this.customerRecharge
+      const { address1, address2, city, province, zip, country } = billingAddress
+      return { firstName, lastName, address1, address2, city, province, zip, country }
+    },
+    disabled() {
+      return deepEqual(this.billingModel, this.addressFields)
+    },
     hasErrors() {
       return Object.keys(this.errors).length > 0
     }
@@ -241,7 +250,8 @@ export default {
         },
          { 
           name: 'zip', value: zip, 
-          rules: ['validateRequired'],
+          rules: ['validateRequired', 'validatePostcode'],
+          reference: country,
           messages: [
             this.content.error_required
           ]
@@ -262,7 +272,7 @@ export default {
       this.validateForm()
       if(!this.hasErrors) {
         this.loading = true
-        const { customer, error } = await this.customerUpdateBilling({ address: this.billingModel })
+        const { success, error } = await this.customerUpdateBilling({ updates: this.billingModel })
         if(!error) {
           this.status = 'success'
           if(!this.hideAlert && this.content.success_text) {
@@ -284,14 +294,17 @@ export default {
     }
   },
   watch: {
-    'customerRecharge': {
+    addressFields: {
+      deep: true,
       immediate: true,
       handler(val) {
-        if(val) this.billingModel = { 
-          firstName: val.firstName,
-          lastName: val.lastName,
-          ...val.billingAddress,
-        }
+        if(val) this.billingModel = { ...val }
+      }
+    },
+    billingModel: {
+      deep: true,
+      handler() {
+        this.status = false
       }
     }
   }

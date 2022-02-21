@@ -20,7 +20,11 @@
     </div>
     <c-sidebar class="c-portal__sidebar" 
       v-if="customerReady"
-      data-portal-header
+      data-portal-sidebar
+    />
+    <c-modal class="c-portal__modal" 
+      v-if="customerReady"
+      data-portal-modal
     />
   </div>
 </template>
@@ -28,9 +32,11 @@
 <script>
 import { mapGetters } from 'vuex'
 import setup from '../_setup'
+import redirect from '../_redirect'
 import cPortalHeader from './theme/cPortalHeader.vue'
-import cSidebar from './theme/cSidebar.vue'
 import cLoading from '@shared/components/core/cLoading.vue'
+import cSidebar from './theme/cSidebar.vue'
+import cModal from './theme/cModal.vue'
 
 export default {
   props: {
@@ -39,7 +45,11 @@ export default {
       default: () => ([])
     }
   },
-  components: { cPortalHeader, cSidebar, cLoading },
+  components: { 
+    cPortalHeader, cLoading,
+    cSidebar, cModal 
+  },
+  data: () => ({ shopifyReady: false }),
   computed: {
     ...mapGetters('customer', ['customerReady']),
     state() {
@@ -50,15 +60,41 @@ export default {
       return this.$store.getters['ui/uiSettingByKey']('preventScroll')
     }
   },
-  async mounted() {
-    await setup(this)
+  methods: {
+    setReady() {
+      const shopifyInterval = setInterval(() => {
+        this.shopifyReady = window.Scoutside.api.ready
+        if(this.shopifyReady) clearInterval(shopifyInterval)
+      }, 100)
+    }
+  },
+  mounted() {
+    this.setReady()
   },
   watch: {
+    shopifyReady: {
+      immediate: true,
+      handler(val) {
+        if(val) setup(this)
+      }
+    },
     preventScroll: {
       handler(val) {
         const body = document.querySelector('[data-body]')
         if(val) body.classList.add('o-body--noScroll')
         else body.classList.remove('o-body--noScroll')
+      }
+    },
+    customerReady: {
+      handler(val) {
+        if(val) redirect(this)
+      }
+    },
+    $route: {
+      handler(val) {
+        if(val.name) {
+          redirect(this)
+        }
       }
     }
   }
@@ -66,6 +102,12 @@ export default {
 </script>
 
 <style lang="scss">
+  .c-portal {
+    background-color: $color-body;
+  }
+  .c-portal__page {
+    min-height: 420px;
+  }
   .c-portal__loading {
     margin: 150px auto;
   }

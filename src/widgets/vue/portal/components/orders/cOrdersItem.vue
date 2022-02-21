@@ -3,33 +3,36 @@
     v-if="item && content"
   >
     <c-img class="c-ordersItem__image"
-      :src="item.image"
-      :alt="alt"
+      :src="image"
     />
     <div class="c-ordersItem__details">
       <c-h class="c-ordersItem__title"
         v-if="item.productTitle"
-        tag="h4"
-        level="4"
+        tag="h6"
+        level="6"
         :text="item.productTitle"
+        :modifiers="['isBolder']"
       />
       <c-p class="c-ordersItem__interval"
         v-if="interval"
         tag="p"
-        level="4"
+        level="3"
         :text="interval"
+        :modifiers="['isBolder']"
       />
       <c-p class="c-ordersItem__variant"
         v-if="item.variantTitle"
         tag="p"
-        level="4"
+        level="3"
         :text="item.variantTitle.replace(/\//g, '•')"
+        :modifiers="['isBolder']"
       />
       <c-p class="c-ordersItem__price"
         v-if="quantityPrice"
         tag="p"
-        level="4"
+        level="3"
         :text="quantityPrice"
+        :modifiers="['isBolder']"
       />
     </div>
   </div>
@@ -59,20 +62,27 @@ export default {
   components: { cImg, cH, cP },
   computed: {
     ...mapGetters('customize', ['customizeShop']),
+    product() {
+      return this.$store.getters['products/productById'](this.item.productId)
+    },
+    image() {
+      return this.product ? this.product.images[0] : false
+    },
     alt() {
-      return `${this.customizeShop.shop_name}  ${this.item.productTitle}`
+      return `${this.customizeShop.shop_name} ${this.item.productTitle}`
     },
     interval() {
-      const { item, customizeShop } = this
-      const frequency = item.properties.find(prop => prop.name === 'shipping_interval_frequency')
-      const unit = item.properties.find(prop => prop.name === 'shipping_interval_unit')
+      const { item, customizeShop, content } = this
+      const { frequency, unit } = item
       const activeInterval = customizeShop.intervals.find(interval => {
         if(!frequency || !unit) return interval.frequency == 0
         else return interval.frequency == frequency
       })
-      let text = activeInterval.text
-      if(frequency && unit && content.ships) text = `${content.ships} ${text}`
-      return text
+      if(activeInterval) {
+        let text = activeInterval.text
+        if(frequency && unit && content.ships) text = `${content.ships} ${text}`
+        return text
+      }
     },
     price() {
       const currencySymbol = this.customizeShop.currency_symbol
@@ -88,16 +98,13 @@ export default {
 
 <style lang="scss">
   .c-ordersItem {
-    padding: 15px;
     @include flex($align: flex-start, $wrap: nowrap);
-    @include border-card;
-    @include shadow-card($opacity: .05);
+    @include box-card;
+    padding: 20px;
   }
-  .c-ordersItem__image {
+  .c-img.c-ordersItem__image {
     width: 86px;
-    background-color: $color-secondary;
     color: lighten($color-black, 10%);
-    border-radius: 3px;
   }
   .c-ordersItem__details {
     margin-left: 30px;
@@ -106,7 +113,11 @@ export default {
   .c-ordersItem__interval,
   .c-ordersItem__variant,
   .c-ordersItem__price {
+    font-family: $font-body;
     margin-bottom: 0;
+  }
+  .c-ordersItem__title {
+    font-size: 16px;
   }
 
 </style>

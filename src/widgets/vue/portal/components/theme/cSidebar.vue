@@ -1,10 +1,13 @@
 <template>
-  <div :class="_buildModifiers('c-sidebar', sidebar.modifiers)">
+  <div :class="_buildModifiers('c-sidebar', sidebar.modifiers)"
+    ref="c-sidebar"
+  >
     <c-overlay class="c-sidebar__overlay"
       :show="show"
       @click="UI_CLOSE_SIDEBAR"
     />
     <c-drawer class="c-sidebar__drawer"
+      ref="c-sidebar__drawer"
       :show="show"
       :side="sidebar.side"
       :closable="false"
@@ -14,7 +17,7 @@
       <div class="c-sidebar__container o-container">
         <button class="c-sidebar__back"
           v-if="!sidebar.settings.hideBack || backText"
-          @click="UI_CLOSE_SIDEBAR"
+          @click="handleBack"
         >
           <c-svg class="c-sidebar__backIcon"
             name="chevron"
@@ -25,9 +28,10 @@
         </button>
         <c-h class="c-sidebar__heading"
           v-if="heading"
-          tag="h1"
-          level="1"
+          tag="h3"
+          level="3"
           :text="heading"
+          :modifiers="['isBolder']"
         />
         <component class="c-sidebar__content" 
           :is="sidebarComponent"
@@ -69,20 +73,28 @@ export default {
     },
     backText() {
       const { content } = this.sidebar
-      const backKey = Object.keys(content).find(key => key.endsWith('_back'))
-      return backKey ? content[backKey] : false
+      if(content) {
+        const backKey = Object.keys(content).find(key => key.endsWith('_back'))
+        return backKey ? content[backKey] : false
+      }
     },
     heading() {
       const { content } = this.sidebar
-      const headingKey = Object.keys(content).find(key => key.endsWith('_heading'))
-      return headingKey ? content[headingKey] : false
+      if(content) {
+        const headingKey = Object.keys(content).find(key => key.endsWith('_heading'))
+        return headingKey ? content[headingKey] : false
+      }
     },
     showPayment() {
       return this.$route.name === 'details'
     }
   },
   methods: {
-    ...mapMutations('ui', ['UI_CLOSE_SIDEBAR'])
+    ...mapMutations('ui', ['UI_CLOSE_SIDEBAR']),
+    handleBack() {
+      const { backAction } = this.sidebar.settings
+      return backAction ? backAction() : this.UI_CLOSE_SIDEBAR()
+    }
   },
   watch: {
     "sidebar.component": {
@@ -91,6 +103,11 @@ export default {
         this.sidebarComponent = val 
           ? require(`../sidebars/${val}.vue`).default 
           : false
+        if(val) {
+          const cSidebar = this.$refs['c-sidebar']
+          const drawer = cSidebar.querySelector('.c-sidebar__drawer')
+          if(drawer) drawer.scrollTo(0,0)
+        }
       }
     },
     "$route": {
@@ -103,9 +120,17 @@ export default {
 </script>
 
 <style lang="scss">
+  .c-sidebar {
+    position: relative;
+    z-index: $z-index-sidebar;
+  }
+  .c-sidebar__overlay {
+    z-index: 1;
+  }
   .c-sidebar__drawer {
-    background-color: #FAFAFB;
     width: 100vw;
+    z-index: 2;
+    background-color: $color-sidebar;
   }
   .c-sidebar__container {
     padding: 40px 0 60px;
@@ -118,15 +143,26 @@ export default {
     @include hover-fade;
   }
   .c-sidebar__backIcon {
-    width: 12px;
+    width: 16px;
+    position: relative;
+    top: 1px;
     margin-right: 8px;
+    transform: rotate(90deg);
+    transform-origin: 50%;
   }
   .c-sidebar__backText {
+    font-family: $font-heading;
     font-size: 17px;
     font-weight: 700;
     text-transform: uppercase;
+    @include media-mobile-down {
+      font-size: 16px;
+    }
   }
   .c-sidebar__heading {
-    color: $color-secondary;
+    margin-bottom: 30px;
+    @include media-mobile-down {
+      font-size: 25px;
+    }
   }
 </style>

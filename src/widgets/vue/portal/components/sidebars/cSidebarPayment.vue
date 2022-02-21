@@ -23,9 +23,10 @@
         </button>
         <c-h class="c-sidebar__heading"
           v-if="heading"
-          tag="h1"
-          level="1"
+          tag="h3"
+          level="3"
           :text="heading"
+          :modifiers="['isBolder']"
         />
         <iframe class="c-sidebar__iframe"
           :src="src" 
@@ -89,6 +90,8 @@ export default {
 
 <style lang="scss">
   .c-sidebarPayment {
+    position: relative;
+    z-index: $z-index-sidebar;
     .c-sidebar__drawer {
       position: fixed;
       top: 0;
@@ -96,11 +99,13 @@ export default {
       height: 100vh;
       overflow-y: scroll;
       transform: translateX(100%);
-      transition-duration: .3s;
-      transition-timing-function: ease-in-out;
-      z-index: $z-index-drawer;
+      transition: transform .3s ease-in-out, opacity ease-in-out .3s;;
+      z-index: $z-index-sidebar;
+      opacity: 0;
       &.c-sidebar__drawer--isOpen {
+        transition: transform .3s ease-in-out;
         transform: translateX(0);
+        opacity: 1;
       }
     }
     .c-sidebar__iframe {

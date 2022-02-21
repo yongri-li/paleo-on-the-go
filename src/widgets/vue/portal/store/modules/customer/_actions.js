@@ -1,12 +1,14 @@
 import { apiService } from '@shared/services'
-import addressActions from './addresses/_actions'
+import addressesActions from './addresses/_actions'
+import chargesActions from './charges/_actions'
 import onetimesActions from './onetimes/_actions'
 import subscriptionsActions from './subscriptions/_actions'
 
 export default {
   async customerSetState({ commit }) {
     try {
-      const { data } = await apiService.get('/customer')
+      const apiClient = new apiService()
+      const { data } = await apiClient.get('/v1/customer/account')
       const { shopifyCustomer, rechargeCustomer } = data
       if(shopifyCustomer) commit('CUSTOMER_SET_SHOPIFY', shopifyCustomer)
       if(rechargeCustomer) commit('CUSTOMER_SET_RECHARGE', rechargeCustomer)
@@ -22,8 +24,8 @@ export default {
       const resourcesInState = state.resources
       const resourceKeys = resources.filter(key => !resourcesInState[key])
       if(resourceKeys.length > 0) {
-        const { data } = await apiService.get('/customer/resources', { params: { resources: resourceKeys }})
-
+        const apiClient = new apiService()
+        const { data } = await apiClient.get('/v1/customer/resources', { params: { resources: resourceKeys }})
         await commit('CUSTOMER_SET_RESOURCES', data.resources)
       }
       return { success: 'ACTION_SUCCESS' }
@@ -33,8 +35,9 @@ export default {
   },
   async customerUpdateBilling({ commit }, payload) {
     try {
-      const { address } = payload
-      const { data } = await apiService.put('/customer/billing', { data: { address }})
+      const { updates } = payload
+      const apiClient = new apiService()
+      const { data } = await apiClient.put('/v1/customer/billing', { data: { address: updates }})
       const { customer, error } = data
       if(customer) {
         commit('CUSTOMER_SET_RECHARGE', customer)
@@ -45,7 +48,8 @@ export default {
       return { error: 'ACTION_ERROR' }
     }
   },
-  ...addressActions,
+  ...addressesActions,
+  ...chargesActions,
   ...onetimesActions,
   ...subscriptionsActions
 }

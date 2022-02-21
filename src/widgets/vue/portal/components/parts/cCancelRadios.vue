@@ -22,8 +22,8 @@
       >
           <c-h class="c-cancelRadios__delayHeading"
             v-if="content.delay_heading"
-            tag="h4"
-            level="4"
+            tag="h5"
+            level="5"
             :text="content.delay_heading"
           />
           <c-button class="c-cancelRadios__delayButton"
@@ -32,7 +32,7 @@
             :loading="loading.delay"
             :text="content.delay_button"
             :modifiers="['isDefault', 'isSecondary', 'hideTextLoading']"
-            :attributes="{ disabled: !cancelModel || loading.cancel || loading.delay }"
+            :attributes="{ disabled: !cancelModel || loading.delay || loading.cancel || disabled }"
           />
         </div>
     </div>
@@ -55,6 +55,10 @@ export default {
     loading: {
       type: Object,
       default: () => ({})
+    },
+    disabled: {
+      type: [String, Boolean],
+      default: false
     },
     content: {
       type: Object,
@@ -89,13 +93,19 @@ export default {
 
 <style lang="scss">
   .c-cancelRadios__delay {
-    margin: 15px 0 30px;
-    padding: 10px 15px 15px;
-    background-color: $color-white;
-    border: 1px solid $color-hr;
+    margin: -10px 0 30px;
+    @include box-card;
+    @include shadow-card;
+    min-width: 320px;
+    display: inline-block;
+    padding: 10px 15px 15px !important;
   }
   .c-cancelRadios__delayHeading {
-    margin-bottom: 15px;
-    text-align: left;
+    margin-bottom: 8px;
+    text-align: center;
+    font-size: 22px;
+  }
+  .c-cancelRadios__delayButton {
+    width: 100%;
   }
 </style>

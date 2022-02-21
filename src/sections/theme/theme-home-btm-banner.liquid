@@ -1,8 +1,8 @@
-<article>
+<article class="c-homeBtm__banner">
   <section>
     <h2 class="c-h2">{{section.settings.tagline}}</h2>
     <div>
-      Klayvio Embed here
+  <!--     Klayvio Embed here -->
       <input type="text">
       <button class="c-button c-button--isDefault c-button--isPrimary">
         Submit
@@ -12,6 +12,20 @@
 </article>
 
 
+<style>
+  article.c-homeBtm__banner {
+    display: flex;
+  }
+
+  article.c-homeBtm__banner div {
+    display: flex;
+  }
+
+  article.c-homeBtm__banner button.c-button {
+    padding: 1rem 2rem;
+  }
+</style>
+
 {% schema %}
   {
     "name": "Bottom Banner",
@@ -19,7 +33,7 @@
       {
         "id": "tagline",
         "type": "text",
-        "label": "Tagline",
+        "label": "Tagline"
       },
       {
         "id": "klayvio_link",

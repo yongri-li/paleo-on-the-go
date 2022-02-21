@@ -1,3 +1,4 @@
+import addressesMutations from './addresses/_mutations'
 import chargesMutations from './charges/_mutations'
 import onetimesMutations from './onetimes/_mutations'
 import subscriptionsMutations from './subscriptions/_mutations'
@@ -15,6 +16,7 @@ export default {
   CUSTOMER_SET_RESOURCES(state, payload) {
     if(payload) state.resources = { ...state.resources, ...payload }
   },
+  ...addressesMutations,
   ...chargesMutations,
   ...onetimesMutations,
   ...subscriptionsMutations

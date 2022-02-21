@@ -3,7 +3,7 @@
     v-if="content"
   >
     <c-accordionItem class="c-ordersAccordion__item"
-      v-for="(order, index) in orders"
+      v-for="(order, index) in orderList"
       :key="`${order.number}-${index}`"
       :open="open === index"
     >
@@ -13,22 +13,22 @@
             <c-h class="c-ordersAccordion__detailsDate"
               v-if="order.processedAt"
               tag="time"
-              level="3"
+              level="6"
               :text="_formatDate(order.processedAt, 'MMM D, YYYY')"
+              :modifiers="['isBolder']"
             />
-            <c-p class="c-ordersAccordion__detailsInfo"
-              tag="span"
-              level="3"
-              :text="buildInfo(order)"
+            <span class="c-ordersAccordion__detailsInfo"
+              v-html="buildInfo(order)"
             />
           </div>
           <div :class="_buildModifiers('c-ordersAccordion__triggerInfo', 
             infoModifiers(order))"
           >
             <c-h class="c-ordersAccordion__infoStatus"
-              tag="h5"
-              level="5"
+              tag="h6"
+              level="6"
               :text="content[order.shippingStatus]"
+              :modifiers="['isSeven']"
             >
               <c-svg class="c-ordersAccordion__infoIcon"
                 v-if="infoIcon(order)"
@@ -48,7 +48,7 @@
         <div class="c-ordersAccordion__triggerBottom">  
           <c-h class="c-ordersAccordion__triggerAddress"
             tag="address"
-            level="4"
+            level="6"
             v-html="_buildAddress({
               address: order.shippingAddress,
               options: {
@@ -58,9 +58,11 @@
               }
             })"
           />
-          <c-svg class="c-ordersAccordion__triggerIcon"
-            name="circleChevron"
-          />
+          <div class="c-ordersAccordion__triggerCircle">
+            <c-svg class="c-ordersAccordion__triggerIcon"
+              name="chevron"
+            />
+          </div>
         </div>
       </div>
       <div class="c-ordersAccordion__content" slot="content">
@@ -77,19 +79,21 @@
             <div class="c-ordersAccordion__billingInfo">
               <c-h class="c-ordersAccordion__billingHeading"
                 v-if="content.billing"
-                tag="h5"
-                level="5"
+                tag="h6"
+                level="6"
                 :text="content.billing"
+                :modifiers="['isSeven']"
               />
               <c-p class="c-ordersAccordion__billingStatus"
                 tag="p"
-                level="2"
+                level="3"
                 :text="billingStatus(order)"
+                :modifiers="['isBolder']"
               />
             </div>
-            <c-p class="c-ordersAccordion__billingAddress u-doubleSpace"
+            <c-p class="c-ordersAccordion__billingAddress"
               tag="address"
-              level="4"
+              level="3"
               v-html="_buildAddress({
                 address: order.shippingAddress,
                 options: {
@@ -97,6 +101,7 @@
                   provinceName: 'short'
                 }
               })"
+              :modifiers="['isBolder']"
             />
           </div>
           <div class="c-ordersAccordion__summary">
@@ -159,6 +164,16 @@ export default {
   computed: {
     currencySymbol() {
       return this.$store.getters['customize/customizeShopByKey']('currency_symbol')
+    },
+    orderList() {
+      return this.orders.map(order => {
+        const lineItems = order.lineItems.filter(lineItem => {
+          return !lineItem.properties.find(property => {
+            return property.name === 'bundle_type' && property.value === 'child'
+          })
+        })
+        return { ...order, lineItems }
+      })
     }
   },
   methods: {
@@ -198,9 +213,8 @@ export default {
 
 <style lang="scss">
   .c-ordersAccordion__item {
-    @include shadow-card;
-    background-color: $color-white;
-    border-radius: 3px;
+    @include box-card;
+    padding: 0 !important;
     &:not(:last-child) {
       margin-bottom: 40px;
     }
@@ -209,6 +223,9 @@ export default {
     padding: 25px;
     @include media-tablet-up {
       @include flex($justify: flex-start, $wrap: nowrap);
+    }
+    @include media-mobile-down {
+      padding: 15px;
     }
   }
   .c-ordersAccordion__triggerTop,
@@ -224,10 +241,15 @@ export default {
     flex-grow: 1;
   }
   .c-ordersAccordion__detailsDate {
-    margin-bottom: 5px;
+    line-height: 1;
+    margin-bottom: 10px;
+    white-space: nowrap;
   }
   .c-ordersAccordion__detailsInfo {
     display: block;
+    @include text-heading;
+    font-size: 14px;
+    font-weight: 500;
     margin-bottom: 30px;
     white-space: nowrap;
     @include media-tablet-up {
@@ -245,8 +267,9 @@ export default {
   }
   .c-ordersAccordion__infoStatus {
     margin-bottom: 0 !important;
-    font-weight: 700;
+    font-weight: 800;
     text-transform: uppercase;
+    letter-spacing: 1px;
     white-space: nowrap;
     .c-ordersAccordion__triggerInfo--isDelivered & {
       color: $color-secondary;
@@ -266,7 +289,11 @@ export default {
   .c-ordersAccordion__triggerAddress {
     width: 220px;
     max-width: calc(100% - 100px);
+    font-weight: 800;
     margin-bottom: 0 !important;
+    @include media-mobile-down {
+      font-size: 18px;
+    }
     @include media-tablet-up {
       width: auto;
       max-width: none;
@@ -277,23 +304,34 @@ export default {
       margin-left: 70px;
     }
   }
+  .c-ordersAccordion__triggerCircle {
+    min-width: 40px;
+    width: 40px;
+    height: 40px;
+    border: 2px solid $color-primary;
+    border-radius: 50%;
+    @include flex($justify: center);
+    margin-left: 20px;
+  }
   .c-ordersAccordion__triggerIcon {
     color: $color-primary;
-    width: 24px;
-    height: 24px;
+    width: 12px;
+    height: auto;
     transition: transform .35s ease-in-out;
     transform-origin: 50%;
-    margin-left: 20px;
     .c-accordionItem__trigger--isOpen & {
       transform: rotate(180deg);
     }
   }
   .c-ordersAccordion__content {
-    padding: 15px 20px 20px;
+    padding: 10px 25px 25px;
+    @include media-mobile-down {
+      padding: 10px 15px 15px;
+    }
   }
   .c-ordersAccordion__grid { 
     @include grid($columns: 1fr, $auto-flow: row, $gap: 30px 20px);
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     @include media-tablet-up {
       grid-template-columns: 1fr 1fr;
     }
@@ -305,10 +343,9 @@ export default {
     width: 100%;
   }
   .c-ordersAccordion__contentBottom {
-    padding: 20px;
     @include flex($direction: column, $align: flex-start);
-    @include border-card;
-    @include shadow-card($opacity: .05);
+    @include box-card;
+    padding: 20px;
     @include media-tablet-up {
       @include flex($justify: space-between, $wrap: nowrap);
     }
@@ -324,10 +361,10 @@ export default {
   .c-ordersAccordion__billingHeading {
     margin-bottom: 6px;
     text-transform: uppercase;
+    letter-spacing: 1px;
   }
   .c-ordersAccordion__billingStatus {
     margin-bottom: 30px;
-    font-size: 14px;
     line-height: 1;
     text-transform: uppercase;
     @include media-tablet-up {
@@ -355,13 +392,15 @@ export default {
     width: 100%;
     @include flex($justify: space-between);
     margin-bottom: 5px;
-    font-size: 14px;
+    font-family: $font-body;
+    font-size: 16px;
     font-weight: 600;
   }
   .c-ordersAccordion__summaryLabel,
   .c-ordersAccordion__summaryValue {
     .c-ordersAccordion__summaryLine--isTotal & {
-      margin-top: 10px;
+      margin-top: 5px;
+      font-family: $font-heading;
       font-size: 16px;
       font-weight: 900;
       text-transform: uppercase;

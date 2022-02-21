@@ -21,7 +21,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
 import cFormBilling from '../forms/cFormBilling.vue'
 
 export default {

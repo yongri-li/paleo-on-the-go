@@ -1,12 +1,13 @@
 <template>
   <div :class="_buildModifiers('c-sidebarCancel', modifiers)"
-    v-if="content && settings.address"
+    v-if="content && address"
   >
     <c-p class="c-sidebarCancel__address"
       tag="address"
       level="1"
+      :modifiers="['isBolder']"
       v-html="_buildAddress({
-        address: settings.address,
+        address: address,
         options: {
           hiddenFields: ['name', 'country'],
           provinceName: 'short',
@@ -24,6 +25,7 @@
     <c-cancelRadios class="c-sidebarCancel__radios"
       v-model="cancelModel"
       :loading="loading"
+      :disabled="loading.delay || loading.cancel"
       @delay="handleDelay"
       :content="{
         reason_1: content.cancel_reason_1,
@@ -41,7 +43,7 @@
       @click="handleCancel"
       :loading="loading.cancel"
       :text="content.cancel_submit_button"
-      :modifiers="['isHollow', 'isBlack', 'hideTextLoading']"
+      :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
       :attributes="{ disabled: !cancelModel || loading.cancel || loading.delay }"
     />
   </div>
@@ -50,6 +52,7 @@
 <script>
 import { mapMutations, mapActions } from 'vuex'
 import { _sortItemsByCharge, _buildUpdates } from '@vue/portal/utils'
+
 import cP from '@shared/components/core/cP.vue'
 import cButton from '@shared/components/core/cButton.vue'
 import cSidebarCancelItem from './cSidebarCancelItem.vue'
@@ -79,22 +82,29 @@ export default {
     loading: { delay: false, cancel: false } 
   }),
   computed: {
-    subscriptions() {
-      return this.$store.getters['customer/customerSubscriptionsByAddress'](this.settings.address)
+    address() {
+      return this.$store.getters['customer/customerAddressById'](this.settings.addressId)
     },
-    subscriptionIds() {
-      return this.subscriptions.map(subscription => subscription.id)
+    subscriptions() {
+      return this.$store.getters['customer/customerSubscriptionsByAddress'](this.address)
     },
     onetimes() {
-      return this.$store.getters['customer/customerOnetimesByAddress'](this.settings.address)
-    },
-    onetimeIds() {
-      return this.onetimes.map(onetime => onetime.id)
+      return this.$store.getters['customer/customerOnetimesByAddress'](this.address)
     },
     items() {
-      return _sortItemsByCharge(
-        { items: [ ...this.subscriptions, ...this.onetimes ], order: 'ascending' }
-      )
+      const filteredSubscriptions =  this.subscriptions.filter(subscription => {
+        return !subscription.properties.find(property => {
+          return property.name === 'bundle_type' && property.value === 'child'
+        })
+      })
+      const filteredOnetimes = this.onetimes.filter(onetime => {
+        return !onetime.properties.find(property => {
+          return property.name === 'bundle_type' && property.value === 'child'
+        })
+      })
+      return _sortItemsByCharge({ 
+        items: [ ...filteredSubscriptions, ...filteredOnetimes ], order: 'ascending'
+      })
     }
   },
   methods: {
@@ -102,13 +112,13 @@ export default {
     ...mapActions('customer', ['customerUpdateAddressItems']),
     async handleDelay() {
       this.loading.delay = true
-      await this.customerUpdateAddressItems({ 
-        addressId: this.settings.address.id,
+      const { subscriptions, onetimes, error, success } = await this.customerUpdateAddressItems({ 
+        addressId: this.settings.addressId,
         updatesOnetimes: _buildUpdates({
-          items: this.onetimes, action: 'delay', values: { frequency: 1, unit: 'month'}
+          items: this.onetimes, actions: ['delay'], values: { frequency: 1, unit: 'month'}
         }),
          updatesSubscriptions: _buildUpdates({
-          items: this.subscriptions, action: 'delay', values: { frequency: 1, unit: 'month'}
+          items: this.subscriptions, actions: ['delay'], values: { frequency: 1, unit: 'month'}
         })
       })
       this.loading.delay = false
@@ -116,13 +126,13 @@ export default {
     },
     async handleCancel() {
       this.loading.cancel = true
-      await this.customerUpdateAddressItems({ 
-        addressId: this.settings.address.id,
+      const { subscriptions, onetimes, error, success } = await this.customerUpdateAddressItems({ 
+        addressId: this.settings.addressId,
         updatesOnetimes: _buildUpdates({
-          items: this.onetimes, action: 'cancel', values: { reason: this.cancelModel }
+          items: this.onetimes, actions: ['cancel'], values: { reason: this.cancelModel }
         }),
-         updatesSubscriptions: _buildUpdates({
-          items: this.subscriptions, action: 'cancel', values: { reason: this.cancelModel }
+        updatesSubscriptions: _buildUpdates({
+          items: this.subscriptions, actions: ['cancel'], values: { reason: this.cancelModel }
         })
       })
       this.loading.cancel = false

@@ -4,30 +4,31 @@
   >
     <c-img class="c-sidebarCancelItem__image"
       :src="image.src"
-      :alt="image.alt"
     />
     <div class="c-sidebarCancelItem__details">
-      <c-p class="c-sidebarCancelItem__date u-block"
+      <c-h class="c-sidebarCancelItem__date u-block"
         v-if="item.scheduledAt"
         tag="time"
-        level="3"
+        level="6"
+        :modifiers="['isEyebrow']"
         :text="_formatDate(item.scheduledAt, 'MMM DD')"
       />
       <c-h class="c-sidebarCancelItem__title"
         v-if="item.productTitle"
-        tag="h4"
-        level="4"
+        tag="h6"
+        level="6"
         :text="item.productTitle"
+        :modifiers="['isBolder']"
       />
       <c-p class="c-sidebarCancelItem__variant u-block"
         v-if="_stringEmpty(item.variantTitle)"
         tag="span"
-        level="3"
+        level="2"
         :text="item.variantTitle"
       />
-      <c-p class="c-sidebarActivateItem__price u-block"
+      <c-p class="c-sidebarCancelItem__price u-block"
         tag="span"
-        level="4"
+        level="2"
         :text="quantityPrice"
       />
     </div>
@@ -57,12 +58,12 @@ export default {
   computed: {
     ...mapGetters('customize', ['customizeShop']),
     product() {
-      return false
+      return this.$store.getters['products/productById'](this.item.productId)
     },
     image() {
       const { item, product, customizeShop } = this
       return {
-        src: product ? product.image : false,
+        src: product ? product.images[0] : false,
         alt: `${customizeShop.shop_name} ${item.productTitle}`
       }
     },
@@ -78,12 +79,11 @@ export default {
 
 <style lang="scss">
   .c-sidebarCancelItem {
-    @include flex($align: flex-start, $wrap: nowrap);
+    @include flex($wrap: nowrap);
     padding: 30px 0 40px;
   }
   .c-sidebarCancelItem__image {
-    width: 70px;
-    background-color: $color-secondary;
+    max-width: 70px;
     color: lighten($color-black, 10%);
     border-radius: 3px;
   }
@@ -99,9 +99,16 @@ export default {
   .c-sidebarCancelItem__quantity,
   .c-sidebarCancelItem__price {
     margin-bottom: 0;
-    line-height: 1.5;
+    line-height: 1.25;
   }
-  .c-sidebarCancelItem__date {
-    text-transform: uppercase;
+  .c-sidebarCancelItem__date { font-weight: 800; }
+  .c-sidebarCancelItem__title { font-size: 18px; }
+  .c-sidebarCancelItem__variant {
+    font-weight: 600;
+  }
+  .c-sidebarCancelItem__price { 
+    font-size: 20px;
+    font-weight: 600;
+    margin-top: 5px; 
   }
 </style>

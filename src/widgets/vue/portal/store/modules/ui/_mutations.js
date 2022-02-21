@@ -9,5 +9,16 @@ export default {
       modifiers: [], side: 'right' 
     }
     if(!state.modal.component) state.settings.preventScroll = false
+  },
+  UI_SET_MODAL(state, payload) {
+    state.settings.preventScroll = true
+    state.modal = { ...state.modal, ...payload }
+  },
+  UI_CLOSE_MODAL(state, payload) {
+    state.modal = { 
+      component: false, content: false, settings: {},
+      modifiers: [], side: 'right' 
+    }
+    if(!state.sidebar.component) state.settings.preventScroll = false
   }
 }

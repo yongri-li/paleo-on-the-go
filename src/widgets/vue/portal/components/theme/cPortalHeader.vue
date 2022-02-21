@@ -2,7 +2,7 @@
   <header :class="_buildModifiers('c-portalHeader', modifiers)"
     v-if="navigation"
   >
-    <div class="c-portalHeader__main u-hideMobileDown">
+    <div class="c-portalHeader__main o-container u-hideMobileDown">
       <nav class="c-portalHeader__mainNav">
         <component class="c-portalHeader__mainLink"
           v-for="(link, index) in navigation"
@@ -14,6 +14,14 @@
             v-html="link.text"
           />
         </component>
+        <a class="c-portalHeader__mainLink c-portalHeader__mainLink--isSignout"
+          v-if="items.navigation_signout"
+          href="/account/logout"
+        >
+          <span class="c-portalHeader__mainText"
+            v-html="items.navigation_signout"
+          />
+        </a>
       </nav>
     </div>
     <div :class="`${_buildModifiers('c-portalHeader__mobile', mobileModifiers)} 
@@ -22,26 +30,56 @@
       <div class="c-portalHeader__mobileTrigger"
         @click="open = !open"
       >
+        <span class="c-portalHeader__mobileLabel"
+          v-if="items.navigation_label"
+          v-html="items.navigation_label"
+        />
         <c-svg class="c-portalHeader__mobileSvg"
           name="circleChevron"
-        />
-        <span class="c-portalHeader__mobileLabel"
-          v-if="activeLink"
-          v-html="activeLink.text"
         />
       </div>
       <transition name="t-mobileNav-slide">
         <nav class="c-portalHeader__mobileNav" v-if="open">
           <component class="c-portalHeader__mobileLink"
-          v-for="(link, index) in navigation"
-          :key="index"
-          :is="link.tag"
-          v-bind="link.attributes"
-        >
-          <span class="c-portalHeader__mobileText"
-            v-html="link.text"
-          />
-        </component>
+            v-for="(link, index) in navigation"
+            :key="index"
+            :is="link.tag"
+            v-bind="link.attributes"
+            @click.native="open = false"
+          >
+            <span class="c-portalHeader__mobileText"
+              v-html="link.text"
+            />
+          </component>
+          <!--<a class="c-portalHeader__mobileLink"
+            v-if="items.navigation_view"
+          >
+            <span class="c-portalHeader__mobileText"
+              v-html="items.navigation_view"
+            />
+          </a>
+          <a class="c-portalHeader__mobileLink"
+            v-if="items.navigation_earn"
+          >
+            <span class="c-portalHeader__mobileText"
+              v-html="items.navigation_earn"
+            />
+          </a>
+          <a class="c-portalHeader__mobileLink"
+            v-if="items.navigation_refer"
+          >
+            <span class="c-portalHeader__mobileText"
+              v-html="items.navigation_refer"
+            />
+          </a>-->
+          <a class="c-portalHeader__mobileLink c-portalHeader__mobileLink--isSignout"
+            v-if="items.navigation_signout"
+            href="/account/logout"
+          >
+            <span class="c-portalHeader__mobileText"
+              v-html="items.navigation_signout"
+            />
+          </a>
         </nav>
       </transition>
     </div>
@@ -73,8 +111,6 @@ export default {
         return links.map(link => {
           if(link.page === 'external') {
             link = { ...link, tag: 'a', attributes: { href: link.url }}
-          } else if (link.page === 'signout') {
-            link = { ...link, tag: 'a', attributes: { href: '/account/logout' }}
           } else {
             link = { ...link, tag: 'router-link', attributes: { to: {'name': link.page }} }
             if(link.page === 'shipment') link.attributes.exact = true
@@ -82,6 +118,9 @@ export default {
           return link
         })
       }
+    },
+    items() {
+      return this.$store.getters['customize/customizePartByPrefix']('navigation_')
     },
     activeLink() {
       return this.navigation.find(link => link.page === this.$route.name)
@@ -93,10 +132,6 @@ export default {
     }
   },
   methods: {
-    // handleClick(link) {
-    //   this.open = false
-    //   if(!link.type === 'signout') this.authSetLogout()
-    // },
     handleResize() {
       const width = window.innerWidth
       if(width >= 768) this.open = false
@@ -116,22 +151,20 @@ export default {
     width: 100%;
     height: 48px;
     z-index: $z-index-header;
-    background-color: $color-primary;
     user-select: none;
     position: relative;
+    background-color: $color-white;
     @include media-tablet-up {
       height: 58px;
+      background-color: $color-primary;
     }
   }
   .c-portalHeader__main {
-    width: 100%;
     height: 100%;
-    padding: 0 30px;
   }
   .c-portalHeader__mainNav {
-    width: 100%;
     height: 100%;
-    @include flex($justify: center, $align: stretch);
+    @include flex($justify: flex-start, $align: stretch);
   }
   .c-portalHeader__mainLink {
     padding: 0 30px;
@@ -141,8 +174,15 @@ export default {
       pointer-events: none;
       opacity: 1;
     }
+    &:first-child { margin-left: -30px; }
+    &:last-child { margin-right: -30px; }
     @include media-down(900px) {
       padding: 0 15px;
+      &:first-child { margin-left: -15px; }
+      &:last-child { margin-right: -15px; }
+    }
+    &.c-portalHeader__mainLink--isSignout {
+      margin-left: auto;
     }
   }
   .c-portalHeader__mainText {
@@ -158,53 +198,70 @@ export default {
     .router-link-exact-active & {
       color: $color-secondary;
     }
+    .c-portalHeader__mainLink--isSignout & {
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+    }
   }
   .c-portalHeader__mobile {
     width: 100%;
     height: 100%;
-    // @include hover-active { cursor: pointer; }
   }
   .c-portalHeader__mobileTrigger {
     height: 100%;
     padding: 0 15px;
-    @include flex($align: center);
+    @include flex($justify: space-between, $align: center);
+    border-bottom: 1px solid #E5E5E5;
     @include hover-fade;
+  }
+  .c-portalHeader__mobileLabel {
+    color: $color-secondary;
+    font-family: $font-heading;
+    font-size: 16px;
+    font-weight: 700;
+    padding-bottom: 1px;
+    border-bottom: 2px solid $color-secondary;
   }
   .c-portalHeader__mobileSvg {
     width: 24px;
     display: flex !important;
-    margin-right: 20px;
-    color: $color-white;
+    margin-left: 20px;
+    color: $color-secondary;
     transition: transform .2s ease-in-out;
     transform-origin: 50% 50%;
+    transform: rotate(90deg);
     .c-portalHeader__mobile--isOpen & {
-      transform: rotate(180deg);
+      transform: rotate(270deg);
     }
-  }
-  .c-portalHeader__mobileLabel {
-    color: $color-white;
-    font-family: $font-heading;
-    font-size: 16px;
-    font-weight: 500;
   }
   .c-portalHeader__mobileNav {
     height: auto;
     position: relative;
     @include flex($direction: column);
-    background-color: lighten($color-secondary, 15%);
+    background-color: $color-white;
     transition: max-height .2s ease-in-out;
     overflow: hidden;
   }
   .c-portalHeader__mobileLink {
     width: 100%;
-    padding: 10px 20px;
-    color: $color-white;
+    padding: 15px 20px 15px 50px;
+    color: $color-primary;
     font-family: $font-heading;
     font-size: 16px;
-    font-weight: 400;
+    font-weight: 700;
     @include hover-fade;
-    &:last-child {
-      margin-bottom: 30px;
+    border-bottom: 1px solid #E5E5E5;
+    &.router-link-exact-active {
+      pointer-events: none;
+      color: $color-secondary;
+    }
+    &.c-portalHeader__mobileLink--isSignout {
+      font-size: 11px;
+      text-transform: uppercase;
+      font-weight: 800;
+      letter-spacing: 0.1em;
     }
   }
   .t-mobileNav-slide-enter,

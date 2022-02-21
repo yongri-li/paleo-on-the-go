@@ -13,20 +13,21 @@
           button_url: content.empty_button_url
         }"
       />
-      <div class="c-orders__content" 
+      <div class="c-orders__list" 
         v-if="orders"
       >
-        <c-h class="c-orders__heading"
+        <c-h class="c-orders__heading u-hideMobileDown"
           v-if="content.page_heading"
-          tag="h1"
-          level="1"
+          tag="h4"
+          level="4"
           :text="content.page_heading"
+          :modifiers="['isBolder']"
         />
         <c-h class="c-orders__subheading"
           v-if="content.last_heading"
-          tag="h5"
-          level="5"
-          :modifiers="['isLabel']"
+          tag="h6"
+          level="6"
+          :modifiers="['isSeven']"
           :text="content.last_heading"
         />
         <c-ordersAccordion class="c-orders__accordion"
@@ -52,9 +53,9 @@
         <span class="c-orders__scrollTo" ref="scrollTo" />
         <c-h class="c-orders__subheading"
           v-if="activeOrders.length > 0 && content.previous_heading"
-          tag="h5"
-          level="5"
-          :modifiers="['isLabel']"
+          tag="h6"
+          level="6"
+          :modifiers="['isSeven']"
           :text="content.previous_heading"
         />
         <c-ordersAccordion class="c-orders__accordion"
@@ -66,14 +67,15 @@
             transit: content.order_transit,
             track: content.order_track,
             delivered: content.order_delivered,
+            ships: content.order_ships,
             billing: content.order_billing,
             payment: content.order_payment,
             paid: content.order_paid,
-            subtotal: content.order_subtotal,
-            discount: content.order_discount,
-            shipping: content.order_shipping,
-            tax: content.order_tax,
-            total: content.order_total
+            subtotal: content.order_subtotal_label,
+            discount: content.order_discount_label,
+            shipping: content.order_shipping_label,
+            tax: content.order_tax_label,
+            total: content.order_total_label
           }"
         />
         <c-pagination class="c-orders__pagination"
@@ -160,14 +162,11 @@ export default {
   .c-orders {
     max-width: 1000px;
     margin: 0 auto;
-    padding: 30px 0 60px;
-    @include media-desktop-up {
-      padding-top: 40px;
-    }
+    padding: 40px 0 60px;
   }
   .c-orders__heading {
     color: $color-secondary;
-    margin-bottom: 40px;
+    margin-bottom: 30px;
   }
   .c-orders__accordion {
     margin-bottom: 60px;

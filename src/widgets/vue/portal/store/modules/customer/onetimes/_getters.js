@@ -1,4 +1,5 @@
 export default {
+  customerOnetimes: state => state.resources.onetimes,
   customerOnetimeById: state => id => {
     const { onetimes } = state.resources
     if(onetimes) {
@@ -14,9 +15,22 @@ export default {
   customerOnetimesByAddress: state => address => {
     const { onetimes } = state.resources
     if(onetimes && address) {
-      return onetimes.filter(subscription => {
-        return subscription.addressId === address.id
+      return onetimes.filter(onetime => {
+        return onetime.addressId === address.id
       })
     }
+  },
+  customerOnetimesByBundle: state => id => {
+    const { onetimes } = state.resources
+    const bundleChildren = onetimes.filter(onetime => {
+      return onetime.properties.find(property => {
+        return property.name === 'bundle_type' && property.value === 'child'
+      })
+    })
+    return bundleChildren.filter(bundleChild => {
+      return bundleChild.properties.find(property => {
+        return property.name === 'bundle_id' && property.value === id
+      })
+    })
   }
 }
