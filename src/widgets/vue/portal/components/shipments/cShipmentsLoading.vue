@@ -88,6 +88,10 @@ export default {
 </script>
 
 <style lang="scss">
+  .c-shipmentsLoading {
+    max-width: 1084px;
+    margin: 0 auto;
+  }
   .c-shipmentsLoading__blockBase {
     @include gradient-shimmer;
     border-radius: 3px;

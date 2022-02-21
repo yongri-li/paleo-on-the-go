@@ -1,46 +1,45 @@
 <template>
-  <div :class="_buildModifiers('c-sidebar', sidebar.modifiers)"
-    ref="c-sidebar"
-  >
-    <c-overlay class="c-sidebar__overlay"
-      :show="show"
-      @click="UI_CLOSE_SIDEBAR"
-    />
-    <c-drawer class="c-sidebar__drawer"
-      ref="c-sidebar__drawer"
+  <div :class="_buildModifiers('c-sidebar', sidebar.modifiers)">
+    <c-overlay class="c-sidebar__overlay" :show="show" @click.native="UI_CLOSE_SIDEBAR" />
+    <!-- test -->
+    <!-- v-if="nextUpcomingCharge" -->
+    <c-drawer
+      class="c-sidebar__drawer"
+      v-if="nextUpcomingCharge"
       :show="show"
       :side="sidebar.side"
       :closable="false"
-      :modifiers="[ 'isFullWidth', ...sidebar.modifiers ]"
+      :shipment="nextUpcomingCharge[0]"
+      :component="sidebar.component"
       @close="UI_CLOSE_SIDEBAR"
     >
       <div class="c-sidebar__container o-container">
-        <button class="c-sidebar__back"
+        <button
+          class="c-sidebar__back"
           v-if="!sidebar.settings.hideBack || backText"
-          @click="handleBack"
+          @click="UI_CLOSE_SIDEBAR"
         >
-          <c-svg class="c-sidebar__backIcon"
-            name="chevron"
-          />
-          <span class="c-sidebar__backText" 
-            v-html="backText"
-          />
+          <c-svg class="c-sidebar__backIcon" name="chevron" />
+          <span class="c-sidebar__backText" v-html="backText" />
         </button>
-        <c-h class="c-sidebar__heading"
-          v-if="heading"
-          tag="h3"
-          level="3"
+        <c-h
+          class="c-sidebar__heading"
+          v-if="heading && !isCancelSidebar"
+          tag="h1"
+          level="1"
           :text="heading"
-          :modifiers="['isBolder']"
         />
-        <component class="c-sidebar__content" 
+        <component
+          class="c-sidebar__content"
           :is="sidebarComponent"
           :content="sidebar.content"
           :settings="sidebar.settings"
-        />
+          :nextscheduledat="sidebar.nextscheduledat"
+        /><!-- :nextscheduledat="sidebar.nextcutoff" -->
       </div>
     </c-drawer>
-    <c-sidebarPayment class="c-pageDetails__payment" 
+    <c-sidebarPayment
+      class="c-pageDetails__payment"
       v-if="showPayment"
       :settings="sidebar.settings"
     />
@@ -48,7 +47,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapGetters } from 'vuex'
 import cOverlay from '@shared/components/core/cOverlay.vue'
 import cDrawer from '@shared/components/core/cDrawer.vue'
 import cSvg from '@shared/components/core/cSvg.vue'
@@ -59,58 +58,66 @@ export default {
   data: () => ({
     sidebarComponent: false
   }),
-  components: { 
-    cOverlay, cDrawer, cSvg, cH,
+  components: {
+    cOverlay,
+    cDrawer,
+    cSvg,
+    cH,
     cSidebarPayment
   },
   computed: {
+    ...mapGetters('customer', ['customerUpcomingCharges']),
     show() {
-      if(this.sidebar.component === 'cSidebarPayment') return false
+      if (this.sidebar.component === 'cSidebarPayment') return false
       else return this.sidebarComponent ? true : false
     },
     sidebar() {
       return this.$store.getters['ui/uiByKey']('sidebar')
     },
+    isCancelSidebar() {
+      const cancelSidebarNames = [
+        'cSideBarCancel',
+        'cSidebarCancelS1',
+        'cSidebarCancelS2',
+        'cSidebarCancelS3',
+        'cSidebarCancelS4',
+        'cSidebarActivate'
+      ]
+      const hasSome = cancelSidebarNames.some(element => {
+        return element === this.sidebar.component
+      })
+      return hasSome
+    },
     backText() {
       const { content } = this.sidebar
-      if(content) {
-        const backKey = Object.keys(content).find(key => key.endsWith('_back'))
-        return backKey ? content[backKey] : false
-      }
+      const backKey = Object.keys(content).find(key => key.endsWith('_back'))
+      return backKey ? content[backKey] : false
     },
     heading() {
       const { content } = this.sidebar
-      if(content) {
-        const headingKey = Object.keys(content).find(key => key.endsWith('_heading'))
-        return headingKey ? content[headingKey] : false
-      }
+      const headingKey = Object.keys(content).find(key => key.endsWith('_heading'))
+      return headingKey ? content[headingKey] : false
+    },
+    nextUpcomingCharge() {
+      return this.customerUpcomingCharges?.filter(
+        chrg => chrg.status !== ('REFUNDED' || 'CANCELLED')
+      )
     },
     showPayment() {
-      return this.$route.name === 'details'
+      return this.$route.name === 'profile'
     }
   },
   methods: {
-    ...mapMutations('ui', ['UI_CLOSE_SIDEBAR']),
-    handleBack() {
-      const { backAction } = this.sidebar.settings
-      return backAction ? backAction() : this.UI_CLOSE_SIDEBAR()
-    }
+    ...mapMutations('ui', ['UI_CLOSE_SIDEBAR'])
   },
   watch: {
-    "sidebar.component": {
+    'sidebar.component': {
       immediate: true,
       handler(val) {
-        this.sidebarComponent = val 
-          ? require(`../sidebars/${val}.vue`).default 
-          : false
-        if(val) {
-          const cSidebar = this.$refs['c-sidebar']
-          const drawer = cSidebar.querySelector('.c-sidebar__drawer')
-          if(drawer) drawer.scrollTo(0,0)
-        }
+        this.sidebarComponent = val ? require(`../sidebars/${val}.vue`).default : false
       }
     },
-    "$route": {
+    $route: {
       handler(val) {
         this.UI_CLOSE_SIDEBAR()
       }
@@ -120,49 +127,44 @@ export default {
 </script>
 
 <style lang="scss">
-  .c-sidebar {
-    position: relative;
-    z-index: $z-index-sidebar;
+.c-sidebar__drawer {
+  background-color: $color-spring-wood;
+  color: $color-off-black;
+}
+.c-sidebar__container {
+  padding: 35px 0;
+  width: calc(100% - 40px);
+  @include media-desktop-up {
+    padding: 50px 0;
+    width: calc(100% - 128px);
   }
-  .c-sidebar__overlay {
-    z-index: 1;
-  }
-  .c-sidebar__drawer {
-    width: 100vw;
-    z-index: 2;
-    background-color: $color-sidebar;
-  }
-  .c-sidebar__container {
-    padding: 40px 0 60px;
-  }
-  .c-sidebar__back {
-    @include flex;
-    @include button-unset;
-    margin-bottom: 15px;
-    color: $color-black;
-    @include hover-fade;
-  }
-  .c-sidebar__backIcon {
-    width: 16px;
-    position: relative;
-    top: 1px;
-    margin-right: 8px;
-    transform: rotate(90deg);
-    transform-origin: 50%;
-  }
-  .c-sidebar__backText {
-    font-family: $font-heading;
+}
+.c-sidebar__back {
+  @include flex;
+  @include button-unset;
+  margin-bottom: 38px;
+  color: $color-black;
+  @include hover-fade;
+}
+.c-sidebar__backIcon {
+  transform: rotate(90deg);
+  width: 12px;
+  margin-right: 8px;
+}
+.c-sidebar__backText {
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  @include media-desktop-up {
     font-size: 17px;
-    font-weight: 700;
-    text-transform: uppercase;
-    @include media-mobile-down {
-      font-size: 16px;
-    }
   }
-  .c-sidebar__heading {
-    margin-bottom: 30px;
-    @include media-mobile-down {
-      font-size: 25px;
-    }
+}
+.c-sidebar__heading {
+  color: $color-off-black;
+  font-size: 24px;
+  margin-bottom: 1rem;
+  @include media-desktop-up {
+    font-size: 28px;
   }
+}
 </style>

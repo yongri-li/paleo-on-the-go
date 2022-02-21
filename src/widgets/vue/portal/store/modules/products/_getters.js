@@ -10,5 +10,6 @@ export default {
       return state.catalog.find(product => product.id == id)
     }).filter(id => id)
   },
-  productsInventoryById: state => id => state.inventory[id]
+  productsInventoryById: state => id => state.inventory[id],
+  allProducts: state => state.children.flatMap(collection => collection.products),
 }

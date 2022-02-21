@@ -12,11 +12,11 @@ export default {
       return subscriptions.filter(subscription => ids.includes(subscription.id))
     }
   },
-  customerSubscriptionsByAddress: state => address => {
+  customerSubscriptionsByAddress: state => addressId => {
     const { subscriptions } = state.resources
-    if(subscriptions && address) {
+    if(subscriptions && addressId) {
       return subscriptions.filter(subscription => {
-        return subscription.addressId === address.id
+        return subscription.addressId === addressId
       })
     }
   },

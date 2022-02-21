@@ -1,21 +1,9 @@
 <template>
-  <button :class="_buildModifiers(baseClass, extendedModifiers)"
-    v-bind="attributes"
-    @click="$emit('click')"
-  >
+  <button :class="_buildModifiers(baseClass, extendedModifiers)" v-bind="attributes" @click="$emit('click')">
     <slot name="before" />
-    <span :class="`${baseClass}__text`"
-      v-if="buttonText"
-      v-html="buttonText"
-    />
-    <c-loading :class="`${baseClass}__loading`"
-      v-if="loading"
-      :modifiers="modifiers"
-    />
-    <c-svg :class="`${baseClass}__success`"
-      v-if="success"
-      name="success"
-    />
+    <span :class="`${baseClass}__text`" v-if="buttonText" v-html="buttonText" />
+    <c-loading :class="`${baseClass}__loading`" v-if="loading" :modifiers="modifiers" />
+    <c-svg :class="`${baseClass}__success`" v-if="success" name="success" />
     <slot />
   </button>
 </template>
@@ -32,7 +20,7 @@ export default {
     },
     url: {
       type: String,
-      required: false,
+      required: false
     },
     text: {
       type: [Object, String, Number],
@@ -52,7 +40,7 @@ export default {
     },
     modifiers: {
       type: Array,
-      default: () => ([])
+      default: () => []
     }
   },
   components: { cLoading, cSvg },
@@ -61,16 +49,16 @@ export default {
       return `c-${this.type}`
     },
     extendedModifiers() {
-      let modifiers = [ ...this.modifiers ]
-      if(this.loading) modifiers.push('isLoading')
-      if(this.success) modifiers.push('isSuccess')
+      let modifiers = [...this.modifiers]
+      if (this.loading) modifiers.push('isLoading')
+      if (this.success) modifiers.push('isSuccess')
       return modifiers
     },
     buttonText() {
       const { loading, success, text } = this
       const textDefault = text.default ? text.default : text
-      if(loading) return text.loading ? text.loading : textDefault
-      if(success) return text.success ? text.success : textDefault
+      if (loading) return text.loading ? text.loading : textDefault
+      if (success) return text.success ? text.success : textDefault
       return textDefault
     }
   }
@@ -78,21 +66,23 @@ export default {
 </script>
 
 <style lang="scss">
-  .c-button--isLoading {
-    pointer-events: none;
+.c-button--isLoading {
+  pointer-events: none;
+}
+.c-button__text {
+  .c-button--isLoading.c-button--hideTextLoading & {
+    opacity: 0;
   }
-  .c-button__text {
-    .c-button--isLoading.c-button--hideTextLoading & {
-      opacity: 0;
-    }
+}
+.c-button__loading {
+  .c-button--hideTextLoading & {
+    position: absolute;
   }
-  .c-button__loading {
-    .c-button--hideTextLoading & {
-      position: absolute;
-    }
-  }
-  .c-button__success {
-    width: 16px;
-    margin-left: 10px;
-  }
+}
+.c-button__success {
+  width: 16px;
+  margin-left: 10px;
+}
+
+/*//asd*/
 </style>

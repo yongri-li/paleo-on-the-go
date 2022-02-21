@@ -17,7 +17,7 @@
         success: content.button_success
       }"
       :attributes="{ disabled }"
-      :modifiers="['isUnderline', 'isSecondary']"
+      :modifiers="['isSecondary']"
     />
   </form>
 </template>
@@ -111,31 +111,51 @@ export default {
 
 <style lang="scss">
   .c-shipmentsDiscount {
-    height: 62px;
+    position: relative;
+    overflow: hidden;
+    height: 48px;
     width: 100%;
+    border: 1px solid $color-paleo;
+    border-radius: 64px;
+    font-size: 16px;
     padding: 10px 20px;
     @include flex ($justify: space-between, $wrap: nowrap);
+    .c-loading {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .c-loading__wheel {
+      width: 12px;
+      height: 12px;
+      border-width: 2px;
+      border-color: rgba($color-broccoli, .5);
+      border-top-color: $color-broccoli;
+    }
   }
   .c-shipmentsDiscount__input {
     height: 100%;
     flex-grow: 1;
     @include input-unset;
     color: $color-primary;
-    font-family: $font-heading;
-    font-size: 16px;
+    font-family: $font-body;
     font-weight: 600;
+    font-size: 16px;
     @include media-mobile-down {
       max-width: calc(100% - 80px);
     }
-    &::placeholder { 
-      color: rgab($color-primary, .75);
+    &::placeholder {
+      color: rgab($color-off-black, .5);
     }
   }
   .c-shipmentsDiscount__button {
     height: 100%;
-    margin-left: 10px;
-    padding: 0;
+    font-size: 16px;
+    line-height: 1;
     border-bottom: 0;
     text-transform: uppercase;
+    color: $color-broccoli;
+    background-color: #fbfaf4;
+    margin-left: 10px;
   }
 </style>

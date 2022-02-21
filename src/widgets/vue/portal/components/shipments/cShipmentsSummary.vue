@@ -9,8 +9,8 @@
           v-html="content.label_order"
         />
         <div class="c-shipmentsSummary__triggerValue"
-          v-if="shipment.charge.total"
-          v-html="`${currencySymbol}${_formatMoney({ amount: shipment.charge.total })}`"
+          v-if="shipment.total"
+          v-html="`${currencySymbol}${_formatMoney({ amount: shipment.total })}`"
         />
         <div class="c-shipmentsSummary__triggerCircle">
           <c-svg class="c-shipmentsSummary__triggerIcon"
@@ -69,16 +69,16 @@ export default {
     },
     summaryLines() {
       const { 
-        label_subtotal, label_discount, label_tax, label_shipping, label_total 
+        label_subtotal, label_discount, label_shipping, label_tax, label_total 
       } = this.content
       const {
-        subtotal, discount, tax, shipping, total
-      } = this.shipment.charge
+        subtotal, discount, shipping, tax, total, total_line_items_price
+      } = this.shipment
       let lines = [
-        { label: label_subtotal, value: subtotal },
+        { label: label_subtotal, value: total_line_items_price },
         { label: label_discount, value: discount },
+        { label: label_shipping, value: shipping },        
         { label: label_tax, value: tax },
-        { label: label_shipping, value: shipping },
         { label: label_total, value: total }
       ]
       return lines.map((line, index) => {
@@ -96,9 +96,9 @@ export default {
     width: 100%;
   }
   .c-shipmentsSummary__trigger {
-    height: 62px;
+    height: 48px;
     width: 100%;
-    padding: 0 20px;
+    padding: 0 17px;
     @include flex ($justify: space-between, $wrap: nowrap);
     @include media-mobile-down {
       padding-right: 10px;
@@ -107,30 +107,32 @@ export default {
   .c-shipmentsSummary__triggerLabel,
   .c-shipmentsSummary__triggerValue {
     color: $color-primary;
-    font-size: 20px;
-    font-family: $font-heading;
-    font-weight: 700;
+    font-size: 18px;
+    font-weight: 600;
     padding-right: 10px;
-    @include media-mobile-down {
-      font-size: 18px;
-    }
+  }
+  .c-shipmentsSummary__triggerValue {
+    color: $color-broccoli;
   }
   .c-shipmentsSummary__triggerLabel {
     flex-grow: 1;
   }
-  .c-shipmentsSummary__triggerValue {
-    font-weight: 900;
-  }
   .c-shipmentsSummary__triggerCircle {
-    min-width: 40px;
-    width: 40px;
-    height: 40px;
-    border: 2px solid #E5E5E5;
+    min-width: 29px;
+    width: 29px;
+    height: 29px;
+    border: 2px solid $color-base-black;
     border-radius: 50%;
     @include flex($justify: center);
     margin-left: 10px;
     @include media-mobile-down {
       margin-left: 0;
+    }
+    .c-accordionItem__trigger--isOpen & {
+      border-color: $color-broccoli;
+      svg path {
+        fill: $color-broccoli;
+      }
     }
   }
   .c-shipmentsSummary__triggerIcon {
@@ -144,22 +146,27 @@ export default {
     }
   }
   .c-shipmentsSummary__content {
+    color: $color-grey;
     width: 100%;
-    padding: 0 20px 20px;
+    padding: 0 17px 17px;
   }
   .c-shipmentsSumary__contentLine {
-    padding-right: 60px;
+    padding-right: 33px;
     @include flex($justify: space-between);
-    color: $color-primary;
-    font-family: $font-heading;
+    color: $color-grey;
     font-size: 16px;
-    font-weight: 500;
-    margin-bottom: 5px;
+    font-weight: 600;
+    margin-bottom: 7px;
+    @include media-desktop-up {
+      padding-right: 50px;
+    }
     &.c-shipmentsSumary__contentLine--isTotal {
-      font-size: 20px;
-      font-weight: 800;
+      color: $color-broccoli;
+      font-weight: 600;
       margin-bottom: 0;
-      margin-top: 10px;
+      margin-top: 15px;
+      padding-top: 15px;
+      border-top: 1px solid #DBD9D4;
       @include media-mobile-down {
         font-size: 18px;
       }

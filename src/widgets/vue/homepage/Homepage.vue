@@ -27,7 +27,7 @@
 				<p class="c-p2">Secondary pargraphs</p>
 			</section>
 
-			<!-- 			<div class="color__div" v-for="color in colors">
+			<!-- <div class="color__div" v-for="color in colors">
 				<div :class="color">{{ color }}</div>
 			</div>
  -->

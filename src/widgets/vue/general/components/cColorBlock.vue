@@ -14,7 +14,7 @@ export default {
 </script>
 
 <style lang="scss">
-/*/// asd*/
+/*/// asd  */
 .color__div {
 	&--black {
 		background-color: $color-black;

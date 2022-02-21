@@ -3,32 +3,31 @@
     v-if="item"
   >
     <c-img class="c-sidebarCancelItem__image"
-      :src="image.src"
+      :src="image"
+      :alt="imageOld.alt"
     />
     <div class="c-sidebarCancelItem__details">
-      <c-h class="c-sidebarCancelItem__date u-block"
+      <c-p class="c-sidebarCancelItem__date u-block"
         v-if="item.scheduledAt"
         tag="time"
-        level="6"
-        :modifiers="['isEyebrow']"
+        level="3"
         :text="_formatDate(item.scheduledAt, 'MMM DD')"
       />
       <c-h class="c-sidebarCancelItem__title"
         v-if="item.productTitle"
-        tag="h6"
-        level="6"
+        tag="h4"
+        level="4"
         :text="item.productTitle"
-        :modifiers="['isBolder']"
       />
       <c-p class="c-sidebarCancelItem__variant u-block"
         v-if="_stringEmpty(item.variantTitle)"
         tag="span"
-        level="2"
+        level="3"
         :text="item.variantTitle"
       />
-      <c-p class="c-sidebarCancelItem__price u-block"
+      <c-p class="c-sidebarActivateItem__price u-block"
         tag="span"
-        level="2"
+        level="4"
         :text="quantityPrice"
       />
     </div>
@@ -60,12 +59,15 @@ export default {
     product() {
       return this.$store.getters['products/productById'](this.item.productId)
     },
-    image() {
+    imageOld() {
       const { item, product, customizeShop } = this
       return {
-        src: product ? product.images[0] : false,
+        src: product ? product.image : false,
         alt: `${customizeShop.shop_name} ${item.productTitle}`
       }
+    },
+    image() {
+      return this.product ? this.product.images[0] : false
     },
     quantityPrice() {
       const { item, customizeShop, _formatMoney } = this
@@ -79,11 +81,13 @@ export default {
 
 <style lang="scss">
   .c-sidebarCancelItem {
-    @include flex($wrap: nowrap);
+    @include flex($align: flex-start, $wrap: nowrap);
     padding: 30px 0 40px;
   }
   .c-sidebarCancelItem__image {
-    max-width: 70px;
+    width: 100%;
+    max-width: 80px;
+/*    background-color: $color-secondary;*/
     color: lighten($color-black, 10%);
     border-radius: 3px;
   }
@@ -99,16 +103,9 @@ export default {
   .c-sidebarCancelItem__quantity,
   .c-sidebarCancelItem__price {
     margin-bottom: 0;
-    line-height: 1.25;
+    line-height: 1.5;
   }
-  .c-sidebarCancelItem__date { font-weight: 800; }
-  .c-sidebarCancelItem__title { font-size: 18px; }
-  .c-sidebarCancelItem__variant {
-    font-weight: 600;
-  }
-  .c-sidebarCancelItem__price { 
-    font-size: 20px;
-    font-weight: 600;
-    margin-top: 5px; 
+  .c-sidebarCancelItem__date {
+    text-transform: uppercase;
   }
 </style>

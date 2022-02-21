@@ -5,7 +5,6 @@
     <c-h class="c-modalDiscount__heading c-modal__heading"
       tag="h2"
       level="2"
-      v-if="content.discount_heading"
       :text="content.discount_heading"
       :modifiers="['isBolder']"
     />
@@ -16,10 +15,9 @@
       :text="text"
       :modifiers="['isBolder']"
     />
-    <c-button class="c-modalDiscount__confirm"
+    <c-button class="c-modalDiscount__cta c-cta"
       v-if="content.discount_button_confirm"
       :text="content.discount_button_confirm"
-      :modifiers="[ 'isDefault', 'isSecondary', 'hideTextLoading' ]"
       @click="handleSupport"
     />
     <c-button class="c-modalDiscount__cancel"
@@ -91,8 +89,15 @@ export default {
   .c-modalDiscount__confirm {
     margin-top: 20px;
   }
+  .c-modalDiscount__text {
+    margin-bottom: 32px;
+  }
+  .c-modalDiscount__cta {
+    width: 100%;
+    max-width: 340px;
+  }
   .c-modalDiscount__cancel {
-    margin-top: 40px;
+    margin-top: 22px;
     padding: 0 0 1px;
     border-bottom: 2px solid $color-primary;
     color: $color-primary;

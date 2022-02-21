@@ -1,45 +1,45 @@
 <template>
-  <div :class="_buildModifiers('c-ordersItem', modifiers)" v-if="item && content">
-    <c-img class="c-ordersItem__image" :src="image" />
-    <div class="c-ordersItem__details">
-      <c-h
-        class="c-ordersItem__title"
-        v-if="item.productTitle"
-        tag="h6"
-        level="6"
-        :text="item.productTitle"
-        :modifiers="['isBolder']"
-      />
-      <c-p
-        class="c-ordersItem__interval"
-        v-if="interval"
-        tag="p"
-        level="3"
-        :text="interval"
-        :modifiers="['isBolder']"
-      />
-      <c-p
-        class="c-ordersItem__variant"
-        v-if="item.variantTitle"
-        tag="p"
-        level="3"
-        :text="item.variantTitle.replace(/\//g, '•')"
-        :modifiers="['isBolder']"
-      />
-      <c-p
-        class="c-ordersItem__price"
-        v-if="quantityPrice"
-        tag="p"
-        level="3"
-        :text="quantityPrice"
-        :modifiers="['isBolder']"
-      />
+  <div :class="[`c-lineItem c-lineItem--order c-lineItem--${ productTypeHandle }`, {
+    'c-lineItem--addOn': isAddOn
+  }]">
+    <div>
+      <div class="c-lineItem__image-wrapper">
+        <img :src="image" class="c-lineItem__image" />
+      </div>
+    </div>
+    <div class="c-lineItem__details">
+      <div>
+        <div class="c-lineItem__details-grid">
+          <div class="c-lineItem__details-inner">
+            <span class="c-lineItem__collection u-smallCaps">
+
+              {{ defaultActivate ? item.type : product.type }}              
+           <!--    {{ item.type }}  -->
+            </span>
+            <h4 class="c-lineItem__title c-h4">
+              {{ productTitle }}
+            </h4>
+            <div v-if="variantTitle !== 'Regular' && typeof variantTitle !== 'undefined'" class="u-colorGrey">
+              {{ upsellText }}
+            </div>
+            <div v-if="isAddOn" class="u-colorGrey">
+              {{ price }}
+            </div>
+          </div>
+          <div class="c-lineItem__controls">
+            <div class="c-lineItem__qty">
+              <span class="c-lineItem__number">{{ item.quantity }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex'
+import { handleize, formatPrice } from '@shared/utils'
 import cImg from '@shared/components/core/cImg.vue'
 import cH from '@shared/components/core/cH.vue'
 import cP from '@shared/components/core/cP.vue'
@@ -50,20 +50,34 @@ export default {
       type: Object,
       required: true
     },
+    isAddOn: {
+      type: Boolean
+    },
+    defaultActivate: {
+      type: Boolean
+    },        
+    discount: {
+      type: Number
+    },    
     content: {
-      type: Object,
-      required: true
+      type: Object
     },
     modifiers: {
       type: Array,
-      default: () => []
+      default: () => ([])
     }
   },
   components: { cImg, cH, cP },
   computed: {
     ...mapGetters('customize', ['customizeShop']),
     product() {
-      return this.$store.getters['products/productById'](this.item.productId)
+      return this.defaultActivate ? this.$store.getters['products/productById'](this.item.id) : this.$store.getters['products/productById'](this.item.productId) || this.$store.getters['products/productById'](this.item.shopify_product_id)
+    },
+    variant2(){
+      return this.product.variants[1];
+    },    
+    productTypeHandle() {
+      return this.defaultActivate ? handleize(this.item.type) : handleize(this.product.type);
     },
     image() {
       return this.product ? this.product.images[0] : false
@@ -71,16 +85,31 @@ export default {
     alt() {
       return `${this.customizeShop.shop_name} ${this.item.productTitle}`
     },
+    productTitle() {
+      return this.product.title.split('with')[0];
+    },
+    variantTitle() {
+      return this.defaultActivate && this.item.upsellId ? this.item.variants[1].public_title : this.item.variantTitle;
+    },
+    upsellText(){
+      return `${this.variantTitle} (+$${this.getPriceDiff(this.variant2.subscriptionPrice)})`;
+    },       
+    // defaultPrice() {
+    //   return this.variantTitle !== 'Regular' ? this.product.variants[1].price : this.product.defaultPrice;
+    // },  
+    // defaultPrice() {
+    //   return this.product.defaultPrice - this.discount;
+    // },            
     interval() {
       const { item, customizeShop, content } = this
       const { frequency, unit } = item
       const activeInterval = customizeShop.intervals.find(interval => {
-        if (!frequency || !unit) return interval.frequency == 0
+        if(!frequency || !unit) return interval.frequency == 0
         else return interval.frequency == frequency
       })
-      if (activeInterval) {
+      if(activeInterval) {
         let text = activeInterval.text
-        if (frequency && unit && content.ships) text = `${content.ships} ${text}`
+        if(frequency && unit && content.ships) text = `${content.ships} ${text}`
         return text
       }
     },
@@ -89,34 +118,20 @@ export default {
       const price = this._formatMoney({ amount: this.item.price })
       return `${currencySymbol}${price}`
     },
-    quantityPrice() {
-      return `${this.item.quantity} x ${this.price}`
+  },
+  methods: {
+    getPriceDiff(price) {
+      return (price - this.product.defaultSubscriptionPrice).toFixed(2);
     }
-  }
+  }  
 }
 </script>
 
 <style lang="scss">
-.c-ordersItem {
-  @include flex($align: flex-start, $wrap: nowrap);
-  /* @include box-card */
-  padding: 20px;
-}
-.c-img.c-ordersItem__image {
-  width: 86px;
-  color: lighten($color-black, 10%);
-}
-.c-ordersItem__details {
-  margin-left: 30px;
-}
-.c-ordersItem__title,
-.c-ordersItem__interval,
-.c-ordersItem__variant,
-.c-ordersItem__price {
-  font-family: $font-body;
-  margin-bottom: 0;
-}
-.c-ordersItem__title {
-  font-size: 16px;
-}
+  .c-lineItem--order {
+    border: 1px solid $color-paleo;
+    .c-lineItem__details-grid {
+      grid-template-columns: auto 45px;
+    }
+  }
 </style>

@@ -11,12 +11,24 @@ const routes = [
   },
   { 
     path: "/details", name: 'details',
-    component: require('./components/pages/cDetails.vue').default
+    component: require('./components/pages/cManage.vue').default
   },
   { 
     path: "/orders", name: 'orders',
     component: require('./components/pages/cOrders.vue').default
-  }
+  },
+  { 
+    path: "/dietary-preferences", name: 'preferences',
+    component: require('./components/pages/cDietaryPreferences.vue').default
+  },
+  { 
+    path: "/profile", name: 'profile',
+    component: require('./components/pages/cProfile.vue').default
+  },
+  { 
+    path: "/manage", name: 'manage',
+    component: require('./components/pages/cManage.vue').default
+  },
 ]
 
 const router = new VueRouter({
