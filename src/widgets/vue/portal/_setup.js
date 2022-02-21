@@ -2,11 +2,11 @@ import { setIntervalAsync } from 'set-interval-async/dynamic'
 import Cookies from 'universal-cookie'
 const cookies = new Cookies()
 
-export default async (app) => {
+export default async app => {
   const { dispatch, commit } = app.$store
   const { portal, shop, bundle } = window.Scoutside
   const { products } = portal
-  
+
   // SET BASE DATA
   await Promise.all([
     commit('customize/CUSTOMIZE_SET_STATE', { shop, content: portal }),
@@ -17,7 +17,7 @@ export default async (app) => {
   ])
 
   // SET INVENTORY LOOP
-  setIntervalAsync(async() => {
+  setIntervalAsync(async () => {
     await dispatch('products/productsSyncInventory')
   }, 300000)
 }

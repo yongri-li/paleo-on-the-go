@@ -1,6 +1,5 @@
 import { apiService } from '@shared/services'
 
-////asdasdas asdasd
 export default {
   async customerUpdateAddress({ commit }, payload) {
     try {

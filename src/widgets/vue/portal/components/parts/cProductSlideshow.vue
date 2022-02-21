@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div :class="_buildModifiers('c-productSlideshow', modifiers)"
     v-if="product"
   >
@@ -116,4 +116,4 @@ export default {
       }
     }
   }
-</style>
+</style> -->

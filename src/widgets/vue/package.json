@@ -14,6 +14,7 @@
     "postcss-import": "^12.0.1",
     "rebuild": "^0.1.2",
     "sass": "^1.17.1",
+    "set-interval-async": "^2.0.3",
     "tiny-slider": "^2.9.2",
     "universal-cookie": "^4.0.3",
     "vue": "^2.6.8",
