@@ -31,7 +31,7 @@ export default {
   data: () => ({ show: false }),
   computed: {
     state() {
-      //  Testing Onlyyy
+      //  Testing Onlyyyy
       return this.$store.state
     }
   },
