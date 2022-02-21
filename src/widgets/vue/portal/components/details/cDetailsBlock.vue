@@ -33,7 +33,7 @@ export default {
 </script>
 
 <style lang="scss">
-/* asdsad asdsa */
+/* asdsasdsad asdsa */
 .c-detailsBlock {
   height: 100%;
   width: 100%;
