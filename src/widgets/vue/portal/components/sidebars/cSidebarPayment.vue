@@ -1,37 +1,22 @@
 <template>
-  <div :class="_buildModifiers('c-sidebarPayment', modifiers)" 
-    v-if="customerRecharge"
-  >
-    <c-overlay class="c-sidebar__overlay"
-      :show="show"
-      @click="UI_CLOSE_SIDEBAR"
-    />
-    <div :class="_buildModifiers('c-sidebar__drawer', drawerModifiers)" 
-      @close="UI_CLOSE_SIDEBAR"
-    >
+  <div :class="_buildModifiers('c-sidebarPayment', modifiers)" v-if="customerRecharge">
+    <!-- asdasd asdsad  -->
+    <c-overlay class="c-sidebar__overlay" :show="show" @click="UI_CLOSE_SIDEBAR" />
+    <div :class="_buildModifiers('c-sidebar__drawer', drawerModifiers)" @close="UI_CLOSE_SIDEBAR">
       <div class="c-sidebar__container o-container">
-        <button class="c-sidebar__back"
-          v-if="backText"
-          @click="UI_CLOSE_SIDEBAR"
-        >
-          <c-svg class="c-sidebar__backIcon"
-            name="chevron"
-          />
-          <span class="c-sidebar__backText" 
-            v-html="backText"
-          />
+        <button class="c-sidebar__back" v-if="backText" @click="UI_CLOSE_SIDEBAR">
+          <c-svg class="c-sidebar__backIcon" name="chevron" />
+          <span class="c-sidebar__backText" v-html="backText" />
         </button>
-        <c-h class="c-sidebar__heading"
+        <c-h
+          class="c-sidebar__heading"
           v-if="heading"
           tag="h3"
           level="3"
           :text="heading"
           :modifiers="['isBolder']"
         />
-        <iframe class="c-sidebar__iframe"
-          :src="src" 
-          frameborder="0"
-        />
+        <iframe class="c-sidebar__iframe" :src="src" frameborder="0" />
       </div>
     </div>
   </div>
@@ -47,14 +32,14 @@ export default {
   props: {
     modifiers: {
       type: Array,
-      default: () => ([])
+      default: () => []
     }
   },
   components: { cOverlay, cSvg, cH },
   computed: {
     ...mapGetters('customer', ['customerRecharge']),
     show() {
-      return (this.sidebar.component === 'cSidebarPayment')
+      return this.sidebar.component === 'cSidebarPayment'
     },
     content() {
       return this.$store.getters['customize/customizeSidebarByPrefix']('payment_')
@@ -72,13 +57,13 @@ export default {
     },
     src() {
       const { customerRecharge } = this
-      if(customerRecharge) {
+      if (customerRecharge) {
         return `https://shopifysubscriptions.com/customer_portal_forms/${customerRecharge.hash}/customer_card/`
       }
     },
     drawerModifiers() {
-      let modifiers = [ ...this.modifiers ]
-      if(this.show) modifiers.push('isOpen')
+      let modifiers = [...this.modifiers]
+      if (this.show) modifiers.push('isOpen')
       return modifiers
     }
   },
@@ -89,33 +74,33 @@ export default {
 </script>
 
 <style lang="scss">
-  .c-sidebarPayment {
-    position: relative;
+.c-sidebarPayment {
+  position: relative;
+  z-index: $z-index-sidebar;
+  .c-sidebar__drawer {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    overflow-y: scroll;
+    transform: translateX(100%);
+    transition: transform 0.3s ease-in-out, opacity ease-in-out 0.3s;
     z-index: $z-index-sidebar;
-    .c-sidebar__drawer {
-      position: fixed;
-      top: 0;
-      left: 0;
-      height: 100vh;
-      overflow-y: scroll;
-      transform: translateX(100%);
-      transition: transform .3s ease-in-out, opacity ease-in-out .3s;;
-      z-index: $z-index-sidebar;
-      opacity: 0;
-      &.c-sidebar__drawer--isOpen {
-        transition: transform .3s ease-in-out;
-        transform: translateX(0);
-        opacity: 1;
-      }
-    }
-    .c-sidebar__iframe {
-      width: 100%;
-      height: 750px;
-      padding-bottom: 30px;
-      overflow: hidden;
-      @include media-tablet-up {
-        height: 500px;
-      }
+    opacity: 0;
+    &.c-sidebar__drawer--isOpen {
+      transition: transform 0.3s ease-in-out;
+      transform: translateX(0);
+      opacity: 1;
     }
   }
+  .c-sidebar__iframe {
+    width: 100%;
+    height: 750px;
+    padding-bottom: 30px;
+    overflow: hidden;
+    @include media-tablet-up {
+      height: 500px;
+    }
+  }
+}
 </style>
