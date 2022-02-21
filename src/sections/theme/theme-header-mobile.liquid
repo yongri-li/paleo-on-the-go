@@ -1,4 +1,4 @@
-{{ 'theme-header-mobile.css' | asset_url | stylesheet_tag }}
+{{ 'theme-header-main.css' | asset_url | stylesheet_tag }}
 
 {% assign logo_text = "{{ logo_text }}" %}
 {% assign promo_text = "{{ promo_text }}" %}
@@ -11,12 +11,15 @@
 {% if section.settings.login_text != blank %}{% assign login_text = section.settings.login_text %}{% endif %}
 {% if section.settings.account_text != blank %}{% assign account_text = section.settings.account_text %}{% endif %}
 {% if section.settings.bundle_text != blank %}{% assign bundle_text = section.settings.bundle_text %}{% endif %}
+{% if section.settings.bundle_heading != blank %}{% assign bundle_heading = section.settings.bundle_heading %}{% endif %}
+{% if section.settings.bundle_copy != blank %}{% assign bundle_copy = section.settings.bundle_copy %}{% endif %}
 
 <div class="c-headerMobile" data-header-main>
     <div class="c-headerMobile__main o-containerLarge">
-      <div class="c-headerMobile__icon">
-          <span class="icon open" onclick="openNavv()">{% render 'icon-mobile-open' %}</span>
-          <span class="icon close" onclick="closeNav()">{% render 'icon-mobile-close' %}</span>
+      <div id="nav-burger-icon" class="c-headerMobile__icon">
+        <span></span>
+        <span></span>
+        <span></span>      
       </div>
       <a href="/" class="c-headerMobile__logo">
           <h1 class="c-headerMobile__logoBox">
@@ -60,41 +63,53 @@
       
       <div class="c-headerMobile__secondary">
       {% if customer %}
+        {% comment %}
           <a href="/account" class="c-headerMobile__account">
           <span class="c-headerMobile__accountText">{{ account_text }}</span>
           </a>
+        {% endcomment %}          
       {% else %}
+        {% comment %}
           <a href="/account/login" class="c-headerMobile__account">
           <span class="c-headerMobile__accountText">{{ login_text }}</span>
           </a>
+        {% endcomment %}     
       {% endif %}
-          <div class="c-headerMobile__bundle" data-bundle-trigger>
-              <span class="c-headerMobile__bundleText">{{ bundle_text }}</span>
+          <h2 class="c-h1">{{ bundle_heading }}</h2>
+          <p>{{ bundle_copy }}</p>
+          <div class="c-button c-button--isDefault c-button--isPrimary" data-bundle-trigger>
+              <span>{{ bundle_text }}</span>
           </div>
       </div>
     </div>
 </div>
 
+
 <script>
 
-// let scrollP;
-var scrollP;
+const navIcon = document.getElementById('nav-burger-icon')
+let scrollP
 
-function openNavv() {
+navIcon.addEventListener('click', function(e) {
+  this.classList.toggle('open')
+  this.classList.contains('open') ? openNav() : closeNav() 
+})
+
+function openNav() {
   scrollP = window.pageYOffset;
-  var mobileNav = document.getElementById("mobile-nav");
-  var body = document.querySelector('body');
-  document.querySelector('.c-headerMobile__icon').classList.add('open');
-  mobileNav.style.left = "0";
+  const mobileNav = document.getElementById('mobile-nav')
+  const body = document.querySelector('body');
+  document.querySelector('.c-headerMobile').classList.add('open')
+  mobileNav.style.left = '0';
   setTimeout(function(){
-    body.style.position = "fixed";
-  }, 500);
+    body.style.position = 'fixed';
+  }, 400);
 }
 
 function closeNav() {
-  document.getElementById("mobile-nav").style.left = "-100%";
-  document.querySelector('.c-headerMobile__icon').classList.remove('open');
-  document.querySelector('body').style.position = "initial";
+  document.getElementById('mobile-nav').style.left = '-100%';
+  document.querySelector('.c-headerMobile').classList.remove('open')
+  document.querySelector('body').style.position = 'initial';
   window.scrollTo(0, scrollP);  
 }
 
@@ -183,9 +198,19 @@ function closeNav() {
         "content": "Bundle"
       },
       {
+        "id": "bundle_heading",
+        "type": "text",
+        "label": "Bundle Heading"
+      },      
+      {
+        "id": "bundle_copy",
+        "type": "textarea",
+        "label": "Bundle Copy"
+      },       
+      {
         "id": "bundle_text",
         "type": "text",
-        "label": "Bundle Text"
+        "label": "Bundle Button"
       }
     ]
   }

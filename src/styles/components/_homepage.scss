@@ -1,7 +1,11 @@
 // TOP HERO SECTION ***
-// .o-homepage {
-//   text-align: center;
-// }
+.o-homepage {
+  @include media-tablet-down {
+    .marquee {
+      bottom: -2.5rem;
+    }
+  }
+}
 
 .c-homeHero__ctaWrap {
   flex: 1;
@@ -76,17 +80,13 @@ marquee span {
   /*height: 100vh;*/
   height: calc(100vh - 106px);
   min-height: 500px;
-
   background-color: #efede6;
 
   @include media-tablet-down {
     flex-direction: column-reverse;
     margin-bottom: 4rem;
     height: auto;
-
-    .marquee {
-      bottom: -2rem;
-    }
+    background-color: $color-white;
 
     .c-homeHero__imgWrap {
       min-height: 260px;
@@ -99,6 +99,14 @@ marquee span {
   position: relative;
   text-align: center;
   margin-top: 5rem;
+
+  @include media-mobile-down {
+    margin-top: 0;
+
+    .c-h1 {
+      padding: 0 2rem;
+    }
+  }
 
   &__floatingBadge {
     position: absolute;
@@ -136,7 +144,7 @@ marquee span {
     margin: 0 auto;
 
     @include media-tablet-down {
-      padding: 0.5rem;
+      padding: 1.5rem 0.5rem;
       width: 100vw;
 
       .c-plansGrid__plan {
@@ -189,11 +197,19 @@ marquee span {
         margin: 1rem 0 0.75rem;
       }
 
-      span {
+      &--savings {
         padding: 0.25rem 1rem;
         background-color: $color-ltgreen;
         border-radius: 1rem;
         font-weight: 600;
+      }
+
+      &--flag {
+        position: absolute;
+        background: $color-black;
+        color: $color-secondary;
+        font-size: 1rem;
+        padding: 0.33rem 2.125rem;
       }
 
       .c-button {
@@ -207,6 +223,23 @@ marquee span {
 
 .c-homeMenu {
   margin: clamp(3rem, 8vw, 7rem) 0;
+
+  .c-h1 {
+    position: relative;
+  }
+
+  &__viewFull {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    font-family: 'Sumo', serif;
+    font-size: 1.5rem;
+  }
+
+  .htmlChevron {
+    font-family: system-ui;
+    font-size: 1.75rem;
+  }
 }
 
 .c-homeMenu__flex {
@@ -225,6 +258,10 @@ marquee span {
     width: 100%;
   }
 
+  &--imgWrap {
+    position: relative;
+  }
+
   &--item {
     flex: 1;
   }
@@ -233,6 +270,10 @@ marquee span {
     display: flex;
     grid-gap: 3rem;
     flex: 2;
+
+    @include media-mobile-down {
+      grid-gap: 1rem;
+    }
 
     > div {
       flex: 1;
@@ -252,6 +293,40 @@ marquee span {
       margin-bottom: 1.5rem;
     }
   }
+
+  .hover-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: calc(100% - 5px);
+    background: rgba(0, 0, 0, 0.35);
+    opacity: 0;
+    transition: opacity 200ms;
+  }
+
+  .hover-background:hover {
+    opacity: 1;
+  }
+
+  .hover-background button {
+    position: absolute;
+    bottom: 2.5rem;
+    left: 50%;
+    transform: translateX(-50%);
+  }
+
+  div[data-group='1'],
+  div[data-group='2'] {
+    display: none;
+  }
+
+  .highlight-icon {
+    position: absolute;
+    top: -62px;
+    right: -31px;
+    max-width: 124px;
+  }
 }
 
 // FAQs SECTION ***
@@ -265,6 +340,12 @@ marquee span {
     @include media-desktop-up {
       width: 90%;
       margin-left: auto;
+    }
+
+    @include media-tablet-down {
+      span {
+        margin-left: 1rem;
+      }
     }
 
     button {
@@ -364,19 +445,6 @@ marquee span {
     text-align: center;
     left: 0;
     bottom: 3rem;
-
-    button {
-      height: 12px;
-      width: 12px;
-      border: none;
-      border-radius: 100%;
-      background: $color-black;
-      margin: 0 0.75rem;
-
-      &.tns-nav-active {
-        background-color: $color-primary;
-      }
-    }
   }
 
   .tns-inner {
@@ -403,6 +471,21 @@ marquee span {
   }
 }
 
+.tns-nav {
+  button {
+    height: 12px;
+    width: 12px;
+    border: none;
+    border-radius: 100%;
+    background: $color-black;
+    margin: 0 0.75rem;
+
+    &.tns-nav-active {
+      background-color: $color-primary;
+    }
+  }
+}
+
 // EXTRA UTIL STYLES ***
 .c-button {
   display: block;
@@ -411,11 +494,51 @@ marquee span {
 
 .u-highlightText--secondary {
   color: $color-secondary;
+
+  @include media-mobile-down {
+    display: block;
+    width: 100%;
+    line-height: 0.8;
+  }
 }
 
 // MEDIA QUERY AREAS ***
-@include media-tablet-down {
+@include media-mobile-down {
+  .c-tilesSection__slider {
+    padding-bottom: 2rem !important;
+
+    .tns-nav {
+      bottom: 1rem !important;
+    }
+  }
+
   .c-homeSplit {
     width: 100vw;
+    flex-direction: column;
+
+    .c-homeSplit__right div {
+      position: relative;
+      max-width: 100%;
+      padding: 1rem;
+
+      img {
+        position: absolute;
+        top: -7rem;
+        max-width: 7rem;
+      }
+    }
+  }
+
+  .c-homeTestimonial__slider {
+    padding-top: 1rem;
+  }
+
+  .c-homeTestimonial__slider--bgIcon {
+    top: 1rem;
+
+    svg {
+      max-width: 75vw;
+      margin-left: -35vw;
+    }
   }
 }

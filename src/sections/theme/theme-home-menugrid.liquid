@@ -1,14 +1,19 @@
 <main class="c-homeMenu">  
   <article class="o-containerMedium">
 
-    <h2 class="c-h1"><span class="u-highlightText--secondary">Current</span> Menu</h2>
+    <h2 class="c-h1">
+      <span class="u-highlightText--secondary">Current</span> Menu
+      <span class="c-homeMenu__viewFull u-hideMobileDown">
+        <a href="">View Full Menu <span class="htmlChevron">&rsaquo;&rsaquo;</span></a>
+      </span>
+    </h2>
 
     <div class="c-homeMenu__flex">
       <section class="c-homeMenu__flex--item">
         {%- for block in section.blocks -%}
           <section class="c-homeFaqs__item">
-            <button>
-              {{block.settings.menu_title}}
+            <button data-index="{{ forloop.index0 }}">
+              <h2 class="c-h2">{{block.settings.menu_title}}</h2>
               <span class="icon-opened">{% render 'icon-menu-open' %}</span>
               <span class="icon-closed">{% render 'icon-menu-closed' %}</span>
             </button>
@@ -21,92 +26,152 @@
        
        <section class="c-homeMenu__flex--item isGrid">
          <!-- img section 1 -->
-         <div>
-           <img src="{{section.settings.item_img_one | img_url: 'master' }}" alt="">
+         <div data-group="0">
+           <div class="c-homeMenu__flex--imgWrap">
+            <!-- style="background-image: url('{{section.settings.item_img_one | img_url: 'master' }}')" -->
+              <img src="{{section.settings.highlight_icon | img_url: 'master' }}" alt="" class="highlight-icon u-hideMobileDown">
+              <img src="{{section.settings.item_img_one | img_url: 'master' }}" alt="">
+              <span class="hover-background">
+                <button class="c-button c-button--isDefault c-button--isPrimary">Learn More</button>
+              </span>
+           </div>
            <h4 class="c-h4 isSmaller">{{section.settings.item_title_one}}</h4>           
            <p>{{section.settings.item_copy_one}}</p>
          </div>
           
-         <div>
+         <div data-group="0">
            <!-- img section 2 -->
-           <div>
-             <img src="{{section.settings.item_img_two | img_url: 'master' }}" alt="">
+           <div data-group="0">
+             <div class="c-homeMenu__flex--imgWrap">
+                <img src="{{section.settings.item_img_two | img_url: 'master' }}" alt="">
+                <span class="hover-background">
+                  <button class="c-button c-button--isDefault c-button--isPrimary">Learn More</button>
+                </span>
+             </div>
+
              <h4 class="c-h4 isSmaller">{{section.settings.item_title_two}}</h4>
              <p>{{section.settings.item_copy_two}}</p>
            </div>
             <!-- img section 3 -->
            <div>
-             <img src="{{section.settings.item_img_three | img_url: 'master' }}" alt="">
+             <div class="c-homeMenu__flex--imgWrap">
+                <img src="{{section.settings.item_img_three | img_url: 'master' }}" alt="">
+                <span class="hover-background">
+                  <button class="c-button c-button--isDefault c-button--isPrimary">Learn More</button>
+                </span>
+             </div>
              <h4 class="c-h4 isSmaller">{{section.settings.item_title_three}}</h4>
              <p>{{section.settings.item_copy_three}}</p>
            </div>            
          </div>
 
+
+         <!-- img section 1 -->
+         <div data-group="1">
+           <div class="c-homeMenu__flex--imgWrap">
+              <img src="{{section.settings.item_img_four | img_url: 'master' }}" alt="">
+              <span class="hover-background">
+                <button class="c-button c-button--isDefault c-button--isPrimary">Learn More</button>
+              </span>
+           </div>
+           <h4 class="c-h4 isSmaller">{{section.settings.item_title_four}}</h4>           
+           <p>{{section.settings.item_copy_four}}</p>
+         </div>
+          
+         <div data-group="1">
+           <!-- img section 2 -->
+           <div>
+             <div class="c-homeMenu__flex--imgWrap">
+                <img src="{{section.settings.item_img_five | img_url: 'master' }}" alt="">
+                <span class="hover-background">
+                  <button class="c-button c-button--isDefault c-button--isPrimary">Learn More</button>
+                </span>
+             </div>
+
+             <h4 class="c-h4 isSmaller">{{section.settings.item_title_five}}</h4>
+             <p>{{section.settings.item_copy_five}}</p>
+           </div>
+            <!-- img section 3 -->
+           <div>
+             <div class="c-homeMenu__flex--imgWrap">
+                <img src="{{section.settings.item_img_six | img_url: 'master' }}" alt="">
+                <span class="hover-background">
+                  <button class="c-button c-button--isDefault c-button--isPrimary">Learn More</button>
+                </span>
+             </div>
+             <h4 class="c-h4 isSmaller">{{section.settings.item_title_six}}</h4>
+             <p>{{section.settings.item_copy_six}}</p>
+           </div>            
+         </div> 
+
+
+         <!-- img section 1 -->
+         <div data-group="2">
+           <div class="c-homeMenu__flex--imgWrap">
+              <img src="{{section.settings.item_img_seven | img_url: 'master' }}" alt="">
+              <span class="hover-background">
+                <button class="c-button c-button--isDefault c-button--isPrimary">Learn More</button>
+              </span>
+           </div>
+           <h4 class="c-h4 isSmaller">{{section.settings.item_title_seven}}</h4>           
+           <p>{{section.settings.item_copy_seven}}</p>
+         </div>
+          
+         <div data-group="2">
+           <!-- img section 2 -->
+           <div>
+             <div class="c-homeMenu__flex--imgWrap">
+                <img src="{{section.settings.item_img_eight | img_url: 'master' }}" alt="">
+                <span class="hover-background">
+                  <button class="c-button c-button--isDefault c-button--isPrimary">Learn More</button>
+                </span>
+             </div>
+
+             <h4 class="c-h4 isSmaller">{{section.settings.item_title_eight}}</h4>
+             <p>{{section.settings.item_copy_eight}}</p>
+           </div>
+            <!-- img section 3 -->
+           <div>
+             <div class="c-homeMenu__flex--imgWrap">
+                <img src="{{section.settings.item_img_nine | img_url: 'master' }}" alt="">
+                <span class="hover-background">
+                  <button class="c-button c-button--isDefault c-button--isPrimary">Learn More</button>
+                </span>
+             </div>
+             <h4 class="c-h4 isSmaller">{{section.settings.item_title_nine}}</h4>
+             <p>{{section.settings.item_copy_nine}}</p>
+           </div>            
+         </div>                  
+
        </section> 
     </div>
 
   </article>
+
+  <span class="c-homeMenu__viewFull u-hideTabletUp" style="position: relative; left: 0.5rem;">
+    <a href="">View Full Menu <span class="htmlChevron">&rsaquo;&rsaquo;</span></a>
+  </span>
 </main>
 
+
 <style>
-  .c-homeMenu__flex {
-    display: flex;
-    grid-gap: 3rem;
-  }
-
-  .c-homeMenu .c-homeFaqs__item {
+/*  .c-homeMenu__flex--imgWrap {
+    height: 100%;
     width: 100%;
-  }
-
-  .c-homeMenu__flex--item {
-    flex: 1;
-  }
-
-  .c-homeMenu__flex--item.isGrid {
-    display: flex;
-    grid-gap: 3rem;
-    flex: 2;
-  }
-
-  .c-homeMenu__flex--item.isGrid > div {
-    flex: 1;
-    margin-bottom: 1.5rem;
-  }
-
-  .c-homeMenu__flex--item.isGrid > div:first-child {
-   /* flex: 1.25;*/
-  }
-
-  .c-homeMenu__flex--item.isGrid > div p {
-    color: $color-grey;
-    font-size: 1rem;
-  }
-
-  .c-homeMenu__flex--item.isGrid > div h4 {
-    margin: 0.5rem 0 0;
-  }
+    min-height: 1px;
+    background-size: cover;
+    padding-bottom: 64%;
+  }*/
 </style>
-
-<script>
-  const menuWrapper = document.querySelectorAll('.c-homeMenu__item button');
-
-  menuWrapper.forEach((item) => {
-    item.addEventListener('click', function(e) {
-      this.classList.toggle('active')
-      const panel = this.nextElementSibling
-
-      panel.style.maxHeight
-      ? panel.style.maxHeight = null
-      : panel.style.maxHeight = panel.scrollHeight + 'px'
-    })
-  });
-</script>
-
 
 {% schema %}
   {
-    "name": "Menu Gridz",
+    "name": "Menu Grid",
     "settings": [  
+      {
+        "type": "header",
+        "content": "Group 1"
+      },
       {
         "id": "item_img_one",
         "type": "image_picker",
@@ -153,7 +218,118 @@
         "id": "item_copy_three",
         "type": "text",
         "label": "Menu Body"
-      }                 
+      },
+
+      {
+        "type": "header",
+        "content": "Group 2"
+      },
+      {
+        "id": "item_img_four",
+        "type": "image_picker",
+        "label": "Item Image (Tall)"
+      },       
+      {
+        "id": "item_title_four",
+        "type": "text",
+        "label": "Menu Title"
+      },
+      {
+        "id": "item_copy_four",
+        "type": "text",
+        "label": "Menu Body"
+      }, 
+
+      {
+        "id": "item_img_five",
+        "type": "image_picker",
+        "label": "Item Image"
+      },       
+      {
+        "id": "item_title_five",
+        "type": "text",
+        "label": "Menu Title"
+      },
+      {
+        "id": "item_copy_five",
+        "type": "text",
+        "label": "Menu Body"
+      },
+
+      {
+        "id": "item_img_six",
+        "type": "image_picker",
+        "label": "Item Image"
+      },       
+      {
+        "id": "item_title_six",
+        "type": "text",
+        "label": "Menu Title"
+      },
+      {
+        "id": "item_copy_six",
+        "type": "text",
+        "label": "Menu Body"
+      },
+
+      {
+        "type": "header",
+        "content": "Group 3"
+      },
+      {
+        "id": "item_img_seven",
+        "type": "image_picker",
+        "label": "Item Image (Tall)"
+      },       
+      {
+        "id": "item_title_seven",
+        "type": "text",
+        "label": "Menu Title"
+      },
+      {
+        "id": "item_copy_seven",
+        "type": "text",
+        "label": "Menu Body"
+      }, 
+
+      {
+        "id": "item_img_eight",
+        "type": "image_picker",
+        "label": "Item Image"
+      },       
+      {
+        "id": "item_title_eight",
+        "type": "text",
+        "label": "Menu Title"
+      },
+      {
+        "id": "item_copy_eight",
+        "type": "text",
+        "label": "Menu Body"
+      },
+
+      {
+        "id": "item_img_nine",
+        "type": "image_picker",
+        "label": "Item Image"
+      },       
+      {
+        "id": "item_title_nine",
+        "type": "text",
+        "label": "Menu Title"
+      },
+      {
+        "id": "item_copy_nine",
+        "type": "text",
+        "label": "Menu Body"
+      },
+
+      {
+        "id": "highlight_icon",
+        "type": "image_picker",
+        "label": "Highlight Icon"
+      }
+
     ],
     "blocks": [
       {

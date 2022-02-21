@@ -13,6 +13,11 @@
         <p>{{section.settings.copy}}</p>
       </div>
 
+      <a href="#" target="_blank" data-get-started
+        class="c-button c-button--isDefault c-button--isPrimary c-button--lrg u-hideTabletUp u-marginCenter u-marginTop-Md">
+        Get Started
+      </a>
+
       <div class="u-spacer--xl"></div>
 
       <div class="u-relative">
@@ -24,12 +29,17 @@
           {% for block in section.blocks %}
 
             <section class="c-plansGrid__plan">
+              {% if block.settings.show_flag %}
+                <span class="c-plansGrid__plan--flag">{{block.settings.flag_text}}</span>
+              {% endif %}
               <img src="{{ block.settings.image | img_url: 'master' }}" alt="">
               <h2 class="c-h2">10 Items</h2>
               <div>
-                <span>10% Savings</span>
+                <span class="c-plansGrid__plan--savings">10% Savings</span>
               </div>
-              <button class="c-button c-button--isDefault c-button--isPrimary">{{block.settings.button}}</button>
+              <button class="c-button c-button--isDefault c-button--isPrimary" data-get-started>
+                {{block.settings.button}}
+              </button>
             </section>
 
           {% endfor %}
@@ -37,7 +47,7 @@
       </div>
 
       <h4 class="c-h4 isSmaller">{{section.settings.lower_callout}}</h4>
-      <a href="{{section.settings.onetimes_url}}">Buy One Time</a>
+      <a href="{{section.settings.onetimes_url}}" class="u-textUnderline">Buy One Time</a>
     </div>
   </article>
 {% endunless %}
@@ -87,7 +97,21 @@
             "id": "button",
             "type": "text",
             "label": "Button Text"
-          }        
+          },
+          {
+            "type": "header",
+            "content": "Custom Product Flag"
+          },          
+          {
+            "id": "show_flag",
+            "type": "checkbox",
+            "label": "Show Flag"
+          },
+          {
+            "id": "flag_text",
+            "type": "text",
+            "label": "Flag Text"
+          }          
         ]
       }
     ],    

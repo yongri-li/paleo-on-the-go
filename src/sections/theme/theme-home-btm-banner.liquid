@@ -1,0 +1,37 @@
+<article>
+  <section>
+    <h2 class="c-h2">{{section.settings.tagline}}</h2>
+    <div>
+      Klayvio Embed here
+      <input type="text">
+      <button class="c-button c-button--isDefault c-button--isPrimary">
+        Submit
+      </button>
+    </div>
+  </section>
+</article>
+
+
+{% schema %}
+  {
+    "name": "Bottom Banner",
+    "settings": [
+      {
+        "id": "tagline",
+        "type": "text",
+        "label": "Tagline",
+      },
+      {
+        "id": "klayvio_link",
+        "type": "text",
+        "label": "Klayvio Link"
+      }                                      
+    ],    
+    "presets": [
+      {
+        "name": "Bottom Banner",
+        "category": "Homepage"
+      }
+    ]
+  }
+{% endschema %}

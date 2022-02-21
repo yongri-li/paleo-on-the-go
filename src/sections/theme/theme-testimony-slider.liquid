@@ -1,7 +1,10 @@
 <article class="c-homeTestimonial__slider u-relative">
-  <span class="c-homeTestimonial__slider--bgIcon">
+  <span class="c-homeTestimonial__slider--bgIcon u-hideMobileDown">
     {% render 'testimonial-slider__bg' %}
   </span>
+  <span class="c-homeTestimonial__slider--bgIcon u-hideTabletUp">
+    {% render 'testimonial__slider-lrg' %}
+  </span>  
   <div data-testimony-slider>    
     {% for block in section.blocks %}
       <section>

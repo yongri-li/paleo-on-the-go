@@ -17,22 +17,6 @@
 </main>
 
 
-<script>
-  const faqsWrapper = document.querySelectorAll('.c-homeFaqs__item button');
-
-  faqsWrapper.forEach((item) => {
-    item.addEventListener('click', function(e) {
-      this.classList.toggle('active')
-      const panel = this.nextElementSibling
-
-      panel.style.maxHeight
-      ? panel.style.maxHeight = null
-      : panel.style.maxHeight = panel.scrollHeight + 'px'
-    })
-  });
-</script>
-
-
 {% schema %}
   {
     "name": "FAQ Section",

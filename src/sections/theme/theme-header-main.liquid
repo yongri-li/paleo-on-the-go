@@ -56,8 +56,8 @@
           {% endif %}
         </a>
       {% else %}
-      <button class="c-button c-button--isHollow c-button--isBlack">
-        <a href="/account/login">
+   <!--    <button class="c-button c-button--isHollow c-button--isBlack"> -->
+        <a href="/account/login" class="c-button c-button--isHollow c-button--isBlack">
           {% if section.settings.login_image %}
             <img class="c-headerMain__accountImage"
               src="{{ section.settings.login_image | img_url }}"
@@ -67,7 +67,7 @@
             <span class="c-headerMain__accountText">{{ login_text }}</span>
           {% endif %}
         </a>
-      </button>
+<!--       </button> -->
       {% endif %}
       <button class="c-headerMain__start c-button c-button--isDefault c-button--isPrimary" data-start-trigger>
         <span class="c-headerMain__startText">{{ start_text }}</span>

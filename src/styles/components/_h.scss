@@ -10,7 +10,7 @@
   }
 
   @include media-mobile-down {
-    font-size: 42px;
+    font-size: clamp(2.5rem, 11vw, 3rem);
   }
 }
 
