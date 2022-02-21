@@ -179,7 +179,7 @@
 import { mapGetters, mapMutations, mapActions } from 'vuex'
 
 // import cTabs from '@shared/components/core/cTabs.vue'
-// import cTabsItem from '@shared/components/core/cTabsItem.vue'
+//  import cTabsItem from '@shared/components/core/cTabsItem.vue'
 import cImg from '@shared/components/core/cImg.vue'
 import cH from '@shared/components/core/cH.vue'
 import cP from '@shared/components/core/cP.vue'
