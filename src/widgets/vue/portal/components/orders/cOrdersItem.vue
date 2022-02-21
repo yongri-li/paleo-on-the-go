@@ -1,33 +1,33 @@
 <template>
-  <div :class="_buildModifiers('c-ordersItem', modifiers)"
-    v-if="item && content"
-  >
-    <c-img class="c-ordersItem__image"
-      :src="image"
-    />
+  <div :class="_buildModifiers('c-ordersItem', modifiers)" v-if="item && content">
+    <c-img class="c-ordersItem__image" :src="image" />
     <div class="c-ordersItem__details">
-      <c-h class="c-ordersItem__title"
+      <c-h
+        class="c-ordersItem__title"
         v-if="item.productTitle"
         tag="h6"
         level="6"
         :text="item.productTitle"
         :modifiers="['isBolder']"
       />
-      <c-p class="c-ordersItem__interval"
+      <c-p
+        class="c-ordersItem__interval"
         v-if="interval"
         tag="p"
         level="3"
         :text="interval"
         :modifiers="['isBolder']"
       />
-      <c-p class="c-ordersItem__variant"
+      <c-p
+        class="c-ordersItem__variant"
         v-if="item.variantTitle"
         tag="p"
         level="3"
         :text="item.variantTitle.replace(/\//g, '•')"
         :modifiers="['isBolder']"
       />
-      <c-p class="c-ordersItem__price"
+      <c-p
+        class="c-ordersItem__price"
         v-if="quantityPrice"
         tag="p"
         level="3"
@@ -56,7 +56,7 @@ export default {
     },
     modifiers: {
       type: Array,
-      default: () => ([])
+      default: () => []
     }
   },
   components: { cImg, cH, cP },
@@ -75,12 +75,12 @@ export default {
       const { item, customizeShop, content } = this
       const { frequency, unit } = item
       const activeInterval = customizeShop.intervals.find(interval => {
-        if(!frequency || !unit) return interval.frequency == 0
+        if (!frequency || !unit) return interval.frequency == 0
         else return interval.frequency == frequency
       })
-      if(activeInterval) {
+      if (activeInterval) {
         let text = activeInterval.text
-        if(frequency && unit && content.ships) text = `${content.ships} ${text}`
+        if (frequency && unit && content.ships) text = `${content.ships} ${text}`
         return text
       }
     },
@@ -97,27 +97,26 @@ export default {
 </script>
 
 <style lang="scss">
-  .c-ordersItem {
-    @include flex($align: flex-start, $wrap: nowrap);
-    @include box-card;
-    padding: 20px;
-  }
-  .c-img.c-ordersItem__image {
-    width: 86px;
-    color: lighten($color-black, 10%);
-  }
-  .c-ordersItem__details {
-    margin-left: 30px;
-  }
-  .c-ordersItem__title,
-  .c-ordersItem__interval,
-  .c-ordersItem__variant,
-  .c-ordersItem__price {
-    font-family: $font-body;
-    margin-bottom: 0;
-  }
-  .c-ordersItem__title {
-    font-size: 16px;
-  }
-
+.c-ordersItem {
+  @include flex($align: flex-start, $wrap: nowrap);
+  /* @include box-card */
+  padding: 20px;
+}
+.c-img.c-ordersItem__image {
+  width: 86px;
+  color: lighten($color-black, 10%);
+}
+.c-ordersItem__details {
+  margin-left: 30px;
+}
+.c-ordersItem__title,
+.c-ordersItem__interval,
+.c-ordersItem__variant,
+.c-ordersItem__price {
+  font-family: $font-body;
+  margin-bottom: 0;
+}
+.c-ordersItem__title {
+  font-size: 16px;
+}
 </style>

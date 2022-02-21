@@ -213,7 +213,7 @@ export default {
     display: flex !important;
   }
   .c-shipmentsUpsell__slide {
-    @include box-card;
+    /* @include box-card */;
     border: none;
   }
   .c-shipmentsUpsell__slideImage {

@@ -119,7 +119,7 @@ export default {
 .c-dialog__closeIcon {
   width: inherit;
   height: inherit;
-  /* color: $color-red;*/
+  /* color: $color-red; */
 }
 .t-dialog-default-enter,
 .t-dialog-default-leave-to {
