@@ -1,24 +1,24 @@
 <template>
-  <div :class="_buildModifiers('c-modal', modal.modifiers)"
-    ref="c-modal"
-  >
-    <c-overlay class="c-modal__overlay" 
+  <div :class="_buildModifiers('c-modal', modal.modifiers)" ref="c-modal">
+    <c-overlay
+      class="c-modal__overlay"
       :show="show"
       @click="modal.settings.closable !== false ? UI_CLOSE_MODAL : ''"
       slot="overlay"
     />
-    <c-dialog class="c-modal__dialog"
+    <c-dialog
+      class="c-modal__dialog"
       :show="show"
       :modifiers="modal.modifiers"
       :closable="modal.settings.closable !== false"
       @close="UI_CLOSE_MODAL"
       @click="UI_CLOSE_MODAL"
     >
-      <component class="c-modal__content" 
+      <component
+        class="c-modal__content"
         :is="modalComponent"
         :content="modal.content"
         :settings="modal.settings"
-        @changeConfirmed="confClck"
       />
     </c-dialog>
   </div>
@@ -33,8 +33,9 @@ export default {
   data: () => ({
     modalComponent: false
   }),
-  components: { 
-    cOverlay, cDialog
+  components: {
+    cOverlay,
+    cDialog
   },
   computed: {
     show() {
@@ -45,21 +46,16 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('ui', ['UI_CLOSE_MODAL']),
-    confClck(value) {
-      // alert('asdasd', value)
-    }
+    ...mapMutations('ui', ['UI_CLOSE_MODAL'])
   },
   watch: {
-    "modal.component": {
+    'modal.component': {
       immediate: true,
       handler(val) {
-        this.modalComponent = val 
-          ? require(`../modals/${val}.vue`).default 
-          : false
+        this.modalComponent = val ? require(`../modals/${val}.vue`).default : false
       }
     },
-    "$route": {
+    $route: {
       handler(val) {
         this.UI_CLOSE_MODAL()
       }
@@ -69,21 +65,22 @@ export default {
 </script>
 
 <style lang="scss">
-  .c-modal {
-    z-index: $z-index-modal;
-    position: relative;
+.c-modal {
+  z-index: $z-index-modal;
+  position: relative;
+}
+.c-modal__overlay {
+  z-index: 1;
+}
+.c-modal__content {
+  border-radius: 5px;
+  overflow: hidden;
+  z-index: 2;
+}
+/*    ///  hiiios   */
+.c-modal__heading {
+  @include media-mobile-down {
+    font-size: 34px;
   }
-  .c-modal__overlay {
-    z-index: 1;
-  }
-  .c-modal__content {
-    border-radius: 5px;
-    overflow: hidden;
-    z-index: 2;
-  }
-  .c-modal__heading {
-    @include media-mobile-down {
-      font-size: 34px;
-    }
-  }
+}
 </style>
