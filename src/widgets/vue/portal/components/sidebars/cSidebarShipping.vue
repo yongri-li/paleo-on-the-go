@@ -3,7 +3,8 @@
     v-if="content && address"
   >
       <c-formShipping class="c-sidebarShipping__form"
-        :address="address"        
+        :address="address"
+        :hideAlert="true"
         :content="{
           first_label: content.shipping_first_label,
           last_label: content.shipping_last_label,
@@ -17,7 +18,6 @@
           button_success: content.shipping_button_success
         }"
       />
-      <!-- :hideAlert="true" -->
   </div>
 </template>
 
