@@ -1,11 +1,10 @@
 <template>
   <div :class="_buildModifiers('c-detailsBlock', modifiers)">
-    <c-h
-      class="c-detailsBlock__heading"
+    <c-h class="c-detailsBlock__heading"
       v-if="heading"
-      tag="h6"
-      level="6"
-      :modifiers="['isEyebrow']"
+      tag="h5"
+      level="5"
+      :modifiers="['isLabel']"
       :text="heading"
     />
     <div class="c-detailsBlock__inner">
@@ -25,7 +24,7 @@ export default {
     },
     modifiers: {
       type: Array,
-      default: () => []
+      default: () => ([])
     }
   },
   components: { cH }
@@ -33,17 +32,20 @@ export default {
 </script>
 
 <style lang="scss">
-.c-detailsBlock {
-  height: 100%;
-  width: 100%;
-  @include flex($direction: column, $justify: stretch, $align: stretch, $wrap: nowrap);
-}
-.c-detailsBlock__heading {
-  margin-bottom: 15px;
-}
-.c-detailsBlock__inner {
-  min-height: 100px;
-  @include flex($justify: space-between, $wrap: nowrap);
-  /*  @include box-card */
-}
+  .c-detailsBlock {
+    height: 100%;
+    width: 100%;
+    @include flex($direction: column, $justify: stretch, $align: stretch, $wrap: nowrap);
+  }
+  .c-detailsBlock__inner {
+    min-height: 100px;
+    padding: 15px 20px;
+    @include flex($justify: space-between, $wrap: nowrap);
+    background-color: $color-white;
+    @include border-card;
+    @include shadow-card($opacity: .05);
+    @include media-tablet-up {
+      padding: 20px 30px;
+    }
+  }
 </style>

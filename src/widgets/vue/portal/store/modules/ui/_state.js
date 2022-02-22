@@ -1,7 +1,3 @@
-const {
-  dietaryPreferences,
-} = window.Scoutside.portal;
-
 export default () => ({
   settings: {
     preventScroll: false
@@ -18,13 +14,5 @@ export default () => ({
     content: false,
     settings: {},
     modifiers: []
-  },
-  dietaryPreferences,
-  defaultMenuOpen: false,
-  skipsProcessing: false,
-  delvDateProcessing: false,
-  noSkipsReturnedFromApp: false,
-  noDFMenuReturnedFromApp: false,
-  pastCutoffEST: false,
-  timeEST: null
+  }
 })

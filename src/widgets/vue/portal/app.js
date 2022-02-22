@@ -5,6 +5,13 @@ import router from './_router'
 import store from './store'
 import Portal from "./components/Portal.vue"
 
+/* Register Filters */
+// filters.forEach(filter => {
+//   const key = Object.keys(filter)[0];
+//   const fn = filter[key]
+//   Vue.filter(key, fn)
+// });
+
 /* Register Mixins */
 Vue.mixin(mixins);
 

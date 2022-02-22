@@ -1,12 +1,12 @@
 <template>
   <div :class="_buildModifiers('c-sidebarActivate', modifiers)"
-    v-if="content && address"
+    v-if="content && settings.address"
   >
-    <c-h class="c-sidebarActivate__address"
+    <c-p class="c-sidebarActivate__address"
       tag="address"
-      level="5"
+      level="1"
       v-html="_buildAddress({
-        address: address,
+        address: settings.address,
         options: {
           hiddenFields: ['name', 'country'],
           provinceName: 'short',
@@ -23,35 +23,35 @@
         :content="{ ships: content.activate_ships }"
         @update="handleUpdate"
       />
-    </div>
-    <div class="c-sidebarActivate__total"
-      v-if="content.activate_total && total"
-    >
-      <span class="c-sidebarActivate__totalLabel"
-        v-html="content.activate_total"
+      <div class="c-sidebarActivate__total"
+        v-if="content.activate_total && total"
+      >
+        <span class="c-sidebarActivate__totalLabel"
+          v-html="content.activate_total"
+        />
+        <span class="c-sidebarActivate__totalValue"
+          v-html="total"
+        />
+      </div>
+      <c-button class="c-sidebarActivate__button"
+        v-if="content.activate_button"
+        @click="handleActivate"
+        :loading="loading"
+        :text="content.activate_button"
+        :modifiers="['isDefault', 'isSecondary', 'hideTextLoading']"
+        :attributes="{ disabled: !activateModel.length > 0 || loading }"
       />
-      <span class="c-sidebarActivate__totalValue"
-        v-html="total"
-      />
-    </div>
-    <c-button class="c-sidebarActivate__button"
-      v-if="content.activate_button"
-      @click="handleActivate"
-      :loading="loading.activate"
-      :text="content.activate_button"
-      :modifiers="['isDefault', 'isSecondary', 'hideTextLoading']"
-      :attributes="{ disabled: !activateModel.length > 0 || loading.activate }"
-    />
-    <div class="c-sidebarActivate__disclaimers"
-      v-if="content.activate_disclaimer"
-    >
-      <c-p class="c-sidebarActivate__disclaimer"
-        v-for="(disclaimer, index) in _buildTextArray(content.activate_disclaimer)"
-        :key="`disclaimer-${index}`"
-        tag="p"
-        level="3"
-        :text="disclaimer"
-      />
+      <div class="c-sidebarActivate__disclaimers"
+        v-if="content.activate_disclaimer"
+      >
+        <c-p class="c-sidebarActivate__disclaimer"
+          v-for="(disclaimer, index) in _buildTextArray(content.activate_disclaimer)"
+          :key="`disclaimer-${index}`"
+          tag="p"
+          level="3"
+          :text="disclaimer"
+        />
+      </div>
     </div>
   </div>
 </template>
@@ -59,7 +59,6 @@
 <script>
 import { mapMutations, mapActions } from 'vuex'
 import { _sortItemsByCharge, _buildUpdates } from '@vue/portal/utils'
-import cH from '@shared/components/core/cH.vue'
 import cP from '@shared/components/core/cP.vue'
 import cButton from '@shared/components/core/cButton.vue'
 import cSidebarActivateItem from './cSidebarActivateItem.vue'
@@ -80,32 +79,24 @@ export default {
     }
   },
   components: { 
-    cH, cP, cButton,
+    cP, cButton,
     cSidebarActivateItem
   },
   data: () => ({ 
     activateModel: [],
-    loading: { activate: false }
+    loading: false
   }),
   computed: {
-    address() {
-      return this.$store.getters['customer/customerAddressById'](this.settings.addressId)
-    },
     subscriptions() {
-      return this.$store.getters['customer/customerSubscriptionsByAddress'](this.address)
+      return this.$store.getters['customer/customerSubscriptionsByAddress'](this.settings.address)
+    },
+    subscriptionIds() {
+      return this.subscriptions.map(subscription => subscription.id)
     },
     items() {
-      const filteredSubscriptions =  this.subscriptions.filter(subscription => {
-        return !subscription.properties.find(property => {
-          return property.name === 'bundle_type' && property.value === 'child'
-        })
-      })
-      return _sortItemsByCharge({ 
-        items: filteredSubscriptions, order: 'ascending' 
-      })
-    },
-    activateItems() {
-      return this.$store.getters['customer/customerSubscriptionsByIds'](this.activateModel)
+      return _sortItemsByCharge(
+        { items: this.subscriptions, order: 'ascending' }
+      )
     },
     currencySymbol() {
       return this.$store.getters['customize/customizeShopByKey']('currency_symbol')
@@ -128,40 +119,35 @@ export default {
     ...mapMutations('ui', ['UI_CLOSE_SIDEBAR']),
     ...mapActions('customer', ['customerUpdateAddressItems']),
     handleUpdate(val) {
-      const { ids, action } = val
-      this.activateModel = this.activateModel.filter(item => ids.includes(item.id))
-      if(action === 'add') this.activateModel = [ ...this.activateModel, ...ids]
+      const { id, action } = val
+      this.activateModel = this.activateModel.filter(item => item.id == id)
+      if(action === 'add') this.activateModel = [ ...this.activateModel, id]
     },
     async handleActivate() {
-      this.loading.activate = true
-      const { subscriptions, onetimes, error, success } = await this.customerUpdateAddressItems({ 
-        addressId: this.settings.addressId,
+      this.loading = true
+      await this.customerUpdateAddressItems({ 
+        addressId: this.settings.address.id,
          updatesSubscriptions: _buildUpdates({
-          items: this.activateItems, actions: ['activate']
+          items: this.subscriptions, action: 'activate', values: { reason: this.cancelModel }
         })
       })
-      this.loading.activate = false
+      this.loading = false
       this.UI_CLOSE_SIDEBAR()
     }
   },
   mounted() {
-    this.activateModel = this.subscriptions.map(subscription => subscription.id)
+    this.activateModel = this.subscriptionIds
   }
 }
 </script>
 
 <style lang="scss">
   .c-sidebarActivate__address {
-    margin-top: -14px;
-    font-size: 22px;
+    margin-top: -10px;
+    font-weight: 700;
   }
   .c-sidebarActivate__items {
-    margin: 30px 0 0;
-    width: 100%;
-    max-width: 680px;
-  }
-  .c-sidebarActivate__item {
-    &:not(:last-child) { margin-bottom: 40px; }
+    margin-bottom: 40px;
   }
   .c-sidebarActivate__total {
     width: 100%;
@@ -169,14 +155,13 @@ export default {
     margin-top: 30px;
     @include flex($justify: space-between);
   }
-  .c-sidebarActivate__totalLabel,
-  .c-sidebarActivate__totalValue {
-    font-family: $font-heading;
+  .c-sidebarActivate__totalLabel {
+    @include text-heading;
     font-size: 20px;
-    font-weight: 800;
   }
   .c-sidebarActivate__totalValue {
-    font-weight: 600;
+    @include text-body;
+    font-size: 20px;
   }
   .c-sidebarActivate__button {
     width: 100%;
@@ -186,9 +171,5 @@ export default {
   .c-sidebarActivate__disclaimers {
     max-width: 420px;
     margin-top: 40px;
-  }
-  .c-sidebarActivate__disclaimer {
-    font-weight: 600;
-    line-height: 1.25;
   }
 </style>
