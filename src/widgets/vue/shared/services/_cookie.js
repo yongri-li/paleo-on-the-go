@@ -4,6 +4,9 @@ import dayjs from 'dayjs'
 const Cookies = new universalCookie()
 
 export default {
+  getAll: () => {
+    return Cookies.getAll()
+  },
   getItem: ({ key }) => {
     return Cookies.get(key)
   },
@@ -14,7 +17,7 @@ export default {
     Cookies.remove(key)
   },
   getServerItem: ({ req, key }) => {
-    if(req) {
+    if (req) {
       const ServerCookies = new universalCookie(req.headers.cookie)
       return ServerCookies.get(key)
     }

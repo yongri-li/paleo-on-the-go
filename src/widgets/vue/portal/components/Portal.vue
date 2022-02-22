@@ -1,27 +1,18 @@
 <template>
   <div :class="_buildModifiers('c-portal', modifiers)">
-    <c-portalHeader class="c-portal__header"
-      v-if="customerReady"
-      data-portal-header
-    />
+    asdad asda sds ad asd as d
+    <c-portalHeader class="c-portal__header" v-if="customerReady" data-portal-header />
     <div class="c-portal__page o-container">
-      <c-loading class='c-portal__loading'
+      <c-loading
+        class="c-portal__loading"
         v-if="!customerReady"
         :modifiers="['isSecondary', 'isHollow', 'isLargest']"
       />
-      <transition name="t-content-fade" 
-          v-if="customerReady"
-          mode="out-in"
-        > 
-          <router-view class="c-portal__content"
-            :key="$route.name" 
-          />
+      <transition name="t-content-fade" v-if="customerReady" mode="out-in">
+        <router-view class="c-portal__content" :key="$route.name" />
       </transition>
     </div>
-    <c-sidebar class="c-portal__sidebar" 
-      v-if="customerReady"
-      data-portal-header
-    />
+    <c-sidebar class="c-portal__sidebar" v-if="customerReady" data-portal-header />
   </div>
 </template>
 
@@ -36,7 +27,7 @@ export default {
   props: {
     modifiers: {
       type: Array,
-      default: () => ([])
+      default: () => []
     }
   },
   components: { cPortalHeader, cSidebar, cLoading },
@@ -50,14 +41,23 @@ export default {
       return this.$store.getters['ui/uiSettingByKey']('preventScroll')
     }
   },
+  methods: {
+    setReady() {
+      const shopifyInterval = setInterval(() => {
+        this.shopifyReady = window.Scoutside.api.ready
+        if (this.shopifyReady) clearInterval(shopifyInterval)
+      }, 100)
+    }
+  },
   async mounted() {
-    await setup(this)
+    //await setup(this)
+    this.setReady()
   },
   watch: {
     preventScroll: {
       handler(val) {
         const body = document.querySelector('[data-body]')
-        if(val) body.classList.add('o-body--noScroll')
+        if (val) body.classList.add('o-body--noScroll')
         else body.classList.remove('o-body--noScroll')
       }
     }
@@ -66,20 +66,20 @@ export default {
 </script>
 
 <style lang="scss">
-  .c-portal__loading {
-    margin: 150px auto;
-  }
-  .c-portal__content {
-    opacity: 1;
-  }
-  .t-content-fade-enter,
-  .t-content-fade-leave-to {
-    opacity: 0;
-  }
-  .t-content-fade-leave,
-  .t-content-fade-enter-to {
-    transition-duration: 0.15s;
-    transition-property: opacity;
-    opacity: 1;
-  }
+.c-portal__loading {
+  margin: 150px auto;
+}
+.c-portal__content {
+  opacity: 1;
+}
+.t-content-fade-enter,
+.t-content-fade-leave-to {
+  opacity: 0;
+}
+.t-content-fade-leave,
+.t-content-fade-enter-to {
+  transition-duration: 0.15s;
+  transition-property: opacity;
+  opacity: 1;
+}
 </style>

@@ -49,21 +49,44 @@
 
 import axios from 'axios'
 import { cookieService } from '@shared/services'
+// import universalCookie from 'universal-cookie'
+
+// const Cookies = new universalCookie()
+
+const allCookies = document.cookie
+
+const apiKey = allCookies.split('; ').find(row => row.includes('ss_api_key'))
+const apiCustomerToken = allCookies.split('; ').find(row => row.includes('ss_customer_token'))
+const apiAccessToken = allCookies.split('; ').find(row => row.includes('ss_access_token'))
 
 export default class API {
+  // getItem({ key }) {
+  //   return Cookies.get(key)
+  // }
+
   constructor() {
-    this.url = cookieService.getItem({ key: 'ss_api_url' })
+    // this.url = cookieService.getItem({ key: 'ss_api_url' })
+    // this.url = allCookies.split('; ').find(row => row.includes('ss_api_url'))
+    this.url = 'https://portal-node-production.herokuapp.com'
     this.headers = {
       'Content-Type': 'application/json; charset=utf-8',
-      'X-Api-Key': cookieService.getItem({ key: 'ss_api_key' }),
-      'X-Api-Customer-Token': cookieService.getItem({ key: 'ss_customer_token' }),
-      'X-Api-Access-Token': cookieService.getItem({ key: 'ss_access_token' })
+      'X-Api-Key': apiKey,
+      'X-Api-Customer-Token': apiCustomerToken,
+      'X-Api-Access-Token': apiAccessToken
     }
+
+    // this.headers = {
+    //   'Content-Type': 'application/json; charset=utf-8',
+    //   'X-Api-Key': cookieService.getItem({ key: 'ss_api_key' }),
+    //   'X-Api-Customer-Token': cookieService.getItem({ key: 'ss_customer_token' }),
+    //   'X-Api-Access-Token': cookieService.getItem({ key: 'ss_access_token' })
+    // }
   }
   async get(endpoint, payload = {}) {
     const { params } = payload
     const url = `${this.url}${endpoint}`
     const response = await axios.get(url, { headers: this.headers, params })
+    console.log('responseeeee', response)
     return response
   }
   async post(endpoint, payload = {}) {
