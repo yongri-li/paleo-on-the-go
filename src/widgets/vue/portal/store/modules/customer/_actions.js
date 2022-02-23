@@ -7,9 +7,11 @@ export default {
   async customerSetState({ commit }) {
     console.log('testing here')
     try {
-      console.log('dataaaa')
+      console.log('dataaaahiiii')
       const { data } = await apiService.get('/v1/customer/account')
+      console.log('dta from action', data)
       const { shopifyCustomer, rechargeCustomer } = data
+
       if (shopifyCustomer) commit('CUSTOMER_SET_SHOPIFY', shopifyCustomer)
       if (rechargeCustomer) commit('CUSTOMER_SET_RECHARGE', rechargeCustomer)
       commit('CUSTOMER_SET_READY')
