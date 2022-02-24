@@ -27,6 +27,8 @@
 // })
 
 import Cookies from 'universal-cookie'
+// import Cookies from 'universal-cookie/umd'
+// import Cookies from 'universal-cookie/lib'
 import axios from 'axios'
 import https from 'https'
 import { _buildHeaders } from '@scripts/utils'

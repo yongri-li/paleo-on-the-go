@@ -1,1 +1,1 @@
-export { _filterItemsByStatus } from './_filterItemsByStatus'
+export { _filterItems, _filterItemsByStatus, _filterItemsByAddOns, _filterTest } from './_filterItems'

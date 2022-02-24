@@ -4,7 +4,7 @@
     <h1 class="c-h1">{{ section.settings.heading }}</h1>
     <p>{{ section.settings.subheading }}</p>
     <div class="u-spacer--md u-hideTabletDown"></div>
-    <a href="https://www.target.com" target="_blank" class="c-button c-button--isDefault c-button--isPrimary c-button--lrg">
+    <a href="/" target="_blank" class="c-button c-button--isDefault c-button--isPrimary c-button--lrg">
       {{section.settings.cta_text}}
     </a>
   </section>
@@ -33,17 +33,6 @@
     position: relative;
   }
 </style>
-
-<script>
-  document.addEventListener('scroll', e => {
-    let scrollPosition = window.scrollY
-    const header = document.querySelector('.c-header')
-
-    scrollPosition > 0
-    ? header.classList.add('scrolled')
-    : header.classList.remove('scrolled')
-  });  
-</script>
 
 
 {%- schema -%}

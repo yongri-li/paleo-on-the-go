@@ -72,3 +72,11 @@ if (isHomepage) {
 		})
 	})
 }
+
+// shrink header nav and logo on scroll
+document.addEventListener('scroll', e => {
+	let scrollPosition = window.scrollY
+	const header = document.querySelector('.c-header')
+
+	scrollPosition > 0 ? header.classList.add('scrolled') : header.classList.remove('scrolled')
+})

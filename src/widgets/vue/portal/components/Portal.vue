@@ -1,16 +1,16 @@
 <template>
   <div :class="_buildModifiers('c-portal', modifiers)">
     <c-portalHeader class="c-portal__header" v-if="customerReady" data-portal-header />
-    <div class="c-portal__page o-container">
-      <c-loading
-        class="c-portal__loading"
-        v-if="!customerReady"
-        :modifiers="['isSecondary', 'isHollow', 'isLargest']"
-      />
-      <transition name="t-content-fade" v-if="customerReady" mode="out-in">
-        <router-view class="c-portal__content" :key="$route.name" />
-      </transition>
-    </div>
+    <!--     <div class="c-portal__page o-container"> -->
+    <c-loading
+      class="c-portal__loading"
+      v-if="!customerReady"
+      :modifiers="['isSecondary', 'isHollow', 'isLargest']"
+    />
+    <transition name="t-content-fade" v-if="customerReady" mode="out-in">
+      <router-view class="c-portal__content" :key="$route.name" />
+    </transition>
+    <!--     </div> -->
     <c-sidebar class="c-portal__sidebar" v-if="customerReady" data-portal-header />
   </div>
 </template>
@@ -96,6 +96,7 @@ export default {
       const { portal, shop, bundle } = await window.Scoutside
       this.state.customize.shop = { ...shop }
       this.state.customize.content = { ...portal }
+      this.state.products = { ...portal.products.catalog }
     }
   },
   async mounted() {

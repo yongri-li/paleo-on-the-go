@@ -1,57 +1,41 @@
 <template>
   <div :class="_buildModifiers('c-shipments', modifiers)">
     <c-shipmentsLoading class="c-shipments__loading" v-if="!ready" />
+
+    <div class="c-shipments__hero" :style="{ backgroundImage: `url('${content.bg_image_lg}')` }">
+      <section class="c-shipments__hero--wrap">
+        <h1 class="c-h1">
+          Your Next Box is<br />
+          Set for {{}}
+        </h1>
+        <h5 class="c-h5">Rewards Balance: {{ '1,200 Points' }}</h5>
+        <div class="c-shipments__hero--btns">
+          <button class="c-button c-button--isDefault c-button--isPrimary">Earn Points</button>
+          <button class="c-button c-button--isDefault c-button--isPrimary">Redeem Rewards</button>
+        </div>
+      </section>
+    </div>
+
     <div class="c-shipments__content" v-if="ready">
-      <c-shipmentsLoyalty
-        class="c-shipments__loyalty"
-        :content="{
-          image_small: content.loyalty_image_small,
-          image_large: content.loyalty_image_large,
-          heading: content.loyalty_heading,
-          text_points: content.loyalty_text_points,
-          text_tier: content.loyalty_text_tier,
-          button_rewards: content.loyalty_button_rewards,
-          button_points: content.loyalty_button_points
-        }"
-      />
-      <div class="c-shipments__flex">
-        ize da shipmentz pergh!!
-        <div class="c-shipments__flexSmall">
-          <c-shipmentsReferral
-            class="c-shipments__referral"
-            :content="{
-              preheading: content.referral_preheading,
-              heading: content.referral_heading,
-              button: content.referral_button
-            }"
-          />
-          <c-shipmentsUpsell
-            class="c-shipments__upsell"
-            :content="{
-              test: 'hey'
-            }"
-          />
-        </div>
-        <div class="c-shipments__flexLarge">
-          <c-shipmentsBox
-            class="c-shipments__box"
-            :content="{
-              test: 'hey'
-            }"
-          />
-        </div>
-      </div>
+      <section class="c-shipments__flex">
+        <h2 class="c-h2">{{ nextCharge.length ? 'Upcoming Orders' : 'Order History' }}</h2>
+        <c-shipmentsBox
+          class="c-shipments__box"
+          :charge="nextCharge"
+          :content="{
+            test: 'hey'
+          }"
+        />
+      </section>
     </div>
   </div>
 </template>
 
 <script>
+import { mapGetters, mapState, mapActions, mapMutations } from 'vuex'
 import cShipmentsLoading from '../shipments/cShipmentsLoading.vue'
-import cShipmentsLoyalty from '../shipments/cShipmentsLoyalty.vue'
 import cShipmentsEmpty from '../shipments/cShipmentsEmpty.vue'
 import cShipmentsBox from '../shipments/cShipmentsBox.vue'
-import cShipmentsReferral from '../shipments/cShipmentsReferral.vue'
-import cShipmentsUpsell from '../shipments/cShipmentsUpsell.vue'
 
 export default {
   props: {
@@ -62,15 +46,26 @@ export default {
   },
   components: {
     cShipmentsLoading,
-    cShipmentsLoyalty,
     cShipmentsEmpty,
-    cShipmentsBox,
-    cShipmentsReferral,
-    cShipmentsUpsell
+    cShipmentsBox
   },
   computed: {
+    ...mapGetters('customer', [
+      'customerUpcomingCharge',
+      // 'customerRecharge',
+      // 'customerUpcomingCharges',
+      // 'customerChargeToAddress',
+      // 'customerAddressesWithStatus',
+      ['customerShopify']
+    ]),
     content() {
       return this.$store.getters['customize/customizeContentByKey']('shipments')
+    },
+    nextCharge() {
+      return this.customerUpcomingCharge[0]
+      // return this.customerUpcomingCharges?.filter(
+      //   (chrg) => chrg.status !== ('REFUNDED' || 'CANCELLED')
+      // )
     }
   },
   async created() {
@@ -86,7 +81,7 @@ export default {
 </script>
 
 <style lang="scss">
-.c-shipments__flex {
+/*.c-shipments__flex {
   max-width: 1240px;
   margin: 0 auto;
   padding: 30px 0 60px;
@@ -95,24 +90,31 @@ export default {
     padding-top: 40px;
     @include flex($justify: space-between, $align: flex-start, $wrap: nowrap);
   }
+}*/
+
+.c-shipments {
+  background-color: $color-ecru;
 }
-.c-shipments__flexSmall {
-  width: 100%;
-  @include flex($direction: column);
-  @include media-tablet-only {
-    margin-bottom: 30px;
-    @include flex($justify: space-between, $wrap: nowrap);
-  }
-  @include media-desktop-up {
-    width: 280px;
-    margin-left: 40px;
+
+.c-shipments__hero {
+  background-size: cover;
+  min-height: 260px;
+  padding: 3rem 0;
+
+  .c-shipments__hero--wrap {
+    max-width: 1240px;
+    margin: 0 auto;
+
+    .c-shipments__hero--btns {
+      display: flex;
+      grid-gap: 1.5rem;
+    }
   }
 }
-.c-shipments__flexLarge {
-  width: 100%;
-  @include media-desktop-up {
-    width: calc(100% - 320px);
-    order: -1;
-  }
+
+.c-shipments__flex {
+  max-width: 1240px;
+  padding: 2rem 0 4rem;
+  margin: 0 auto;
 }
 </style>
