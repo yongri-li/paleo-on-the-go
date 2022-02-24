@@ -2,27 +2,22 @@ import axios from 'axios'
 import { cookieService } from '@shared/services'
 
 const allCookies = document.cookie
-
-const apiUrl = allCookies
-  .split('; ')
-  .find(row => row.includes('ss_api_url'))
-  ?.split('=')[1]
-const apiKey = allCookies
-  .split('; ')
-  .find(row => row.includes('ss_api_key'))
-  ?.split('=')[1]
-const apiCustomerToken = allCookies
-  .split('; ')
-  .find(row => row.includes('ss_customer_token'))
-  ?.split('=')[1]
-const apiAccessToken = allCookies
-  .split('; ')
-  .find(row => row.includes('ss_access_token'))
-  ?.split('=')[1]
+const getApiData = (cookie, ssdata) => {
+  return cookie
+    .split('; ')
+    .find(row => row.includes(ssdata))
+    ?.split('=')[1]
+}
+const apiUrl = getApiData(allCookies, 'ss_api_url')
+const apiKey = getApiData(allCookies, 'ss_api_key')
+const apiCustomerToken = getApiData(allCookies, 'ss_customer_token')
+const apiAccessToken = getApiData(allCookies, 'ss_access_token')
 
 export default class API {
   constructor() {
     this.url = decodeURIComponent(apiUrl)
+    //this.url = cookieService.getItem({ key: 'ss_api_url' })
+
     this.headers = {
       'Content-Type': 'application/json; charset=utf-8',
       'X-Api-Key': apiKey,

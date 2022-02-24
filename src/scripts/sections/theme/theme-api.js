@@ -40,6 +40,8 @@ const cookieOptions = {
   path: '/'
 }
 
+// document.cookie = 'ss_access_token=23eqawdq33weqefsaed9'
+
 const removeCookies = async () => {
   await Promise.all([
     cookies.remove('ss_api_url', cookieOptions),

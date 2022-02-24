@@ -47,25 +47,13 @@ export default {
     allCookies() {
       return document.cookie
     },
-    apiKey() {
-      return this.allCookies
-        .split('; ')
-        .find(row => row.includes('ss_api_key'))
-        ?.split('=')[1]
-    },
-    apiCustomerToken() {
-      return this.allCookies
-        .split('; ')
-        .find(row => row.includes('ss_customer_token'))
-        ?.split('=')[1]
-    },
+    // for testing only
     apiAccessToken() {
       return this.allCookies
         .split('; ')
         .find(row => row.includes('ss_access_token'))
         ?.split('=')[1]
     },
-    // for testing only
     apiTest() {
       return new apiService()
     }
@@ -104,10 +92,10 @@ export default {
     this.setReady()
     setTimeout(() => {
       this.updateAPIheader()
-    }, 300)
+    }, 200)
     setTimeout(() => {
       this.getRCdata()
-    }, 500)
+    }, 400)
   },
   watch: {
     preventScroll: {

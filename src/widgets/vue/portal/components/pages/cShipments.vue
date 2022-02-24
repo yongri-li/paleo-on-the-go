@@ -2,32 +2,35 @@
   <div :class="_buildModifiers('c-shipments', modifiers)">
     <c-shipmentsLoading class="c-shipments__loading" v-if="!ready" />
 
-    <div class="c-shipments__hero" :style="{ backgroundImage: `url('${content.bg_image_lg}')` }">
-      <section class="c-shipments__hero--wrap">
-        <h1 class="c-h1">
-          Your Next Box is<br />
-          Set for {{}}
-        </h1>
-        <h5 class="c-h5">Rewards Balance: {{ '1,200 Points' }}</h5>
-        <div class="c-shipments__hero--btns">
-          <button class="c-button c-button--isDefault c-button--isPrimary">Earn Points</button>
-          <button class="c-button c-button--isDefault c-button--isPrimary">Redeem Rewards</button>
-        </div>
-      </section>
-    </div>
+    <article class="box__byAddressId">
+      <div class="c-shipments__hero" :style="{ backgroundImage: `url('${content.bg_image_lg}')` }">
+        <section class="c-shipments__hero--wrap">
+          <h1 class="c-h1">
+            Your Next Box is<br />
+            Set for <span> {{ formatDayDateIOS(nextCharge.scheduledAt) }}</span>
+          </h1>
+          <h5 class="c-h5">Rewards Balance: {{ '1,200 Points' }}</h5>
+          <div class="c-shipments__hero--btns">
+            <button class="c-button c-button--isDefault c-button--isPrimary">Earn Points</button>
+            <button class="c-button c-button--isDefault c-button--isPrimary">Redeem Rewards</button>
+          </div>
+        </section>
+      </div>
 
-    <div class="c-shipments__content" v-if="ready">
-      <section class="c-shipments__flex">
-        <h2 class="c-h2">{{ nextCharge.length ? 'Upcoming Orders' : 'Order History' }}</h2>
-        <c-shipmentsBox
-          class="c-shipments__box"
-          :charge="nextCharge"
-          :content="{
-            test: 'hey'
-          }"
-        />
-      </section>
-    </div>
+      <div class="c-shipments__content" v-if="ready">
+        <section class="c-shipments__flex">
+          <h2 class="c-h2">{{ nextCharge.length ? 'Upcoming Orders' : 'Order History' }}</h2>
+          <c-shipmentsBox
+            class="c-shipments__box"
+            :charge="nextCharge"
+            :content="{
+              test: 'hey'
+            }"
+            :shipDate="formatDayDateIOS(nextCharge.scheduledAt)"
+          />
+        </section>
+      </div>
+    </article>
   </div>
 </template>
 
@@ -36,6 +39,8 @@ import { mapGetters, mapState, mapActions, mapMutations } from 'vuex'
 import cShipmentsLoading from '../shipments/cShipmentsLoading.vue'
 import cShipmentsEmpty from '../shipments/cShipmentsEmpty.vue'
 import cShipmentsBox from '../shipments/cShipmentsBox.vue'
+import { format } from 'date-fns'
+import { convertToYYYYMMDDlocalT } from '@shared/utils'
 
 export default {
   props: {
@@ -66,6 +71,13 @@ export default {
       // return this.customerUpcomingCharges?.filter(
       //   (chrg) => chrg.status !== ('REFUNDED' || 'CANCELLED')
       // )
+    }
+  },
+  methods: {
+    formatDayDateIOS(date) {
+      const dateCvt = new Date(date)
+      const dateStr = convertToYYYYMMDDlocalT(dateCvt)
+      return dateStr != null ? format(new Date(dateStr), 'MMM D') : null
     }
   },
   async created() {
@@ -104,6 +116,11 @@ export default {
   .c-shipments__hero--wrap {
     max-width: 1240px;
     margin: 0 auto;
+
+    h1 span {
+      color: $color-white;
+      -webkit-text-stroke: 1px $color-black;
+    }
 
     .c-shipments__hero--btns {
       display: flex;
