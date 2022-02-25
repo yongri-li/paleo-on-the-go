@@ -24,45 +24,52 @@
 <!-- /////// -->
 <template>
   <div :class="_buildModifiers('c-shipmentsBox', modifiers)" ref="shipmentBox">
-    <section :class="">
-      <c-accordion>
-        <c-accordionItem class="c-shipmentsSummary__item" :open="true">
-          <div class="c-shipmentsSummary__trigger" slot="trigger">
-            <div class="c-shipmentsSummary__triggerLabel">
-              Shipping To {{ charge.shipping_address.address1 }}
+    <c-accordion>
+      <c-accordionItem :open="true">
+        <div class="c-shipmentsSummary__trigger" slot="trigger">
+          <div class="c-shipmentsSummary__triggerLabel">
+            Shipping To <a href="/" class="u-colorWhite">{{ charge.shipping_address.address1 }}</a>
+          </div>
+          <div class="c-shipmentsSummary__triggerCircle">
+            <c-svg class="c-shipmentsSummary__triggerIcon" name="chevron" />
+          </div>
+        </div>
+        <div class="c-shipmentsBox__content" slot="content">
+          <br />
+          <header class="c-shipmentsBox__header">
+            <div v-if="isUpcoming" class="c-shipmentsBox__headings">
+              <h2 class="c-shipmentsBox__heading c-h2">
+                Order Ships <span class="u-colorPrimary">{{ shipDate }}</span>
+              </h2>
+
+              <!--  <div> -->
+              <button class="c-button c-button--isDefault c-button--isPrimary" @click="handleChangeMeals">
+                Change Meals
+              </button>
+              <button class="c-button c-button--isHollow c-button--isBlack" @click="handleEditSchedule">
+                Edit Schedule
+              </button>
             </div>
-            <div class="c-shipmentsSummary__triggerCircle">
-              <c-svg class="c-shipmentsSummary__triggerIcon" name="chevron" />
+            <!--  </div> -->
+            <h6 class="c-h6">
+              {{ totalSubItems }} Meals &nbsp;<span> Delivers Every {{ frequency }} Week</span>
+            </h6>
+          </header>
+          <div v-if="isUpcoming" class="c-shipmentsBox__lineItems">
+            <div class="c-shipmentsBox__grid">
+              <c-orders-item v-for="item in subscriptionItems" :item="item" :content="itemContent" />
+              <!-- :item="item" :key="item.id" -->
+            </div>
+
+            <header class="c-shipmentsBox__header">
+              <h6 class="c-h6">{{ totalAddOns }} Add-Ons &nbsp;<span> One-Time Purchase</span></h6>
+            </header>
+            <div class="c-shipmentsBox__grid">
+              <c-orders-item v-for="item in addOnItems" :item="item" :content="itemContent" />
             </div>
           </div>
-          <div class="c-shipmentsSummary__content" slot="content">
-            <!-- accordion content here -->
-            <header class="c-shipmentsBox__header">
-              <div class="c-shipmentsBox__headings">
-                <div v-if="isUpcoming">
-                  <br />
-                  <h3 class="c-shipmentsBox__heading c-h3">Order Ships {{ shipDate }}</h3>
-                </div>
-                <div v-else>
-                  <h3 class="c-shipmentsBox__heading c-h3">
-                    <!-- //ios dat -->
-                  </h3>
-                  <p class="c-shipmentsBox__copy c-shipmentsBox__copy--skip u-colorBroccoli">
-                    This order has been skipped
-                  </p>
-                  <p class="c-shipmentsBox__copy">Unskip before {{}} (6pm EST)</p>
-                </div>
-              </div>
-            </header>
-
-            <div v-if="isUpcoming" class="c-shipmentsBox__lineItems">
-              <div class="c-shipmentsBox__grid">
-                <c-orders-item v-for="item in subscriptionItems" :item="item" :content="itemContent" />
-                <!-- :item="item" :key="item.id" -->
-              </div>
-            </div>
-            <div class="c-shipmentsGroups__bottom">
-              <!--         <c-shipmentsDiscount
+          <div class="c-shipmentsGroups__bottom">
+            <!--         <c-shipmentsDiscount
                 class="c-shipmentsGroups__discount"
                 :address="address"
                 :shipment="shipment"
@@ -72,27 +79,25 @@
                   button_success: content.discount_button_success
                 }"
               /> -->
-              <c-shipmentsSummary
-                class="c-shipmentsGroups__summary"
-                :shipment="shipment"
-                :modifiers="[]"
-                :content="{
-                  label_order: content.summary_label_order,
-                  label_subtotal: content.summary_label_subtotal,
-                  label_discount: content.summary_label_discount,
-                  label_tax: content.summary_label_tax,
-                  label_shipping: content.summary_label_shipping,
-                  label_total: content.summary_label_total
-                }"
-              />
-            </div>
+            <c-shipmentsSummary
+              class="c-shipmentsGroups__summary"
+              :shipment="shipment"
+              :modifiers="[]"
+              :content="{
+                label_order: content.summary_label_order,
+                label_subtotal: content.summary_label_subtotal,
+                label_discount: content.summary_label_discount,
+                label_tax: content.summary_label_tax,
+                label_shipping: content.summary_label_shipping,
+                label_total: content.summary_label_total
+              }"
+            />
           </div>
-        </c-accordionItem>
-      </c-accordion>
-    </section>
+        </div>
+      </c-accordionItem>
+    </c-accordion>
   </div>
 </template>
-<!-- ///////////// -->
 
 <script>
 // import { mapGetters, mapState, mapActions, mapMutations } from 'vuex'
@@ -162,8 +167,30 @@ export default {
     allItems() {
       return this.charge.lineItems
     },
+    addOnItems() {
+      return this.$store.state.customer.resources.onetimes
+    },
+    addOnItemsIds() {
+      return this.addOnItems.map(item => item.productId)
+    },
+    subscriptions() {
+      //return this.$store.getters['customize/customizeContentByKey']('shipments')
+      //return this.$store.getters['customer/customerSubscriptionsByAddress'](this.charge.addressId)
+      return this.$store.state.customer.resources.subscriptions
+    },
     subscriptionItems() {
-      return this.allItems.filter(item => !item.properties.find(property => property.name === '_addOn'))
+      // return this.allItems.filter(item => !item.properties.find(property => property.name === '_addOn'))
+      return this.allItems.filter(item => !this.addOnItemsIds.includes(item.productId))
+    },
+    frequency() {
+      const freqObj = this.subscriptions.find(sub => sub.frequency)
+      return freqObj.frequency
+    },
+    totalSubItems() {
+      return this.subscriptions.reduce((sum, sub) => sum + sub.quantity, 0)
+    },
+    totalAddOns() {
+      return this.addOnItems.reduce((sum, sub) => sum + sub.quantity, 0)
     }
     // thisShipDate() {
     //   return this.charge.scheduledAt
@@ -178,6 +205,8 @@ export default {
     //   const dateStr = convertToYYYYMMDDlocalT(dateCvt)
     //   return dateStr != null ? format(new Date(dateStr), 'MMM D') : null
     // }
+    handleChangeMeals() {},
+    handleEditSchedule() {}
   }
 }
 </script>
@@ -185,13 +214,79 @@ export default {
 <style lang="scss">
 .c-shipmentsBox {
   @include shadow-card;
-  padding: 15px 20px 20px;
+  /*padding: 15px 20px 20px;*/
   background-color: $color-white;
   border-radius: 3px;
   &:not(:last-child) {
     margin-bottom: 40px;
   }
+
+  .c-shipmentsSummary__trigger {
+    height: auto;
+  }
+
+  .c-accordionItem__trigger {
+    background-color: $color-secondary;
+    color: $color-black;
+    padding: 2.25rem 1rem;
+
+    .c-shipmentsSummary__triggerLabel {
+      color: $color-black;
+      font-size: 1.5rem;
+      font-weight: 500;
+
+      a {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .c-shipmentsSummary__triggerCircle {
+    border-color: $color-white;
+    background-color: $color-white;
+    height: 2.5rem;
+    width: 2.5rem;
+
+    svg path {
+      fill: $color-black;
+    }
+  }
+
+  .c-accordionItem__content {
+    padding: 0;
+
+    .c-shipmentsBox__content {
+      padding: 1.25rem;
+    }
+  }
 }
+
+.c-shipmentsBox__header {
+  margin-bottom: 2rem;
+}
+
+.c-shipmentsBox__headings {
+  display: flex;
+  grid-gap: 1.75rem;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.75rem;
+
+  .c-h2 {
+    margin: 0;
+    flex: 1;
+  }
+}
+
+.c-shipmentsBox__header {
+  h6 span {
+    @include text-body;
+    font-size: 1.125rem;
+    opacity: 0.75;
+    text-transform: capitalize;
+  }
+}
+
 .c-shipmentsBox__flex {
   @include flex($direction: column);
   @include media-tablet-up {
@@ -202,9 +297,14 @@ export default {
 .c-shipmentsBox__grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
+  grid-gap: 3rem;
+
+  + .c-shipmentsBox__header {
+    margin-top: 1rem;
+  }
 }
 
-.c-shipmentsBox__flexSmall {
+/*.c-shipmentsBox__flexSmall {
   width: 100%;
   @include media-tablet-up {
     max-width: 210px;
@@ -212,18 +312,8 @@ export default {
   @include media-desktop-up {
     max-width: 250px;
   }
-}
-.c-shipmentsBox__flexLarge {
-  @include media-tablet-up {
-    max-width: calc(100% - 225px);
-  }
-  @include media-desktop-up {
-    max-width: calc(100% - 280px);
-  }
-}
-.c-shipmentBox__shipping {
-  width: 100%;
-}
+}*/
+
 .c-shipmentsBox__shippingCharges {
   @include text-heading;
   font-size: 14px;

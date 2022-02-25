@@ -1,23 +1,18 @@
 <template>
   <div :class="_buildModifiers('c-ordersItem', modifiers)" v-if="item && content">
+    <span class="c-lineItem__qty">{{ item.quantity }}</span>
     <c-img class="c-ordersItem__image" :src="image" :alt="alt" />
     <div class="c-ordersItem__details">
-      <c-h
-        class="c-ordersItem__title"
-        v-if="item.productTitle"
-        tag="h4"
-        level="4"
-        :text="item.productTitle"
-      />
-      <c-p class="c-ordersItem__interval" v-if="interval" tag="p" level="4" :text="interval" />
-      <c-p
+      <c-h class="c-ordersItem__title" v-if="item.productTitle" tag="h4" level="4" :text="productTitle[0]" />
+      <c-p tag="p" v-if="productTitle[1]" :text="productTitle[1]" />
+      <!-- <c-p class="c-ordersItem__interval" v-if="interval" tag="p" level="4" :text="interval" /> -->
+      <!--       <c-p
         class="c-ordersItem__variant"
         v-if="item.variantTitle"
         tag="p"
         level="4"
         :text="item.variantTitle.replace(/\//g, '•')"
-      />
-      <c-p class="c-ordersItem__price" v-if="quantityPrice" tag="p" level="4" :text="quantityPrice" />
+      /> -->
     </div>
   </div>
 </template>
@@ -52,9 +47,6 @@ export default {
     products() {
       return this.$store.state.products
     },
-    // asdgetN() {
-    //   return this.$store.products['products/productById']
-    // },
     // product() {
     //   return (
     //     this.$store.getters['products/productById'](this.item.id) ||
@@ -64,6 +56,15 @@ export default {
     product() {
       const prodArr = Object.values(this.products)
       return prodArr.find(prod => prod.id === this.item.productId)
+    },
+    productTitle() {
+      const productTitle = this.item.productTitle
+      let title, subtitle
+      productTitle.includes('with')
+        ? ((title = productTitle.split('with')[0]), (subtitle = 'with ' + productTitle.split('with')[1]))
+        : (title = productTitle)
+
+      return [title, subtitle]
     },
     image() {
       return this.product ? this.product.images[0] : false
@@ -102,19 +103,39 @@ export default {
 
 <style lang="scss">
 .c-ordersItem {
-  padding: 15px;
-  @include flex($align: flex-start, $wrap: nowrap);
-  @include border-card;
-  @include shadow-card($opacity: 0.05);
+  position: relative;
+  /*  padding: 1rem;*/
+  @include flex($align: flex-start, $wrap: nowrap, $direction: column);
+
+  .c-lineItem__qty {
+    display: inline-block;
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    width: 44px;
+    height: 44px;
+    border-radius: 100%;
+    background-color: $color-primary;
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 44px;
+    text-align: center;
+  }
 }
 .c-ordersItem__image {
-  width: 86px;
   background-color: $color-secondary;
-  color: lighten($color-black, 10%);
-  border-radius: 3px;
 }
 .c-ordersItem__details {
-  margin-left: 30px;
+  padding: 1rem 0 2rem;
+
+  .c-h4 {
+    font-size: 1.25rem;
+  }
+
+  p {
+    font-size: 1rem;
+    opacity: 0.9;
+  }
 }
 .c-ordersItem__title,
 .c-ordersItem__interval,

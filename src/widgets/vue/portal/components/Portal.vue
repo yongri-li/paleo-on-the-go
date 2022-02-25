@@ -1,5 +1,6 @@
 <template>
   <div :class="_buildModifiers('c-portal', modifiers)">
+    <c-portalHero class="c-portal__hero" v-if="customerReady" />
     <c-portalHeader class="c-portal__header" v-if="customerReady" data-portal-header />
     <!--     <div class="c-portal__page o-container"> -->
     <c-loading
@@ -19,6 +20,7 @@
 import { mapState, mapGetters } from 'vuex'
 import setup from '../_setup'
 import cPortalHeader from './theme/cPortalHeader.vue'
+import cPortalHero from './theme/cPortalHero.vue'
 import cSidebar from './theme/cSidebar.vue'
 import cLoading from '@shared/components/core/cLoading.vue'
 import { apiService } from '@shared/services'
@@ -32,6 +34,7 @@ export default {
   },
   components: {
     cPortalHeader,
+    cPortalHero,
     cSidebar,
     cLoading
   },
@@ -57,6 +60,20 @@ export default {
     apiTest() {
       return new apiService()
     }
+
+    // addresses() {
+    //   return this.$store.state.customer.resources.addresses
+    // },
+    // addressId() {
+    //   return this.$store.state.customer.resources.addresses[0].id
+    // },
+    // customerId() {
+    //   return this.$store.state.customer.resources.addresses[0].customerId
+    // }
+
+    // onetimes() {
+    //   return this.$store.state.customer.resources.onetimes
+    // },
   },
   methods: {
     setReady() {
