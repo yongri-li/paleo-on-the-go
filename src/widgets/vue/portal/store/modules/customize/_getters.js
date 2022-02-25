@@ -10,13 +10,6 @@ export default {
   },
   customizeContentByKey: state => key => state.content[key],
   customizePartByKey: state => key => state.content.parts[key],
-  customizePartByPrefix: state => prefix => {
-    let output = {}
-    Object.keys(state.content.parts).forEach(key => {
-      if(key.startsWith(prefix)) output[key] = state.content.parts[key]
-    })
-    return output
-  },
   customizeSidebarByPrefix: state => prefix => {
     let output = {}
     Object.keys(state.content.sidebars).forEach(key => {
@@ -24,11 +17,4 @@ export default {
     })
     return output
   },
-  customizeModalByPrefix: state => prefix => {
-    let output = {}
-    Object.keys(state.content.modals).forEach(key => {
-      if(key.startsWith(prefix)) output[key] = state.content.modals[key]
-    })
-    return output
-  }
 }

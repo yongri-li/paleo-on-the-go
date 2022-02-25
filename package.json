@@ -65,13 +65,16 @@
     "styleguide:build": "vue-styleguidist build"
   },
   "dependencies": {
+    "cookie-universal": "^2.1.5",
     "hex-rgb": "^4.1.0",
     "https": "^1.0.0",
     "lazysizes": "^5.1.2",
     "lozad": "^1.14.0",
     "pikaday": "^1.8.0",
+    "sass": "^1.49.8",
     "sass-extract-loader": "^1.1.0",
     "tiny-slider": "^2.9.2",
-    "universal-cookie": "^4.0.3"
+    "universal-cookie": "^4.0.3",
+    "vuejs-datepicker": "^1.6.2"
   }
 }

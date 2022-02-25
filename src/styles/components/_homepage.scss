@@ -1,3 +1,4 @@
+/////////
 // TOP HERO SECTION ***
 .o-homepage {
   @include media-tablet-down {
@@ -94,6 +95,7 @@ marquee span {
   }
 }
 
+/////////
 // PLANS GRID SECTION ***
 .c-homePlans {
   position: relative;
@@ -219,8 +221,8 @@ marquee span {
   }
 }
 
+/////////
 // MENU GRID SECTION ***
-
 .c-homeMenu {
   margin: clamp(3rem, 8vw, 7rem) 0;
 
@@ -329,6 +331,7 @@ marquee span {
   }
 }
 
+/////////
 // FAQs SECTION ***
 .c-homeFaqs {
   padding: 2rem 0;
@@ -389,6 +392,7 @@ marquee span {
   }
 }
 
+/////////
 // SPLIT SECTIONS ***
 .c-homeSplit {
   display: flex;
@@ -425,6 +429,7 @@ marquee span {
   }
 }
 
+/////////
 // TESTIMONIAL SLIDER ***
 .c-homeTestimonial__slider {
   padding: 4.5rem 0 5.5rem;
@@ -471,21 +476,47 @@ marquee span {
   }
 }
 
-.tns-nav {
-  button {
-    height: 12px;
-    width: 12px;
-    border: none;
-    border-radius: 100%;
-    background: $color-black;
-    margin: 0 0.75rem;
+/////////
+// BOTTOM BANNER ***
+.c-homeBtm__banner {
+  background-color: $color-secondary;
+  padding: 2rem;
 
-    &.tns-nav-active {
-      background-color: $color-primary;
+  section,
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    grid-gap: 2rem;
+
+    .c-h2 {
+      margin: 0;
     }
+
+    input {
+      height: 50px;
+      min-width: 280px;
+      border: none;
+      color: $color-black;
+      font-family: 'Roboto', sans-serif;
+      font-size: 1rem;
+      font-weight: 500;
+      outline: none;
+      padding: 0.5rem 1rem;
+    }
+
+    .c-button {
+      height: 50px;
+      padding: 1rem 2rem;
+    }
+  }
+
+  div {
+    grid-gap: 1rem;
   }
 }
 
+/////////
 // EXTRA UTIL STYLES ***
 .c-button {
   display: block;
@@ -502,6 +533,22 @@ marquee span {
   }
 }
 
+.tns-nav {
+  button {
+    height: 12px;
+    width: 12px;
+    border: none;
+    border-radius: 100%;
+    background: $color-black;
+    margin: 0 0.75rem;
+
+    &.tns-nav-active {
+      background-color: $color-primary;
+    }
+  }
+}
+
+/////////
 // MEDIA QUERY AREAS ***
 @include media-mobile-down {
   .c-tilesSection__slider {

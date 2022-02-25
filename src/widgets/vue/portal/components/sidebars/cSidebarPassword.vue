@@ -1,6 +1,6 @@
 <template>
   <div :class="_buildModifiers('c-sidebarPassword', modifiers)"
-    v-if="content && customerShopify"
+    v-if="content"
   >
       <c-formPassword class="c-sidebarPassword__form"
         :value="customerShopify.email"

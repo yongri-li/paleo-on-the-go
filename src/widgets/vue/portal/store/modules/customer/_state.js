@@ -7,16 +7,6 @@ export default () => ({
     charges: false,
     onetimes: false,
     orders: false,
-    subscriptions: false,
-    zips: false
-  },
-  shipCutoffData: window.Scoutside.shop,
-  gooop: {},
-  deliverydays: [],
-  deliveryday: '',
-  deliverydate: '',
-  nextSchChrgDate: '',  
-  futureSkips: [],
-  isNewSelected: false,
-  isNextSkipped: false
+    subscriptions: false
+  }
 })
