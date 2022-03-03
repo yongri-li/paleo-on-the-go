@@ -1,11 +1,11 @@
-import config from './config'
+import config from "./config";
 
 module.exports = {
   css: {
     loaderOptions: {
       sass: {
-        data: "@import" + config.stylesPath + "/global.scss";
-      }
-    }
-  }
+        data: "@import" + config.stylesPath + "/global.scss",
+      },
+    },
+  },
 };
