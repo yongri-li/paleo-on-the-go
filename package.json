@@ -62,7 +62,9 @@
     "deploy:prod": "theme deploy --env=production -d dist",
     "zip": "zip -r theme.zip dist",
     "styleguide": "vue-styleguidist server",
-    "styleguide:build": "vue-styleguidist build"
+    "styleguide:build": "vue-styleguidist build",
+    "download:dev": "theme download --env=development -d dist",
+    "download:prod": "theme download --env=production -d dist"
   },
   "dependencies": {
     "cookie-universal": "^2.1.5",

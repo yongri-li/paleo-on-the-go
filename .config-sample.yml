@@ -1,0 +1,26 @@
+mode: development
+
+# Dev
+development:
+  theme_id: xxxxxxxxxxxx
+  password: shppa_getthepasswordfromyourprivateapp
+  store: your-store.myshopify.com
+  timeout: 60s
+  ignore_files:
+    - config/settings_data.json
+
+# Staging
+staging:
+  theme_id: yyyyyyyyyyyy
+  password: shppa_getthepasswordfromyourprivateapp
+  store: your-store.myshopify.com
+  ignore_files:
+    - config/settings_data.json
+
+# Live
+production:
+  theme_id: zzzzzzzzzzzz
+  password: shppa_getthepasswordfromyourprivateapp
+  store: your-store.myshopify.com
+  ignore_files:
+    - config/settings_data.json

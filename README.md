@@ -1,6 +1,6 @@
-# Shopify Starter
+# Paleo On The Go
 
-Starter repository for Shopify theme development
+Built from the Scoutside Starter repository for Shopify theme development
 
 ## Features
 
@@ -14,7 +14,7 @@ Starter repository for Shopify theme development
 To get started clone the repository
 
 ```
-git clone https://github.com/scoutside/shopify-starter.git
+git clone https://github.com/scoutside/paleo-on-the-go.git
 ```
 
 Set Node version to 16.1.0
@@ -42,6 +42,14 @@ development:
   ignore_files:
     - config/settings_data.json
 
+staging:
+  password:[SHOPIFY_APP_PASSWORD]
+  theme_id:[SHOPIFY_THEME_ID]
+  store:[SHOPIFY_URL]
+  timeout: 60s
+  ignore_files:
+    - config/settings_data.json
+
 production:
   password:[SHOPIFY_APP_PASSWORD]
   theme_id:[SHOPIFY_THEME_ID]
@@ -51,16 +59,10 @@ production:
     - config/settings_data.json
 ```
 
-If working from existing theme - download shopify files
+If working from theme for the first time - download shopify files
 
 ```
-yarn run download
-```
-
-
-If working from new theme - zip files then upload to shopify
-```
-yarn run zip
+mkdir dist && yarn run download:dev
 ```
 
 ## ENV Scripts
@@ -91,11 +93,48 @@ If your Shopify theme is up to date with you local project, run the watch comman
 yarn watch:dev
 ```
 
+## Development Workflow
+
+Pull the latest changes from the main branch
+
+```
+git checkout main
+git fetch -p origin
+git reset --hard origin/main
+```
+
+Create a new branch off of main for a new feature/fix
+
+```
+git checkout -b your-name/new-feat-or-fix
+```
+
+Run start from root to build files, deploy and watch
+
+```
+yarn start:dev
+```
+
+If making changes to vue files, open a new terminal tab, cd into the widgets/vue directory and watch
+
+```
+cd src/widgets/vue
+yarn watch:prod
+```
+
+Changes may take anywhere from 10-45 seconds to build and deploy.
+
+Once all changes are approved, deploy to production theme
+
+```
+yarn deploy:prod
+```
+
 ## Notes
 
 The repository can be used with a regular Themekit approach - adding styles/scripts directly to the base shopify folders (assets for example)But this approach defeats a lot of the repo's purpose. For details on how to use the advanced features check out the guides directory.
 
-The webpack file contains a number of useful aliases for easier imports.  For example the styles, scripts folders can be imported with these aliases `@styles` `@scripts`.
+The webpack file contains a number of useful aliases for easier imports. For example the styles, scripts folders can be imported with these aliases `@styles` `@scripts`.
 
 ## Gotchas
 
