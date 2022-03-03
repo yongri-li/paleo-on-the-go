@@ -22,6 +22,10 @@ src/assets/theme.css
 src/assets/theme.js
 src/assets/widget-cart.css
 src/assets/widget-cart.js
+src/assets/widget-general.css
+src/assets/widget-general.js
+src/assets/widget-homepage.css
+src/assets/widget-homepage.js
 src/assets/widget-portal.css
 src/assets/widget-portal.js
 src/assets/template-login.js
