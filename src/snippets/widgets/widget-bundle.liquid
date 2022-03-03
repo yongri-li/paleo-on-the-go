@@ -1,0 +1,35 @@
+<script>
+  window.Scoutside = window.Scoutside || {};
+  window.Scoutside.bundle = window.Scoutside.bundle || {};
+  window.Scoutside.assets = window.Scoutside.assets || {};
+  {% if account %}
+    window.Scoutside.bundle.account = true;
+  {% endif %}
+</script>
+
+{% section 'widget-bundle-navigation' %}
+
+{% unless account %}
+  {% section 'widget-bundle-plans' %}
+  {% section 'widget-bundle-faqs' %}
+  {% section 'widget-bundle-children' %}
+  {% section 'widget-bundle-add-ons' %}
+  {% section 'widget-bundle-wildcard' %}
+{% else %}
+  {% section 'widget-bundle-types' %}
+  {% section 'widget-portal-children' %}
+  {% section 'widget-portal-add-ons' %}
+  {% section 'widget-bundle-wildcard' %}
+{% endunless %}
+
+<v-bundle id="v-bundle"
+  class="v-widget"
+  data-vue-bundle
+>
+</v-bundle>
+
+{% comment %}
+{% section 'widget-bundle-wildcard' %}
+{% endcomment %}
+
+<script src="{{ 'widget-bundle.js' | asset_url }}"></script>

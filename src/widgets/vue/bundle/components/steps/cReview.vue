@@ -1,0 +1,1118 @@
+<template>
+  <div>
+    <c-bundle-nav currentStepTitle="Review" />
+    <div v-if="!account">
+      <header class="c-reviewHeader u-textCenter u-hideMobile">
+        <h1 class="c-reviewHeader__heading c-h1">Review Your Order</h1>
+      </header>
+    </div>
+    <div :class="['c-reviewGrid', {
+      'c-reviewGrid--account': account
+    }]">
+      <div>
+        <header class="c-reviewGrid__header">
+          <div class="c-reviewGrid__heading-wrapper">
+            <h4 class="c-reviewGrid__heading c-h4">
+              Your Meal Plan
+            </h4>
+            <p class="c-reviewGrid__count">{{ mealsSelected }} Items</p>
+
+          </div>
+          <button class="c-reviewGrid__heading-btn" @click="handleTwoPrevStep">
+            Edit
+          </button>
+        </header>
+        <div class="c-itemsGrid">
+          <div class="c-itemsGrid__item" v-for="child in bundle.children" :key="child.id">
+            <c-line-item
+              review
+              :product="child"
+              :showUpsell="account"
+              @upsellTrue="upsellId => upsellSelected(child, upsellId)"
+            />
+          </div>
+        </div>
+        <div>
+          <header class="c-reviewGrid__header">
+            <div class="c-reviewGrid__heading-wrapper">
+              <h4 class="c-reviewGrid__heading c-h4">
+                Fresh+ Add-Ons
+              </h4>
+              <p class="c-reviewGrid__count">{{ totalAddOns }} Items</p>
+            </div>
+            <button class="c-reviewGrid__heading-btn" @click="handlePrevStep">
+              Edit
+            </button>
+          </header>
+          <div class="c-itemsGrid" >
+            <div class="c-itemsGrid__item" v-if="bundle.addOns.length" v-for="child in bundle.addOns" :key="child.id">
+              <c-line-item
+                review
+                isAddOn
+                :product="child"
+              />
+            </div>
+            <div v-if="!bundle.addOns.length && account" class="c-lineItem c-lineItem--promo c-lineItem--addOn">
+              <div class="c-lineItem__promoImage u-bgCitrusLight">
+                <div class="c-lineItem__image-wrapper">
+                  <img class="c-lineItem__image" :src="getContent.addons_promo_image" />
+                </div>
+              </div>
+              <div class="c-lineItem__promoText u-bgEvergreen u-textCenter">
+                <div>
+                  <h4 class="c-lineItem__promoHeading c-h4">
+                    {{ getContent.addons_promo_text }}
+                  </h4>
+                  <button class="c-lineItem__button u-btnUnset" @click="handlePrevStep">
+                    {{ getContent.addons_promo_trigger_text }}
+                  </button>
+                </div>
+              </div>
+            </div>
+                    <!--   <div class="c-shipmentsBox__grid"> --><!--  </div>   -->
+          </div>
+        </div>
+     <div>
+    </div>
+    <div v-if="account" class="c-reviewGrid__cta-wrapper u-hideMobile">
+      <c-button class="c-cta c-reviewGrid__cta c-loading--isSecondary"
+        :disabled="submitting"
+        :loading="loading.updatemeals"
+        @click="handleAddToCartAccount"
+        text="Save Changes"
+        :modifiers="['isDefault', 'isSecondary', 'hideTextLoading']"
+      /> <!--  :attributes="{ disabled: !activateModel.length > 0 || loading }"  -->
+    </div>
+      </div>
+      <div v-if="!account" class="c-review-summary">
+        <div class="c-reviewSidebar">
+          <h3 class="c-reviewSidebar__heading c-h3">Order Summary</h3>
+          <div class="c-reviewSidebar__line">
+            <span class="u-weight-400">Delivering To:</span>
+            <span v-show="!editingZip" class="current-user-zip">{{ storedZip }}</span>
+            <span>
+              <form>
+                <input ref="setZip" v-show="editingZip || !storedZip" v-model="newZip" placeholder="Enter Zip" class="c-review__edit-zip" type="tel" minlength="5" maxlength="5" v-on:keyup.enter="saveNewZip" autofocus>
+                <!-- data="user--zip" -->
+                <button v-show="!editingZip && storedZip" class="c-reviewGrid__heading-btn" type="submit" @click="editZip">
+                  Edit
+                </button>
+                <button v-show="editingZip && newZip.length < 5 || !storedZip && newZip.length < 5" class="c-reviewGrid__heading-btn grey-text" type="submit" @click="exitZip">
+                  Exit
+                </button>
+                <button v-show="editingZip && newZip.length === 5 || !storedZip && newZip.length === 5" class="c-reviewGrid__heading-btn" type="submit" @click="saveNewZip">
+                  Save
+                </button> <!-- editingZip && newZip.length === 5 -->
+              </form>
+            </span>
+          </div>
+          <div class="c-reviewSidebar__line">
+            <!-- <span class="u-weight-400"> Delivery Date: </span> -->
+            <!-- <span>{{ shipDate ? formatDate(this.shipDate) : selectDateText }}</span> -->
+<!--             <div class="c-sidebar__line">
+              <c-svg name="chevronDown" class="placeholder-arrow" />
+              <div class="placeholder-wrap" data-placeholder="Delivery Date: ">
+                <datepicker
+                  v-model="shipDate"
+                  :required="true"
+                  :open-date="thisWeek"
+                  :disabled-dates="disabledDates"
+                  :highlighted="availableForDelivery"
+                  format="D, MMMM dsu"
+                  :placeholder="selectDateText"
+                >
+                :inline="true"
+                <div slot="beforeCalendarHeader" class="calender-header">
+                </datepicker>
+              </div>
+            </div> -->
+            <div :class="['c-dropdown', {
+                'c-dropdown--open': dateSelectOpen
+            }]">
+              <section class="c-dropdown__inner">
+                <div class="c-dropdown__toggle u-relative u-pointer" @click.stop="dateSelectOpen = !dateSelectOpen">
+                  {{ dropdownText }}
+                  <div class="c-dropdown__icons">
+                    <span class="c-dropdown__arrow">
+                      <c-icon icon="chevron" />
+                    </span>
+                  </div>
+                </div>
+                <div v-for="(e, i) in 31"
+                  :class="['c-dropdown__item', {
+                    'showDate': availableForDelivery.days.includes(dropdownDay(setDropdownDate(i))) || availableForDelivery.days.includes((dropdownDay(setDropdownDate(i)))%7),
+                    'hideDate': i < numOfDaysOut
+                  }]"
+                  :key="i"
+                  :daynumber="i"
+                  :date="setDropdownDate(i)"
+                  @click="dropdownDateClk"
+                >
+                 <template v-if="setDropdownDate(i).toString().includes('Mon')">
+                   {{ formatDayDateMMIOS(setDropdownDate(i)) }} (Office hours)
+                 </template>
+                 <template v-else-if="setDropdownDate(i).toString().includes('Sun')">
+                   {{ formatDayDateMMIOS(setDropdownDate(i)) }} (PM hours)
+                 </template>
+                 <template v-else>
+                   {{ formatDayDateMMIOS(setDropdownDate(i)) }}
+                 </template>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <div class="c-reviewSidebar__lines">
+            <ul class="c-reviewSidebar__line">
+              <li>
+                Your Meal Plan
+              </li>
+              <li>
+<!--                 <span
+                  v-if="selectedPlan.title !== 'A La Carte'"
+                  class="u-colorPebble u-strikeThrough"
+                >
+                  {{ formatPrice(originalPrice) }}
+                </span> -->
+                <span class="u-colorBroccoli">{{ formatPrice(mealsLinePrice) }}</span>
+              </li>
+            </ul>
+            <ul v-if="bundle.addOns.length" class="c-reviewSidebar__line">
+              <li>
+                FRESH+ Add-ons
+              </li>
+              <li>
+                {{ formatPrice(addOnsLinePrice) }}
+              </li>
+            </ul>
+<!--             <ul class="c-reviewSidebar__line">
+              <li>
+                Discount
+              </li>
+              <li>
+                <span class="u-colorCitrus">
+                  {{ formatPrice(discount) }}
+                </span>
+              </li>
+            </ul> -->
+            <ul class="c-reviewSidebar__line">
+              <li>
+                Subtotal
+              </li>
+              <li>
+                {{ formatPrice(subTotalPrice) }}
+              </li>
+            </ul>
+            <ul class="c-reviewSidebar__line">
+              <li>
+                Shipping
+              </li>
+              <li>
+                <!-- {{ formatPrice(shipping) }} -->
+                Calculated at Checkout
+              </li>
+            </ul>
+            <ul class="c-reviewSidebar__line">
+              <li>
+                Sales Tax
+              </li>
+              <li>
+                –
+              </li>
+            </ul>
+          </div>
+          <ul class="c-reviewSidebar__total">
+            <li>
+              Today's Total
+            </li>
+            <li>
+              <!-- {{ formatPrice(totalPrice) }} -->
+              {{ formatPrice(subTotalPrice) }}
+            </li>
+          </ul>
+
+          <textarea v-if="notesAllowed" class="c-textarea" v-model="deliveryInstructions" placeholder="Enter Delivery Instructions" rows="4"></textarea>
+          <div class="c-reviewSidebar__cta u-hideMobile">
+            <c-button class="c-cta c-reviewGrid__cta c-loading--isSecondary"
+              :disabled="submitting || !(shipDate && storedZip)"
+              :loading="loading.goToCheckout"
+              @click="handleAddToCart"
+              :text="loading.goToCheckout ? '' : 'Continue to Checkout' "
+              :modifiers="['isDefault', 'isSecondary', 'hideTextLoading']"
+            />
+          </div>
+          <div class="c-reviewSidebar__message u-colorPebble">
+            Enter Promo Code &amp; Gift Card at Checkout
+          </div>
+        </div>
+      </div>
+      <div class="c-basketMobile u-hideDesktop">
+        <div class="c-basketMobile__cta">
+          <!-- //:disabled="submitting || !(shipDate && storedZip && account)" -->
+          <c-button class="c-cta c-cta--extraTall c-reviewGrid__cta c-loading--isSecondary"
+            :disabled="submitting || (!shipDate && !account) || (!storedZip && !account)"
+            :loading="loading.updatemeals || loading.goToCheckout"
+            :text="loading.updatemeals || loading.goToCheckout ? ''
+              : account ? 'Save Changes'
+              : 'Continue to Checkout'
+            "
+            @click="handleConditionalAddToCart"
+            :modifiers="['isDefault', 'isSecondary', 'hideTextLoading']"
+          />
+        </div>
+      </div>
+      <!-- Hiding for now per clients request -->
+<!--   <section v-if="this.shipDate && this.display_futureDelivery" class="c-futureDelivery">
+          <h3 class="c-h3">Your Future Deliveries</h3>
+          <p>Your next order will be delivered on</p>
+          <strong>{{ formatDayDate(nextDelivery) }}</strong>
+          <p><em>Modify orders, pause or cancel anytime</em></p>
+        </section>    -->
+    </div>
+  </div>
+</template>
+
+<script>
+  import { mapState, mapGetters, mapActions, mapMutations } from 'vuex';
+  import { formatPrice } from '../../utils';
+  import cBundleNav from '../parts/cBundleNav.vue';
+  import cLineItem from '@shared/components/core/cLineItem.vue';
+  import cIcon from '@shared/components/core/cIcon.vue';
+  import cSvg from '@shared/components/core/cSvg.vue'
+  import cButton from '@shared/components/core/cButton.vue'
+  import Datepicker from 'vuejs-datepicker';
+  import { format, compareAsc } from 'date-fns';
+  import { setNewDateAheadofDate, addDaysToDate, zipAllowsCustomNote, convertToYYYYMMDDlocalT, getWeekStart, calcDatesDiff } from '@shared/utils';
+
+  export default {
+    name: 'Review',
+    data() {
+      return {
+        shipDate: '',
+        shipDateDay: '',
+        chargeDelay: '',
+        dateSelectOpen: false,
+        shippingRates: {
+          subscription: {
+            low: 599,
+            medium: 699,
+            high: 799
+          },
+          onetime: {
+            low: 699,
+            medium: 799,
+            high: 899
+          }
+        },
+        shipDays1: [],
+        shipDays2: [],
+        chrgDay1: '',
+        chrgDay2: '',
+        nextChargeDay: '',
+        deliveryDay: '',
+        defaultDate: new Date(),
+        deliveryDate: null,
+        dropdownText: 'Click to Select',
+        selectDateText: 'Click to Select',
+        submitting: false,
+        notesAllowed: false,
+        deliveryInstructions: '',
+        availableForDelivery: {
+          days: []
+        },
+        editingZip: false,
+        toDay: new Date(),
+        thisWeek: null,
+        disabledDates: {
+          to: null,
+          from: ''
+        },
+        loading: {
+          updatemeals: false,
+          goToCheckout: false
+        },
+        newZip: '',
+        storedZip: '',
+        storedEmail: '',
+        upsellSel: [],
+        ...window.Scoutside.shop
+      }
+    },
+    computed: {
+      ...mapState([
+        'bundle',
+        'navigation',
+        'selectedPlan',
+        'account',
+        'customer',
+        'activeStep'
+      ]),
+      ...mapGetters([
+        'mealsSelected',
+        'totalAddOns'
+      ]),
+      customerEmail(){
+        return customer.email ? customer.email : null;
+      },
+      getContent(){
+        return window.Scoutside.portal.shipments;
+      },
+      getUserZipShipJson() {
+        return {
+          custom_json: this.custom_json
+        }
+      },
+      todayNum(){
+        return this.toDay.getDay();
+      },
+      selectPlan() {
+        if(this.selectedPlan) {
+          return this.selectedPlan
+        } else {
+          const selectPlan = JSON.parse(sessionStorage.getItem('selected_plan'))
+          return selectPlan
+        }
+      },
+      mealsLinePrice() {
+        return this.selectPlan.price * this.mealsSelected;
+      },
+      addOnsLinePrice() {
+        return this.bundle.addOns.reduce(((accumulator, addOn) => accumulator + (addOn.quantity * addOn.price)), 0);
+      },
+      discount(){
+        return 0;
+        // return -2000;
+      },
+      baseItemPrice(){
+        return this.bundle.children[0].price;
+      },
+      shipping(){
+        let output = 0;
+
+        const hasMealsSelected = this.mealsSelected !== 0
+        const isLowShippingRate = (itemsLength) => itemsLength < 10
+        const isMediumShippingRate = (itemsLength) => itemsLength >= 10 && itemsLength <=13
+        const isHighShippingRate = (itemsLength) => itemsLength >= 14
+
+        if (hasMealsSelected) {
+          const itemsLength = this.mealsSelected + this.totalAddOns
+
+          if (isLowShippingRate(itemsLength)) {
+            output = this.shippingRates.subscription.low
+          } else if (isMediumShippingRate(itemsLength)) {
+            output = this.shippingRates.subscription.medium
+          } else if (isHighShippingRate(itemsLength)) {
+            output = this.shippingRates.subscription.high
+          }
+        } else {
+          if (isLowShippingRate(this.totalAddOns)) {
+            output = this.shippingRates.onetime.low
+          } else if (isMediumShippingRate(this.totalAddOns)) {
+            output = this.shippingRates.onetime.medium
+          } else if (isHighShippingRate(this.totalAddOns)) {
+            output = this.shippingRates.onetime.high
+          }
+        }
+
+        return output;
+      },
+      subTotalPrice() {
+        return this.mealsLinePrice + this.addOnsLinePrice + this.discount;
+      },
+      totalPrice() {
+        return this.subTotalPrice + this.shipping;
+      },
+      originalPrice(){
+        return this.baseItemPrice * this.mealsSelected;
+      },
+      subscriptionUpdates() {
+        return this.bundle.children.map(child => {
+          return {
+            shopify_variant_id: child.upsellId || child.variants[0].id,
+            quantity: child.quantity,
+            price: (child.variants[0].price / 100).toFixed(2),
+            hash: child.price_hashes[0],
+            tags: child.tags,
+            product_type: child.type,
+            charge_interval_frequency: 1,
+            order_interval_frequency: 1,
+            order_interval_unit: 'week',
+            upsell_id: this.upsellSel.includes(child.upsellId) ? true : false,
+            upsell_price: this.upsellSel.includes(child.upsellId) ? (child.variants[1].price / 100).toFixed(2) : null,
+            next_charge_scheduled_at: this.customer.nextChargeDate,
+          }
+        })
+      },
+      addOnsUpdates() {
+        return this.bundle.addOns.map(addOn => {
+          return {
+            date: this.customer.nextChargeDate,
+            next_charge_scheduled_at: this.customer.nextChargeDate,
+            price: (addOn.variants[0].price / 100).toFixed(2),
+            product_title: addOn.title,
+            product_type: addOn.type,
+            quantity: addOn.quantity,
+            shopify_product_id: addOn.id,
+            shopify_variant_id: addOn.variants[0].id,
+            properties: {
+              _addOn: true
+            }
+          }
+        });
+      },
+      shipDatePlaceholder() {
+        return this.shipDate ? formatDate(this.shipDate) : this.selectDateText;
+      },
+      nextDelivery() {
+        //return setNewDateAheadofDate(this.shipDate, 7);
+        return addDaysToDate(this.shipDate, 7);
+      },
+      getUserZipCode() {
+        return sessionStorage.getItem('userZipCode');
+      },
+      firstDateOfWeek(){
+        return getWeekStart(this.toDay);
+      },
+      timeEST(){
+        //return this.toDay.getUTCHours() - 5
+        const nowUTC = this.toDay.getUTCHours()
+        return nowUTC < 5 ? nowUTC + 24 - 5 : nowUTC - 5 
+      },      
+      numOfDaysOut(){
+        let num;
+        const today = this.toDay.getDay()  
+              
+        if ([1,4].includes(this.todayNum)) num = 6
+        if ([2,5].includes(this.todayNum)) num = 5
+        if ([3,6].includes(this.todayNum)) num = 4
+        if (this.todayNum === 0) num = 3;      
+
+        if (this.timeEST >= 18) {
+          if (today === 0) {
+            num = num + 3
+          } else if (today === 3) {
+            num = num + 4
+          }
+        }    
+
+        // if ((this.timeEST >= 14 || this.timeEST < 9)) {
+        //   if (today === 0) {
+        //     num = num + 3
+        //   } else if (today === 4) {
+        //     num = num + 4
+        //   }
+        // }                 
+
+        console.log('num2', num)
+
+        return num;
+      }
+    },
+    methods: {
+      ...mapActions([
+        'customerUpdatePlan',
+        'customerDeleteOnetimes',
+        'customerCreateOnetimes'
+      ]),
+      ...mapMutations(['BUNDLE_CHANGE_ACTIVE_STEP']),
+      handlePrevStep() {
+        if (this.activeStep > 0) {
+          this.BUNDLE_CHANGE_ACTIVE_STEP([null, 'dec']);
+        } else {
+          this.$router.push(navigation.links[2].url);
+        }
+     },
+     handleTwoPrevStep() {
+        if (this.activeStep > 0) {
+          this.$store.state.activeStep = this.$store.state.activeStep - 2;
+        } else {
+          this.$router.push(navigation.links[1].url);
+        }
+      },
+      upsellSelected(item, upsellId) {
+        this.upsellSel.push(upsellId);
+      },
+      formatPrice(cents) {
+        return formatPrice(cents);
+      },
+      formatDayDate(date) {
+        return date != null ? format((date), 'dddd, MMMM Do') : null;
+      },
+      formatDayDateIOS(date){
+        const dateStr = convertToYYYYMMDDlocalT(date)
+        return dateStr != null ? format(new Date((dateStr)), 'dddd, MMMM D') : null;
+      },
+      formatDayDateMMIOS(date){
+        const dateStr = convertToYYYYMMDDlocalT(date)
+        return dateStr != null ? format(new Date((dateStr)), 'dddd, MMM D') : null;
+      },
+      formatDate(date) {
+        return date != null ? format((date), 'MMMM D, YYYY') : null;
+      },
+      setDropdownDate(index){
+        return new Date(
+          addDaysToDate(new Date(this.toDay), (index))
+        );
+      },
+      dropdownDay(elm) {
+        return new Date(elm).getDay();
+      },
+      dropdownDateClk(event){
+        this.dropdownText = event.target.textContent;
+        this.shipDate = new Date(event.target.getAttribute('date'));
+        this.dateSelectOpen = false;
+      },
+      async handleAddToCart() {
+        this.loading.goToCheckout = true;
+        let cartData = {};
+        const deliveryDay = format((this.shipDate), 'dddd');
+        const deliveryDate = format((this.shipDate), 'MM-DD-YYYY');
+        const deliveryInstructions = this.deliveryInstructions;
+        const chargeDayDelay = this.chargeDelay;
+        const userEmail = this.storedEmail;
+        const lineItems = [...this.bundle.children];
+        const addOns = [...this.bundle.addOns];
+        const subscriptionProperties = {
+          shipping_interval_frequency: 1,
+          shipping_interval_unit_type: 'week',
+          first_recurring_charge_delay: chargeDayDelay,
+          charge_delay: chargeDayDelay
+        }
+
+        this.submitting = true;
+
+        cartData.items = lineItems.reverse().map(item => {
+          const isSubscription = this.selectPlan.subscription
+          return {
+            id: item.variants[0].id,
+            charge_interval_frequency: 1,
+            price: (this.selectPlan.price / 100).toFixed(2),
+            quantity: item.quantity,
+            properties: isSubscription ? subscriptionProperties : {},
+            first_recurring_charge_delay: chargeDayDelay,
+            charge_delay: chargeDayDelay
+          }
+        });
+
+        cartData.items = [
+          ...addOns.reverse().map(item => {
+            return {
+              id: item.variants[0].id,
+              quantity: item.quantity,
+              properties: {
+                _addOn: true
+              }
+            }
+          }),
+          ...cartData.items
+        ];
+
+        cartData.note_attributes = [
+          {
+            "name": "Delivery Day",
+            "value": deliveryDay
+          },
+          {
+            "name": "Delivery Date",
+            "value": deliveryDate
+          },
+          {
+            "name": "Meal Plan",
+            "value": this.selectPlan.minimum
+          }
+        ];
+
+        // const testObjj = {
+        //   testtt: {
+        //     'one': 123
+        //   }
+        // }
+
+        const attributesHash = {
+          'Delivery Day': deliveryDay,
+          'Delivery Date': deliveryDate,
+          'Meal Plan': this.selectPlan.minimum
+        }
+
+        cartData.attributes = attributesHash;
+
+        cartData.note = deliveryInstructions ? `Delivery Instructions: ${deliveryInstructions}` : null
+        cartData.email = userEmail
+
+        cartData.shipping_address = {
+          "address1": "temp",
+          "address2": "",
+          "city": "temp",
+          "company": "",
+          "country": "temp",
+          "first_name": "temp",
+          "last_name": "temp",
+          "phone": "temp",
+          "province": "",
+          "zip": this.storedZip
+        }
+
+        const clearRequest = await fetch('/cart/clear.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+
+        const addRequest = await fetch('/cart/add.js', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(cartData)
+        });
+        
+        //localStorage.setItem('cart_data', JSON.stringify(cartData));
+
+        const lpDiscountCode = sessionStorage.getItem('lp_discountCode')
+        const isShopifyUserNotRecharge = sessionStorage.getItem('shopify_user__no_recharge')
+
+        localStorage.setItem('rc_checkout', true);
+        //localStorage.setItem('ls_delv_note', deliveryInstructions);
+        localStorage.setItem('ls_selected_plan', JSON.stringify(this.selectPlan));
+        localStorage.setItem('ls_bundle_content', JSON.stringify(this.bundle.children));
+        localStorage.setItem('ls_addOns', JSON.stringify(this.bundle.addOns));        
+
+
+        if (addRequest.status === 200) {
+          if (this.selectPlan.subscription) {
+            const hashRequest = await fetch('/cart?view=hash', {
+              method: 'GET',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+            })
+            const hashJson = await hashRequest.json();
+
+            const tokenRequest = await fetch('/cart.js');
+
+            const tokenJson = await tokenRequest.json();
+
+            if (isShopifyUserNotRecharge) {
+              cartData.note_attributes[3] = {
+                "name": "isShopifyOnly",
+                "value": true
+              } 
+            }
+
+            hashJson.cart_token = tokenJson.token;
+            hashJson.note_attributes = cartData.note_attributes;
+            hashJson.shipping_address = cartData.shipping_address;
+            hashJson.note = cartData.note;
+            hashJson.email = cartData.email;
+           // hashJson.analytics_data = testObjj;
+
+           // console.log(hashJson)
+
+            const appRequest = await fetch('https://fmp-app-production.herokuapp.com/plan/checkout', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'x-fmp-key': window.Scoutside.api.fmp_app_key
+              },
+              body: JSON.stringify(hashJson)
+            });
+
+            const appResponse = await appRequest.json(); 
+
+            if (lpDiscountCode) {
+             window.location = `https://checkout.freshmealplan.com/r/checkout/${appResponse.token}?myshopify_domain=fresh-meal-plan.myshopify.com&discount=${lpDiscountCode}`;
+
+              sessionStorage.removeItem('lpDiscountCode')
+            } else {
+              window.location = `https://checkout.freshmealplan.com/r/checkout/${appResponse.token}?myshopify_domain=fresh-meal-plan.myshopify.com`;
+            }         
+
+           // window.location = `https://checkout.freshmealplan.com/r/checkout/${appResponse.token}?myshopify_domain=fresh-meal-plan.myshopify.com`;
+            //  URL Code Below adds $20 Off Discount Code
+            //  window.location = `https://checkout.rechrageapps.com/r/checkout/${appResponse.token}?myshopify_domain=fresh-meal-plan.myshopify.com&discount=20_DOLLARS_OFF`;
+
+          } else {
+            window.location = '/checkout';
+          }
+        }
+      },
+      async handleAddToCartAccount() {
+        this.submitting = true;
+        this.loading.updatemeals = true;
+        const update = await this.customerUpdatePlan({
+          addressId: this.customer.addressId,
+          updates: [
+            ...this.subscriptionUpdates
+          ],
+          deletes: [
+            ...this.subscriptionUpdates
+          ]
+        });
+        const removeOneTimes = await this.customerDeleteOnetimes();
+        const createOneTimes = await this.customerCreateOnetimes({
+          addressId: this.customer.addressId,
+          creates: this.addOnsUpdates,
+        });
+        const event = new CustomEvent('closeBundleDrawer');
+        document.dispatchEvent(event);
+      },
+      async handleConditionalAddToCart(){
+        this.account ? this.handleAddToCartAccount() : this.handleAddToCart();
+      },
+      editZip(e) {
+        e.preventDefault();
+        this.editingZip = true;
+        this.$refs.setZip.focus();
+      },
+      exitZip(e) {
+        e.preventDefault();
+        this.editingZip = false;
+      },
+      saveNewZip(e) {
+        e.preventDefault();
+        this.editingZip ? sessionStorage.setItem('userZipCode', this.newZip) : null;
+        this.storedZip = this.newZip;
+        this.shipDate = '';
+        this.editingZip = false;
+      },
+      getUserZipAndEmail() {
+        this.storedZip = sessionStorage.getItem('userZipCode');
+        this.storedEmail = sessionStorage.getItem('userEmail')
+        ? sessionStorage.getItem('userEmail')
+        : this.customerEmail ? this.customerEmail : 'NO EMAIL';
+      },
+      removeCartFromRCcheckout(){
+        const getAddOnsStr = localStorage.getItem('ls_addOns')
+        const userAddOns   = JSON.parse(getAddOnsStr)
+
+        if(this.bundle.addOns.length < 1) {
+          if(getAddOnsStr) {
+            this.bundle.addOns = userAddOns
+          }
+        }
+
+        setTimeout(()=>{
+          localStorage.removeItem('rc_checkout')
+          localStorage.removeItem('ls_selected_plan')
+          localStorage.removeItem('ls_bundle_content')
+          localStorage.removeItem('ls_addOns')
+        },1375)
+      },
+      async mainDeliveryFunc() {
+        const storedZip = this.storedZip;
+        const convertZipTextToJson = JSON.parse(this.custom_json);
+        const zipData = Object.entries(convertZipTextToJson);
+        const currentDay = this.toDay.getDay();
+        const currentHourEST = (this.toDay.getUTCHours() - 4); // 6pEST is cutoff since FMP is HQ in FL, USA
+
+        const disableMonthOutDates = () => {
+          let monthFromToday = new Date();
+          monthFromToday.setDate(monthFromToday.getDate() + 28);
+          this.disabledDates.from = monthFromToday;
+        }
+        const xDaysAhead = (x) => {
+          let xFromToday = new Date();
+          xFromToday.setDate(xFromToday.getDate() + x);
+          this.thisWeek = xFromToday;
+          this.disabledDates.to = xFromToday;
+        }
+        const dayToNumTable = {
+          sunday: 0,
+          monday: 1,
+          tuesday: 2,
+          wednesday: 3,
+          thursday: 4,
+          friday: 5,
+          saturday: 6
+        }
+
+        const makeSundaySeven = (tdy) => {
+          return tdy = tdy === 0 ? tdy + 7 : tdy + 0;
+        }
+
+        const dayMap = (day) => dayToNumTable[day];
+
+        const getShipChargeDaysPerZipandDay = (data, userzip, today) => {
+          let getCustomerByZip = Object.entries(data).filter(function(o) {
+            if (userzip <= o[1][1]['zip_1'] && userzip >= o[1][1]['zip_0']) {
+              return o[0];
+            } else {
+              return false;
+            }
+          })          
+
+          if (getCustomerByZip.length) {
+            let xArr = getCustomerByZip.length - 1;
+            if (getCustomerByZip[xArr][1][1]['ship'] === 'yes') {
+              let cutoffDay1 = dayMap(getCustomerByZip[xArr][1][1]['cutoff_day1'])
+              let cutoffDay2 = dayMap(getCustomerByZip[xArr][1][1]['cutoff_day2'])
+              let chargeDay1 = getCustomerByZip[xArr][1][1]['charge_day1']
+              let chargeDay2 = getCustomerByZip[xArr][1][1]['charge_day2']
+              let delvDay1 = getCustomerByZip[xArr][1][1]['delivery_day1']
+              let delvDay2 = getCustomerByZip[xArr][1][1]['delivery_day2']
+              let delvDay1arr = delvDay1.replace(' ','').split(',').map(el => dayMap(el))
+              let delvDay2arr = delvDay2.replace(' ','').split(',').map(el => dayMap(el))
+              let delvDays = delvDay1arr.concat(delvDay2arr)
+              let cutoffToday = cutoffDay1 === today || cutoffDay2 === today ? true : false;
+              // cutoffDay1 = makeSundaySeven(cutoffDay1)
+              // cutoffDay2 = makeSundaySeven(cutoffDay2)
+              // today = makeSundaySeven(today)
+
+              this.availableForDelivery.days = delvDays
+              this.shipDays1 = delvDay1arr;
+              this.shipDays2 = delvDay2arr;
+              this.selectDateText = 'Click to Select'
+
+              this.chrgDay1 = dayMap(chargeDay1)
+              this.chrgDay2 = dayMap(chargeDay2) < dayMap(chargeDay1) ? dayMap(chargeDay2) + 7 : dayMap(chargeDay2);
+
+            } else {
+              this.selectDateText = 'No delivery to this zip'
+              this.availableForDelivery.days = [];
+              this.shipDate = '';
+            }
+          } else {
+            this.availableForDelivery.days = [1,2,5,6]
+            this.selectDateText = 'Click to Select'
+          }
+        }
+
+        const numberzOnly = /[0-9\/]+/;
+        const zipInput = document.querySelector('.c-review__edit-zip')
+        if (zipInput) {
+          zipInput.addEventListener('keypress', e => {
+            if (!numberzOnly.test(e.key)) {
+              e.preventDefault()
+            }
+          })
+        }
+
+        xDaysAhead(4);
+        disableMonthOutDates();
+        getShipChargeDaysPerZipandDay(zipData, storedZip, currentDay);
+        if (zipAllowsCustomNote(this.custom_json_notes, this.storedZip)) {
+          this.notesAllowed = true;
+        }
+      },
+      async setChargeDelay() {
+        if(this.shipDate) {
+          let gapFromTodaytoCharge;          
+          let shipDay = this.shipDate.getDay();
+          let tdyD = this.toDay.getDate();
+          const month = this.toDay.getMonth() + 1;
+          const year = this.toDay.getFullYear();
+          const daysInMonth = new Date(year, month, 0).getDate();
+
+          let ship1s = [...this.shipDays1];
+          let ship2s = [...this.shipDays2];
+
+          if (ship1s.includes(shipDay)) {
+            this.nextChargeDay = this.chrgDay1
+          } else if (ship2s.includes(shipDay)) {
+            this.nextChargeDay = this.chrgDay2
+          } else if (shipDay === 1 || shipDay === 2) {
+            this.nextChargeDay = 4
+          } else {
+            this.nextChargeDay = 8
+          }
+
+          if (this.shipDate.getDate() < tdyD) {
+            this.nextChargeDay = this.nextChargeDay + daysInMonth
+          }
+
+          gapFromTodaytoCharge = this.nextChargeDay - shipDay;
+          this.chargeDelay = (this.shipDate.getDate() + gapFromTodaytoCharge) - tdyD;
+        } else {
+          this.dropdownText = 'Click to Select';
+        }
+      },
+      async reinstateCartAfterRefresh() {
+        const getAddons = sessionStorage.getItem("addon_content");
+        if (getAddons) {
+          const makeJsonn = JSON.parse(getAddons);
+          this.bundle.addOns = makeJsonn;
+        }
+      }
+    },
+    mounted() {
+      this.getUserZipAndEmail();
+      this.mainDeliveryFunc();
+      this.removeCartFromRCcheckout();
+      if(this.bundle.addOns.length < 1) this.reinstateCartAfterRefresh();
+    },
+    watch: {
+      storedZip: {
+        handler: 'mainDeliveryFunc'
+      },
+      shipDate: {
+        handler: 'setChargeDelay'
+      }
+    },
+    components: {
+      cBundleNav,
+      cLineItem,
+      cIcon,
+      Datepicker,
+      cSvg,
+      cButton
+    }
+  }
+</script>
+
+
+<style>
+  .c-sidebar__line {
+    position: relative;
+  }
+
+  .vdp-datepicker__calendar div .day:not(.highlighted) {
+    cursor: not-allowed;
+    pointer-events: none;
+    color: #ddd;
+  }
+
+  .vdp-datepicker input[type=text] {
+    background: transparent;
+    font-size: 16px;
+    line-height: 1;
+    padding: 12px 20px 8px 135px;
+  }
+
+  .placeholder-wrap{
+    position: relative;
+  }
+
+  .placeholder-wrap::after {
+    position: absolute;
+    top: 15px;
+    left: 17px;
+    content: attr(data-placeholder);
+    font-size: 17px;
+    font-weight: 400;
+    pointer-events: none;
+  }
+
+  .placeholder-arrow {
+    position: absolute;
+    top: 17px;
+    right: 18px;
+    color: #3a3a3a;
+    font-weight: 400;
+    z-index: 0;
+  }
+
+  .placeholder-arrow svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .placeholder-arrow svg path {
+    fill: #3a3a3a !important;
+    stroke: #3a3a3a!important;
+  }
+
+  .grey-text {
+    color: #bbb;
+  }
+
+  .current-user-zip {
+    padding-right: 10px;
+  }
+
+  .c-futureDelivery {
+    grid-column-start: 2;
+    background-color: #fbfaf4;
+    border-radius: 12px;
+    line-height: 1.625;
+    text-align: center;
+    padding: 32px 40px;
+    margin-top: 20px;
+  }
+
+  .c-futureDelivery h3 {
+    font-size: 28px;
+  }
+
+  .c-futureDelivery em {
+    display: inline-block;
+    font-style: italic;
+    margin-top: 10px;
+  }
+
+  .c-loading__wheel {
+    width: 24px;
+    height: 24px;
+    /*border-style: inset;*/
+    border-style: solid;
+    border-width: 4px;
+    border-radius: 50%;
+    animation: spin 0.75s linear infinite;
+    margin-left: 8px;
+  }
+
+  .c-reviewSidebar__cta .c-loading__wheel,
+  .c-reviewGrid__cta .c-loading__wheel {
+    width: 25px;
+    height: 25px;
+    border-color: rgba(255,255,255,0.6);
+    border-top-color: white;
+  }
+
+  .u-strikeThrough {
+    text-decoration: line-through;
+  }
+
+  .c-reviewSidebar__line .c-dropdown__inner {
+    /*box-shadow: 0 0 0 1px $color-paleo;*/
+    border: 1px solid $color-paleo;
+    background-color: $color-ecru;
+
+    width: fit-content;
+    min-width: 100%;
+  }
+
+  .c-reviewSidebar__line .c-dropdown__inner .c-dropdown__toggle {
+    font-weight: 500;
+    letter-spacing: 0.25px;
+    padding-right: 32px;
+  }
+
+  .c-reviewSidebar__line .c-dropdown__inner .c-dropdown__item {
+    cursor: pointer;
+    display: none;
+  }
+
+  .c-reviewSidebar__line .c-dropdown--open .c-dropdown__inner .c-dropdown__item.showDate {
+    display: block;
+  }
+
+  .c-reviewSidebar__line .c-dropdown--open .c-dropdown__inner .c-dropdown__item.hideDate {
+    display: none;
+  }
+
+  @media screen and (max-width: 768px) {
+    .vdp-datepicker input[type=text] {
+      padding: 12px 20px 8px 140px;
+    }
+
+    .vdp-datepicker input[type=text],
+    .placeholder-wrap::after {
+      font-size: 13px;
+    }
+
+    .placeholder-arrow {
+      top: 13px
+    }
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+
+</style>

@@ -1,0 +1,76 @@
+<script>
+  const addOns = {
+    content: {{ section.settings | json }},
+    collections: []
+  }
+
+  {% for block in section.blocks %}
+    {% assign _collection = collections[block.settings.collection] %}
+
+    addOns.collections.push({
+      ...JSON.parse('{{ _collection | json }}'),
+      short_description: '{{ block.settings.short_description }}',
+      products: [
+        {% for _product in _collection.products %}
+          {
+            ...JSON.parse(JSON.stringify({{ _product | json }})),
+            nutritional_info: {
+              ...JSON.parse(JSON.stringify({{ _product.metafields.nutritional_info | json }}))
+            },
+            subscriptions: {
+              ...JSON.parse(JSON.stringify({{ _product.metafields.subscriptions | json }}))
+            },
+            url: '{{ _product.url }}',
+            subtitle: {{ _product.metafields.product_details.subtitle | json }},
+            flag: '{{ _product.metafields.product_flags.flag }}'
+          },
+        {% endfor %}
+      ]
+    })
+  {% endfor %}
+
+  window.Scoutside.bundle.addOns = addOns;
+</script>
+
+{% schema %}
+  {
+    "name": "Bundle - Add-Ons",
+    "settings": [
+      {
+        "id": "title",
+        "type": "text",
+        "label": "Title",
+        "default": "Fresh+ Add-Ons"
+      },
+      {
+        "id": "text",
+        "type": "richtext",
+        "label": "Text"
+      },
+      {
+        "id": "cta_text",
+        "type": "text",
+        "label": "CTA Text",
+        "default": "No Thanks, Proceed to Checkout"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "addons",
+        "name": "Add-Ons",
+        "settings": [
+          {
+            "id": "collection",
+            "type": "collection",
+            "label": "Collection"
+          },
+          {
+            "id": "short_description",
+            "type": "richtext",
+            "label": "Short Description"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

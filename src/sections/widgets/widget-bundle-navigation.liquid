@@ -1,0 +1,36 @@
+<script>
+  var navigation = {}
+
+  {% for block in section.blocks %}
+    navigation['{{ block.type }}'] = navigation['{{ block.type }}'] || []
+    navigation['{{ block.type }}'].push({{ block.settings | json }})
+  {% endfor %}
+
+  window.Scoutside.bundle.navigation = navigation
+</script>
+
+{% schema %}
+  {
+    "name": "Bundle - Navigation",
+    "max_blocks": 5,
+    "blocks": [
+      {
+        "type": "links",
+        "name": "Link",
+        "settings": [
+          {
+            "id": "title",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "url",
+            "type": "text",
+            "label": "URL",
+            "info": "Path appended to base url"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
