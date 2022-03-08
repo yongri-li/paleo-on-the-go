@@ -1,12 +1,29 @@
 <template>
   <div id="meal-builder">
-    Meal Builder
+    <footer-banner v-if="page === 'One Time'"
+      :items="footerBanner.oneTime.item"
+      :title="footerBanner.oneTime.content.title"
+    />
+    <footer-banner v-else
+      :items="footerBanner.subscription.item"
+    />
   </div>
 </template>
 
 <script>
+import FooterBanner from './components/FooterBanner.vue'
+
 export default {
   name: 'Meal Builder',
+  components: {
+    FooterBanner
+  },
+  data() {
+    return {
+      ...window.Scoutside.bundle,
+      page: 'Subscription'
+    }
+  }
 }
 </script>
 

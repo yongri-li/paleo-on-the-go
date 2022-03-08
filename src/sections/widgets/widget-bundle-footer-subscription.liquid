@@ -1,0 +1,34 @@
+<script>
+  const footerBannerSubscription = {}
+  {% for block in section.blocks %}
+    footerBannerSubscription['{{ block.type }}'] = footerBannerSubscription['{{ block.type }}'] || []
+    footerBannerSubscription['{{ block.type }}'].push({{ block.settings | json }})
+  {% endfor %}
+
+  window.Scoutside.bundle.footerBanner = window.Scoutside.bundle.footerBanner || {}
+  window.Scoutside.bundle.footerBanner.subscription = footerBannerSubscription
+</script>
+
+{% schema %}
+  {
+    "name": "Footer Subscription",
+    "blocks": [
+      {
+        "type": "item",
+        "name": "ITEM",
+        "settings": [
+          {
+            "label": "Text",
+            "id": "text",
+            "type": "text"
+          },
+          {
+            "label": "Icon",
+            "id": "icon",
+            "type": "image_picker"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
