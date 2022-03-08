@@ -20,6 +20,8 @@ src/assets/index.js
 src/assets/theme-api.js
 src/assets/theme.css
 src/assets/theme.js
+src/assets/widget-bundle.css
+src/assets/widget-bundle.js
 src/assets/widget-cart.css
 src/assets/widget-cart.js
 src/assets/widget-general.css
