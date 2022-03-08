@@ -1,15 +1,19 @@
 <template>
-  <div class="pcard">
+  <div class="pcard" v-if="product">
     <div class="pcard__header">
       <div class="pcard__header--figure">
-        <img class="pcard__header--img" src="https://cdn.shopify.com/s/files/1/0088/3163/1415/products/Chicken-Breakfast-Sausage-Patties_101web_5000x.jpg?v=1575463358" alt="imagen test" />
+        <img
+          class="pcard__header--img"
+          :src="imageUrl"
+          :alt="product.title"
+        />
       </div>
       <div class="pcard__info">
         <div class="pcard__info--title">
-          Southern Style Braised Brisket
+          {{ product.title }}
         </div>
         <div class="pcard__info--subtitle">
-          with Cauliflower & Spinach
+          this is for metafields subtitles
         </div>
         <div class="pcard__add-to-cart">
           <div v-if="addToCartOpen" class="pcard__add-to-cart--open">
@@ -35,36 +39,15 @@
       </div>
     </div>
     <div class="pcard__prices">
-      <div class="pcard__price">
+      <div
+        v-for="box in boxesPricingScale"
+        :key="box.size"
+        class="pcard__price">
         <div class="pcard__price--title pcard__price--data">
-          One Time
+          {{ box.size }}
         </div>
         <div class="pcard__price--number pcard__price--data">
-          $19.95
-        </div>
-      </div>
-      <div class="pcard__price">
-        <div class="pcard__price--title pcard__price--data">
-          8 Items
-        </div>
-        <div class="pcard__price--number pcard__price--data">
-          $18.68
-        </div>
-      </div>
-      <div class="pcard__price selected">
-        <div class="pcard__price--title pcard__price--data">
-          10 Items
-        </div>
-        <div class="pcard__price--number pcard__price--data">
-          $17.73
-        </div>
-      </div>
-      <div class="pcard__price">
-        <div class="pcard__price--title pcard__price--data">
-          12 Items
-        </div>
-        <div class="pcard__price--number pcard__price--data">
-          $14.87
+          {{ box.price }}
         </div>
       </div>
     </div>
@@ -72,14 +55,61 @@
 </template>
 
 <script>
+import { formatPrice } from '../../utils'
+
 export default {
-  name: 'Product Card',
+  name: 'ProductCard',
   props: {
+    product: {
+      type: Object,
+      default: null
+    },
     addToCartOpen: {
       type: Boolean,
       default: false
+    },
+  },
+  data() {
+    return {
+      boxes: [
+        {
+          size: 8,
+          discount: 0.08
+        },
+        {
+          size: 12,
+          discount: 0.12
+        },
+        {
+          size: 16,
+          discount: 0.16
+        }
+      ]
     }
   },
+  computed: {
+    imageUrl() {
+      const imgFound = this.product.media.find(item => item.position === 1)
+      const urlFinal = imgFound.src.replace('.jpg','_450x450.jpg').replace('.png','_450x450.png')
+      return urlFinal
+    },
+    boxesPricingScale() {
+      const price = this.product.price
+      const scale = [
+        {
+          size: 'One Time',
+          price: formatPrice(price)
+        }
+      ]
+      this.boxes.forEach(box => {
+        scale.push({
+          size: `${box.size} Items`,
+          price: formatPrice( price * (1 - box.discount))
+        })
+      });
+      return scale
+    }
+  }
 }
 </script>
 
@@ -119,6 +149,11 @@ export default {
       line-height: 110%;
       letter-spacing: -0.02em;
       text-transform: capitalize;
+      -webkit-line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
     }
 
     &--subtitle {

@@ -16,14 +16,14 @@ import ProductCollection from './components/Products/ProductCollection.vue'
 import FooterBanner from './components/FooterBanner.vue'
 
 export default {
-  name: 'Meal Builder',
+  name: 'MealBuilder',
   components: {
     ProductCollection,
     FooterBanner
   },
   data() {
     return {
-      ...window.Scoutside.bundle,
+      footerBanner: window.Scoutside.bundle.footerBanner,
       page: 'Subscription'
     }
   }

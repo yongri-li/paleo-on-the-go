@@ -1,20 +1,26 @@
 <template>
   <div class="product-collection">
-    <product-card class="item active" :addToCartOpen="true"/>
-    <product-card class="item"/>
-    <product-card class="item"/>
-    <product-card class="item"/>
+    <product-card
+      v-for="product in collections[0].products"
+      :key="product.id"
+      :product="product"
+      class="item"
+    />
   </div>
 </template>
 
 <script>
 import ProductCard from './ProductCard.vue'
+import { mapState } from 'vuex'
 
 export default {
-  name: 'Product Collection',
+  name: 'ProductCollection',
   components: {
     ProductCard
-  }
+  },
+  computed: {
+    ...mapState(['collections'])
+  },
 }
 </script>
 
