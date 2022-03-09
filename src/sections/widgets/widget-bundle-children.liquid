@@ -6,6 +6,7 @@
     collections.push({
       ...JSON.parse('{{ _collection | json }}'),
       short_description: '{{ block.settings.short_description }}',
+      url: '{{ block.settings.url }}',
       products: [
         {% paginate _collection.products by 50 %}
           {% for _product in _collection.products %}
@@ -36,6 +37,12 @@
             "label": "Collection",
             "id": "collection",
             "type": "collection"
+          },
+          {
+            "label": "URL",
+            "id": "url",
+            "type": "text",
+            "info": "Path appended to base url without /"
           },
           {
             "label": "Short Description",
