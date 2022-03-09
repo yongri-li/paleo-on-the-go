@@ -1,0 +1,49 @@
+<script>
+  const collections = []
+
+  {% for block in section.blocks %}
+    {% assign _collection = collections[block.settings.collection] %}
+    collections.push({
+      ...JSON.parse('{{ _collection | json }}'),
+      short_description: '{{ block.settings.short_description }}',
+      products: [
+        {% paginate _collection.products by 50 %}
+          {% for _product in _collection.products %}
+            {
+              ...JSON.parse(JSON.stringify({{ _product | json }})),
+              url: '{{ _product.url }}',
+              collection: JSON.parse('{{ _collection | json }}')
+            },
+          {% endfor %}
+        {% endpaginate %}
+      ]
+    });
+  {% endfor %}
+
+  window.Scoutside.bundle.collections = collections
+
+</script>
+
+{% schema %}
+  {
+    "name": "Bundle - Children",
+    "blocks": [
+      {
+        "type": "childrens",
+        "name": "Bundle Children",
+        "settings": [
+          {
+            "label": "Collection",
+            "id": "collection",
+            "type": "collection"
+          },
+          {
+            "label": "Short Description",
+            "id": "short_description",
+            "type": "richtext"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

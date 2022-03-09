@@ -1,5 +1,6 @@
 <template>
   <div id="meal-builder">
+    <product-collection />
     <footer-banner v-if="page === 'One Time'"
       :items="footerBanner.oneTime.item"
       :title="footerBanner.oneTime.content.title"
@@ -11,16 +12,18 @@
 </template>
 
 <script>
+import ProductCollection from './components/Products/ProductCollection.vue'
 import FooterBanner from './components/FooterBanner.vue'
 
 export default {
-  name: 'Meal Builder',
+  name: 'MealBuilder',
   components: {
+    ProductCollection,
     FooterBanner
   },
   data() {
     return {
-      ...window.Scoutside.bundle,
+      footerBanner: window.Scoutside.bundle.footerBanner,
       page: 'Subscription'
     }
   }
