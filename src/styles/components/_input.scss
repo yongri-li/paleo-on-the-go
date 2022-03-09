@@ -4,22 +4,21 @@
   @include flex($align: center);
   overflow: hidden;
   transition-property: background-color, border-color, box-shadow, color;
-  transition-duration: .15s;
+  transition-duration: 0.15s;
   transition-timing-function: ease-in-out;
   -webkit-tap-highlight-color: transparent;
 }
 
-
 .c-input--isDefault {
   width: 100%;
-  height: 56px;
-  padding: 0px 15px;
-  background-color: $color-white;
-  @include border-input;
-  @include shadow-input;
-  color: $color-primary;
+  height: 3rem;
+  padding: 0 1rem;
+  background-color: $color-ltgrey;
+  // @include border-input;
+  // @include shadow-input;
+  color: $color-black;
   font-family: $font-body;
-  font-size: 18px;
+  font-size: 14px;
   &:focus {
     @include shadow-input-focus;
   }

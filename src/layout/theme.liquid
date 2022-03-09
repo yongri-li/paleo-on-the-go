@@ -1,11 +1,11 @@
 <!doctype html>
 <html lang="{{ shop.locale }}">
 <head>
-  {% include "theme-meta" %}
-  {% include "theme-styles" %}
-  {% include 'theme-customer' %}
-  {% include 'theme-shop' %}
-  {% include 'theme-api' %}
+  {% render 'theme-meta' %}
+  {% render 'theme-styles' %}
+  {% render 'theme-customer' %}
+  {% render 'theme-shop' %}
+  {% render 'theme-api' %}
   {{ content_for_header }}
   <style>
     #preview-bar-iframe { 
@@ -14,13 +14,13 @@
   </style>
 </head>
 <body class="o-body" data-body>
-  {% include 'theme-header' %}
+  {% render 'theme-header' %}
   <main class="o-main {% if template == 'index' %}o-homepage{% endif %}" data-main>
     {{ content_for_layout }}
   </main>
   {% include 'theme-footer' %}
-  {% include 'widget-cart' %}
-  {% include "theme-scripts" %}
-  {% include "vendors-loyalty-lion" %}
+  {% render 'widget-cart' %}
+  {% render 'theme-scripts' %}
+  {% render 'vendors-loyalty-lion' %}
 </body>
 </html>

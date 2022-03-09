@@ -117,14 +117,19 @@ export default {
   }
 }
 .c-portalHeader__main {
-  width: 100%;
+  width: 92vw;
+  max-width: 1600px;
   height: 100%;
-  padding: 0 30px;
+  margin: 0 auto;
 }
 .c-portalHeader__mainNav {
   width: 100%;
   height: 100%;
   @include flex($justify: flex-start, $align: stretch);
+
+  a.c-portalHeader__mainLink:first-child {
+    padding-left: 0;
+  }
 }
 .c-portalHeader__mainLink {
   padding: 0 30px;
