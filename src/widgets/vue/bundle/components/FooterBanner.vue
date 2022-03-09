@@ -3,7 +3,7 @@
     <div v-if="title" class="footer-banner__title">
       {{ title }}
     </div>
-    <div v-for="item in items" :key="item"
+    <div v-for="item in items" :key="item.text"
       class="footer-banner__item">
       <div class="footer-banner__item--icon">
         <img :src="item.icon" :alt="item.text" />
