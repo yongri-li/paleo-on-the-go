@@ -154,6 +154,10 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
+
+      @media screen and (min-width: 769px){
+        height: 53px;
+      }
     }
 
     &--subtitle {

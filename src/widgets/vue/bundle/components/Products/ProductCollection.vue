@@ -40,7 +40,11 @@ export default {
     max-width: 950px;
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-between;
+
+    .item:nth-child(3n+2) {
+      margin-left: 1%;
+      margin-right: 1%;
+    }
   }
 
 }
