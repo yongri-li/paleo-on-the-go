@@ -124,4 +124,10 @@
       color: lighten($color-secondary, 20%);
     }
   }
+  &.c-button--isBlack {
+    &:hover {
+      border-color: lighten($color-black, 20%);
+      color: lighten($color-black, 20%);
+    }
+  }
 }

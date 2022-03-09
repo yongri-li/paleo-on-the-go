@@ -1,45 +1,33 @@
 <template>
   <div :class="_buildModifiers('c-sidebar', sidebar.modifiers)">
-    <c-overlay class="c-sidebar__overlay"
-      :show="show"
-      @click="UI_CLOSE_SIDEBAR"
-    />
-    <c-drawer class="c-sidebar__drawer"
+    <c-overlay class="c-sidebar__overlay" :show="show" @click="UI_CLOSE_SIDEBAR" />
+    <c-drawer
+      class="c-sidebar__drawer"
       :show="show"
       :side="sidebar.side"
       :closable="false"
-      :modifiers="[ 'isFullWidth', ...sidebar.modifiers ]"
+      :modifiers="['isFullWidth', ...sidebar.modifiers]"
       @close="UI_CLOSE_SIDEBAR"
     >
       <div class="c-sidebar__container o-container">
-        <button class="c-sidebar__back"
+        <button
+          class="c-sidebar__back"
           v-if="!sidebar.settings.hideBack || backText"
           @click="UI_CLOSE_SIDEBAR"
         >
-          <c-svg class="c-sidebar__backIcon"
-            name="chevron"
-          />
-          <span class="c-sidebar__backText" 
-            v-html="backText"
-          />
+          <c-svg class="c-sidebar__backIcon" name="chevron" />
+          <span class="c-sidebar__backText" v-html="backText" />
         </button>
-        <c-h class="c-sidebar__heading"
-          v-if="heading"
-          tag="h1"
-          level="1"
-          :text="heading"
-        />
-        <component class="c-sidebar__content" 
+        <c-h class="c-sidebar__heading" v-if="heading" tag="h1" level="1" :text="heading" />
+        <component
+          class="c-sidebar__content"
           :is="sidebarComponent"
           :content="sidebar.content"
           :settings="sidebar.settings"
         />
       </div>
     </c-drawer>
-    <c-sidebarPayment class="c-pageDetails__payment" 
-      v-if="showPayment"
-      :settings="sidebar.settings"
-    />
+    <c-sidebarPayment class="c-pageDetails__payment" v-if="showPayment" :settings="sidebar.settings" />
   </div>
 </template>
 
@@ -55,13 +43,16 @@ export default {
   data: () => ({
     sidebarComponent: false
   }),
-  components: { 
-    cOverlay, cDrawer, cSvg, cH,
+  components: {
+    cOverlay,
+    cDrawer,
+    cSvg,
+    cH,
     cSidebarPayment
   },
   computed: {
     show() {
-      if(this.sidebar.component === 'cSidebarPayment') return false
+      if (this.sidebar.component === 'cSidebarPayment') return false
       else return this.sidebarComponent ? true : false
     },
     sidebar() {
@@ -85,15 +76,13 @@ export default {
     ...mapMutations('ui', ['UI_CLOSE_SIDEBAR'])
   },
   watch: {
-    "sidebar.component": {
+    'sidebar.component': {
       immediate: true,
       handler(val) {
-        this.sidebarComponent = val 
-          ? require(`../sidebars/${val}.vue`).default 
-          : false
+        this.sidebarComponent = val ? require(`../sidebars/${val}.vue`).default : false
       }
     },
-    "$route": {
+    $route: {
       handler(val) {
         this.UI_CLOSE_SIDEBAR()
       }
@@ -103,30 +92,37 @@ export default {
 </script>
 
 <style lang="scss">
-  .c-sidebar__drawer {
-    background-color: #FAFAFB;
-    width: 100vw;
+.c-sidebar__drawer {
+  background-color: #fafafb;
+  width: 100vw;
+
+  &.c-drawer {
+    @include media-tablet-up {
+      top: 84px;
+      padding-top: 2rem;
+    }
   }
-  .c-sidebar__container {
-    padding: 40px 0 60px;
-  }
-  .c-sidebar__back {
-    @include flex;
-    @include button-unset;
-    margin-bottom: 15px;
-    color: $color-black;
-    @include hover-fade;
-  }
-  .c-sidebar__backIcon {
-    width: 12px;
-    margin-right: 8px;
-  }
-  .c-sidebar__backText {
-    font-size: 17px;
-    font-weight: 700;
-    text-transform: uppercase;
-  }
-  .c-sidebar__heading {
-    color: $color-secondary;
-  }
+}
+.c-sidebar__container {
+  padding: 40px 0 60px;
+}
+.c-sidebar__back {
+  @include flex;
+  @include button-unset;
+  margin-bottom: 15px;
+  color: $color-black;
+  @include hover-fade;
+}
+.c-sidebar__backIcon {
+  width: 12px;
+  margin-right: 8px;
+}
+.c-sidebar__backText {
+  font-size: 17px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+.c-sidebar__heading {
+  color: $color-secondary;
+}
 </style>
