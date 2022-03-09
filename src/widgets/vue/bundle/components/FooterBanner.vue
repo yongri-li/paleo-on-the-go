@@ -1,5 +1,8 @@
 <template>
-  <div class="footer-banner one-time">
+  <div
+    :class="{ 'one-time': title }"
+    class="footer-banner"
+  >
     <div v-if="title" class="footer-banner__title">
       {{ title }}
     </div>

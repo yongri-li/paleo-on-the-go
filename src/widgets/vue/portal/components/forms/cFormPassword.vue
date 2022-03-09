@@ -1,18 +1,9 @@
 <template>
-  <form :class="_buildModifiers('c-formPassword', modifiers)"
-    @submit.prevent="handleSubmit"
-    v-if="content"
-  >
-    <c-alert class="c-formPassword__alert"
-      v-if="!hideAlert && status"
-      :role="status"
-      :messages="messages"
-    />
-    <c-field class="c-formPassword__field" 
-      v-if="content.email_label"
-      :label="content.email_label"
-    >
-      <c-input class="c-formPassword__input"
+  <form :class="_buildModifiers('c-formPassword', modifiers)" @submit.prevent="handleSubmit" v-if="content">
+    <c-alert class="c-formPassword__alert" v-if="!hideAlert && status" :role="status" :messages="messages" />
+    <c-field class="c-formPassword__field" v-if="content.email_label" :label="content.email_label">
+      <c-input
+        class="c-formPassword__input"
         v-model="passwordModel.email"
         :error="errors.email"
         :modifiers="['isDefault']"
@@ -24,21 +15,19 @@
         }"
       />
     </c-field>
-    <c-button class="c-formPassword__button"
+    <c-button
+      class="c-formPassword__button"
       v-if="content.button_text"
       :loading="loading"
       :success="status === 'success'"
-      :attributes="{ 
-        disabled: status === 'success' 
+      :attributes="{
+        disabled: status === 'success'
       }"
       :text="{
         default: content.button_text,
         success: content.button_success
       }"
-      :modifiers="[
-        'isDefault', 'isSecondary', 
-        'hideTextLoading', 'isSubmit'
-      ]"
+      :modifiers="['isDefault', 'isPrimary', 'hideTextLoading', 'isSubmit']"
     />
   </form>
 </template>
@@ -67,7 +56,7 @@ export default {
     },
     modifiers: {
       type: Array,
-      default: () => ([])
+      default: () => []
     }
   },
   components: { cAlert, cField, cInput, cButton },
@@ -90,39 +79,37 @@ export default {
       this.errors = {}
       this.messages = []
       const formValidation = this._validateForm([
-        { 
-          name: 'email', value: this.passwordModel.email, 
+        {
+          name: 'email',
+          value: this.passwordModel.email,
           rules: ['validateEmail', 'validateRequired'],
-          messages: [
-            this.content.error_email,
-            this.content.error_required
-          ]
+          messages: [this.content.error_email, this.content.error_required]
         }
       ])
-      if(formValidation.hasErrors) this.status = 'error'
+      if (formValidation.hasErrors) this.status = 'error'
       this.errors = { ...formValidation.errors }
-      this.messages = [ ...formValidation.messages ]
+      this.messages = [...formValidation.messages]
     },
     async handleSubmit() {
       this.validateForm()
-      if(!this.hasErrors) {
+      if (!this.hasErrors) {
         this.loading = true
         const { error } = await _authRecover({ email: this.passwordModel.email })
-        if(!error) {
+        if (!error) {
           this.status = 'success'
-          if(!this.hideAlert && this.content.success_text) {
+          if (!this.hideAlert && this.content.success_text) {
             this.messages.push(this.content.success_text)
           }
         } else {
           this.status = 'error'
-          switch(error) {
+          switch (error) {
             case 'NO_CUSTOMER':
               this.messages.push(this.content.error_customer)
-              break;
+              break
             case 'LIMIT_EXCEEDED':
               this.messages.push(this.content.error_limit)
-              break;
-            default: 
+              break
+            default:
               this.messages.push(this.content.error_general)
           }
         }
@@ -134,7 +121,7 @@ export default {
     'customerShopify.email': {
       immediate: true,
       handler(val) {
-        if(val) this.passwordModel.email = val
+        if (val) this.passwordModel.email = val
       }
     }
   }

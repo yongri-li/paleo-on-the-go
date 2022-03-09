@@ -1,5 +1,5 @@
 <template>
-  <div class="c-shipments__hero" :style="{ backgroundImage: `url('${content.bg_image_lg}')` }">
+  <div class="c-shipments__hero" v-if="content" :style="{ backgroundImage: `url('${content.bg_image_lg}')` }">
     <section class="c-shipments__hero--wrap">
       <h1 class="c-h1">
         Your Next Box is<br />
@@ -53,7 +53,8 @@ export default {
   padding: 3rem 0;
 
   .c-shipments__hero--wrap {
-    max-width: 1240px;
+    width: 92vw;
+    max-width: 1600px;
     margin: 0 auto;
 
     h1 span {

@@ -92,13 +92,20 @@ export default {
       const { data } = await this.apiTest.get(
         '/v1/customer/resources?resources=addresses,charges,orders,subscriptions,onetimes'
       )
-      const { shopifyCustomer, rechargeCustomer, resources } = data
+
+      //const { data2 } = await this.apiTest.get('/v1/customers/81820410')
+
+      const { rechargeCustomer, resources } = data //shopifyCustomer,
+
+      console.log('rechargeCustomer', rechargeCustomer)
 
       this.state.customer.resources = { ...resources }
       this.state.customer.recharge = true
       this.state.customer.ready = true
 
-      const { portal, shop, bundle } = await window.Scoutside
+      const { portal, shop, bundle, customer } = await window.Scoutside
+      this.state.customer.shopifyCustomer = customer
+      this.state.shopify = customer
       this.state.customize.shop = { ...shop }
       this.state.customize.content = { ...portal }
       this.state.products = { ...portal.products.catalog }
@@ -109,10 +116,10 @@ export default {
     this.setReady()
     setTimeout(() => {
       this.updateAPIheader()
-    }, 200)
+    }, 300)
     setTimeout(() => {
       this.getRCdata()
-    }, 400)
+    }, 500)
   },
   watch: {
     preventScroll: {
@@ -127,6 +134,9 @@ export default {
 </script>
 
 <style lang="scss">
+.c-portal {
+  background-color: $color-ecru;
+}
 .c-portal__loading {
   margin: 150px auto;
 }
