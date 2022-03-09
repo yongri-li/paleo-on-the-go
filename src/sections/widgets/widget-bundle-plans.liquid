@@ -1,0 +1,26 @@
+<script>
+  var plans = {}
+
+  plans.content = {{ section.settings | json }};
+
+  window.Scoutside.bundle.plans = plans;
+</script>
+
+{% schema %}
+  {
+    "name": "Bundle - Plans",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Section Title",
+        "default": "Select a Plan"
+      },
+      {
+        "type": "richtext",
+        "id": "text",
+        "label": "Section Text"
+      }
+    ]
+  }
+{% endschema %}

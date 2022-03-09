@@ -1,0 +1,111 @@
+
+<script>
+  //const wildcard = {}
+  const wildcard = {
+    content: {{ section.settings | json }},
+    collections: []
+  }
+
+  // wildcard.content = {{ section.settings | json }}
+
+  // {% for block in section.blocks %}
+  //   wildcard['{{ block.type }}'] = wildcard['{{ block.type }}'] || [];
+  //   wildcard['{{ block.type }}'].push({{ block.settings | json }});
+  // {% endfor %}
+  {% for block in section.blocks %}
+    {% assign _collection = collections[block.settings.collection] %}
+    wildcard.collections.push({
+      ...JSON.parse('{{ _collection | json }}'),
+      short_description: '{{ block.settings.short_description }}',
+      products: [
+        {% for _product in _collection.products %}
+          {
+            ...JSON.parse('{{ _product | json }}'),
+            nutritional_info: {
+              ...JSON.parse('{{ _product.metafields.nutritional_info | json }}')
+            },
+            subscriptions: {
+              ...JSON.parse('{{ _product.metafields.subscriptions | json }}')
+            },
+            url: '{{ _product.url }}',
+            flag: '{{ _product.metafields.product_flags.flag }}'
+          },
+        {% endfor %}
+      ]
+    })
+  {% endfor %}
+
+  window.Scoutside.bundle.wildcard = wildcard;
+</script>
+
+{% comment %}
+
+<!-- <div class="u-relative wildcard-slider hide-wildcard o-containerLarge">
+  <header class="c-collectionHeader">
+    <h4 class="c-collectionHeader__heading c-h4">Wildcard Carousel</h4>
+  </header>
+  <div class="c-menuSlider" data-menu-slider>
+    {% for block in section.blocks %}
+      {% assign _collection = collections[block.settings.collection] %}
+      <div>
+        <div class="c-menuSlider__grid">
+          {% for _product in _collection.products limit: 4 %}
+            <div class="c-menuSlider__grid-item">
+              {% include 'theme-product', _product: _product %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</div> -->
+{% endcomment %}
+
+
+
+{% schema %}
+  {
+    "name": "Wildcard Slider",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "display",
+        "label": "Display Wildcard Slider",
+        "default": true
+      },
+      {
+        "id": "master_collection",
+        "type": "collection",
+        "label": "Wildcard"
+      },
+      {
+        "id": "text",
+        "type": "richtext",
+        "label": "Text"
+      },
+      {
+        "id": "cta_text",
+        "type": "text",
+        "label": "CTA Text"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "wildcard",
+        "name": "Wildcard Items",
+        "settings": [
+          {
+            "id": "collection",
+            "type": "collection",
+            "label": "Collection"
+          },
+          {
+            "id": "short_description",
+            "type": "richtext",
+            "label": "Short Description"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

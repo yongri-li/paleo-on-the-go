@@ -1,0 +1,79 @@
+{% assign master_collection_handle = section.settings.master_collection %}
+{% assign master_collection = collections[master_collection_handle] %}
+{% assign master_collection_product_ids = '' %}
+
+{% paginate master_collection.products by 999 %}
+  {% for _product in master_collection.products %}
+    {% assign master_collection_product_ids = master_collection_product_ids | append: _product.id | append: ',' %}
+  {% endfor %}
+{% endpaginate %}
+
+{% assign master_collection_product_ids = master_collection_product_ids | split: ',' | json %}
+
+<script>
+  const collections = [];
+
+  {% for block in section.blocks %}
+    {% assign _collection = collections[block.settings.collection] %}
+
+    collections.push({
+      ...JSON.parse('{{ _collection | json }}'),
+      icon: '{{ block.settings.icon | img_url: "master" }}',
+      short_description: '{{ block.settings.short_description }}',
+      products: [
+        {% paginate _collection.products by 999 %}
+          {% for _product in _collection.products %}
+            {% if master_collection_product_ids contains _product.id %}
+              {
+                ...JSON.parse(JSON.stringify({{ _product | json }})),
+                url: '{{ _product.url }}',
+                nutritional_info: {
+                  ...JSON.parse(JSON.stringify({{ _product.metafields.nutritional_info | json }}))
+                },
+                subscriptions: {
+                  ...JSON.parse(JSON.stringify({{ _product.metafields.subscriptions | json }}))
+                },
+                flag: '{{ _product.metafields.product_flags.flag }}',
+                subtitle: '{{ _product.metafields.product_details.subtitle | json }}',
+                collection: JSON.parse('{{ _collection | json }}')
+              },
+            {% endif %}
+          {% endfor %}
+        {% endpaginate %}
+      ]
+    });
+  {% endfor %}
+  
+  window.Scoutside.bundle.children = collections;
+</script>
+
+{% schema %}
+  {
+    "name": "Bundle - Children",
+    "settings": [
+      {
+        "id": "master_collection",
+        "type": "collection",
+        "label": "Master Collection (First-Time)"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "children",
+        "name": "Bundle Children",
+        "settings": [
+          {
+            "id": "collection",
+            "type": "collection",
+            "label": "Collection"
+          },
+          {
+            "id": "short_description",
+            "type": "richtext",
+            "label": "Short Description"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

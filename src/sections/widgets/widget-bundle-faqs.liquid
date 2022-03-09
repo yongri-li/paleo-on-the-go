@@ -1,0 +1,44 @@
+<script>
+  const faqsSection = {}
+
+  faqsSection.content = {{ section.settings | json }}
+
+  {% for block in section.blocks %}
+    faqsSection['{{ block.type }}'] = faqsSection['{{ block.type }}'] || [];
+    faqsSection['{{ block.type }}'].push({{ block.settings | json }});
+  {% endfor %}
+
+  window.Scoutside.bundle.faqsSection = faqsSection;
+</script>
+
+{% schema %}
+  {
+    "name": "Bundle - FAQs",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "Section Title",
+        "default": "Common Questions"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "faqs",
+        "name": "FAQ",
+        "settings": [
+          {
+            "label": "Title",
+            "id": "title",
+            "type": "text"
+          },
+          {
+            "label": "Text",
+            "id": "text",
+            "type": "richtext"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

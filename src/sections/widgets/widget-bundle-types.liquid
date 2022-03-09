@@ -1,0 +1,28 @@
+<script>
+  var types = [];
+
+  {% for block in section.blocks %}
+    types.push('{{ block.settings.type }}');
+  {% endfor %}
+
+  window.Scoutside.bundle.types = types;
+</script>
+
+{% schema %}
+  {
+    "name": "Bundle - Types",
+    "blocks": [
+      {
+        "type": "type",
+        "name": "Type",
+        "settings": [
+          {
+            "label": "Type",
+            "id": "type",
+            "type": "text"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
