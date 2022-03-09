@@ -1,5 +1,8 @@
 <template>
-  <div class="pcard" v-if="product">
+  <div v-if="product"
+    :class="{ active: isItemInCart }"
+    class="pcard"
+  >
     <div class="pcard__header">
       <div class="pcard__header--figure">
         <img
@@ -16,18 +19,27 @@
           this is for metafields subtitles
         </div>
         <div class="pcard__add-to-cart">
-          <div v-if="addToCartOpen" class="pcard__add-to-cart--open">
-            <span class="pcard__add-to-cart--btn">
+          <div v-if="isItemInCart"
+            class="pcard__add-to-cart--open"
+          >
+            <span class="pcard__add-to-cart--btn"
+              @click="reduceToCart(product)"
+            >
               -
             </span>
             <span class="pcard__add-to-cart--qt">
-              1
+              {{ qtItem }}
             </span>
-            <span class="pcard__add-to-cart--btn">
+            <span class="pcard__add-to-cart--btn"
+              @click="addToCart(product)"
+            >
               +
             </span>
           </div>
-          <div v-else class="pcard__add-to-cart--first">
+          <div v-else
+            class="pcard__add-to-cart--first"
+            @click="addToCart(product)"
+          >
             <span>
               +
             </span>
@@ -55,6 +67,7 @@
 </template>
 
 <script>
+import { mapGetters, mapActions } from 'vuex'
 import { formatPrice } from '../../utils'
 
 export default {
@@ -88,6 +101,9 @@ export default {
     }
   },
   computed: {
+    ...mapGetters([
+      'getItemFromCartByID'
+    ]),
     imageUrl() {
       const imgFound = this.product.media.find(item => item.position === 1)
       const urlFinal = imgFound.src.replace('.jpg','_450x450.jpg').replace('.png','_450x450.png')
@@ -108,7 +124,22 @@ export default {
         })
       });
       return scale
+    },
+    itemInCart() {
+      return this.getItemFromCartByID(this.product.id)
+    },
+    isItemInCart() {
+      return !!this.itemInCart
+    },
+    qtItem() {
+      return this.itemInCart?.quantity || 0
     }
+  },
+  methods: {
+    ...mapActions([
+      'addToCart',
+      'reduceToCart'
+    ]),
   }
 }
 </script>
@@ -225,6 +256,8 @@ export default {
       width: 25%;
       text-align: center;
       cursor: pointer;
+      -webkit-user-select: none;
+      user-select: none;
     }
 
     @media screen and (min-width: 769px) {

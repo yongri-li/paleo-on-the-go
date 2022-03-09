@@ -19,7 +19,10 @@ export default {
     ProductCard
   },
   computed: {
-    ...mapState(['collections'])
+    ...mapState([
+      'collections',
+      'cart'
+    ])
   },
 }
 </script>
