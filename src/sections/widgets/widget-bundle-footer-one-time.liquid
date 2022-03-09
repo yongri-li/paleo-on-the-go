@@ -1,0 +1,43 @@
+<script>
+  const footerBannerOneTime = {}
+  footerBannerOneTime.content = {{ section.settings | json }}
+
+  {% for block in section.blocks %}
+    footerBannerOneTime['{{ block.type }}'] = footerBannerOneTime['{{ block.type }}'] || []
+    footerBannerOneTime['{{ block.type }}'].push({{ block.settings | json }})
+  {% endfor %}
+
+  window.Scoutside.bundle.footerBanner = window.Scoutside.bundle.footerBanner || {}
+  window.Scoutside.bundle.footerBanner.oneTime = footerBannerOneTime
+</script>
+
+{% schema %}
+  {
+    "name": "Footer One-Time",
+    "settings": [
+      {
+        "type": "text",
+        "id": "title",
+        "label": "One Time Title"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "item",
+        "name": "ITEM",
+        "settings": [
+          {
+            "label": "Text",
+            "id": "text",
+            "type": "text"
+          },
+          {
+            "label": "Icon",
+            "id": "icon",
+            "type": "image_picker"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
