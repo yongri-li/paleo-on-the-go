@@ -69,7 +69,7 @@ export default {
   }
 
   @media screen and (min-width: 769px) {
-    max-width: 950px;
+    width: 73%;
     display: flex;
     flex-wrap: wrap;
 
