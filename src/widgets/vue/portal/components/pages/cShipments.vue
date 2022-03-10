@@ -5,7 +5,7 @@
     <article class="box__byAddressId">
       <div class="c-shipments__content" v-if="ready">
         <section class="c-shipments__flex">
-          <h2 class="c-h2">{{ Object.keys(nextCharge).length ? 'Upcoming Orders' : 'Order History' }}</h2>
+          <h2 class="c-h2">{{ !!nextCharge ? 'Upcoming Orders' : 'Order History' }}</h2>
           <c-shipmentsBox
             class="c-shipments__box"
             :charge="nextCharge"

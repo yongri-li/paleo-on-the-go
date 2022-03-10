@@ -4,7 +4,10 @@
     <c-img class="c-ordersItem__image" :src="image" :alt="alt" />
     <div class="c-ordersItem__details">
       <c-h class="c-ordersItem__title" v-if="item.productTitle" tag="h4" level="4" :text="productTitle[0]" />
-      <c-p tag="p" v-if="productTitle[1]" :text="productTitle[1]" />
+
+      <!-- Has second have of title, after the word "with" -->
+      <!-- <c-p tag="p" v-if="productTitle[1]" :text="productTitle[1]" /> -->
+
       <!-- <c-p class="c-ordersItem__interval" v-if="interval" tag="p" level="4" :text="interval" /> -->
       <!--       <c-p
         class="c-ordersItem__variant"

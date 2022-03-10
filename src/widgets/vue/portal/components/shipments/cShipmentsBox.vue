@@ -52,7 +52,9 @@
             </div>
             <!--  </div> -->
             <h6 class="c-h6">
-              {{ totalSubItems }} Meals &nbsp;<span> Delivers Every {{ frequency }} Week</span>
+              {{ totalSubItems }} Meals &nbsp;<span class="c-basicTxt--md">
+                Delivers Every {{ frequency }} Week</span
+              >
             </h6>
           </header>
           <div v-if="isUpcoming" class="c-shipmentsBox__lineItems">
@@ -275,15 +277,6 @@ export default {
   .c-h2 {
     margin: 0;
     flex: 1;
-  }
-}
-
-.c-shipmentsBox__header {
-  h6 span {
-    @include text-body;
-    font-size: 1.125rem;
-    opacity: 0.75;
-    text-transform: capitalize;
   }
 }
 

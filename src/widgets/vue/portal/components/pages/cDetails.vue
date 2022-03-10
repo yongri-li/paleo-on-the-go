@@ -60,7 +60,11 @@
 
         <!-- billing address -->
         <div class="c-details__boxSingle">
-          <c-detailsBlock class="c-details__boxItem withAccordion">
+          <c-detailsBlock
+            class="c-details__boxItem withAccordion"
+            v-if="customerRecharge"
+            :heading="content.billing_label"
+          >
             <c-accordion>
               <c-accordionItem>
                 <div class="c-details__boxButton" slot="trigger">
@@ -83,14 +87,20 @@
                   <span class="c-details__editTrigger c-button--isUnderline c-button--isBlack"></span>
                 </div>
                 <div class="" slot="content">
-                  <c-formPassword
-                    class="c-sidebarPassword__form"
-                    :value="customerShopify.email"
+                  <c-formBilling
+                    class="c-sidebarBilling__form"
                     :hideAlert="true"
                     :content="{
-                      email_label: sidebarContent.password.password_email_label,
-                      button_text: sidebarContent.password.password_button_text,
-                      button_success: sidebarContent.password.password_button_success
+                      first_label: sidebarContent.billing.billing_first_label,
+                      last_label: sidebarContent.billing.billing_last_label,
+                      address1_label: sidebarContent.billing.billing_address1_label,
+                      address2_label: sidebarContent.billing.billing_address2_label,
+                      city_label: sidebarContent.billing.billing_city_label,
+                      province_label: sidebarContent.billing.billing_province_label,
+                      button_text: sidebarContent.billing.billing_button_text,
+                      zip_label: sidebarContent.billing.billing_zip_label,
+                      country_label: sidebarContent.billing.billing_country_label,
+                      button_success: sidebarContent.billing.billing_button_success
                     }"
                   />
                 </div>
@@ -98,6 +108,7 @@
             </c-accordion>
           </c-detailsBlock>
         </div>
+
         <!--         <div class="c-details__boxSingle">
           <c-detailsBlock class="c-details__boxItem" v-if="customerRecharge" :heading="content.billing_label">
             <c-p
@@ -147,6 +158,8 @@
           </c-detailsBlock>
         </div>
       </div>
+
+      <hr />
 
       <c-h
         class="c-details__heading"
@@ -213,6 +226,7 @@ import cDetailsBlock from '../details/cDetailsBlock.vue'
 import cAccordion from '@shared/components/core/cAccordion.vue'
 import cAccordionItem from '@shared/components/core/cAccordionItem.vue'
 import cFormPassword from '../forms/cFormPassword.vue'
+import cFormBilling from '../forms/cFormBilling.vue'
 
 export default {
   props: {
@@ -229,7 +243,8 @@ export default {
     cDetailsBlock,
     cAccordion,
     cAccordionItem,
-    cFormPassword
+    cFormPassword,
+    cFormBilling
   },
   data: () => ({ ready: false, error: false }),
   computed: {
@@ -291,13 +306,16 @@ export default {
   padding: 0;
   background-color: $color-ecru;
   border-radius: 0;
-  &.c-details__box--isAddresses {
-    margin-top: 40px;
+}
+.c-details__box + hr {
+  margin-bottom: 2rem;
+  @include media-tablet-up {
+    margin-bottom: 4rem;
   }
 }
 .c-details__boxSingle,
 .c-details__boxGroup {
-  padding-bottom: 20px;
+  padding-bottom: 3rem;
 }
 .c-details__boxGroup {
   @include grid($columns: 1fr, $auto-flow: row, $gap: 30px 20px);
@@ -315,12 +333,10 @@ export default {
 .c-details__boxAddress,
 .c-details__boxShips {
   display: block;
-  @include text-heading;
 }
 .c-details__boxAddress {
   margin-bottom: 4px;
   font-size: 20px;
-  font-weight: 700;
 }
 .c-details__boxShips {
   font-size: 16px;
@@ -350,10 +366,4 @@ export default {
     }
   }
 }
-/*.c-accordionItem__trigger--isOpen .c-details__editTrigger {
-  color: $color-secondary;
-}
-.c-accordionItem__trigger--isOpen .c-details__editTrigger::after {
-  content: 'Close';
-}*/
 </style>

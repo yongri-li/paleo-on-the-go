@@ -4,21 +4,19 @@
   @include flex($align: center);
   overflow: hidden;
   transition-property: background-color, border-color, box-shadow, color;
-  transition-duration: .15s;
+  transition-duration: 0.15s;
   transition-timing-function: ease-in-out;
   -webkit-tap-highlight-color: transparent;
 }
 
 .c-select--isDefault {
-  height: 56px;
-  padding: 0px 15px;
-  padding-right: 32px;
-  background-color: $color-white;
-  @include border-input;
-  @include shadow-input;
-  color: $color-primary;
+  height: 3rem;
+  padding: 0px 1rem;
+  padding-right: 2rem;
+  background-color: $color-ltgrey;
+  color: $color-black;
   font-family: $font-body;
-  font-size: 18px;
+  font-size: 14px;
   &:focus {
     @include shadow-input-focus;
   }
@@ -36,6 +34,13 @@
     border-color: $color-error;
     color: $color-error;
   }
+
+  .c-select__text {
+    font-size: 14px;
+  }
+  .c-select__icon {
+    padding-top: 6px;
+  }
 }
 
 .c-select__label {
@@ -47,7 +52,7 @@
   display: block;
   font-family: $font-body;
   font-size: 18px;
-  white-space: nowrap; 
+  white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
@@ -62,7 +67,9 @@
   left: 0;
   z-index: 3;
   font-size: 18px;
-  &:hover { cursor: pointer };
+  &:hover {
+    cursor: pointer;
+  }
 }
 .c-select__icon {
   margin-left: auto;
@@ -76,12 +83,16 @@
   width: 8px;
   color: inherit;
   transform: rotate(-90deg);
-  .c-select--hasError & { color: $color-error; }
+  .c-select--hasError & {
+    color: $color-error;
+  }
 }
 .c-select__iconSort {
   width: 6px;
   color: inherit;
-  .c-select--hasError & { color: $color-error; }
+  .c-select--hasError & {
+    color: $color-error;
+  }
 }
 .c-select__input {
   position: absolute;

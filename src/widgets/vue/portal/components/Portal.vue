@@ -9,7 +9,7 @@
       :modifiers="['isSecondary', 'isHollow', 'isLargest']"
     />
     <transition name="t-content-fade" v-if="customerReady" mode="out-in">
-      <router-view class="c-portal__content" :key="$route.name" />
+      <router-view class="c-portal__content" :key="$route.name" :addressId="addressId" />
     </transition>
     <!--     </div> -->
     <c-sidebar class="c-portal__sidebar" v-if="customerReady" data-portal-header />
@@ -59,6 +59,9 @@ export default {
     },
     apiTest() {
       return new apiService()
+    },
+    addressId() {
+      return this.$store.state.customer.resources.addresses[0].id
     }
 
     // addresses() {
@@ -83,21 +86,22 @@ export default {
       }, 100)
     },
 
+    //81820410
     // For testing setup only! Remove once Portal connection is fixed
     updateAPIheader() {
       this.apiTest.headers['X-Api-Access-Token'] = this.apiAccessToken
     },
     async getRCdata() {
-      const apiClient = new apiService()
+      // const apiClient = new apiService()
       const { data } = await this.apiTest.get(
         '/v1/customer/resources?resources=addresses,charges,orders,subscriptions,onetimes'
       )
 
-      //const { data2 } = await this.apiTest.get('/v1/customers/81820410')
+      const { data2 } = await this.apiTest.get('/v1/customer/account')
 
       const { rechargeCustomer, resources } = data //shopifyCustomer,
 
-      console.log('rechargeCustomer', rechargeCustomer)
+      console.log('rechargeCustomer', rechargeCustomer, data2)
 
       this.state.customer.resources = { ...resources }
       this.state.customer.recharge = true

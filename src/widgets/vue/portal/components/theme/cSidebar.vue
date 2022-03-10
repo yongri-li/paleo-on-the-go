@@ -92,7 +92,8 @@ export default {
 </script>
 
 <style lang="scss">
-.c-sidebar__drawer {
+.c-sidebar__drawer,
+.c-pageDetails__payment {
   background-color: #fafafb;
   width: 100vw;
 
