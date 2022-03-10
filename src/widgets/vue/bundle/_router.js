@@ -6,8 +6,8 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: '/',
-    name: 'PLP',
-    component: require("./pages/PLP.vue").default
+    name: 'BoxMealDefault',
+    component: require("./pages/BoxMeal.vue").default
   },
   {
     path: '/:box',
