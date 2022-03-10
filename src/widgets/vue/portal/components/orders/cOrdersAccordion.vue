@@ -46,22 +46,27 @@
           <c-h
             class="c-ordersAccordion__triggerAddress"
             tag="address"
-            level="4"
+            level="5"
             v-html="
               _buildAddress({
                 address: order.shippingAddress,
                 options: {
                   hiddenFields: ['name', 'country'],
-                  provinceName: 'short',
-                  flatten: true
+                  provinceName: 'short'
                 }
               })
             "
           />
+          <span class="icon-bg__color"></span>
           <c-svg class="c-ordersAccordion__triggerIcon" name="circleChevron" />
         </div>
       </div>
       <div class="c-ordersAccordion__content" slot="content">
+        <h6 class="c-h6">
+          {{ totalSubItems }} Meals &nbsp;<span class="c-basicTxt--md">
+            Delivers Every {{ frequency }} Week</span
+          >
+        </h6>
         <div class="c-ordersAccordion__grid">
           <c-ordersItem
             class="c-ordersAccordion__gridItem"
@@ -86,7 +91,7 @@
             <c-p
               class="c-ordersAccordion__billingAddress u-doubleSpace"
               tag="address"
-              level="4"
+              level="5"
               v-html="
                 _buildAddress({
                   address: order.shippingAddress,
@@ -148,6 +153,9 @@ export default {
     open: {
       type: [Number, Boolean],
       default: false
+    },
+    addressId: {
+      type: String
     }
   },
   components: {
@@ -161,13 +169,31 @@ export default {
   computed: {
     currencySymbol() {
       return this.$store.getters['customize/customizeShopByKey']('currency_symbol')
+    },
+    subscriptions() {
+      return this.$store.getters['customer/customerSubscriptionsByAddressId'](this.addressId)
+    },
+    addons() {
+      return this.$store.getters['customer/customerOnetimesByAddressId'](this.addressId)
+    },
+    frequency() {
+      const freqObj = this.subscriptions.find(sub => sub.frequency)
+      return freqObj.frequency
+    },
+    totalSubItems() {
+      return this.subscriptions.reduce((sum, sub) => sum + sub.quantity, 0)
+    },
+    totalAddOns() {
+      return this.addons.reduce((sum, sub) => sum + sub.quantity, 0)
     }
   },
   methods: {
     buildInfo(order) {
-      const { currencySymbol, content, _formatMoney } = this
-      const total = _formatMoney({ amount: order.total })
-      let info = `${currencySymbol}${total} | ${content.name} #${order.number}`
+      // const { currencySymbol, content, _formatMoney } = this
+      // const total = _formatMoney({ amount: order.total })
+      // let info = `${currencySymbol}${total} | ${content.name} #${order.number}`
+      const { content } = this
+      let info = `${content.name} #${order.number}`
       return info
     },
     delivered(order) {
@@ -201,10 +227,13 @@ export default {
 <style lang="scss">
 .c-accordionItem__content {
   /*  will-change: max-height, margin-top;*/
+
+  .c-ordersItem__details .c-h4 {
+    font-size: 1rem;
+  }
 }
 
 .c-ordersAccordion__item {
-  @include shadow-card;
   background-color: $color-white;
   border-radius: 3px;
   &:not(:last-child) {
@@ -219,11 +248,22 @@ export default {
 }
 .c-ordersAccordion__triggerTop,
 .c-ordersAccordion__triggerBottom {
+  position: relative;
   @include flex($justify: space-between, $align: flex-start, $wrap: nowrap);
   width: 100%;
   @include media-tablet-up {
     width: auto;
     align-items: center;
+  }
+
+  .icon-bg__color {
+    position: absolute;
+    right: 5px;
+    height: 30px;
+    width: 30px;
+    background: $color-black;
+    border-radius: 100%;
+    z-index: 0;
   }
 }
 .c-ordersAccordion__triggerBottom {
@@ -284,27 +324,29 @@ export default {
   }
 }
 .c-ordersAccordion__triggerIcon {
-  color: $color-primary;
-  width: 24px;
-  height: 24px;
+  color: $color-ecru;
+  height: 2.5rem;
+  width: 2.5rem;
   transition: transform 0.35s ease-in-out;
   transform-origin: 50%;
   margin-left: 20px;
+  z-index: 1;
   .c-accordionItem__trigger--isOpen & {
     transform: rotate(180deg);
   }
 }
 .c-ordersAccordion__content {
-  padding: 15px 20px 20px;
+  padding: 1rem 1.25rem 1.25rem;
 }
 .c-ordersAccordion__grid {
-  @include grid($columns: 1fr, $auto-flow: row, $gap: 30px 20px);
+  margin-top: 2rem;
+  @include grid($columns: 1fr, $auto-flow: row, $gap: 2rem);
   margin-bottom: 20px;
   @include media-tablet-up {
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(3, 1fr);
   }
   @include media-desktop-up {
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: repeat(6, 1fr);
   }
 }
 .c-ordersAccordion__gridItem {

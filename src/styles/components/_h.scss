@@ -96,3 +96,16 @@
 .isBold {
   font-weight: 700;
 }
+
+.c-basicTxt--md {
+  font-family: Roboto, sans-serif;
+  line-height: 1.4;
+  font-weight: 400;
+  font-size: 1.125rem;
+  opacity: 0.75;
+  text-transform: capitalize;
+}
+
+hr {
+  border: 0.5px solid #ddd;
+}

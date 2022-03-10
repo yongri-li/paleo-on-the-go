@@ -1,16 +1,15 @@
 <template>
-  <div :class="_buildModifiers('c-sidebarPassword', modifiers)"
-    v-if="content"
-  >
-      <c-formPassword class="c-sidebarPassword__form"
-        :value="customerShopify.email"
-        :hideAlert="true"
-        :content="{
-          email_label: content.password_email_label,
-          button_text: content.password_button_text,
-          button_success: content.password_button_success
-        }"
-      />
+  <div :class="_buildModifiers('c-sidebarPassword', modifiers)" v-if="content">
+    <c-formPassword
+      class="c-sidebarPassword__form"
+      :value="customerShopify.email"
+      :hideAlert="true"
+      :content="{
+        email_label: content.password_email_label,
+        button_text: content.password_button_text,
+        button_success: content.password_button_success
+      }"
+    />
   </div>
 </template>
 
@@ -26,7 +25,7 @@ export default {
     },
     modifiers: {
       type: Array,
-      default: () => ([])
+      default: () => []
     }
   },
   components: { cFormPassword },
@@ -37,7 +36,8 @@ export default {
 </script>
 
 <style lang="scss">
-  .c-sidebarPassword__form {
-    max-width: 440px;
-  }
+.c-sidebarPassword__form {
+  /*max-width: 440px;*/
+  max-width: calc(100% - 100px);
+}
 </style>
