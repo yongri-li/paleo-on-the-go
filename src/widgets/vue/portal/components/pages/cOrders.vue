@@ -12,7 +12,6 @@
           button_url: content.empty_button_url
         }"
       />
-      {{ addressId }}
       <div class="c-orders__content" v-if="orders">
         <c-h
           class="c-orders__heading"

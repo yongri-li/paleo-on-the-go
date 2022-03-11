@@ -12,10 +12,15 @@
   window.Scoutside.portal.shipments = shipments
 </script>
 
+
 {% schema %}
   {
     "name": "Portal Shipments",
     "settings": [
+      {
+        "type": "header",
+        "content": "Loyalty"
+      },
       {
         "id": "bg_image_sm",
         "type": "image_picker",
@@ -25,11 +30,226 @@
         "id": "bg_image_lg",
         "type": "image_picker",
         "label": "Background Image (desktop)"
+      },
+      {
+        "id": "loyalty_heading",
+        "type": "text",
+        "label": "Heading - Variables: {{ customer_name }}",
+        "default": "{{ loyalty_heading }}"
+      },
+      {
+        "id": "loyalty_text_points",
+        "type": "text",
+        "label": "Text Points - Variables: {{ points }}",
+        "default": "{{ loyalty_text_points }}"
+      },
+      {
+        "id": "loyalty_text_tier",
+        "type": "text",
+        "label": "Text Tier - Variables: {{ tier }}, {{ points }}",
+        "default": "{{ loyalty_text_tier }}"
+      },
+      {
+        "id": "loyalty_button_rewards",
+        "type": "text",
+        "label": "Rewards Button",
+        "default": "{{ loyalty_rewards_button }}"
+      },
+      {
+        "id": "loyalty_button_points",
+        "type": "text",
+        "label": "Points Button",
+        "default": "{{ loyalty_points_button }}"
+      },
+      
+
+      {
+        "type": "header",
+        "content": "Referral"
+      },
+      {
+        "id": "referral_preheading",
+        "type": "text",
+        "label": "Referral Preheading",
+        "default": "{{ referral_preheading }}"
+      },
+      {
+        "id": "referral_heading",
+        "type": "text",
+        "label": "Referral Heading",
+        "default": "{{ referral_heading }}"
+      },
+      {
+        "id": "referral_button",
+        "type": "text",
+        "label": "Referral Button",
+        "default": "{{ referral_button }}"
+      },
+
+
+      {
+        "type": "header",
+        "content": "Discount"
+      },
+      {
+        "id": "discount_placeholder",
+        "type": "text",
+        "label": "Discount Placeholder",
+        "default": "{{ discount_placeholder }}"
+      },
+      {
+        "id": "discount_button_text",
+        "type": "text",
+        "label": "Discount Button Text",
+        "default": "{{ discount_button_text }}"
+      },
+      {
+        "id": "discount_button_success",
+        "type": "text",
+        "label": "Discount Button Success",
+        "default": "{{ discount_button_successs }}"
+      },
+
+
+      {
+        "type": "header",
+        "content": "No Subscriptions State"
+      },
+      {
+        "id": "no_subs_heading",
+        "type": "text",
+        "label": "No Subscriptions Small Heading"
+      },
+      {
+        "id": "no_subs_text",
+        "type": "textarea",
+        "label": "No Subscriptions Heading"
+      },
+      {
+        "id": "no_subs_cta_text",
+        "type": "text",
+        "label": "No Subscriptions CTA Text"
+      },
+
+
+      {
+        "type": "header",
+        "content": "No Orders State"
+      },
+      {
+        "id": "no_orders_small_heading",
+        "type": "textarea",
+        "label": "No Orders Small Heading"
+      },
+      {
+        "id": "no_orders_heading",
+        "type": "textarea",
+        "label": "No Orders Heading"
+      },
+      {
+        "id": "no_orders_cta_text",
+        "type": "text",
+        "label": "No Orders CTA Text"
+      },
+      {
+        "id": "no_orders_cta_url",
+        "type": "url",
+        "label": "No Orders CTA URL"
+      },
+      {
+        "type": "header",
+        "content": "Summary"
+      },
+
+
+      {
+        "id": "summary_label_order",
+        "type": "text",
+        "label": "Summary Label Order",
+        "default": "{{ summary_label_order }}"
+      },
+      {
+        "id": "summary_label_subtotal",
+        "type": "text",
+        "label": "Summary Label Subtotal",
+        "default": "{{ summary_label_subtotal }}"
+      },
+      {
+        "id": "summary_label_discount",
+        "type": "text",
+        "label": "Summary Label Discount",
+        "default": "{{ summary_label_discount }}"
+      },
+      {
+        "id": "summary_label_tax",
+        "type": "text",
+        "label": "Summary Label Tax",
+        "default": "{{ summary_label_tax }}"
+      },
+      {
+        "id": "summary_label_shipping",
+        "type": "text",
+        "label": "Summary Label Shipping",
+        "default": "{{ summary_label_shipping }}"
+      },
+      {
+        "id": "summary_label_total",
+        "type": "text",
+        "label": "Summary Label Total",
+        "default": "{{ summary_label_total }}"
+      },
+
+
+      {
+        "type": "header",
+        "content": "Add-Ons Promo"
+      },
+      {
+        "id": "addons_promo_image",
+        "type": "image_picker",
+        "label": "Add Ons Promo Image"
+      },
+      {
+        "id": "addons_promo_text",
+        "type": "textarea",
+        "label": "Add Ons Promo Text",
+        "default": "{{ addons_promo_text }}"
+      },
+      {
+        "id": "addons_promo_trigger_text",
+        "type": "text",
+        "label": "Add Ons Promo Trigger Text",
+        "default": "{{ addons_promo_trigger_text }}"
+      },
+
+
+      {
+        "type": "header",
+        "content": "Previous Charge Failure"
+      },
+      {
+        "id": "charge_error_heading",
+        "type": "textarea",
+        "label": "Charge Error Heading"
+      },
+      {
+        "id": "charge_error_copy",
+        "type": "richtext",
+        "label": "Charge Error Copy"
+      },
+      {
+        "id": "charge_error_update_payment_text",
+        "type": "text",
+        "label": "Charge Error Update Payment Text"
+      },
+      {
+        "id": "charge_error_contact_support_text",
+        "type": "text",
+        "label": "Charge Error Contact Support Text"
       }
     ]
   }
 {% endschema %}
-
 
 <!-- {
   "id": "loyalty_heading",
