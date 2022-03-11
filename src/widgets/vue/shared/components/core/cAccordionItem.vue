@@ -27,6 +27,9 @@ export default {
     duration: {
       type: Number,
       default: 275
+    },
+    setBoxHeight: {
+      type: Boolean
     }
   },
   data: () => ({
@@ -71,9 +74,14 @@ export default {
       this.active = !this.active
     }
   },
+  watch: {
+    setBoxHeight() {
+      const content = this.$refs.content
+      if (this.setBoxHeight) content.style.maxHeight = 'fit-content'
+    }
+  },
   mounted() {
     window.addEventListener('resize', this.changeHeight)
-    // if (this.open) setTimeout(() => this.toggleContent())
     if (this.open) this.toggleContent()
     setTimeout(() => (this.transition = true), this.duration)
   },

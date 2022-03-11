@@ -25,7 +25,7 @@
 <template>
   <div :class="_buildModifiers('c-shipmentsBox', modifiers)" ref="shipmentBox">
     <c-accordion>
-      <c-accordionItem :open="true">
+      <c-accordionItem class="c-shipments__box--wrap" :open="true" :setBoxHeight="setBoxHeight">
         <div class="c-shipmentsSummary__trigger" slot="trigger">
           <div class="c-shipmentsSummary__triggerLabel">
             Shipping To <a href="/" class="u-colorWhite">{{ charge.shipping_address.address1 }}</a>
@@ -59,31 +59,33 @@
           </header>
           <div v-if="isUpcoming" class="c-shipmentsBox__lineItems">
             <div class="c-shipmentsBox__grid">
-              <c-orders-item v-for="item in subscriptionItems" :item="item" :content="itemContent" />
+              <c-orders-item v-for="item in subscriptionItems" :item="item" :content="content" />
               <!-- :item="item" :key="item.id" -->
             </div>
 
             <header class="c-shipmentsBox__header">
-              <h6 class="c-h6">{{ totalAddOns }} Add-Ons &nbsp;<span> One-Time Purchase</span></h6>
+              <h6 class="c-h6">
+                {{ totalAddOns }} Add-Ons &nbsp;<span class="c-basicTxt--md"> One-Time Purchase</span>
+              </h6>
             </header>
-            <div class="c-shipmentsBox__grid">
-              <c-orders-item v-for="item in addOnItems" :item="item" :content="itemContent" />
+            <div class="c-shipmentsBox__grid item__addOn">
+              <c-orders-item v-for="item in addOnItems" :item="item" :content="content" />
             </div>
           </div>
           <div class="c-shipmentsGroups__bottom">
-            <!--         <c-shipmentsDiscount
-                class="c-shipmentsGroups__discount"
-                :address="address"
-                :shipment="shipment"
-                :content="{
-                  placeholder: content.discount_placeholder,
-                  button_text: content.discount_button_text,
-                  button_success: content.discount_button_success
-                }"
-              /> -->
+            <c-shipmentsDiscount
+              class="c-shipmentsGroups__discount c-shipmentsGroups__bottom--block"
+              :address="address"
+              :shipment="charge"
+              :content="{
+                placeholder: content.discount_placeholder,
+                button_text: content.discount_button_text,
+                button_success: content.discount_button_success
+              }"
+            />
             <c-shipmentsSummary
-              class="c-shipmentsGroups__summary"
-              :shipment="shipment"
+              class="c-shipmentsGroups__summary c-shipmentsGroups__bottom--block"
+              :shipment="charge"
               :modifiers="[]"
               :content="{
                 label_order: content.summary_label_order,
@@ -93,6 +95,7 @@
                 label_shipping: content.summary_label_shipping,
                 label_total: content.summary_label_total
               }"
+              @summaryAccOpen="setBoxMaxHeight"
             />
           </div>
         </div>
@@ -112,7 +115,7 @@ import cLoading from '@shared/components/core/cLoading.vue'
 import cOrdersItem from '../orders/cOrdersItem.vue'
 import cAccordion from '@shared/components/core/cAccordion.vue'
 import cAccordionItem from '@shared/components/core/cAccordionItem.vue'
-// import cShipmentsDiscount from './cShipmentsDiscount.vue'
+import cShipmentsDiscount from './cShipmentsDiscount.vue'
 // import cShipmentsAddOnsPromo from './cShipmentsAddOnsPromo.vue'
 import cShipmentsSummary from './cShipmentsSummary.vue'
 import Datepicker from 'vuejs-datepicker'
@@ -144,8 +147,7 @@ export default {
       address: {},
       shipment: {},
       isUpcoming: true,
-      item: { item: 'item hii' },
-      itemContent: { content: 'content hii' }
+      setBoxHeight: false
     }
   },
   components: {
@@ -156,7 +158,7 @@ export default {
     cOrdersItem,
     cAccordion,
     cAccordionItem,
-    // cShipmentsDiscount,
+    cShipmentsDiscount,
     // cShipmentsAddOnsPromo,
     cShipmentsSummary,
     Datepicker
@@ -207,6 +209,9 @@ export default {
     //   const dateStr = convertToYYYYMMDDlocalT(dateCvt)
     //   return dateStr != null ? format(new Date(dateStr), 'MMM D') : null
     // }
+    setBoxMaxHeight() {
+      this.setBoxHeight = !this.setBoxHeight
+    },
     handleChangeMeals() {},
     handleEditSchedule() {}
   }
@@ -227,7 +232,7 @@ export default {
     height: auto;
   }
 
-  .c-accordionItem__trigger {
+  .c-shipments__box--wrap > .c-accordionItem__trigger {
     background-color: $color-secondary;
     color: $color-black;
     padding: 2.25rem 1rem;
@@ -258,8 +263,18 @@ export default {
     padding: 0;
 
     .c-shipmentsBox__content {
-      padding: 1.25rem;
+      padding: 1.25rem 2.5rem;
     }
+  }
+}
+
+.c-shipmentsGroups__bottom {
+  display: flex;
+  justify-content: space-between;
+  grid-gap: 10vw;
+
+  &--block {
+    flex: 1;
   }
 }
 
@@ -289,11 +304,15 @@ export default {
 
 .c-shipmentsBox__grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-gap: 3rem;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 2.5rem;
 
   + .c-shipmentsBox__header {
     margin-top: 1rem;
+  }
+
+  &.item__addOn {
+    grid-template-columns: repeat(4, 1fr);
   }
 }
 

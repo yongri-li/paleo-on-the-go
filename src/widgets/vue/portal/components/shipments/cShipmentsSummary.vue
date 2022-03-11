@@ -12,7 +12,7 @@
           v-if="shipment.total"
           v-html="`${currencySymbol}${_formatMoney({ amount: shipment.total })}`"
         />
-        <div class="c-shipmentsSummary__triggerCircle">
+        <div class="c-shipmentsSummary__triggerCircle" @click="emitBoxHeight">
           <c-svg class="c-shipmentsSummary__triggerIcon" name="chevron" />
         </div>
       </div>
@@ -75,6 +75,11 @@ export default {
         if (index == 1) value = `-${value}`
         return { label: line.label, value }
       })
+    }
+  },
+  methods: {
+    emitBoxHeight() {
+      this.$emit('summaryAccOpen')
     }
   }
 }

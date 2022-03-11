@@ -10,9 +10,7 @@
             class="c-shipments__box"
             :charge="nextCharge"
             :addons="null"
-            :content="{
-              test: 'hey'
-            }"
+            :content="content"
             :shipDate="formatDayDateIOS(nextCharge.scheduledAt)"
           />
         </section>
