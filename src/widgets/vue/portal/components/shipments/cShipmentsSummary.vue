@@ -88,11 +88,12 @@ export default {
 <style lang="scss">
 .c-shipmentsSummary__item {
   width: 100%;
+  border: 1px solid $color-ecru;
 }
 .c-shipmentsSummary__trigger {
-  height: 48px;
+  height: 4rem;
+  padding: 1rem 1.25rem;
   width: 100%;
-  padding: 0 17px;
   @include flex($justify: space-between, $wrap: nowrap);
   @include media-mobile-down {
     padding-right: 10px;
@@ -100,13 +101,9 @@ export default {
 }
 .c-shipmentsSummary__triggerLabel,
 .c-shipmentsSummary__triggerValue {
-  color: $color-primary;
   font-size: 18px;
   font-weight: 600;
   padding-right: 10px;
-}
-.c-shipmentsSummary__triggerValue {
-  color: $color-primary;
 }
 .c-shipmentsSummary__triggerLabel {
   flex-grow: 1;
@@ -142,7 +139,7 @@ export default {
 .c-shipmentsSummary__content {
   color: $color-grey;
   width: 100%;
-  padding: 0 17px 17px;
+  padding: 0 1rem 1rem;
 }
 .c-shipmentsSumary__contentLine {
   padding-right: 33px;

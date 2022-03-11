@@ -120,12 +120,11 @@ export default {
 .c-shipmentsDiscount {
   position: relative;
   overflow: hidden;
-  height: 48px;
+  height: 4rem;
   width: 100%;
-  border: 1px solid $color-secondary;
-  border-radius: 64px;
-  font-size: 16px;
-  padding: 10px 20px;
+  border: 1px solid $color-ecru;
+  font-size: 1rem;
+  padding: 1rem 1.25rem;
   @include flex($justify: space-between, $wrap: nowrap);
   .c-loading {
     display: inline-flex;
@@ -144,7 +143,6 @@ export default {
   height: 100%;
   flex-grow: 1;
   @include input-unset;
-  color: $color-primary;
   font-family: $font-body;
   font-weight: 600;
   font-size: 16px;
@@ -152,17 +150,17 @@ export default {
     max-width: calc(100% - 80px);
   }
   &::placeholder {
-    color: rgab($color-black, 0.5);
+    color: rgba($color-black, 0.5);
+    font-weight: 400;
   }
 }
 .c-shipmentsDiscount__button {
   height: 100%;
-  font-size: 16px;
+  font-size: 1rem;
   line-height: 1;
   border-bottom: 0;
-  text-transform: uppercase;
-  color: $color-primary;
-  background-color: #fbfaf4;
+  text-transform: capitalize;
+  text-decoration: underline;
   margin-left: 10px;
 }
 </style>

@@ -1,0 +1,25 @@
+<script>
+  var modals = {}
+
+  modals = {{ section.settings | json }}
+
+  {% assign bloop = 0 %}
+  {% for block in section.blocks %}
+    modals['{{ block.type }}'] = modals['{{ block.type }}'] || []
+    modals['{{ block.type }}'].push({{ block.settings | json }})
+  {% endfor %}
+
+  window.Scoutside.portal.modals = modals
+</script>
+
+{% schema %}
+  {
+    "name": "Portal Modals",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Test Order"
+      }
+    ]
+  }
+{% endschema %}

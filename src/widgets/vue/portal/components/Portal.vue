@@ -142,6 +142,7 @@ export default {
   background-color: $color-ecru;
 }
 .c-portal__loading {
+  background-color: $color-white;
   margin: 150px auto;
 }
 .c-portal__content {

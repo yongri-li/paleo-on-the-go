@@ -11,6 +11,24 @@ export default {
     if (onetimes) await commit('CUSTOMER_UPDATE_ONETIMES', { onetimes })
     if (subscriptions) await commit('CUSTOMER_UPDATE_SUBSCRIPTIONS', { subscriptions })
     return { onetimes, subscriptions, error }
+  },
+  async customerUpdateAddressDiscount({ commit }, payload) {
+    try {
+      const { addressId, discountCode } = payload
+      const apiClient = new apiService()
+      const { data } = await apiClient.put('/v1/customer/address/discount', {
+        data: { addressId, discountCode }
+      })
+      const { address, charges, error } = data
+      if (charges) await commit('CUSTOMER_UPDATE_CHARGES', { charges, keys: ['id', 'addressId'] })
+      if (address) {
+        commit('CUSTOMER_UPDATE_ADDRESSES', { addresses: [address] })
+        return { success: 'ACTION_SUCCESS' }
+      }
+      return { address, charges, error }
+    } catch {
+      return { error: 'ACTION_ERROR' }
+    }
   }
 }
 ///

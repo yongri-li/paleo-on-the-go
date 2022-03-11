@@ -229,7 +229,7 @@ export default {
   }
 
   .c-shipmentsSummary__trigger {
-    height: auto;
+    /*height: auto;*/
   }
 
   .c-shipments__box--wrap > .c-accordionItem__trigger {
@@ -272,6 +272,7 @@ export default {
   display: flex;
   justify-content: space-between;
   grid-gap: 10vw;
+  margin-top: 2.25rem;
 
   &--block {
     flex: 1;
