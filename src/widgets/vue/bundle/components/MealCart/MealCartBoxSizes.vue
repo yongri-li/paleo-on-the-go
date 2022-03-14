@@ -9,7 +9,7 @@
         type="radio"
         name="box-sizes"
         :value="size.val"
-        :checked="size.active"
+        v-model="picked"
         class="box-sizes__option--input"
       />
       <div class="box-sizes__option--content">
@@ -37,53 +37,49 @@
 </template>
 
 <script>
+import { mapState, mapGetters } from 'vuex'
+import { CHANGE_SIZE_SELECTED } from '../../store/_mutations-type'
+
 export default {
-  data() {
-    return {
-      sizes: [
-        {
-          title: 'One Time',
-          info: {
-            mobile: '8 Items Minimun',
-            desk: '8 Items Minimun'
-          },
-          active: false,
-          val: 'one-time',
-          order: 0,
-        },
-        {
-          title: '8 Items',
-          info: {
-            mobile: 'Subscribe & Save 10%',
-            desk: '10% Saving'
-          },
-          active: false,
-          val: '8-items',
-          order: 2,
-        },
-        {
-          title: '12 Items',
-          info: {
-            mobile: 'Subscribe & Save 15%',
-            desk: '15% Saving'
-          },
-          active: true,
-          val: '12-items',
-          order: 3,
-        },
-        {
-          title: '16 Items',
-          info: {
-            mobile: 'Subscribe & Save 20%',
-            desk: '20% Saving'
-          },
-          active: false,
-          val: '16-items',
-          order: 4,
+  computed: {
+    ...mapState({
+      stateSizes: 'sizes'
+    }),
+    ...mapGetters([
+      'getSizeSelected'
+    ]),
+    sizes() {
+      return this.stateSizes.map( (size, index) => {
+        const isSubscription = size.order_type === 'subscription'
+
+        const info = {
+          mobile: isSubscription
+                  ? `Subscribe & Save ${size.discount}%`
+                  : `${size.number_size} Items Minimum`,
+          desk: isSubscription
+                ? `${size.discount}% Saving`
+                : `${size.number_size} Items Minimum`,
         }
-      ]
+
+        const order = isSubscription ? index+1 : index
+
+        return {
+          title: size.title,
+          val: size.val,
+          info,
+          order
+        }
+      })
+    },
+    picked: {
+      get: function() {
+        return this.getSizeSelected
+      },
+      set: function(newVal) {
+        this.$store.commit(CHANGE_SIZE_SELECTED, { val: newVal })
+      }
     }
-  }
+  },
 }
 </script>
 

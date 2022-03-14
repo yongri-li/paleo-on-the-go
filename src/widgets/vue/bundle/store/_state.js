@@ -1,9 +1,13 @@
-const { collections } = window.Scoutside.bundle
+const {
+  sizes,
+  collections
+} = window.Scoutside.bundle
 
 const state = {
+  sizes,
   collections,
   cart: {
-    items: []
+    items: [],
   }
 }
 

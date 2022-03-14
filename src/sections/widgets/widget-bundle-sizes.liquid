@@ -1,0 +1,65 @@
+<script>
+  const sizes = []
+
+  {% for block in section.blocks %}
+    var _valSize = '{{ block.settings.title }}'
+    sizes.push({
+      ...JSON.parse('{{ block.settings | json }}'),
+      val: _valSize.toLowerCase().replace(/ /g,'')
+    })
+  {% endfor %}
+
+  window.Scoutside.bundle.sizes = sizes
+</script>
+
+{% schema %}
+  {
+    "name": "Bundle Sizes",
+    "blocks": [
+      {
+        "name": "Size",
+        "type": "size",
+        "settings": [
+          {
+            "label": "Title",
+            "type": "text",
+            "id": "title"
+          },
+          {
+            "label": "Size of the box",
+            "type": "number",
+            "id": "number_size",
+            "info": "Number of items to be able to buy"
+          },
+          {
+            "label": "Discount Percentage",
+            "type": "number",
+            "id": "discount",
+            "default": 0
+          },
+          {
+            "label": "Order type",
+            "type": "radio",
+            "id": "order_type",
+            "options": [
+              {
+                "value": "subscription",
+                "label": "Subscription"
+              },
+              {
+                "value": "onetime",
+                "label": "One Time"
+              }
+            ],
+            "default": "subscription"
+          },
+          {
+            "label": "Select Defaul",
+            "type": "checkbox",
+            "id": "selected"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
