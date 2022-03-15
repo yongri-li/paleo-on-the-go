@@ -53,10 +53,11 @@
     <div class="pcard__prices">
       <div
         v-for="box in boxesPricingScale"
-        :key="box.size"
+        :key="box.val"
+        :class="{ selected: box.selected }"
         class="pcard__price">
         <div class="pcard__price--title pcard__price--data">
-          {{ box.size }}
+          {{ box.title }}
         </div>
         <div class="pcard__price--number pcard__price--data">
           {{ box.price }}
@@ -67,7 +68,7 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 import { formatPrice } from '../../utils'
 
 export default {
@@ -82,27 +83,13 @@ export default {
       default: false
     },
   },
-  data() {
-    return {
-      boxes: [
-        {
-          size: 8,
-          discount: 0.08
-        },
-        {
-          size: 12,
-          discount: 0.12
-        },
-        {
-          size: 16,
-          discount: 0.16
-        }
-      ]
-    }
-  },
   computed: {
+    ...mapState([
+      'sizes'
+    ]),
     ...mapGetters([
-      'getItemFromCartByID'
+      'getItemFromCartByID',
+      'getSizeSelected'
     ]),
     imageUrl() {
       const imgFound = this.product.media.find(item => item.position === 1)
@@ -110,20 +97,22 @@ export default {
       return urlFinal
     },
     boxesPricingScale() {
-      const price = this.product.price
-      const scale = [
-        {
-          size: 'One Time',
-          price: formatPrice(price)
+      let price = this.product.price
+      return this.sizes.map(size => {
+        const selected = this.getSizeSelected.val === size.val
+        const discount = size.discount / 100
+
+        price = size.val === 'onetime'
+                ? price
+                : (price * (1 - discount))
+
+        return {
+          title: size.title,
+          price: formatPrice(price),
+          val: size.val,
+          selected: selected
         }
-      ]
-      this.boxes.forEach(box => {
-        scale.push({
-          size: `${box.size} Items`,
-          price: formatPrice( price * (1 - box.discount))
-        })
-      });
-      return scale
+      })
     },
     itemInCart() {
       return this.getItemFromCartByID(this.product.id)
@@ -340,15 +329,11 @@ export default {
 
 .selected {
 
-  background-color: #231F20;
-
-  .pcard__price {
-
-    &--data {
-      color: #FEFEFE;
-    }
-
+  .pcard__price--data {
+    background-color: $color-black;
+    color: $color-white;
   }
+
 }
 
 </style>
