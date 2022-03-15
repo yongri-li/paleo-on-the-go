@@ -1,0 +1,50 @@
+<script>
+  const prebuilt = {
+    content: {{ section.settings | json }},
+    items: []
+  }
+
+  {% for block in section.blocks %}
+    prebuilt.items.push({{block.settings | json}})
+  {% endfor %}
+
+  window.Scoutside.bundle.prebuilt = prebuilt
+</script>
+
+{% schema %}
+  {
+    "name": "Select a Bundle",
+    "settings": [
+      {
+        "label": "Title",
+        "type": "text",
+        "id": "title"
+      },
+      {
+        "label": "Sub Title",
+        "type": "text",
+        "id": "subtitle"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "prebuiltbundle",
+        "name": "PreBuilt Bundle",
+        "settings": [
+          {
+            "label": "Title",
+            "type": "text",
+            "id": "bundlename",
+            "info": "In the following input, add the size-# and the product id followeb by 'x' and the quantity. For example size-8 for the box and 1234567890x8 for the products"
+          },
+          {
+            "label": "Include Products for each Size",
+            "type": "textarea",
+            "id": "products",
+            "info": "Use a new line for the box and each product. size-0 is for One-Time"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

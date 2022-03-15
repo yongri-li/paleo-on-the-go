@@ -73,7 +73,8 @@ export default {
     },
     picked: {
       get: function() {
-        return this.getSizeSelected
+        const sizeSelected = this.getSizeSelected
+        return sizeSelected.val
       },
       set: function(newVal) {
         this.$store.commit(CHANGE_SIZE_SELECTED, { val: newVal })

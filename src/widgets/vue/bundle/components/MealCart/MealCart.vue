@@ -15,8 +15,8 @@
         </div>
       </div>
       <div class="meal-cart__body">
-        <meal-card-box-sizes />
-        <!-- Set component PreBuiltBundle -->
+        <meal-cart-box-sizes />
+        <meal-cart-pre-built />
       </div>
     </div>
     <div class="meal-cart__footer">
@@ -41,11 +41,13 @@
 </template>
 
 <script>
-import MealCardBoxSizes from './MealCartBoxSizes.vue'
+import MealCartBoxSizes from './MealCartBoxSizes.vue'
+import MealCartPreBuilt from './MealCartPreBuilt.vue'
 
 export default {
   components: {
-    MealCardBoxSizes
+    MealCartBoxSizes,
+    MealCartPreBuilt
   }
 }
 </script>
