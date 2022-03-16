@@ -14,8 +14,11 @@
         </div>
       </div>
     </div>
-    <div class="meal-cart__btn-next">
-      Continue
+    <div
+      :class="{ disable: notContinue }"
+      class="meal-cart__btn-next"
+    >
+      {{ ctabtn }}
     </div>
   </div>
 </template>
@@ -32,6 +35,15 @@ export default {
     sizeSelected: {
       type: Object,
       required: true
+    },
+    cartLength: {
+      type: Number,
+      required: true
+    }
+  },
+  data() {
+    return {
+      notContinue: false
     }
   },
   computed: {
@@ -42,6 +54,21 @@ export default {
     },
     subtotalFormat() {
       return formatPrice(this.subtotal)
+    },
+    ctabtn() {
+      if(this.cartLength === 0) {
+        this.notContinue = true
+        return 'Add products to Continue'
+      }
+
+      const diff = this.cartLength - this.sizeSelected.number_size
+      if(diff > 0) {
+        this.notContinue = true
+        return `Remove ${diff} items to Continue`
+      }
+
+      this.notContinue = false
+      return 'Continue'
     }
   }
 }
@@ -116,6 +143,11 @@ export default {
       font-size: 1.3rem;
       font-weight: 500;
     }
+  }
+
+  .disable {
+    pointer-events: none;
+    opacity: .6;
   }
 
 }

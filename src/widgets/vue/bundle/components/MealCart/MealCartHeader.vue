@@ -8,6 +8,9 @@
     </div>
     <div class="meal-cart__header--items">
       <div class="meal-cart__header--items-qt">
+        <span :class="{ warning: warning }">
+          {{ cartLength }}
+        </span>
         {{ itemsQt }}
       </div>
       <div class="meal-cart__header--items-info">
@@ -42,13 +45,17 @@ export default {
   computed: {
     itemsQt() {
       return  this.sizeSelected.order_type === 'onetime'
-              ? `${this.cartLength} items`
-              : `${this.cartLength}/${this.sizeSelected.number_size} items`
+              ? ` items`
+              : `/${this.sizeSelected.number_size} items`
     },
     itemsInfo() {
       return  this.sizeSelected.order_type === 'onetime'
               ? `${this.sizeSelected.number_size} item minimum`
               : `${this.sizeSelected.discount}% discount`
+    },
+    warning() {
+      const diff = this.cartLength - this.sizeSelected.number_size
+      return diff > 0
     }
   }
 }
@@ -82,6 +89,10 @@ export default {
       margin-right: .5rem;
       font-weight: 500;
       font-size: 1.2rem;
+
+      .warning {
+        color: #EB2020;
+      }
     }
 
     &-info {
