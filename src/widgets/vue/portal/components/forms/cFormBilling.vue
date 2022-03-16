@@ -211,25 +211,26 @@ export default {
           name: 'firstName',
           value: firstName,
           rules: ['validateRequired'],
-          messages: [this.content.error_required]
+          // messages: [this.content.error_required] ? [this.content.error_required] : ['First Name required']
+          messages: ['First Name required']
         },
         {
           name: 'lastName',
           value: lastName,
           rules: ['validateRequired'],
-          messages: [this.content.error_required]
+          messages: ['Last Name required']
         },
         {
           name: 'address1',
           value: address1,
           rules: ['validateRequired'],
-          messages: [this.content.error_required]
+          messages: ['Address required']
         },
         {
           name: 'city',
           value: city,
           rules: ['validateRequired'],
-          messages: [this.content.error_required]
+          messages: ['City required']
         },
         {
           name: 'province',
@@ -241,13 +242,13 @@ export default {
           name: 'zip',
           value: zip,
           rules: ['validateRequired'],
-          messages: [this.content.error_required]
+          messages: ['Zip Code required']
         },
         {
           name: 'country',
           value: country,
-          // rules: ['validateRequired'],
-          messages: [this.content.error_required]
+          rules: [],
+          messages: ['Country required']
         }
       ])
       if (formValidation.hasErrors) this.status = 'error'
@@ -259,6 +260,7 @@ export default {
       if (!this.hasErrors) {
         this.loading = true
         const { customer, error } = await this.customerUpdateBilling({ address: this.billingModel })
+        console.log('customer, error', customer, error)
         if (!error) {
           this.status = 'success'
           if (!this.hideAlert && this.content.success_text) {

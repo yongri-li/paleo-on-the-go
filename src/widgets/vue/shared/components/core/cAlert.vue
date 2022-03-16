@@ -1,13 +1,10 @@
 <template>
   <div :class="_buildModifiers('c-alert', extendedModifiers)">
-    <c-svg class="c-alert__icon"
+    <!--     <c-svg class="c-alert__icon"
       v-if="showIcon"
       :name="icon"
-    />
-    <span class="c-alert__message"
-      v-if="messagesText"
-      v-html="messagesText"
-    />
+    /> -->
+    <span class="c-alert__message" v-if="messagesText" v-html="messagesText" />
   </div>
 </template>
 
@@ -24,7 +21,7 @@ export default {
     },
     messages: {
       type: Array,
-      default: () => ([])
+      default: () => []
     },
     closable: {
       type: Boolean,
@@ -32,7 +29,7 @@ export default {
     },
     modifiers: {
       type: Array,
-      default: () => ([])
+      default: () => []
     }
   },
   computed: {
@@ -40,7 +37,7 @@ export default {
       return `circle${this._stringCapitalize(this.role)}`
     },
     extendedModifiers() {
-      let modifiers = [ ...this.modifiers ]
+      let modifiers = [...this.modifiers]
       modifiers.push(`is${this._stringCapitalize(this.role)}`)
       return modifiers
     },
@@ -48,7 +45,7 @@ export default {
       let messagesText = ''
       const uniqueMessages = this._arrayRemoveDuplicates(this.messages)
       uniqueMessages.forEach((message, index) => {
-        if(index > 0) messagesText += '<br/ >'
+        if (index > 0) messagesText += '  '
         messagesText += message
       })
       return messagesText
@@ -58,24 +55,30 @@ export default {
 </script>
 
 <style lang="scss">
-  .c-alert {
-    width: 100%;
-    @include flex($justify: space-between, $align: flex-start, $wrap: nowrap);
-    border-radius: 3px;
-    padding: 10px 15px;
-    margin-bottom: 20px;
-    &.c-alert--isSuccess { background-color: $color-success; }
-    &.c-alert--isInfo { background-color: $color-info; }
-    &.c-alert--isError { background-color: $color-error; }
+.c-alert {
+  width: 100%;
+  @include flex($justify: space-between, $align: flex-start, $wrap: nowrap);
+  border-radius: 3px;
+  padding: 10px 15px;
+  margin-bottom: 20px;
+  &.c-alert--isSuccess {
+    background-color: $color-success;
   }
-  .c-alert__icon {
-    width: 20px;
-    color: $color-white;
-    margin: 6px 15px 0 0;
+  &.c-alert--isInfo {
+    background-color: $color-info;
   }
-  .c-alert__message {
-    flex-grow: 1;
-    @include text-body;
-    color: $color-white;
+  &.c-alert--isError {
+    background-color: $color-error;
   }
+}
+.c-alert__icon {
+  width: 20px;
+  color: $color-white;
+  margin: 6px 15px 0 0;
+}
+.c-alert__message {
+  flex-grow: 1;
+  @include text-body;
+  color: $color-white;
+}
 </style>

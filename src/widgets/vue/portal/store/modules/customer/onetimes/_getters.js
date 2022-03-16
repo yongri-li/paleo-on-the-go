@@ -1,4 +1,9 @@
 export default {
+  customerOneTest: state => state.resources.orders[0],
+  customerOnetimes: state => test => {
+    const { onetimes } = state.resources
+    return onetimes
+  },
   customerOnetimeById: state => id => {
     const { onetimes } = state.resources
     if (onetimes) {

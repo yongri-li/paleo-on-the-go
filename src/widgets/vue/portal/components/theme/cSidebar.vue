@@ -6,9 +6,10 @@
       :show="show"
       :side="sidebar.side"
       :closable="false"
-      :modifiers="['isFullWidth', ...sidebar.modifiers]"
+      :modifiers="[...sidebar.modifiers]"
       @close="UI_CLOSE_SIDEBAR"
     >
+      <!-- 'isFullWidth',  -->
       <div class="c-sidebar__container o-container">
         <button
           class="c-sidebar__back"
@@ -18,7 +19,7 @@
           <c-svg class="c-sidebar__backIcon" name="chevron" />
           <span class="c-sidebar__backText" v-html="backText" />
         </button>
-        <c-h class="c-sidebar__heading" v-if="heading" tag="h1" level="1" :text="heading" />
+        <c-h class="c-sidebar__heading" v-if="heading" tag="h3" level="3" :text="heading" />
         <component
           class="c-sidebar__content"
           :is="sidebarComponent"
@@ -124,6 +125,6 @@ export default {
   text-transform: uppercase;
 }
 .c-sidebar__heading {
-  color: $color-secondary;
+  color: $color-black;
 }
 </style>

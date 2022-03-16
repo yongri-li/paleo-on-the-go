@@ -1,6 +1,34 @@
 import { apiService } from '@shared/services'
+import { mapMutations } from 'vuex'
 
 export default {
+  async customerUpdateAddress({ commit }, payload) {
+    try {
+      let apiClient = new apiService()
+
+      // for testing only
+      const allCookiez = await document.cookie
+      const apiAccessToken = await allCookiez
+        .split('; ')
+        .find(row => row.includes('ss_access_token'))
+        ?.split('=')[1]
+      apiClient.headers['X-Api-Access-Token'] = apiAccessToken
+      console.log('apiClientapiClient', apiAccessToken)
+      // for testing only end
+
+      const { updates } = payload
+      const { data } = await apiClient.put('/v1/customer/address', { data: { address: updates } }) //data: { address }
+      const { address, error } = data
+      if (address) {
+        console.log('address fired')
+        //this.$store.commit('customer/CUSTOMER_UPDATE_ADDRESSES', { addresses: [address] }, { root: true })
+        return { success: 'ACTION_SUCCESS' }
+      }
+      return { address, error }
+    } catch {
+      return { error: 'ACTION_ERROR' }
+    }
+  },
   async customerUpdateAddressItems({ commit }, payload) {
     const { addressId, updatesOnetimes, updatesSubscriptions } = payload
     const { data } = await apiService.put('/v1/customer/items', {
@@ -15,7 +43,18 @@ export default {
   async customerUpdateAddressDiscount({ commit }, payload) {
     try {
       const { addressId, discountCode } = payload
-      const apiClient = new apiService()
+      let apiClient = new apiService()
+
+      // for testing only
+      const allCookiez = await document.cookie
+      const apiAccessToken = await allCookiez
+        .split('; ')
+        .find(row => row.includes('ss_access_token'))
+        ?.split('=')[1]
+      apiClient.headers['X-Api-Access-Token'] = apiAccessToken
+      console.log('apiClientapiClient', apiClient, apiAccessToken)
+      // for testing only end
+
       const { data } = await apiClient.put('/v1/customer/address/discount', {
         data: { addressId, discountCode }
       })

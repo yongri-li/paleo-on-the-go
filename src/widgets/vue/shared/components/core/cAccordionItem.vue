@@ -66,7 +66,10 @@ export default {
         this.maxHeight = `${content.scrollHeight}px`
       }
     },
-    toggleContent() {
+    toggleContent(e) {
+      let ignoreClass
+      if (e) ignoreClass = e.path[0].classList.value
+      if (ignoreClass?.includes('js--ignoreAccOpen')) return
       if (!this.multipleOpen && this.$parent.closeAllItems) this.$parent.closeAllItems(this.$el)
       let maxHeight = this.$refs.content.scrollHeight
       if (this.maxHeight == '0px') this.maxHeight = `${maxHeight}px`

@@ -7,13 +7,14 @@ export default {
     state.ready = true
   },
   CUSTOMER_SET_RECHARGE(state, payload) {
-    if(payload) state.recharge = { ...payload }
+    console.log('CUSTOMER_SET_RECHARGECUSTOMER_SET_RECHARGE', payload)
+    if (payload) state.recharge = { ...payload }
   },
   CUSTOMER_SET_SHOPIFY(state, payload) {
-    if(payload) state.shopify = { ...payload }
+    if (payload) state.shopify = { ...payload }
   },
   CUSTOMER_SET_RESOURCES(state, payload) {
-    if(payload) state.resources = { ...state.resources, ...payload }
+    if (payload) state.resources = { ...state.resources, ...payload }
   },
   ...chargesMutations,
   ...onetimesMutations,

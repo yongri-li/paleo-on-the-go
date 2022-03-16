@@ -75,7 +75,7 @@
                       level="3"
                       v-html="
                         _buildAddress({
-                          address: addressList.active[0],
+                          address: customerRecharge.billingAddress,
                           options: {
                             hiddenFields: ['country'],
                             provinceName: 'short'
@@ -110,7 +110,11 @@
         </div>
 
         <!--         <div class="c-details__boxSingle">
-          <c-detailsBlock class="c-details__boxItem" v-if="customerRecharge" :heading="content.billing_label">
+          <c-detailsBlock
+            class="c-details__boxItem"
+            v-if="customerRecharge"
+            :heading="content.shipping_label"
+          >
             <c-p
               class="class-details__boxText"
               tag="address"
@@ -125,14 +129,13 @@
                 })
               "
             />
-            address: customerRecharge.billingAddress
             <c-button
               class="c-details__boxButton"
               :text="content.billing_edit"
               :modifiers="['isUnderline', 'isPrimary']"
               @click="
                 UI_SET_SIDEBAR({
-                  component: 'cSidebarBilling',
+                  component: 'cSidebarShipping',
                   content: sidebarContent.billing
                 })
               "
@@ -227,6 +230,7 @@ import cAccordion from '@shared/components/core/cAccordion.vue'
 import cAccordionItem from '@shared/components/core/cAccordionItem.vue'
 import cFormPassword from '../forms/cFormPassword.vue'
 import cFormBilling from '../forms/cFormBilling.vue'
+import cFormShipping from '../forms/cFormShipping.vue'
 
 export default {
   props: {
@@ -244,7 +248,8 @@ export default {
     cAccordion,
     cAccordionItem,
     cFormPassword,
-    cFormBilling
+    cFormBilling,
+    cFormShipping
   },
   data: () => ({ ready: false, error: false }),
   computed: {

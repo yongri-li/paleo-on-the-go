@@ -76,10 +76,11 @@
         <div class="c-ordersAccordion__grid">
           <c-ordersItem
             class="c-ordersAccordion__gridItem"
-            v-for="(item, index) in subscriptions"
+            v-for="(item, index) in order.lineItems"
             :key="`item-${index}`"
             :item="item"
             :content="{ ships: content.ships }"
+            :test="order"
           />
         </div>
 
@@ -168,6 +169,7 @@ import cH from '@shared/components/core/cH.vue'
 import cP from '@shared/components/core/cP.vue'
 import cSvg from '@shared/components/core/cSvg.vue'
 import cOrdersItem from './cOrdersItem.vue'
+import { _filterItemsByAddOns, _filterItemsBySubscription, filterAddOns } from '../../utils'
 
 export default {
   props: {
@@ -213,14 +215,18 @@ export default {
       return this.$store.getters['customer/customerOnetimesByAddressId'](this.addressId)
     },
     frequency() {
-      const freqObj = this.subscriptions.find(sub => sub.frequency)
-      return freqObj.frequency
+      const freqObj = this.subscriptions?.find(sub => sub.frequency)
+      return freqObj?.frequency
     },
     totalSubItems() {
-      return this.subscriptions.reduce((sum, sub) => sum + sub.quantity, 0)
+      return this.subscriptions?.reduce((sum, sub) => sum + sub.quantity, 0)
     },
     totalAddOns() {
-      return this.addons.reduce((sum, sub) => sum + sub.quantity, 0)
+      return this.addons?.reduce((sum, sub) => sum + sub.quantity, 0)
+    },
+    testonetimez() {
+      const subs = this.subscriptions.length
+      return this.subscriptions.slice(subs)
     }
   },
   methods: {
@@ -256,7 +262,23 @@ export default {
     },
     summaryLines(order) {
       return this._buildSummary({ item: order })
+    },
+    testFilt(items) {
+      //console.log(filterAddOns(items))
+      const allitems = items.length - 1
+      // items.slice(allitems)
+      console.log(items, items.slice(allitems))
     }
+
+    // getSubscriptionItems(items) {
+    //   return _filterItemsBySubscription(items)
+    // }
+    // getAddOns(items) {
+    //   return _filterItemsByAddOns(items)
+    // }
+  },
+  created() {
+    this.testFilt(this.orders[0].lineItems)
   }
 }
 </script>

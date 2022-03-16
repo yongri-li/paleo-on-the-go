@@ -63,6 +63,7 @@
           class="c-orders__accordion"
           v-if="activeOrders.length > 0"
           :orders="activeOrders"
+          :addressId="addressId"
           :content="{
             name: content.order_name,
             processing: content.order_processing,

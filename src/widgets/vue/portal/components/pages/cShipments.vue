@@ -7,6 +7,7 @@
         <section class="c-shipments__flex">
           <h2 class="c-h2">{{ !!nextCharge ? 'Upcoming Orders' : 'Order History' }}</h2>
           <c-shipmentsBox
+            v-if="content"
             class="c-shipments__box"
             :charge="nextCharge"
             :addons="null"
@@ -16,6 +17,8 @@
         </section>
       </div>
     </article>
+
+    <c-faqAccordion v-if="content" :content="content.portal_faq" />
   </div>
 </template>
 
@@ -24,6 +27,7 @@ import { mapGetters, mapState, mapActions, mapMutations } from 'vuex'
 import cShipmentsLoading from '../shipments/cShipmentsLoading.vue'
 import cShipmentsEmpty from '../shipments/cShipmentsEmpty.vue'
 import cShipmentsBox from '../shipments/cShipmentsBox.vue'
+import cFaqAccordion from '@shared/components/core/cFaqAccordion.vue'
 import { format } from 'date-fns'
 import { convertToYYYYMMDDlocalT } from '@shared/utils'
 
@@ -37,18 +41,24 @@ export default {
   components: {
     cShipmentsLoading,
     cShipmentsEmpty,
-    cShipmentsBox
+    cShipmentsBox,
+    cFaqAccordion
   },
   computed: {
     ...mapGetters('customer', [
       'customerUpcomingCharge',
+      'customerUpcomingCharges',
       'customerSubscriptionById',
       'customerSubscriptionsByAddress',
       'customerSubscriptionsByIds',
       ['customerShopify']
+      // ['customerRecharge']
     ]),
     content() {
       return this.$store.getters['customize/customizeContentByKey']('shipments')
+    },
+    charges() {
+      return this.customerUpcomingCharges
     },
     // subscriptions() {
     //   // return this.$store.getters['customize/customizeContentByKey']('shipments')

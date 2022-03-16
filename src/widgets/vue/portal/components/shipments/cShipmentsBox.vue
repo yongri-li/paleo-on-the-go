@@ -28,7 +28,17 @@
       <c-accordionItem class="c-shipments__box--wrap" :open="true" :setBoxHeight="setBoxHeight">
         <div class="c-shipmentsSummary__trigger" slot="trigger">
           <div class="c-shipmentsSummary__triggerLabel">
-            Shipping To <a href="/" class="u-colorWhite">{{ charge.shipping_address.address1 }}</a>
+            Shipping To
+            <span
+              class="u-colorWhite js--ignoreAccOpen"
+              @click="
+                UI_SET_SIDEBAR({
+                  component: 'cSidebarShipping',
+                  content: sidebarContent.shipping
+                })
+              "
+              >{{ charge.shipping_address.address1 }}</span
+            >
           </div>
           <div class="c-shipmentsSummary__triggerCircle">
             <c-svg class="c-shipmentsSummary__triggerIcon" name="chevron" />
@@ -105,8 +115,7 @@
 </template>
 
 <script>
-// import { mapGetters, mapState, mapActions, mapMutations } from 'vuex'
-
+import { mapMutations } from 'vuex'
 import cH from '@shared/components/core/cH.vue'
 import cSvg from '@shared/components/core/cSvg.vue'
 import cIcon from '@shared/components/core/cIcon.vue'
@@ -195,12 +204,17 @@ export default {
     },
     totalAddOns() {
       return this.addOnItems.reduce((sum, sub) => sum + sub.quantity, 0)
+    },
+    sidebarContent() {
+      const shipping = this.$store.getters['customize/customizeSidebarByPrefix']('billing_')
+      return { shipping }
     }
     // thisShipDate() {
     //   return this.charge.scheduledAt
     // }
   },
   methods: {
+    ...mapMutations('ui', ['UI_SET_SIDEBAR']),
     // getSubscriptionItems(items) {
     //   return _filterItemsBySubscription(items)
     // }
@@ -242,7 +256,7 @@ export default {
       font-size: 1.5rem;
       font-weight: 500;
 
-      a {
+      span {
         text-decoration: underline;
       }
     }

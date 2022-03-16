@@ -97,14 +97,16 @@ export default {
         '/v1/customer/resources?resources=addresses,charges,orders,subscriptions,onetimes'
       )
 
-      const { data2 } = await this.apiTest.get('/v1/customer/account')
+      const data2 = await this.apiTest.get('/v1/customer/account')
 
       const { rechargeCustomer, resources } = data //shopifyCustomer,
 
-      console.log('rechargeCustomer', rechargeCustomer, data2)
+      console.log('rechargeCustomerz', data2)
 
       this.state.customer.resources = { ...resources }
-      this.state.customer.recharge = true
+      this.state.customer.recharge = data2.data.rechargeCustomer
+      // this.state.recharge = data2.data.rechargeCustomer
+      this.state.rechargeCustomer = data2.data.rechargeCustomer
       this.state.customer.ready = true
 
       const { portal, shop, bundle, customer } = await window.Scoutside
