@@ -1,23 +1,15 @@
 <template>
   <div class="meal-cart">
     <div class="meal-cart__info">
-      <div class="meal-cart__header">
-        <div class="meal-cart__header--title">
-          MY BOX
-        </div>
-        <div class="meal-cart__header--items">
-          <div class="meal-cart__header--items-qt">
-            0/12 ITEMS
-          </div>
-          <div class="meal-cart__icon-drop-down">
-            v
-          </div>
-        </div>
-      </div>
-      <div class="meal-cart__body">
-        <meal-cart-box-sizes />
-        <meal-cart-pre-built />
-      </div>
+      <meal-cart-header
+        :typeClass="typeClass"
+        :haveProductsClass="haveProductsClass"
+        :sizeSelected="getSizeSelected"
+        :cartLength="cartLength"
+      />
+      <meal-cart-body
+        :haveProductsClass="haveProductsClass"
+      />
     </div>
     <div class="meal-cart__footer">
       <div class="meal-cart__box-total">
@@ -41,13 +33,37 @@
 </template>
 
 <script>
-import MealCartBoxSizes from './MealCartBoxSizes.vue'
-import MealCartPreBuilt from './MealCartPreBuilt.vue'
+import MealCartHeader from './MealCartHeader.vue'
+import MealCartBody from './MealCartBody.vue'
+
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   components: {
-    MealCartBoxSizes,
-    MealCartPreBuilt
+    MealCartHeader,
+    MealCartBody
+  },
+  computed: {
+    ...mapState([
+      'cart'
+    ]),
+    ...mapGetters([
+      'getSizeSelected'
+    ]),
+    haveProductsClass() {
+      return this.cart.items.length ? 'with-products' : 'without-products'
+    },
+    typeClass() {
+      const orderType = this.$route.params.box || this.getSizeSelected.order_type
+      return orderType
+    },
+    cartLength() {
+      let length = 0
+      this.cart.items.forEach(item => {
+        length += item.quantity
+      })
+      return length
+    }
   }
 }
 </script>
@@ -68,63 +84,6 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   border-radius: 20px 20px 0px 0px;
-
-  &__header {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    padding: .8rem 1rem;
-    border-bottom: 1px solid #231F20;
-
-    &--title {
-      font-family: 'Knockout';
-      text-transform: uppercase;
-      font-size: 2rem;
-      line-height: 1.7rem;
-
-      @media screen and (min-width: 769px) {
-        font-size: 3rem;
-        padding-top: 1.5rem;
-      }
-    }
-
-    &--items {
-      display: flex;
-      align-items: flex-end;
-
-      &-qt{
-        text-transform: uppercase;
-        letter-spacing: .06em;
-        margin-right: .5rem;
-        font-weight: 500;
-        font-size: 1.2rem;
-      }
-
-      @media screen and (min-width: 769px) {
-        display: none;
-      }
-
-    }
-
-    @media screen and (min-width: 769px) {
-      border-bottom: none;
-    }
-  }
-
-  &__icon-drop-down {
-    border: 2px solid #231F20;
-    box-sizing: border-box;
-    width: 32px;
-    height: 32px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 100%;
-  }
-
-  &__body {
-    padding: .8rem;
-  }
 
   &__footer {
     box-shadow: 0px 4px 34px rgba(0, 0, 0, 0.1);

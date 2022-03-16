@@ -5,15 +5,16 @@ import {
 } from './_mutations-type'
 
 export default {
-  addToCart({ commit }, product) {
-    commit( ADD_PRODUCT_TO_CART, { product } )
+  addToCart({ commit, getters }, {idCollection, idProduct}) {
+    const productFound = getters.getProductFromCollectionsByIDs({idCollection,idProduct})
+    commit( ADD_PRODUCT_TO_CART, { product: productFound } )
   },
-  reduceToCart({ commit, getters }, product) {
-    commit( REDUCE_PRODUCT_TO_CART, { product } )
+  reduceToCart({ commit, getters }, idProduct) {
+    commit( REDUCE_PRODUCT_TO_CART, { idProduct } )
 
-    const productFound = getters.getItemFromCartByID(product.id)
-    if (productFound.quantity === 0) {
-      commit( REMOVE_PRODUCT_TO_CART, { product } )
+    const productAfterReduce = getters.getItemFromCartByID(idProduct)
+    if (productAfterReduce.quantity === 0) {
+      commit( REMOVE_PRODUCT_TO_CART, { idProduct } )
     }
   }
 }

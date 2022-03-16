@@ -18,14 +18,14 @@ export default {
       })
     }
   },
-  [REDUCE_PRODUCT_TO_CART] (state, { product }) {
-    const indexFound = state.cart.items.findIndex(item => item.id === product.id)
+  [REDUCE_PRODUCT_TO_CART] (state, { idProduct }) {
+    const indexFound = state.cart.items.findIndex(item => item.id === idProduct)
     if(indexFound > -1) {
       state.cart.items[indexFound].quantity--
     }
   },
-  [REMOVE_PRODUCT_TO_CART] (state, { product }) {
-    const indexFound = state.cart.items.findIndex(item => item.id === product.id)
+  [REMOVE_PRODUCT_TO_CART] (state, { idProduct }) {
+    const indexFound = state.cart.items.findIndex(item => item.id === idProduct)
     state.cart.items.splice(indexFound, 1)
   },
   [CHANGE_SIZE_SELECTED] (state, { val }) {

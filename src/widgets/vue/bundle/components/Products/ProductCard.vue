@@ -23,7 +23,7 @@
             class="pcard__add-to-cart--open"
           >
             <span class="pcard__add-to-cart--btn"
-              @click="reduceToCart(product)"
+              @click="reduceToCart(product.id)"
             >
               -
             </span>
@@ -31,14 +31,20 @@
               {{ qtItem }}
             </span>
             <span class="pcard__add-to-cart--btn"
-              @click="addToCart(product)"
+              @click="addToCart({
+                idCollection: product.collection.id,
+                idProduct: product.id
+              })"
             >
               +
             </span>
           </div>
           <div v-else
             class="pcard__add-to-cart--first"
-            @click="addToCart(product)"
+            @click="addToCart({
+              idCollection: product.collection.id,
+              idProduct: product.id
+            })"
           >
             <span>
               +
@@ -97,14 +103,10 @@ export default {
       return urlFinal
     },
     boxesPricingScale() {
-      let price = this.product.price
       return this.sizes.map(size => {
         const selected = this.getSizeSelected.val === size.val
         const discount = size.discount / 100
-
-        price = size.val === 'onetime'
-                ? price
-                : (price * (1 - discount))
+        const price = this.product.price * (1 - discount)
 
         return {
           title: size.title,

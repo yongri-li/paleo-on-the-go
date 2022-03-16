@@ -1,4 +1,9 @@
 export default {
+  getProductFromCollectionsByIDs: (state) => ({idCollection, idProduct}) => {
+    const collectionFound = state.collections.find(collection => collection.id === idCollection)
+    const productFound = collectionFound.products.find(product => product.id === idProduct)
+    return productFound
+  },
   getItemFromCartByID: (state) => (id) => {
     const productFound = state.cart.items.find(item => item.id === id)
     return productFound
