@@ -124,7 +124,7 @@ export default {
   width: 100%;
   border: 1px solid $color-ecru;
   font-size: 1rem;
-  padding: 1rem 1.25rem;
+  padding: 1rem;
   @include flex($justify: space-between, $wrap: nowrap);
   .c-loading {
     display: inline-flex;

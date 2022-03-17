@@ -10,7 +10,8 @@
               @click="
                 UI_SET_SIDEBAR({
                   component: 'cSidebarShipping',
-                  content: sidebarContent.shipping
+                  headings: sidebarHeadings.shipping,
+                  content: sidebarContent.billing
                 })
               "
               >{{ charge.shipping_address.address1 }}</span
@@ -181,9 +182,17 @@ export default {
     totalAddOns() {
       return this.addOnItems.reduce((sum, sub) => sum + sub.quantity, 0)
     },
-    sidebarContent() {
-      const shipping = this.$store.getters['customize/customizeSidebarByPrefix']('billing_')
+    sidebarHeadings() {
+      const shipping = this.$store.getters['customize/customizeSidebarByPrefix']('shipping_')
       return { shipping }
+    },
+    sidebarContent() {
+      const billing = this.$store.getters['customize/customizeSidebarByPrefix']('billing_')
+      return { billing }
+    },
+    sidebarEditSchedule() {
+      const content = this.$store.getters['customize/customizeSidebarByPrefix']('edit_schedule')
+      return { content }
     }
     // thisShipDate() {
     //   return this.charge.scheduledAt
@@ -209,7 +218,12 @@ export default {
       this.setBoxHeight = !this.setBoxHeight
     },
     handleChangeMeals() {},
-    handleEditSchedule() {}
+    handleEditSchedule() {
+      this.UI_SET_SIDEBAR({
+        component: 'cSidebarEditSchedule',
+        content: this.sidebarEditSchedule.content
+      })
+    }
   }
 }
 </script>
@@ -226,6 +240,10 @@ export default {
 
   .c-shipmentsSummary__trigger {
     /*height: auto;*/
+
+    @include media-mobile-down {
+      padding: 0;
+    }
   }
 
   .c-shipments__box--wrap > .c-accordionItem__trigger {
@@ -233,10 +251,18 @@ export default {
     color: $color-black;
     padding: 2.25rem 1rem;
 
+    @include media-mobile-down {
+      padding: 1rem;
+    }
+
     .c-shipmentsSummary__triggerLabel {
       color: $color-black;
       font-size: 1.5rem;
       font-weight: 500;
+
+      @include media-mobile-down {
+        font-size: 1.25rem;
+      }
 
       span {
         text-decoration: underline;
@@ -250,6 +276,11 @@ export default {
     height: 2.5rem;
     width: 2.5rem;
 
+    @include media-mobile-down {
+      height: 2rem;
+      width: 2rem;
+    }
+
     svg path {
       fill: $color-black;
     }
@@ -260,6 +291,12 @@ export default {
 
     .c-shipmentsBox__content {
       padding: 1.25rem 2.5rem;
+    }
+
+    @include media-mobile-down {
+      .c-shipmentsBox__content {
+        padding: 1.25rem;
+      }
     }
   }
 }
@@ -273,6 +310,11 @@ export default {
   &--block {
     flex: 1;
   }
+
+  @include media-mobile-down {
+    flex-direction: column;
+    grid-gap: 1rem;
+  }
 }
 
 .c-shipmentsBox__header {
@@ -285,6 +327,18 @@ export default {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 1.75rem;
+
+  @include media-mobile-down {
+    flex-direction: column;
+    align-items: flex-start;
+    grid-gap: 1rem;
+
+    button {
+      width: 100%;
+      max-width: 100%;
+      flex: 1;
+    }
+  }
 
   .c-h2 {
     margin: 0;
@@ -310,6 +364,19 @@ export default {
 
   &.item__addOn {
     grid-template-columns: repeat(4, 1fr);
+  }
+
+  @include media-tablet-down {
+    grid-template-columns: repeat(4, 1fr);
+    grid-gap: 2rem;
+  }
+
+  @include media-mobile-down {
+    grid-template-columns: repeat(2, 1fr);
+
+    &.item__addOn {
+      grid-template-columns: 1fr;
+    }
   }
 }
 

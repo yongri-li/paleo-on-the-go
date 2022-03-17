@@ -317,7 +317,7 @@ export default {
 }
 .c-details__boxAddress {
   margin-bottom: 4px;
-  font-size: 20px;
+  font-size: 1.125rem;
 }
 .c-details__boxShips {
   font-size: 16px;

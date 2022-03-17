@@ -22,9 +22,9 @@
         <c-svg class="c-portalHeader__mobileSvg" name="circleChevron" />
       </div>
       <transition name="t-mobileNav-slide">
-        <nav class="c-portalHeader__mobileNav" v-if="open">
+        <nav class="c-portalHeader__mobileNav" v-if="open" @click="closeNavClk">
           <component
-            class="c-portalHeader__mobileLink"
+            class="c-portalHeader__mobileLink asdasd"
             v-for="(link, index) in navigation"
             :key="index"
             :is="link.tag"
@@ -93,6 +93,9 @@ export default {
     handleResize() {
       const width = window.innerWidth
       if (width >= 768) this.open = false
+    },
+    closeNavClk() {
+      this.open = false
     }
   },
   mounted() {

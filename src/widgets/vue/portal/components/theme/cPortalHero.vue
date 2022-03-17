@@ -52,7 +52,7 @@ export default {
       return dateStr != null ? format(new Date(dateStr), 'MMM D') : null
     },
     onResize() {
-      window.innerWidth < 768 ? (this.isMobile = true) : (this.isMobile = false)
+      this.isMobile = window.innerWidth < 768 ? true : false
     }
   },
   created() {

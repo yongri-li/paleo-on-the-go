@@ -159,6 +159,7 @@ export default {
 
   @include media-mobile-down {
     width: calc(100% - 2rem);
+    margin: 0 auto;
   }
 }
 .t-content-fade-enter,

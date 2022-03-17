@@ -304,6 +304,10 @@ export default {
   @include media-tablet-up {
     @include flex($justify: flex-start, $wrap: nowrap);
   }
+
+  @include media-mobile-down {
+    padding: 2rem 1.5rem;
+  }
 }
 .c-ordersAccordion__triggerTop,
 .c-ordersAccordion__triggerBottom {
@@ -323,6 +327,10 @@ export default {
     background: $color-black;
     border-radius: 100%;
     z-index: 0;
+
+    @include media-mobile-down {
+      top: 3px;
+    }
   }
 }
 .c-ordersAccordion__triggerBottom {
@@ -400,6 +408,10 @@ export default {
   border-top: 3px solid $color-ecru;
   padding: 2rem 0;
   margin: 0 2.5rem;
+
+  @include media-mobile-down {
+    margin: 0 1.5rem;
+  }
 }
 .c-ordersAccordion__grid {
   margin-top: 2rem;
@@ -411,6 +423,9 @@ export default {
   @include media-desktop-up {
     grid-template-columns: repeat(6, 1fr);
   }
+  @include media-mobile-down {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 .c-ordersAccordion__gridItem {
   width: 100%;
@@ -418,6 +433,10 @@ export default {
 .c-ordersAccordion__grid.item__addOn {
   @include media-desktop-up {
     grid-template-columns: repeat(4, 1fr);
+  }
+
+  @include media-mobile-down {
+    grid-template-columns: 1fr;
   }
 }
 .item__addOn .c-ordersItem {

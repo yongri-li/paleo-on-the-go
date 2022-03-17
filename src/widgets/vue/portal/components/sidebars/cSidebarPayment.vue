@@ -35,6 +35,10 @@ export default {
     width: 100%;
     min-height: 390px;
     height: 100%;
+
+    @include media-mobile-down {
+      min-height: 450px;
+    }
   }
 
   .c-sidebar__container {

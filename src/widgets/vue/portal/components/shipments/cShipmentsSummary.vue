@@ -143,6 +143,15 @@ export default {
     margin-left: 0.25rem;
     @include media-mobile-down {
       margin-left: 0;
+      min-width: 1.85rem;
+      width: 1.85rem;
+      height: 1.85rem;
+    }
+  }
+
+  @include media-mobile-down {
+    .c-shipmentsSummary__trigger {
+      padding: 1rem;
     }
   }
 }

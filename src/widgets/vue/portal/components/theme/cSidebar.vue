@@ -58,7 +58,7 @@ export default {
     backText() {
       const { content } = this.sidebar
       const backKey = Object.keys(content).find(key => key.endsWith('_back'))
-      return backKey ? content[backKey] : false
+      return backKey ? content[backKey] : 'Back'
     },
     heading() {
       const { content } = this.sidebar

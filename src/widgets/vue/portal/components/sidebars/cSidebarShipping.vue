@@ -24,6 +24,10 @@ import cFormShipping from '../forms/cFormShipping.vue'
 
 export default {
   props: {
+    headings: {
+      type: Object,
+      required: true
+    },
     content: {
       type: Object,
       required: true
