@@ -2,7 +2,8 @@ import {
   ADD_PRODUCT_TO_CART,
   REDUCE_PRODUCT_TO_CART,
   REMOVE_PRODUCT_TO_CART,
-  CHANGE_SIZE_SELECTED
+  CHANGE_SIZE_SELECTED,
+  CLEAN_CART_ITEMS
 } from './_mutations-type'
 
 export default {
@@ -35,5 +36,8 @@ export default {
     // active the correct size
     const indexCorrectSize = state.sizes.findIndex(size => size.val === val)
     state.sizes[indexCorrectSize].selected = true
+  },
+  [CLEAN_CART_ITEMS] (state) {
+    state.cart.items = []
   }
 }

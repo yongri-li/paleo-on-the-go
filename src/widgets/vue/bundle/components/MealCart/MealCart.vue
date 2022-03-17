@@ -9,6 +9,7 @@
       />
       <meal-cart-body
         :have-products-class="haveProductsClass"
+        :size-selected="getSizeSelected"
       />
     </div>
     <meal-cart-footer
@@ -25,6 +26,8 @@ import MealCartBody from './MealCartBody.vue'
 import MealCartFooter from './MealCartFooter.vue'
 
 import { mapState, mapGetters } from 'vuex'
+
+import { changeRouter } from '../../utils'
 
 export default {
   components: {
@@ -60,6 +63,10 @@ export default {
       })
       return subtotal
     }
+  },
+  mounted() {
+    const orderType = this.getSizeSelected.order_type
+    changeRouter(orderType)
   }
 }
 </script>

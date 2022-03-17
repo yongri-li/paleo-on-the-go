@@ -37,17 +37,19 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
-import { CHANGE_SIZE_SELECTED } from '../../store/_mutations-type'
+import { mapState } from 'vuex'
 
 export default {
+  props: {
+    sizeSelected: {
+      type: Object,
+      required: true
+    }
+  },
   computed: {
     ...mapState({
       stateSizes: 'sizes'
     }),
-    ...mapGetters([
-      'getSizeSelected'
-    ]),
     sizes() {
       return this.stateSizes.map( (size, index) => {
         const isSubscription = size.order_type === 'subscription'
@@ -73,11 +75,10 @@ export default {
     },
     picked: {
       get: function() {
-        const sizeSelected = this.getSizeSelected
-        return sizeSelected.val
+        return this.sizeSelected.val
       },
       set: function(newVal) {
-        this.$store.commit(CHANGE_SIZE_SELECTED, { val: newVal })
+        this.$emit('change',newVal)
       }
     }
   },

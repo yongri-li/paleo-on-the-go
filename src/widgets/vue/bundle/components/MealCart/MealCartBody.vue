@@ -1,6 +1,8 @@
 <template>
   <div class="meal-cart__body">
     <meal-cart-box-sizes
+      :size-selected="sizeSelected"
+      @change="changeSizeSelected"
       :class="[haveProductsClass]"
       class="meal-cart__body--boxsize"
     />
@@ -31,6 +33,15 @@ export default {
     haveProductsClass: {
       type: String,
       default: 'without-products'
+    },
+    sizeSelected: {
+      type: Object,
+      required: true
+    }
+  },
+  methods: {
+    changeSizeSelected(newVal) {
+      this.$store.dispatch('changeSizeSelected', newVal)
     }
   }
 }
