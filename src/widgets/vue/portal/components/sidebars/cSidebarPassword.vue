@@ -39,5 +39,8 @@ export default {
 .c-sidebarPassword__form {
   /*max-width: 440px;*/
   max-width: calc(100% - 100px);
+  @include media-mobile-down {
+    max-width: 100%;
+  }
 }
 </style>

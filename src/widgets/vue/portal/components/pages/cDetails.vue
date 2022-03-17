@@ -109,55 +109,26 @@
           </c-detailsBlock>
         </div>
 
-        <!--         <div class="c-details__boxSingle">
-          <c-detailsBlock
-            class="c-details__boxItem"
-            v-if="customerRecharge"
-            :heading="content.shipping_label"
-          >
-            <c-p
-              class="class-details__boxText"
-              tag="address"
-              level="3"
-              v-html="
-                _buildAddress({
-                  address: addressList.active[0],
-                  options: {
-                    hiddenFields: ['country'],
-                    provinceName: 'short'
-                  }
-                })
-              "
-            />
-            <c-button
-              class="c-details__boxButton"
-              :text="content.billing_edit"
-              :modifiers="['isUnderline', 'isPrimary']"
-              @click="
-                UI_SET_SIDEBAR({
-                  component: 'cSidebarShipping',
-                  content: sidebarContent.billing
-                })
-              "
-            />
-          </c-detailsBlock>
-        </div> -->
-
-        <!-- payment -->
+        <!-- payment update -->
         <div class="c-details__boxSingle">
-          <c-detailsBlock class="c-details__boxItem" v-if="customerRecharge" :heading="content.payment_label">
-            <span class="class-details__boxText">**** ****** ****</span>
-            <c-button
-              class="c-details__boxButton"
-              :text="content.payment_edit"
-              :modifiers="['isUnderline', 'isPrimary']"
-              @click="
-                UI_SET_SIDEBAR({
-                  component: 'cSidebarPayment',
-                  content: sidebarContent.payment
-                })
-              "
-            />
+          <c-detailsBlock
+            class="c-details__boxItem withAccordion"
+            v-if="customerRecharge"
+            :heading="content.payment_label"
+          >
+            <c-accordion>
+              <c-accordionItem>
+                <div class="c-details__boxButton" slot="trigger">
+                  <section>
+                    <c-p class="class-details__boxText" tag="address" level="3" text="**** ****** ****" />
+                  </section>
+                  <span class="c-details__editTrigger c-button--isUnderline c-button--isBlack"></span>
+                </div>
+                <div class="" slot="content">
+                  <c-sidebarPayment class="c-pageDetails__payment" :settings="sidebar.settings" />
+                </div>
+              </c-accordionItem>
+            </c-accordion>
           </c-detailsBlock>
         </div>
       </div>
@@ -231,6 +202,7 @@ import cAccordionItem from '@shared/components/core/cAccordionItem.vue'
 import cFormPassword from '../forms/cFormPassword.vue'
 import cFormBilling from '../forms/cFormBilling.vue'
 import cFormShipping from '../forms/cFormShipping.vue'
+import cSidebarPayment from '../sidebars/cSidebarPayment.vue'
 
 export default {
   props: {
@@ -249,7 +221,8 @@ export default {
     cAccordionItem,
     cFormPassword,
     cFormBilling,
-    cFormShipping
+    cFormShipping,
+    cSidebarPayment
   },
   data: () => ({ ready: false, error: false }),
   computed: {
@@ -274,6 +247,9 @@ export default {
         const { active, inactive } = addressList
         return active.length > 0 || inactive.length > 0
       }
+    },
+    sidebar() {
+      return this.$store.getters['ui/uiByKey']('sidebar')
     }
   },
   methods: {

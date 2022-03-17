@@ -28,7 +28,6 @@
         />
       </div>
     </c-drawer>
-    <c-sidebarPayment class="c-pageDetails__payment" v-if="showPayment" :settings="sidebar.settings" />
   </div>
 </template>
 
@@ -38,7 +37,6 @@ import cOverlay from '@shared/components/core/cOverlay.vue'
 import cDrawer from '@shared/components/core/cDrawer.vue'
 import cSvg from '@shared/components/core/cSvg.vue'
 import cH from '@shared/components/core/cH.vue'
-import cSidebarPayment from '../sidebars/cSidebarPayment.vue'
 
 export default {
   data: () => ({
@@ -48,13 +46,11 @@ export default {
     cOverlay,
     cDrawer,
     cSvg,
-    cH,
-    cSidebarPayment
+    cH
   },
   computed: {
     show() {
-      if (this.sidebar.component === 'cSidebarPayment') return false
-      else return this.sidebarComponent ? true : false
+      return this.sidebarComponent ? true : false
     },
     sidebar() {
       return this.$store.getters['ui/uiByKey']('sidebar')
@@ -68,9 +64,6 @@ export default {
       const { content } = this.sidebar
       const headingKey = Object.keys(content).find(key => key.endsWith('_heading'))
       return headingKey ? content[headingKey] : false
-    },
-    showPayment() {
-      return this.$route.name === 'details'
     }
   },
   methods: {
@@ -93,8 +86,7 @@ export default {
 </script>
 
 <style lang="scss">
-.c-sidebar__drawer,
-.c-pageDetails__payment {
+.c-sidebar__drawer {
   background-color: #fafafb;
   width: 100vw;
 
@@ -107,6 +99,12 @@ export default {
 }
 .c-sidebar__container {
   padding: 40px 0 60px;
+
+  .c-sidebar__content {
+    @include media-tablet-down {
+      max-width: calc(100vw - 2rem);
+    }
+  }
 }
 .c-sidebar__back {
   @include flex;

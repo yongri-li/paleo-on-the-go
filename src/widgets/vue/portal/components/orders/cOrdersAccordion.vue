@@ -380,6 +380,9 @@ export default {
   @include media-up(900px) {
     margin-left: 70px;
   }
+  @include media-mobile-down {
+    max-width: 100;
+  }
 }
 .c-ordersAccordion__triggerIcon {
   color: $color-ecru;

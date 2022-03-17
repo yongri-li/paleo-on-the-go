@@ -41,5 +41,9 @@ export default {
 <style lang="scss">
 .c-sidebarBilling__form {
   max-width: calc(100% - 100px);
+
+  @include media-mobile-down {
+    max-width: 100%;
+  }
 }
 </style>

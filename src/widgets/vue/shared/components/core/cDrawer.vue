@@ -68,6 +68,10 @@ export default {
   &.c-drawer--isFullWidth {
     width: 100vw;
   }
+
+  @include media-tablet-down {
+    padding-top: 100px;
+  }
 }
 
 .c-drawer__close {

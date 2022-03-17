@@ -13,6 +13,7 @@
     </transition>
     <!--     </div> -->
     <c-sidebar class="c-portal__sidebar" v-if="customerReady" data-portal-header />
+    <c-modal class="c-portal__modal" v-if="customerReady" data-portal-modal />
   </div>
 </template>
 
@@ -21,6 +22,7 @@ import { mapState, mapGetters } from 'vuex'
 import setup from '../_setup'
 import cPortalHeader from './theme/cPortalHeader.vue'
 import cPortalHero from './theme/cPortalHero.vue'
+import cModal from './theme/cModal.vue'
 import cSidebar from './theme/cSidebar.vue'
 import cLoading from '@shared/components/core/cLoading.vue'
 import { apiService } from '@shared/services'
@@ -35,6 +37,7 @@ export default {
   components: {
     cPortalHeader,
     cPortalHero,
+    cModal,
     cSidebar,
     cLoading
   },
@@ -142,6 +145,10 @@ export default {
 <style lang="scss">
 .c-portal {
   background-color: $color-ecru;
+
+  @include media-tablet-down {
+    /*overflow-y: scroll;*/
+  }
 }
 .c-portal__loading {
   background-color: $color-white;
@@ -149,6 +156,10 @@ export default {
 }
 .c-portal__content {
   opacity: 1;
+
+  @include media-mobile-down {
+    width: calc(100% - 2rem);
+  }
 }
 .t-content-fade-enter,
 .t-content-fade-leave-to {

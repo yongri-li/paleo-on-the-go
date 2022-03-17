@@ -1,27 +1,3 @@
-<!-- <template>
-  <div :class="_buildModifiers('c-shipmentsBox', modifiers)">
-    <div class="c-shipmentsBox__flex">
-      <div class="c-shipmentsBox__flexSmall">
-        <div class="c-shipmentsBox__shipping">
-          <span class="c-shipmentsBox__shippingCharges u-block" v-html="'this box charges'" />
-          <c-h class="c-shipmentsBox__shippingDate" tag="time" level="1" :text="'Mar 22'" />
-          <c-button
-            class="c-shipments__shippingButton"
-            :modifiers="['isDefault', 'isPrimary']"
-            :text="'ship it asap'"
-          />
-          <span class="c-shipmentsBox__shippingTo u-block" v-html="'Ships To'" />
-          <c-button class="c-shipmentsBox__shippingAddress u-block" :text="'17 Princess Street'" />
-        </div>
-      </div>
-      <div class="c-shipmentsBox__flexLarge"></div>
-
-      
-    </div>
-  </div>
-</template> -->
-
-<!-- /////// -->
 <template>
   <div :class="_buildModifiers('c-shipmentsBox', modifiers)" ref="shipmentBox">
     <c-accordion>
@@ -214,7 +190,13 @@ export default {
     // }
   },
   methods: {
-    ...mapMutations('ui', ['UI_SET_SIDEBAR']),
+    ...mapMutations('ui', ['UI_SET_SIDEBAR', 'UI_SET_MODAL']),
+    // asdd() {
+    //   this.UI_SET_MODAL({
+    //     component: 'cModalAlert',
+    //     content: { one: 'youre the best!' }
+    //   })
+    // },
     // getSubscriptionItems(items) {
     //   return _filterItemsBySubscription(items)
     // }
