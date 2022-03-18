@@ -9,16 +9,16 @@ import {
 import { changeRouter } from '../utils'
 
 export default {
-  addToCart({ commit, getters }, {idCollection, idProduct}) {
+  addToCart({ commit, getters }, {idCollection, idProduct, where}) {
     const productFound = getters.getProductFromCollectionsByIDs({idCollection,idProduct})
-    commit( ADD_PRODUCT_TO_CART, { product: productFound } )
+    commit( ADD_PRODUCT_TO_CART, { product: productFound, where } )
   },
-  reduceToCart({ commit, getters }, idProduct) {
-    commit( REDUCE_PRODUCT_TO_CART, { idProduct } )
+  reduceToCart({ commit, getters }, {idProduct, where}) {
+    commit( REDUCE_PRODUCT_TO_CART, { idProduct, where } )
 
-    const productAfterReduce = getters.getItemFromCartByID(idProduct)
+    const productAfterReduce = getters.getProductFromCartByID({ id: idProduct, where })
     if (productAfterReduce.quantity === 0) {
-      commit( REMOVE_PRODUCT_TO_CART, { idProduct } )
+      commit( REMOVE_PRODUCT_TO_CART, { idProduct, where } )
     }
   },
   changeSizeSelected({ commit, getters }, newVal) {

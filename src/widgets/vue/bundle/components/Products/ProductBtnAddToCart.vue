@@ -1,7 +1,10 @@
 <template>
   <div class="pbtn__add-to-cart">
     <span class="pbtn__add-to-cart--opc"
-      @click="reduceToCart(idProduct)"
+      @click="reduceToCart({
+        idProduct,
+        where
+      })"
     >
       -
     </span>
@@ -11,7 +14,8 @@
     <span class="pbtn__add-to-cart--opc"
       @click="addToCart({
         idCollection,
-        idProduct
+        idProduct,
+        where
       })"
     >
       +
@@ -34,6 +38,10 @@ export default {
     },
     qtProduct: {
       type: Number,
+      required: true
+    },
+    where: {
+      type: String,
       required: true
     }
   },

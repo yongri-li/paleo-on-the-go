@@ -4,8 +4,8 @@ export default {
     const productFound = collectionFound.products.find(product => product.id === idProduct)
     return productFound
   },
-  getItemFromCartByID: (state) => (id) => {
-    const productFound = state.cart.items.find(item => item.id === id)
+  getProductFromCartByID: (state) => ({id, where}) => {
+    const productFound = state.cart[where].find(item => item.id === id)
     return productFound
   },
   getSizeSelected: (state) => {

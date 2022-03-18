@@ -1,6 +1,6 @@
 <template>
   <div v-if="product"
-    :class="{ active: isItemInCart }"
+    :class="{ active: isProductInCart }"
     class="pcard"
   >
     <div class="pcard__header">
@@ -19,31 +19,20 @@
           this is for metafields subtitles
         </div>
         <div class="pcard__add-to-cart">
-          <div v-if="isItemInCart"
+          <product-btn-add-to-cart
+            v-if="isProductInCart"
+            :id-collection="product.collection.id"
+            :id-product="product.id"
+            :qt-product="qtProduct"
+            :where="where"
             class="pcard__add-to-cart--open"
-          >
-            <span class="pcard__add-to-cart--btn"
-              @click="reduceToCart(product.id)"
-            >
-              -
-            </span>
-            <span class="pcard__add-to-cart--qt">
-              {{ qtItem }}
-            </span>
-            <span class="pcard__add-to-cart--btn"
-              @click="addToCart({
-                idCollection: product.collection.id,
-                idProduct: product.id
-              })"
-            >
-              +
-            </span>
-          </div>
+          />
           <div v-else
             class="pcard__add-to-cart--first"
             @click="addToCart({
               idCollection: product.collection.id,
-              idProduct: product.id
+              idProduct: product.id,
+              where,
             })"
           >
             <span>
@@ -58,10 +47,20 @@
     </div>
     <div class="pcard__prices">
       <div
+        v-if="typeOrder === 'addons'"
+        class="pcard__price--addons"
+      >
+        <div class="pcard__price--number">
+          {{ boxesPricingScale[0].price }}
+        </div>
+      </div>
+      <div
+        v-else
         v-for="box in boxesPricingScale"
         :key="box.val"
         :class="{ selected: box.selected }"
-        class="pcard__price">
+        class="pcard__price"
+      >
         <div class="pcard__price--title pcard__price--data">
           {{ box.title }}
         </div>
@@ -76,9 +75,13 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
 import { formatPrice } from '../../utils'
+import ProductBtnAddToCart from './ProductBtnAddToCart.vue'
 
 export default {
   name: 'ProductCard',
+  components: {
+    ProductBtnAddToCart
+  },
   props: {
     product: {
       type: Object,
@@ -94,7 +97,7 @@ export default {
       'sizes'
     ]),
     ...mapGetters([
-      'getItemFromCartByID',
+      'getProductFromCartByID',
       'getSizeSelected'
     ]),
     imageUrl() {
@@ -116,14 +119,24 @@ export default {
         }
       })
     },
-    itemInCart() {
-      return this.getItemFromCartByID(this.product.id)
+    where() {
+      const param = this.$route.params.box
+      return param === 'addons' ? 'addons' : 'items'
     },
-    isItemInCart() {
-      return !!this.itemInCart
+    productInCart() {
+      return this.getProductFromCartByID({
+        id: this.product.id,
+        where: this.where
+      })
     },
-    qtItem() {
-      return this.itemInCart?.quantity || 0
+    isProductInCart() {
+      return !!this.productInCart
+    },
+    qtProduct() {
+      return this.productInCart?.quantity || 0
+    },
+    typeOrder() {
+      return this.$route.params.box
     }
   },
   methods: {
@@ -222,36 +235,19 @@ export default {
     }
 
     &--open {
-      background-color: #FEFEFE;
       padding: .2rem;
       width: 60%;
       border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
       font-size: 1.6rem;
 
-      @media screen and (min-width: 769px) {
-
-        padding: .2rem;
-        border: 1.5px solid #231f20;
-        border-radius: 30px;
+      @include media-tablet-up {
+        width: 50%;
         font-size: 2.2rem;
-
+        border-radius: 30px;
       }
     }
 
-    &--btn {
-      background-color: #fcd32b;
-      border-radius: 100%;
-      width: 25%;
-      text-align: center;
-      cursor: pointer;
-      -webkit-user-select: none;
-      user-select: none;
-    }
-
-    @media screen and (min-width: 769px) {
+    @include media-tablet-up {
 
       margin: 0;
       position: absolute;
@@ -278,7 +274,6 @@ export default {
     justify-content: flex-start;
     width: 100%;
     margin-top: .5rem;
-    background-color: #FEFEFE;
 
     @media screen and (min-width: 769px){
       padding: 0 .3rem;
@@ -290,6 +285,7 @@ export default {
     flex-direction: column;
     text-align: center;
     width: 25%;
+    background-color: #FEFEFE;
 
     &--data {
       font-weight: bold;
@@ -308,6 +304,14 @@ export default {
       color: #4F4C4D;
       font-size: 1rem;
     }
+
+    &--addons {
+      font-weight: 500;
+
+      @include media-tablet-up {
+        padding: 0.8rem 0 1rem;
+      }
+    }
   }
 
 }
@@ -315,17 +319,26 @@ export default {
 .active {
   background-color: #231F20;
 
-  .pcard__info {
+  .pcard {
 
-    &--title {
-      color: #FEFEFE;
+    &__info {
+
+      &--title {
+        color: #FEFEFE;
+      }
+
+      &--subtitle {
+        color: #FEFEFE;
+      }
     }
 
-    &--subtitle {
-      color: #FEFEFE;
+    &__price--addons {
+      .pcard__price--number {
+        color: $color-white;
+      }
     }
-
   }
+
 
 }
 

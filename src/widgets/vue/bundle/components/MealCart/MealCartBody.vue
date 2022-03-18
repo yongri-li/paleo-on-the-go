@@ -1,5 +1,8 @@
 <template>
-  <div class="meal-cart__body">
+  <div
+    :class="[typeClass]"
+    class="meal-cart__body"
+  >
     <meal-cart-box-sizes
       :size-selected="sizeSelected"
       @change="changeSizeSelected"
@@ -12,8 +15,8 @@
     >
       Change box size
     </div>
-    <meal-cart-pre-built />
-    <meal-cart-product-list />
+    <meal-cart-pre-built class="meal-cart__body--prebuilt"/>
+    <meal-cart-product-list :type-class="typeClass" />
   </div>
 </template>
 
@@ -30,6 +33,10 @@ export default {
     MealCartProductList
   },
   props: {
+    typeClass: {
+      type: String,
+      default: 'subscription'
+    },
     haveProductsClass: {
       type: String,
       default: 'without-products'
@@ -75,6 +82,24 @@ export default {
       text-decoration: underline;
       cursor: pointer;
     }
+  }
+
+}
+
+.addons {
+
+  .meal-cart__body {
+
+    &--changeboxsize.with-products {
+      @include media-tablet-up {
+        display: none;
+      }
+    }
+
+    &--prebuilt, &--boxsize {
+      display: none;
+    }
+
   }
 
 }

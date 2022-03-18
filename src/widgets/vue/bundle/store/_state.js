@@ -34,6 +34,7 @@ const state = {
   },
   cart: {
     items: [],
+    addons: []
   }
 }
 

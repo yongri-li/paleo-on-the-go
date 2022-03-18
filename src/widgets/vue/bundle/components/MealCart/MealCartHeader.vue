@@ -161,9 +161,17 @@ export default {
 
 }
 
-.without-products {
+.without-products, .addons {
 
   .meal-cart__header {
+
+    &--title {
+      @include media-tablet-up {
+        font-family: $font-heading;
+        font-size: 3rem;
+        padding: 1.5rem 0 1rem;
+      }
+    }
 
     &--items {
       @include media-tablet-up {

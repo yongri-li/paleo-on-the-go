@@ -8,6 +8,7 @@
         :cart-length="cartLength"
       />
       <meal-cart-body
+        :type-class="typeClass"
         :have-products-class="haveProductsClass"
         :size-selected="getSizeSelected"
       />
@@ -16,6 +17,8 @@
       :subtotal="cartSubTotal"
       :size-selected="getSizeSelected"
       :cart-length="cartLength"
+      :cart-add-ons="cartAddOns"
+      :type-class="typeClass"
     />
   </div>
 </template>
@@ -62,6 +65,13 @@ export default {
         subtotal += item.price * item.quantity
       })
       return subtotal
+    },
+    cartAddOns() {
+      let total = 0
+      this.cart.addons.forEach(addon => {
+        total += addon.price * addon.quantity
+      })
+      return total
     }
   },
   mounted() {

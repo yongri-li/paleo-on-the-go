@@ -1,5 +1,8 @@
 <template>
-  <div class="pitemcart">
+  <div
+    :class="[typeClass]"
+    class="pitemcart"
+  >
     <div class="pitemcart__body">
       <div class="pitemcart__figure">
         <div class="pitemcart__figure--remove">x</div>
@@ -22,6 +25,7 @@
       :id-collection="product.collection.id"
       :id-product="product.id"
       :qt-product="product.quantity"
+      :where="where"
     />
   </div>
 </template>
@@ -39,6 +43,10 @@ export default {
     product: {
       type: Object,
       required: true
+    },
+    typeClass: {
+      type: String,
+      default: 'subscription'
     }
   },
   computed: {
@@ -50,9 +58,13 @@ export default {
       const urlFinal = imgFound.src.replace('.jpg','_150x150.jpg').replace('.png','_150x150.png')
       return urlFinal
     },
+    where() {
+      const param = this.$route.params.box
+      return param === 'addons' ? 'addons' : 'items'
+    },
     finalPrice() {
       const discount = this.getSizeSelected.discount / 100
-      const price = this.product.price * (1 - discount)
+      const price = this.where === 'addons' ? this.product.price : this.product.price * (1 - discount)
       return formatPrice(price)
     }
   }
@@ -128,5 +140,30 @@ export default {
     padding: 0.2rem;
   }
 }
+
+.addons.pitemcart {
+
+  .pitemcart {
+
+    &__body {
+      width: 100%;
+    }
+
+    &__figure {
+
+      &--remove {
+        display: none;
+      }
+
+    }
+
+    &__add-to-cart {
+      display: none;
+    }
+
+  }
+
+}
+
 
 </style>

@@ -17,6 +17,7 @@
     <div
       :class="{ disable: notContinue }"
       class="meal-cart__btn-next"
+      @click="nextStep"
     >
       {{ ctabtn }}
     </div>
@@ -39,7 +40,15 @@ export default {
     cartLength: {
       type: Number,
       required: true
-    }
+    },
+    cartAddOns: {
+      type: Number,
+      required: true
+    },
+    typeClass: {
+      type: String,
+      default: 'subscription'
+    },
   },
   data() {
     return {
@@ -49,16 +58,16 @@ export default {
   computed: {
     final() {
       const discount = this.sizeSelected.discount / 100
-      const total = this.subtotal * (1 - discount)
+      const total = this.subtotal * (1 - discount) + this.cartAddOns
       return total === 0 ? '$0.00' : formatPrice(total)
     },
     subtotalFormat() {
-      return formatPrice(this.subtotal)
+      return formatPrice(this.subtotal + this.cartAddOns)
     },
     ctabtn() {
       if(this.cartLength === 0) {
         this.notContinue = true
-        return 'Add products to Continue'
+        return 'Add items to Continue'
       }
 
       const diff = this.cartLength - this.sizeSelected.number_size
@@ -67,8 +76,37 @@ export default {
         return `Remove ${diff} items to Continue`
       }
 
+      if(diff < 0) {
+        this.notContinue = true
+        return `Add ${diff * -1} items to Continue`
+      }
+
+      if(this.cartAddOns === 0 && this.typeClass === 'addons') {
+        this.notContinue = false
+        return `No Thanks Continue to Checkout`
+      }
+
+      if(this.typeClass === 'subscription') {
+        this.notContinue = false
+        return 'Continue'
+      }
+
       this.notContinue = false
-      return 'Continue'
+      return 'Checkout'
+    }
+  },
+  methods: {
+    nextStep() {
+      console.log('funciona el click')
+      const param = this.$route.params.box
+      console.log('param', param)
+      if(param === 'subscription') {
+        console.log('hay que ir a addons')
+        this.$router.push('/addons')
+      }
+      else {
+        console.log('hay que ir al checkout')
+      }
     }
   }
 }
