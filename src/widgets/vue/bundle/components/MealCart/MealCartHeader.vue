@@ -2,6 +2,7 @@
   <div
     :class="[typeClass, haveProductsClass]"
     class="meal-cart__header"
+    @click="sendShowCartMobile"
   >
     <div class="meal-cart__header--title">
       MY BOX
@@ -16,8 +17,13 @@
       <div class="meal-cart__header--items-info">
         {{ itemsInfo }}
       </div>
-      <div class="meal-cart__header--drop-down">
-        v
+      <div
+        :class="{ show: showCartMobile }"
+        class="meal-cart__header--drop-down"
+      >
+        <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M1.15976 1.14645C0.946747 1.34171 0.946747 1.65829 1.15976 1.85355L6.61431 6.85355C6.82732 7.04881 7.17268 7.04881 7.38569 6.85355L12.8402 1.85355C13.0533 1.65829 13.0533 1.34171 12.8402 1.14645C12.6272 0.951185 12.2819 0.951185 12.0689 1.14645L7 5.79289L1.93115 1.14645C1.71814 0.951185 1.37277 0.951184 1.15976 1.14645Z" fill="#231F20" stroke="#231F20" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
       </div>
     </div>
   </div>
@@ -42,6 +48,11 @@ export default {
       default: 0
     }
   },
+  data() {
+    return {
+      showCartMobile: false
+    }
+  },
   computed: {
     itemsQt() {
       return  this.sizeSelected.order_type === 'onetime'
@@ -57,16 +68,25 @@ export default {
       const diff = this.cartLength - this.sizeSelected.number_size
       return diff > 0
     }
+  },
+  methods: {
+    sendShowCartMobile() {
+      this.showCartMobile = !this.showCartMobile
+      this.$emit('changecartmobile', this.showCartMobile)
+    }
   }
 }
 </script>
 
 <style lang="scss" scoped>
 
+$height-header-title: 59px;
+
 .meal-cart__header {
   @include flex($align: flex-end, $justify: space-between);
   padding: .8rem 1rem;
   border-bottom: 1px solid $color-black;
+  height: $height-header-title;
 
   &--title {
     font-family: $font-heading;
@@ -104,16 +124,25 @@ export default {
   &--drop-down {
     border: 2px solid #231F20;
     box-sizing: border-box;
-    width: 32px;
-    height: 32px;
+    width: 30px;
+    height: 30px;
     display: flex;
     align-items: center;
     justify-content: center;
     border-radius: 100%;
+    transition: all .3s ease;
+
+    svg {
+      transform: scale(.5);
+    }
+  }
+  &--drop-down.show {
+    transform: rotate(180deg);
   }
 
   @include media-tablet-up {
     border-bottom: none;
+    height: auto;
   }
 }
 

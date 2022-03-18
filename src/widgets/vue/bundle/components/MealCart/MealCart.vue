@@ -1,11 +1,15 @@
 <template>
   <div class="meal-cart">
-    <div class="meal-cart__info">
+    <div
+      :class="{ show: showCartMobile }"
+      class="meal-cart__info"
+    >
       <meal-cart-header
         :type-class="typeClass"
         :have-products-class="haveProductsClass"
         :size-selected="getSizeSelected"
         :cart-length="cartLength"
+        @changecartmobile="changeCartMobile"
       />
       <meal-cart-body
         :type-class="typeClass"
@@ -19,6 +23,7 @@
       :cart-length="cartLength"
       :cart-add-ons="cartAddOns"
       :type-class="typeClass"
+      class="meal-cart__bottom"
     />
   </div>
 </template>
@@ -37,6 +42,11 @@ export default {
     MealCartHeader,
     MealCartBody,
     MealCartFooter
+  },
+  data() {
+    return {
+      showCartMobile: false
+    }
   },
   computed: {
     ...mapState([
@@ -77,31 +87,67 @@ export default {
   mounted() {
     const orderType = this.getSizeSelected.order_type
     changeRouter(orderType)
+  },
+  methods: {
+    changeCartMobile(val) {
+      this.showCartMobile = val
+    }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+
+$height-footer: 115px;
+$height-header-title: 59px;
+$translateY: calc(100% - $height-header-title);
 
 .meal-cart {
-  position: fixed;
-  left: 0;
-  bottom: 0;
-  z-index: 100;
-  width: 100%;
-  height: 90vh;
-  background-color: $color-white;
-  color: $color-black;
-  filter: drop-shadow(0px -4px 34px rgba(0, 0, 0, 0.1));
-  border-radius: 20px 20px 0px 0px;
-  @include flex($justify: space-between, $direction: column, $align: initial, $wrap: nowrap);
 
   @include media-tablet-up {
-    position: relative;
     width: 27%;
-    z-index: 0;
-    border-radius: 0;
+    height: 90vh;
     max-height: 750px;
+  }
+
+  &__info {
+    position: fixed;
+    bottom: $height-footer;
+    left: 0;
+    width: 100%;
+    background-color: $color-white;
+    height: calc(89vh - $height-footer);
+    z-index: 100;
+    filter: drop-shadow(0px -4px 34px rgba(0, 0, 0, 0.1));
+    border-radius: 20px 20px 0px 0px;
+    transform: translateY($translateY);
+    transition: all .3s ease-out;
+
+    @include media-tablet-up {
+      position: relative;
+      bottom: 0;
+      transform: translateY(0);
+      height: calc(100% - $height-footer);
+      z-index: 1;
+    }
+  }
+  &__info.show {
+    transform: translateY(1px);
+  }
+
+  &__bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: $height-footer;
+    background-color: $color-white;
+    z-index: 101;
+
+    @include media-tablet-up {
+      position: relative;
+      z-index: 1;
+    }
   }
 
 }
