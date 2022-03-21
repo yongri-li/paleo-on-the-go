@@ -3,7 +3,8 @@ import {
   REDUCE_PRODUCT_TO_CART,
   REMOVE_PRODUCT_TO_CART,
   CHANGE_SIZE_SELECTED,
-  CLEAN_CART_ITEMS
+  CLEAN_CART_ITEMS,
+  ADD_PRODUCT_TO_CART_WITH_QT
 } from './_mutations-type'
 
 export default {
@@ -15,6 +16,18 @@ export default {
     else {
       state.cart[where].push({
         quantity: 1,
+        ...product
+      })
+    }
+  },
+  [ADD_PRODUCT_TO_CART_WITH_QT] (state, { product, where, quantity }) {
+    const indexFound = state.cart[where].findIndex(item => item.id === product.id)
+    if(indexFound > -1) {
+      state.cart[where][indexFound].quantity += quantity
+    }
+    else {
+      state.cart[where].push({
+        quantity,
         ...product
       })
     }

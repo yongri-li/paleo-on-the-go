@@ -8,6 +8,14 @@ export default {
     const productFound = state.cart[where].find(item => item.id === id)
     return productFound
   },
+  getFirstProductFromCollectionsByID: (state) => (idProduct) => {
+    const collectionFound = state.collections.find(collection => collection.products.find(product => product.id == idProduct))
+    let productFound = {}
+    if(!!collectionFound) {
+      productFound = collectionFound.products.find(product => product.id == idProduct)
+    }
+    return productFound
+  },
   getSizeSelected: (state) => {
     const sizeFound = state.sizes.find(size => size.selected)
     return sizeFound
@@ -18,4 +26,9 @@ export default {
     const options = prebuiltFilter.length ? prebuiltFilter : []
     return options
   },
+  getProductPrebuilt: (state) => ({ bundlename, size }) => {
+    const boxFound = state.prebuilt.items.find(box => box.bundlename === bundlename)
+    const productsFound = boxFound.products.find(product => product.size == size)
+    return productsFound.list
+  }
 }
