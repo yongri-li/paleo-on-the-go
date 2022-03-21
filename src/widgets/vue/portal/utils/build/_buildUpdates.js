@@ -7,23 +7,23 @@ export const _buildUpdates = ({ items, action, values }) => {
     let dateValue = false
     let intervalFrequency = false
     let intervalUnit = false
-    switch(action) {
+    switch (action) {
       case 'activate':
         return { id, status: 'ACTIVE' }
-        break;
+        break
       case 'cancel':
         return { id, status: 'CANCELLED' }
-        break;
+        break
       case 'date':
         dateValue = values.date ? values.date : tomorrow
         return { id, next_charge_scheduled_at: dayjs(dateValue).format('YYYY-MM-DDT00:00:00') }
-        break;
+        break
       case 'delay':
         intervalFrequency = values.frequency ? values.frequency : 1
         intervalUnit = values.unit ? values.unit : 'month'
-        dateValue = scheduledAt ? dayjs(scheduledAt).add(intervalFrequency, intervalUnit) : tomrorow
+        dateValue = scheduledAt ? dayjs(scheduledAt).add(intervalFrequency, intervalUnit) : tomorrow
         return { id, next_charge_scheduled_at: dayjs(dateValue).format('YYYY-MM-DDT00:00:00') }
-        break;
+        break
       default:
         return { id, ...values }
     }

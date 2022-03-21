@@ -1,27 +1,36 @@
 <template>
-  <div :class="_buildModifiers('c-sidebarCancel', modifiers)"
-    v-if="content && settings.address"
-  >
-    <c-p class="c-sidebarCancel__address"
+  <div :class="_buildModifiers('c-sidebarCancel', modifiers)" v-if="content && address">
+    <c-p
+      class="c-sidebarCancel__address"
       tag="address"
       level="1"
-      v-html="_buildAddress({
-        address: settings.address,
-        options: {
-          hiddenFields: ['name', 'country'],
-          provinceName: 'short',
-          flatten: true
-        }
-      })"
+      v-html="
+        _buildAddress({
+          address: address,
+          options: {
+            hiddenFields: ['name', 'country'],
+            provinceName: 'short',
+            flatten: true
+          }
+        })
+      "
     />
     <div class="c-sidebarCancel__items">
-      <c-sidebarCancelItem class="c-sidebarCancel__item"
-        v-for="(item, index) in items" 
+      <!--       <c-sidebarCancelItem
+        class="c-sidebarCancel__item"
+        v-for="(item, index) in items"
         :key="`${item.id}-${index}`"
         :item="item"
+      /> -->
+      <c-orders-item
+        v-for="(item, index) in items"
+        :item="item"
+        :content="content"
+        :key="`${item.id}-${index}`"
       />
     </div>
-    <c-cancelRadios class="c-sidebarCancel__radios"
+    <c-cancelRadios
+      class="c-sidebarCancel__radios"
       v-model="cancelModel"
       :loading="loading"
       @delay="handleDelay"
@@ -36,7 +45,8 @@
         delay_button: content.cancel_delay_button
       }"
     />
-    <c-button class="c-sidebarCancel__cancelButton"
+    <c-button
+      class="c-sidebarCancel__cancelButton"
       v-if="content.cancel_submit_button"
       @click="handleCancel"
       :loading="loading.cancel"
@@ -54,6 +64,7 @@ import cP from '@shared/components/core/cP.vue'
 import cButton from '@shared/components/core/cButton.vue'
 import cSidebarCancelItem from './cSidebarCancelItem.vue'
 import cCancelRadios from '../parts/cCancelRadios.vue'
+import cOrdersItem from '../orders/cOrdersItem.vue'
 
 export default {
   props: {
@@ -61,40 +72,41 @@ export default {
       type: Object,
       required: true
     },
-    settings: {
+    address: {
       type: Object,
       required: true
     },
     modifiers: {
       type: Array,
-      default: () => ([])
+      default: () => []
     }
   },
-  components: { 
-    cP, cButton,
-    cSidebarCancelItem, cCancelRadios
+  components: {
+    cP,
+    cButton,
+    cSidebarCancelItem,
+    cCancelRadios,
+    cOrdersItem
   },
-  data: () => ({ 
+  data: () => ({
     cancelModel: false,
-    loading: { delay: false, cancel: false } 
+    loading: { delay: false, cancel: false }
   }),
   computed: {
     subscriptions() {
-      return this.$store.getters['customer/customerSubscriptionsByAddress'](this.settings.address)
+      return this.$store.getters['customer/customerSubscriptionsByAddress'](this.address)
     },
     subscriptionIds() {
       return this.subscriptions.map(subscription => subscription.id)
     },
     onetimes() {
-      return this.$store.getters['customer/customerOnetimesByAddress'](this.settings.address)
+      return this.$store.getters['customer/customerOnetimesByAddress'](this.address)
     },
     onetimeIds() {
       return this.onetimes.map(onetime => onetime.id)
     },
     items() {
-      return _sortItemsByCharge(
-        { items: [ ...this.subscriptions, ...this.onetimes ], order: 'ascending' }
-      )
+      return _sortItemsByCharge({ items: [...this.subscriptions, ...this.onetimes], order: 'ascending' })
     }
   },
   methods: {
@@ -102,13 +114,17 @@ export default {
     ...mapActions('customer', ['customerUpdateAddressItems']),
     async handleDelay() {
       this.loading.delay = true
-      await this.customerUpdateAddressItems({ 
-        addressId: this.settings.address.id,
+      await this.customerUpdateAddressItems({
+        addressId: this.address.id,
         updatesOnetimes: _buildUpdates({
-          items: this.onetimes, action: 'delay', values: { frequency: 1, unit: 'month'}
+          items: this.onetimes,
+          action: 'delay',
+          values: { frequency: 1, unit: 'month' }
         }),
-         updatesSubscriptions: _buildUpdates({
-          items: this.subscriptions, action: 'delay', values: { frequency: 1, unit: 'month'}
+        updatesSubscriptions: _buildUpdates({
+          items: this.subscriptions,
+          action: 'delay',
+          values: { frequency: 1, unit: 'month' }
         })
       })
       this.loading.delay = false
@@ -116,13 +132,17 @@ export default {
     },
     async handleCancel() {
       this.loading.cancel = true
-      await this.customerUpdateAddressItems({ 
-        addressId: this.settings.address.id,
+      await this.customerUpdateAddressItems({
+        addressId: this.address.id,
         updatesOnetimes: _buildUpdates({
-          items: this.onetimes, action: 'cancel', values: { reason: this.cancelModel }
+          items: this.onetimes,
+          action: 'cancel',
+          values: { reason: this.cancelModel }
         }),
-         updatesSubscriptions: _buildUpdates({
-          items: this.subscriptions, action: 'cancel', values: { reason: this.cancelModel }
+        updatesSubscriptions: _buildUpdates({
+          items: this.subscriptions,
+          action: 'cancel',
+          values: { reason: this.cancelModel }
         })
       })
       this.loading.cancel = false
@@ -133,14 +153,17 @@ export default {
 </script>
 
 <style lang="scss">
-  .c-sidebarCancel__address {
-    margin-top: -10px;
-    font-weight: 700;
-  }
-  .c-sidebarCancel__items {
-    margin-bottom: 20px;
-  }
-  .c-sidebarCancel__cancelButton {
-    margin-top: 30px;
-  }
+.c-sidebarCancel__address {
+  margin-top: -10px;
+  font-weight: 700;
+}
+.c-sidebarCancel__items {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-gap: 2.5rem;
+  margin-bottom: 20px;
+}
+.c-sidebarCancel__cancelButton {
+  margin-top: 30px;
+}
 </style>

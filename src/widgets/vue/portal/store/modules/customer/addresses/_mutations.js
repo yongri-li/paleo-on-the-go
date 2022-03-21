@@ -11,5 +11,10 @@ export default {
       keys
     })
     state.resources.addresses = [...filteredAddresses, ...addresses]
+  },
+  CUSTOMER_SET_ADDRESS_IDS(state, payload) {
+    if (payload) {
+      state.addressIds = payload
+    }
   }
 }

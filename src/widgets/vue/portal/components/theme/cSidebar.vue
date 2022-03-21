@@ -118,11 +118,13 @@ export default {
   margin-right: 8px;
 }
 .c-sidebar__backText {
-  font-size: 17px;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.025rem;
+  text-transform: capitalize;
 }
 .c-sidebar__heading {
   color: $color-black;
+  margin-top: 1.5rem;
 }
 </style>

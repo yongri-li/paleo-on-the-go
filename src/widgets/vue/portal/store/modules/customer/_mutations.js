@@ -1,5 +1,6 @@
 import chargesMutations from './charges/_mutations'
 import onetimesMutations from './onetimes/_mutations'
+import addressesMutations from './addresses/_mutations'
 import subscriptionsMutations from './subscriptions/_mutations'
 
 export default {
@@ -18,5 +19,6 @@ export default {
   },
   ...chargesMutations,
   ...onetimesMutations,
+  ...addressesMutations,
   ...subscriptionsMutations
 }

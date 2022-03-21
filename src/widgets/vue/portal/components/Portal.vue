@@ -2,23 +2,22 @@
   <div :class="_buildModifiers('c-portal', modifiers)">
     <c-portalHero class="c-portal__hero" v-if="customerReady" />
     <c-portalHeader class="c-portal__header" v-if="customerReady" data-portal-header />
-    <!--     <div class="c-portal__page o-container"> -->
     <c-loading
       class="c-portal__loading"
       v-if="!customerReady"
       :modifiers="['isSecondary', 'isHollow', 'isLargest']"
     />
     <transition name="t-content-fade" v-if="customerReady" mode="out-in">
-      <router-view class="c-portal__content" :key="$route.name" :addressId="addressId" />
+      <router-view class="c-portal__content" :key="$route.name" />
+      <!-- :addressId="addressId" -->
     </transition>
-    <!--     </div> -->
     <c-sidebar class="c-portal__sidebar" v-if="customerReady" data-portal-header />
     <c-modal class="c-portal__modal" v-if="customerReady" data-portal-modal />
   </div>
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 import setup from '../_setup'
 import cPortalHeader from './theme/cPortalHeader.vue'
 import cPortalHero from './theme/cPortalHero.vue'
@@ -63,8 +62,15 @@ export default {
     apiTest() {
       return new apiService()
     },
-    addressId() {
-      return this.$store.state.customer.resources.addresses[0].id
+    // addressId() {
+    //   return this.$store.state.customer.resources.addresses[0]?.id
+    // },
+    addresses() {
+      return this.$store.state.customer.resources.addresses
+    },
+    addressIds() {
+      const addrIds = this.addresses?.map(adr => adr.id)
+      return addrIds
     }
 
     // addresses() {
@@ -82,13 +88,13 @@ export default {
     // },
   },
   methods: {
+    ...mapMutations('customer', ['CUSTOMER_SET_ADDRESS_IDS']),
     setReady() {
       const shopifyInterval = setInterval(() => {
         this.shopifyReady = window.Scoutside.api.ready
         if (this.shopifyReady) clearInterval(shopifyInterval)
       }, 100)
     },
-
     //81820410
     // For testing setup only! Remove once Portal connection is fixed
     updateAPIheader() {
@@ -137,6 +143,11 @@ export default {
         if (val) body.classList.add('o-body--noScroll')
         else body.classList.remove('o-body--noScroll')
       }
+    },
+    addresses() {
+      this.$nextTick(() => {
+        this.CUSTOMER_SET_ADDRESS_IDS(this.addressIds)
+      })
     }
   }
 }

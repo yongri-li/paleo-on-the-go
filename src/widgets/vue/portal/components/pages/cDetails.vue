@@ -144,7 +144,7 @@
       />
       <div class="c-details__box c-details__box--isAddresses" v-if="showAddresses">
         <div class="c-details__boxSingle" v-for="address in addressList.active" :key="address.id">
-          <c-detailsBlock class="c-details__boxItem">
+          <!--           <c-detailsBlock class="c-details__boxItem">
             <div class="c-details__boxContent">
               <address class="c-details__boxAddress" v-html="address.address1" />
               <span class="c-details__boxShips" v-html="content.plans_text_next" />
@@ -162,6 +162,28 @@
                 })
               "
             />
+          </c-detailsBlock> -->
+
+          <c-detailsBlock class="c-details__boxItem withAccordion" v-if="customerRecharge">
+            <c-accordion>
+              <c-accordionItem>
+                <div class="c-details__boxButton" slot="trigger">
+                  <section style="flex: 1">
+                    <address class="c-details__boxAddress" v-html="address.address1" />
+                    <span class="c-details__boxShips" v-html="content.plans_text_next" />
+                    <span class="c-details__boxDate" v-html="shipDate(address)" />
+                  </section>
+                  <span class="c-details__editTrigger c-button--isUnderline c-button--isBlack"></span>
+                </div>
+                <div class="" slot="content">
+                  <c-sidebarCancel
+                    class="c-pageDetails__payment"
+                    :address="address"
+                    :content="sidebarContent.cancel"
+                  />
+                </div>
+              </c-accordionItem>
+            </c-accordion>
           </c-detailsBlock>
         </div>
         <div class="c-details__boxSingle" v-for="address in addressList.inactive" :key="address.id">
@@ -203,6 +225,7 @@ import cFormPassword from '../forms/cFormPassword.vue'
 import cFormBilling from '../forms/cFormBilling.vue'
 import cFormShipping from '../forms/cFormShipping.vue'
 import cSidebarPayment from '../sidebars/cSidebarPayment.vue'
+import cSidebarCancel from '../sidebars/cSidebarCancel.vue'
 
 export default {
   props: {
@@ -222,7 +245,8 @@ export default {
     cFormPassword,
     cFormBilling,
     cFormShipping,
-    cSidebarPayment
+    cSidebarPayment,
+    cSidebarCancel
   },
   data: () => ({ ready: false, error: false }),
   computed: {

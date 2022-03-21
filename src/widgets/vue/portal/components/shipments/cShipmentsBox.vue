@@ -200,6 +200,7 @@ export default {
   },
   methods: {
     ...mapMutations('ui', ['UI_SET_SIDEBAR', 'UI_SET_MODAL']),
+    ...mapMutations('customer', ['CUSTOMER_SET_THIS_CHARGEID', 'CUSTOMER_SET_NEXT_CHARGEDATE']),
     // asdd() {
     //   this.UI_SET_MODAL({
     //     component: 'cModalAlert',
@@ -219,6 +220,8 @@ export default {
     },
     handleChangeMeals() {},
     handleEditSchedule() {
+      this.CUSTOMER_SET_THIS_CHARGEID(this.charge.id)
+      this.CUSTOMER_SET_NEXT_CHARGEDATE(this.charge.scheduledAt)
       this.UI_SET_SIDEBAR({
         component: 'cSidebarEditSchedule',
         content: this.sidebarEditSchedule.content

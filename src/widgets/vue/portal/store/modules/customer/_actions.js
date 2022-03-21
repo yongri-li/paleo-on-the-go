@@ -1,5 +1,6 @@
 import { apiService } from '@shared/services'
 import addressActions from './addresses/_actions'
+import chargesActions from './charges/_actions'
 import onetimesActions from './onetimes/_actions'
 import subscriptionsActions from './subscriptions/_actions'
 
@@ -72,6 +73,7 @@ export default {
     }
   },
   ...addressActions,
+  ...chargesActions,
   ...onetimesActions,
   ...subscriptionsActions
 }
