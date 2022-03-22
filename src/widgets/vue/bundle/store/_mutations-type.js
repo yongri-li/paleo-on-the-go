@@ -4,3 +4,6 @@ export const REDUCE_PRODUCT_TO_CART = 'reduceProductToCart'
 export const REMOVE_PRODUCT_TO_CART = 'removeProductToCart'
 export const CHANGE_SIZE_SELECTED = 'changeSizeSelected'
 export const CLEAN_CART_ITEMS = 'cleanCartItems'
+
+export const MODAL_CLOSE = 'modalClose'
+export const MODAL_SETUP = 'modalSetUp'

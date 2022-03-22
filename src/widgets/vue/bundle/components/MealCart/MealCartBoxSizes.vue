@@ -7,7 +7,7 @@
     >
       <input
         type="radio"
-        name="box-sizes"
+        :name="`box-sizes-${radioName}`"
         :value="size.val"
         v-model="picked"
         class="box-sizes__option--input"
@@ -43,6 +43,10 @@ export default {
   props: {
     sizeSelected: {
       type: Object,
+      required: true
+    },
+    radioName: {
+      type: String,
       required: true
     }
   },

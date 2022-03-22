@@ -6,12 +6,14 @@
     <meal-cart-box-sizes
       :size-selected="sizeSelected"
       @change="changeSizeSelected"
+      radio-name="cart"
       :class="[haveProductsClass]"
       class="meal-cart__body--boxsize"
     />
     <div
       :class="[haveProductsClass]"
       class="meal-cart__body--changeboxsize"
+      @click="openModal"
     >
       Change box size
     </div>
@@ -25,6 +27,8 @@
 import MealCartBoxSizes from './MealCartBoxSizes.vue'
 import MealCartPreBuilt from './MealCartPreBuilt.vue'
 import MealCartProductList from './MealCartProductList.vue'
+
+import { MODAL_SETUP } from '../../store/_mutations-type'
 
 export default {
   components: {
@@ -49,6 +53,9 @@ export default {
   methods: {
     changeSizeSelected(newVal) {
       this.$store.dispatch('changeSizeSelected', newVal)
+    },
+    openModal() {
+      this.$store.commit(MODAL_SETUP, { component: 'ModalBoxSize' })
     }
   }
 }

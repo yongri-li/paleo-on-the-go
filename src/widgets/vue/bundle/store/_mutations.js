@@ -4,7 +4,9 @@ import {
   REMOVE_PRODUCT_TO_CART,
   CHANGE_SIZE_SELECTED,
   CLEAN_CART_ITEMS,
-  ADD_PRODUCT_TO_CART_WITH_QT
+  ADD_PRODUCT_TO_CART_WITH_QT,
+  MODAL_CLOSE,
+  MODAL_SETUP
 } from './_mutations-type'
 
 export default {
@@ -52,5 +54,12 @@ export default {
   },
   [CLEAN_CART_ITEMS] (state) {
     state.cart.items = []
+  },
+  [MODAL_CLOSE] (state) {
+    state.modal.settings.open = false
+  },
+  [MODAL_SETUP] (state, {component}) {
+    state.modal.component = require(`../components/Modals/${component}.vue`).default
+    state.modal.settings.open = true
   }
 }

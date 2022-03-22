@@ -35,6 +35,18 @@ const state = {
   cart: {
     items: [],
     addons: []
+  },
+  modal: {
+    settings: {
+      open: false,
+      cancel: () => { console.log('close the modal') },
+      continue: () => {}
+    },
+    component: false,
+    content: {
+      title: '',
+      description: ''
+    }
   }
 }
 
