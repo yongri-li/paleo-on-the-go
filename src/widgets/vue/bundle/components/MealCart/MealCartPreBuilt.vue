@@ -59,7 +59,7 @@ export default {
   },
   methods: {
     ...mapActions([
-      'setPrebuiltBoxToCart'
+      'validateSetPrebuilt'
     ]),
     setBundleSelected(val) {
       console.log('val',val)
@@ -70,7 +70,7 @@ export default {
           bundlename: val.label,
           size: val.size
         })
-        this.setPrebuiltBoxToCart(products)
+        this.validateSetPrebuilt(products)
       }
       else {
         this.selected = false

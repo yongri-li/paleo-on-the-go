@@ -30,7 +30,7 @@ export default {
 
     if(length > 0 && orderType !== newValType) {
       commit( MODAL_SETUP, {
-        component: 'ModalConfirm',
+        component: 'ModalConfirmBoxSizes',
         settings: {
           params: { newVal }
         }
@@ -47,7 +47,22 @@ export default {
     if(changed) {
       commit( CLEAN_CART_ITEMS )
     }
+
     commit( MODAL_CLOSE )
+  },
+  validateSetPrebuilt({ commit, getters, dispatch }, listProduct) {
+    const { length } = getters.getLengthAndTypeCart
+    if(length > 0) {
+      commit( MODAL_SETUP, {
+        component: 'ModalConfirmPreBuilt',
+        settings: {
+          params: { listProduct }
+        }
+      })
+    }
+    else {
+      dispatch('setPrebuiltBoxToCart', listProduct)
+    }
   },
   setPrebuiltBoxToCart({ commit, getters }, listProduct) {
     commit(CLEAN_CART_ITEMS)
@@ -61,5 +76,7 @@ export default {
         quantity: parseInt(qt)
       })
     })
+
+    commit( MODAL_CLOSE )
   }
 }
