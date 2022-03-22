@@ -58,8 +58,11 @@ export default {
   [MODAL_CLOSE] (state) {
     state.modal.settings.open = false
   },
-  [MODAL_SETUP] (state, {component}) {
+  [MODAL_SETUP] (state, { component, settings }) {
     state.modal.component = require(`../components/Modals/${component}.vue`).default
-    state.modal.settings.open = true
+    state.modal.settings = {
+      open: true,
+      ...settings
+    }
   }
 }

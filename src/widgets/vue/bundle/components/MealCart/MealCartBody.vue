@@ -52,7 +52,7 @@ export default {
   },
   methods: {
     changeSizeSelected(newVal) {
-      this.$store.dispatch('changeSizeSelected', newVal)
+      this.$store.dispatch('validateChangeSizeSelected', newVal)
     },
     openModal() {
       this.$store.commit(MODAL_SETUP, { component: 'ModalBoxSize' })

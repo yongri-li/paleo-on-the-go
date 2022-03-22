@@ -115,7 +115,7 @@ export default {
   },
   watch: {
     typeClass(newVal, oldVal) {
-      console.log('newVal',newVal)
+      // console.log('newVal',newVal)
       if(newVal === 'addons') {
         this.setHiddensAddOns()
       }

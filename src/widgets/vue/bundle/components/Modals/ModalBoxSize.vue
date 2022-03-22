@@ -55,8 +55,7 @@ export default {
       this.$emit('close')
     },
     saveChanged() {
-      this.$store.dispatch('changeSizeSelected', this.valSelected)
-      this.closeModal()
+      this.$store.dispatch('validateChangeSizeSelected', this.valSelected)
     }
   }
 }

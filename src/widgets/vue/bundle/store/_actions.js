@@ -4,7 +4,9 @@ import {
   REMOVE_PRODUCT_TO_CART,
   CHANGE_SIZE_SELECTED,
   CLEAN_CART_ITEMS,
-  ADD_PRODUCT_TO_CART_WITH_QT
+  ADD_PRODUCT_TO_CART_WITH_QT,
+  MODAL_SETUP,
+  MODAL_CLOSE
 } from './_mutations-type'
 
 import { changeRouter } from '../utils'
@@ -22,6 +24,22 @@ export default {
       commit( REMOVE_PRODUCT_TO_CART, { idProduct, where } )
     }
   },
+  validateChangeSizeSelected({ commit, getters, dispatch }, newVal) {
+    const { length, orderType } = getters.getLengthAndTypeCart
+    const newValType = newVal === 'onetime' ? 'onetime' : 'subscription'
+
+    if(length > 0 && orderType !== newValType) {
+      commit( MODAL_SETUP, {
+        component: 'ModalConfirm',
+        settings: {
+          params: { newVal }
+        }
+      })
+    }
+    else {
+      dispatch('changeSizeSelected', newVal)
+    }
+  },
   changeSizeSelected({ commit, getters }, newVal) {
     commit( CHANGE_SIZE_SELECTED, { val: newVal } )
     const sizeSelected = getters.getSizeSelected
@@ -29,6 +47,7 @@ export default {
     if(changed) {
       commit( CLEAN_CART_ITEMS )
     }
+    commit( MODAL_CLOSE )
   },
   setPrebuiltBoxToCart({ commit, getters }, listProduct) {
     commit(CLEAN_CART_ITEMS)

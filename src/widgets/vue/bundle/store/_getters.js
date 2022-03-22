@@ -30,5 +30,13 @@ export default {
     const boxFound = state.prebuilt.items.find(box => box.bundlename === bundlename)
     const productsFound = boxFound.products.find(product => product.size == size)
     return productsFound.list
+  },
+  getLengthAndTypeCart: (state) => {
+    const cartLength = state.cart.items.length
+    const sizeFound = state.sizes.find(size => size.selected)
+    return {
+      length: cartLength,
+      orderType: sizeFound.order_type
+    }
   }
 }

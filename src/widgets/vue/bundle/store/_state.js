@@ -39,6 +39,7 @@ const state = {
   modal: {
     settings: {
       open: false,
+      params: {},
       cancel: () => { console.log('close the modal') },
       continue: () => {}
     },
