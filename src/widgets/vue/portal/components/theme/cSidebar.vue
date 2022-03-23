@@ -25,6 +25,8 @@
           :is="sidebarComponent"
           :content="sidebar.content"
           :settings="sidebar.settings"
+          :addressNum="sidebar.addressNum"
+          :charge="sidebar.charge"
         />
       </div>
     </c-drawer>

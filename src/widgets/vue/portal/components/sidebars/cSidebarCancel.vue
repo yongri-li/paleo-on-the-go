@@ -136,12 +136,12 @@ export default {
         addressId: this.address.id,
         updatesOnetimes: _buildUpdates({
           items: this.onetimes,
-          action: 'cancel',
+          actions: ['cancel'],
           values: { reason: this.cancelModel }
         }),
         updatesSubscriptions: _buildUpdates({
           items: this.subscriptions,
-          action: 'cancel',
+          actions: ['cancel'],
           values: { reason: this.cancelModel }
         })
       })
@@ -165,5 +165,10 @@ export default {
 }
 .c-sidebarCancel__cancelButton {
   margin-top: 30px;
+}
+
+/* for testing only!!!! */
+.c-details__box--isAddresses .c-accordionItem.c-accordionItem--hasTransition {
+  min-height: 800px;
 }
 </style>

@@ -194,9 +194,9 @@
               <span class="c-details__boxDate" v-html="shipDate(address)" />
             </div>
             <c-button
-              class="c-details__boxButton"
+              class="c-details__boxButton isReactivate"
               :text="content.plans_button_activate"
-              :modifiers="['isUnderline', 'isPrimary']"
+              :modifiers="['isUnderline']"
               @click="
                 UI_SET_SIDEBAR({
                   component: 'cSidebarActivate',
@@ -369,6 +369,14 @@ export default {
     &::after {
       content: 'Close';
     }
+  }
+}
+
+.c-details__box--isAddresses {
+  .c-details__boxButton {
+    &.isReactivate {
+    }
+    /*    min-height: 6.5rem !important;*/
   }
 }
 </style>

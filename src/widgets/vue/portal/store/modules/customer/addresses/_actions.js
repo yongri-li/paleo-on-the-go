@@ -30,11 +30,24 @@ export default {
     }
   },
   async customerUpdateAddressItems({ commit }, payload) {
+    // for testing only
+    let apiClient = new apiService()
+    const allCookiez = await document.cookie
+    const apiAccessToken = await allCookiez
+      .split('; ')
+      .find(row => row.includes('ss_access_token'))
+      ?.split('=')[1]
+    apiClient.headers['X-Api-Access-Token'] = apiAccessToken
+    console.log('apiClientapiClient', apiAccessToken)
+    // for testing only end
+
     const { addressId, updatesOnetimes, updatesSubscriptions } = payload
-    const { data } = await apiService.put('/v1/customer/items', {
+    console.log('payload', payload)
+    const { data } = await apiClient.put('/v1/customer/items', {
       data: { addressId, updatesOnetimes, updatesSubscriptions }
     })
     const { charges, onetimes, subscriptions, error } = data
+    console.log('remove cancel', data)
     if (charges) await commit('CUSTOMER_UPDATE_CHARGES', { charges, keys: ['id', 'addressId'] })
     if (onetimes) await commit('CUSTOMER_UPDATE_ONETIMES', { onetimes })
     if (subscriptions) await commit('CUSTOMER_UPDATE_SUBSCRIPTIONS', { subscriptions })

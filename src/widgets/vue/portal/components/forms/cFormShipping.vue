@@ -127,9 +127,16 @@ export default {
       type: Object,
       required: true
     },
+    charge: {
+      type: Object,
+      required: true
+    },
     modifiers: {
       type: Array,
       default: () => []
+    },
+    addressNum: {
+      type: [String, Number]
     }
   },
   data() {
@@ -163,7 +170,7 @@ export default {
     activeAddrs: {
       get: function () {
         //return this.$store.getters['customer/customerAddressesWithStatus'].active[0]
-        return this.$store.state.customer.resources.addresses[0]
+        return this.$store.state.customer.resources.addresses[this.addressNum]
       },
       set: function (newValue) {
         return newValue
@@ -239,10 +246,14 @@ export default {
 
         if (!error) {
           this.status = 'success'
-          this.$store.state.customer.resources.addresses[0] = { ...this.activeAddrs, ...this.shippingModel }
-          const charges = this.$store.state.customer.resources.charges
-          const chrgNum = charges.length
-          charges[chrgNum - 1].shipping_address = { ...this.activeAddrs, ...this.shippingModel }
+          this.$store.state.customer.resources.addresses[this.addressNum] = {
+            ...this.activeAddrs,
+            ...this.shippingModel
+          }
+          // const charges = this.$store.state.customer.resources.charges
+          // const chrgNum = charges.length
+          // charges[chrgNum - 1].shipping_address = { ...this.activeAddrs, ...this.shippingModel }
+          this.charge.shipping_address = { ...this.activeAddrs, ...this.shippingModel }
 
           if (!this.hideAlert && this.content.success_text) {
             this.messages.push(this.content.success_text)

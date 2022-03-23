@@ -4,15 +4,17 @@
 
     <article class="box__byAddressId">
       <div class="c-shipments__content" v-if="ready">
-        <section class="c-shipments__flex">
-          <h2 class="c-h2">{{ !!nextCharge ? 'Upcoming Orders' : 'Order History' }}</h2>
+        <section v-for="(charge, i) in charges" class="c-shipments__flex">
+          <h2 class="c-h2">{{ !!charge && i < 1 ? 'Upcoming Orders' : null }}</h2>
           <c-shipmentsBox
             v-if="content"
             class="c-shipments__box"
-            :charge="nextCharge"
+            :charge="charge"
             :addons="null"
             :content="content"
-            :shipDate="formatDayDateIOS(nextCharge.scheduledAt)"
+            :boxNumber="i"
+            :addressId="addressIds[i]"
+            :shipDate="formatDayDateIOS(charge.scheduledAt)"
           />
         </section>
       </div>
@@ -45,31 +47,13 @@ export default {
     cFaqAccordion
   },
   computed: {
-    ...mapGetters('customer', [
-      'customerUpcomingCharge',
-      'customerUpcomingCharges',
-      'customerSubscriptionById',
-      'customerSubscriptionsByAddress',
-      'customerSubscriptionsByIds',
-      ['customerShopify']
-      // ['customerRecharge']
-    ]),
+    ...mapState('customer', ['addressIds']),
+    ...mapGetters('customer', ['customerUpcomingCharge', 'customerUpcomingCharges', ['customerShopify']]),
     content() {
       return this.$store.getters['customize/customizeContentByKey']('shipments')
     },
     charges() {
       return this.customerUpcomingCharges
-    },
-    // subscriptions() {
-    //   // return this.$store.getters['customize/customizeContentByKey']('shipments')
-    //   //return this.$store.getters['customer/customerSubscriptionsByAddress'](this.nextCharge.addressId)
-    //   return this.$store.state.customer.resources.subscriptions
-    // },
-    nextCharge() {
-      return this.customerUpcomingCharge[0]
-      // return this.customerUpcomingCharges?.filter(
-      //   (chrg) => chrg.status !== ('REFUNDED' || 'CANCELLED')
-      // )
     }
   },
   methods: {
@@ -92,24 +76,13 @@ export default {
 </script>
 
 <style lang="scss">
-/*.c-shipments__flex {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 30px 0 60px;
-  @include flex($direction: column, $wrap: nowrap);
-  @include media-desktop-up {
-    padding-top: 40px;
-    @include flex($justify: space-between, $align: flex-start, $wrap: nowrap);
-  }
-}*/
-
 .c-shipments {
   background-color: $color-ecru;
 }
 
 .c-shipments__flex {
   max-width: 1240px;
-  padding: 2rem 0 4rem;
+  padding: 2rem 0;
   margin: 0 auto;
 }
 </style>

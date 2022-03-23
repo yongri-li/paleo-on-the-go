@@ -1,7 +1,14 @@
 <template>
   <div :class="_buildModifiers('c-shipmentsBox', modifiers)" ref="shipmentBox">
+    <!--    <button @click="asdd">modal test</button> -->
     <c-accordion>
-      <c-accordionItem class="c-shipments__box--wrap" :open="true" :setBoxHeight="setBoxHeight">
+      <c-accordionItem
+        class="c-shipments__box--wrap"
+        v-if="sidebarHeadings"
+        :open="true"
+        :setBoxHeight="setBoxHeight"
+      >
+        <!-- :open="boxNumber < 1 ? true : false" -->
         <div class="c-shipmentsSummary__trigger" slot="trigger">
           <div class="c-shipmentsSummary__triggerLabel">
             Shipping To
@@ -10,7 +17,8 @@
               @click="
                 UI_SET_SIDEBAR({
                   component: 'cSidebarShipping',
-                  headings: sidebarHeadings.shipping,
+                  addressNum: boxNumber,
+                  charge: charge,
                   content: sidebarContent.billing
                 })
               "
@@ -123,6 +131,12 @@ export default {
       type: String,
       required: true
     },
+    boxNumber: {
+      type: [Number, String]
+    },
+    addressId: {
+      type: [Number, String]
+    },
     modifiers: {
       type: Array,
       default: () => []
@@ -158,29 +172,28 @@ export default {
       return this.charge.lineItems
     },
     addOnItems() {
-      return this.$store.state.customer.resources.onetimes
+      // return this.$store.state.customer.resources.onetimes
+      return this.$store.getters['customer/customerOnetimesByAddressId'](this.addressId)
     },
     addOnItemsIds() {
       return this.addOnItems.map(item => item.productId)
     },
     subscriptions() {
-      //return this.$store.getters['customize/customizeContentByKey']('shipments')
-      //return this.$store.getters['customer/customerSubscriptionsByAddress'](this.charge.addressId)
-      return this.$store.state.customer.resources.subscriptions
+      // return this.$store.state.customer.resources.subscriptions
+      return this.$store.getters['customer/customerSubscriptionsByAddressId'](this.addressId)
     },
     subscriptionItems() {
-      // return this.allItems.filter(item => !item.properties.find(property => property.name === '_addOn'))
       return this.allItems.filter(item => !this.addOnItemsIds.includes(item.productId))
     },
     frequency() {
-      const freqObj = this.subscriptions.find(sub => sub.frequency)
+      const freqObj = this.subscriptions?.find(sub => sub.frequency)
       return freqObj.frequency
     },
     totalSubItems() {
-      return this.subscriptions.reduce((sum, sub) => sum + sub.quantity, 0)
+      return this.subscriptions?.reduce((sum, sub) => sum + sub.quantity, 0)
     },
     totalAddOns() {
-      return this.addOnItems.reduce((sum, sub) => sum + sub.quantity, 0)
+      return this.addOnItems?.reduce((sum, sub) => sum + sub.quantity, 0)
     },
     sidebarHeadings() {
       const shipping = this.$store.getters['customize/customizeSidebarByPrefix']('shipping_')
@@ -194,27 +207,10 @@ export default {
       const content = this.$store.getters['customize/customizeSidebarByPrefix']('edit_schedule')
       return { content }
     }
-    // thisShipDate() {
-    //   return this.charge.scheduledAt
-    // }
   },
   methods: {
     ...mapMutations('ui', ['UI_SET_SIDEBAR', 'UI_SET_MODAL']),
     ...mapMutations('customer', ['CUSTOMER_SET_THIS_CHARGEID', 'CUSTOMER_SET_NEXT_CHARGEDATE']),
-    // asdd() {
-    //   this.UI_SET_MODAL({
-    //     component: 'cModalAlert',
-    //     content: { one: 'youre the best!' }
-    //   })
-    // },
-    // getSubscriptionItems(items) {
-    //   return _filterItemsBySubscription(items)
-    // }
-    // formatDayDateIOS(date) {
-    //   const dateCvt = new Date(date)
-    //   const dateStr = convertToYYYYMMDDlocalT(dateCvt)
-    //   return dateStr != null ? format(new Date(dateStr), 'MMM D') : null
-    // }
     setBoxMaxHeight() {
       this.setBoxHeight = !this.setBoxHeight
     },
@@ -224,6 +220,7 @@ export default {
       this.CUSTOMER_SET_NEXT_CHARGEDATE(this.charge.scheduledAt)
       this.UI_SET_SIDEBAR({
         component: 'cSidebarEditSchedule',
+        addressNum: this.boxNumber,
         content: this.sidebarEditSchedule.content
       })
     }
@@ -234,7 +231,6 @@ export default {
 <style lang="scss">
 .c-shipmentsBox {
   @include shadow-card;
-  /*padding: 15px 20px 20px;*/
   background-color: $color-white;
   border-radius: 3px;
   &:not(:last-child) {

@@ -13,6 +13,8 @@ const apiKey = getApiData(allCookies, 'ss_api_key')
 const apiCustomerToken = getApiData(allCookies, 'ss_customer_token')
 const apiAccessToken = getApiData(allCookies, 'ss_access_token')
 
+console.log('apiAccessToken', apiAccessToken)
+
 export default class API {
   constructor() {
     this.url = decodeURIComponent(apiUrl)

@@ -12,16 +12,15 @@ export default {
     apiClient.headers['X-Api-Access-Token'] = apiAccessToken
     // for testing only end
 
-    const { addressId, updates } = payload
-    console.log('payloadpayload', payload, apiClient)
+    const { addressId, dontCommit, updates } = payload
+    console.log('payloadpayload', payload)
     const { data } = await apiClient.put('/v1/customer/subscriptions', {
-      addressId,
-      updates
+      data: { addressId, updates }
     })
-    console.log('datadatadata', data)
     const { charges, subscriptions, error } = data
-    if (charges) await commit('CUSTOMER_UPDATE_CHARGES', { charges, keys: ['id', 'addressId'] })
+    if (charges && !dontCommit)
+      await commit('CUSTOMER_UPDATE_CHARGES', { charges, keys: ['id', 'addressId'] })
     if (subscriptions) await commit('CUSTOMER_UPDATE_SUBSCRIPTIONS', { subscriptions })
-    return { subscriptions, error }
+    return { subscriptions, charges, error }
   }
 }

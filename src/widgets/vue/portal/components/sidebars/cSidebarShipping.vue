@@ -2,6 +2,8 @@
   <div :class="_buildModifiers('c-sidebarShipping', modifiers)" v-if="content">
     <c-formShipping
       class="c-sidebarShipping__form"
+      :addressNum="addressNum"
+      :charge="charge"
       :content="{
         first_label: content.billing_first_label,
         last_label: content.billing_last_label,
@@ -25,12 +27,18 @@ import cFormShipping from '../forms/cFormShipping.vue'
 export default {
   props: {
     headings: {
-      type: Object,
-      required: true
+      type: Object
     },
     content: {
       type: Object,
       required: true
+    },
+    charge: {
+      type: Object,
+      required: true
+    },
+    addressNum: {
+      type: [String, Number]
     },
     modifiers: {
       type: Array,

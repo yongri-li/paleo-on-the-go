@@ -1,7 +1,7 @@
 <template>
   <c-accordion :class="_buildModifiers('c-shipmentsSummary', modifiers)" v-if="shipment && content">
     <c-accordionItem class="c-shipmentsSummary__item">
-      <div class="c-shipmentsSummary__trigger" slot="trigger">
+      <div class="c-shipmentsSummary__trigger" slot="trigger" @click="emitBoxHeight">
         <div
           class="c-shipmentsSummary__triggerLabel"
           v-if="content.label_order"
@@ -12,7 +12,7 @@
           v-if="shipment.total"
           v-html="`${currencySymbol}${_formatMoney({ amount: shipment.total })}`"
         />
-        <div class="c-shipmentsSummary__triggerCircle" @click="emitBoxHeight">
+        <div class="c-shipmentsSummary__triggerCircle">
           <c-svg class="c-shipmentsSummary__triggerIcon" name="chevron" />
         </div>
       </div>

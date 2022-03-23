@@ -1,17 +1,19 @@
 <template>
   <div class="c-sidebarEditSchedule">
-    <!--  <button @click="handleUnskip">unskip</button> -->
     <h5 class="c-h5">Need a Break?</h5>
-    <button @click="testInterval1">Test Freq Interval 1</button>
-    <button @click="testInterval">Test Freq Interval 2</button>
-    <button class="c-button c-button--isDefault c-button--isPrimary" @click="handleSkip">
-      Delay {{ freqVal }} {{ freqVal > 1 ? 'Weeks' : 'Week' }}
+    <button class="c-button c-button--isDefault c-button--isPrimary" @click="showDelayModal">
+      Delay 1 Month
     </button>
     <hr />
 
     <h5 class="c-h5">Edit Frequency</h5>
-    <section class="c-sidebar__pills" ref="freqPills">
-      <div v-for="(pill, i) in 4" :data-freq="i + 1" @click="freqSelect(pill, $event)">
+    <section v-if="chrgFreq" class="c-sidebar__pills">
+      <div
+        v-for="(pill, i) in 4"
+        :class="i + 1 == chrgFreq ? 'selected' : null"
+        :data-freq="i + 1"
+        @click="freqSelect(pill, $event)"
+      >
         {{ i + 1 }} {{ i > 0 ? 'Weeks' : 'Week' }}
       </div>
     </section>
@@ -35,52 +37,50 @@
 
     <c-button
       class="c-button c-button--isDefault c-button--isPrimary"
-      @click="changeNextChargeDate"
+      @click="handleSave"
       text="Save Changes"
       :success="status === 'success'"
       :loading="loading"
       :attributes="{ disabled: unchanged }"
       :modifiers="['isDefault', 'isPrimary', 'hideTextLoading', 'isSubmit']"
     />
-
-    <!--       :loading="loading"
-      :success=""
-      :attributes=""
-      text="Save Changes"
-      :modifiers="['isDefault', 'isPrimary', 'hideTextLoading', 'isSubmit']"  -->
   </div>
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 import { format } from 'date-fns'
 import Datepicker from 'vuejs-datepicker'
 import cButton from '@shared/components/core/cButton.vue'
-import { convertToYYYYMMDDlocalT } from '@shared/utils'
+import { convertToYYYYMMDDlocalT, delay } from '@shared/utils'
 import { _buildUpdates } from '@vue/portal/utils'
 
 export default {
   data() {
     return {
-      freqVal: 1,
+      chrgFreq: null,
       availableForDelivery: {
         days: []
       },
       disabledDates: {
         to: new Date(),
-        from: new Date(2022, 4, 29)
+        from: new Date()
       },
       selectDateText: 'Click to Select',
       newChargeDate: '',
       thisWeek: null,
       loading: false,
       status: false,
-      unchanged: true
+      freqChanged: false,
+      dateChanged: false
     }
   },
   props: {
     content: {
       type: Object
+    },
+    addressNum: {
+      type: Number
     },
     modifiers: {
       type: Array,
@@ -91,136 +91,145 @@ export default {
   computed: {
     ...mapState('customer', ['addressIds', 'thisChargeId', 'nextChargeDate']),
     addressId() {
-      return this.addressIds[1]
+      return this.addressIds[this.addressNum]
     },
     chargeId() {
       return this.thisChargeId
     },
     subscriptions() {
-      return this.$store.state.customer.resources.subscriptions
+      // return this.$store.state.customer.resources.subscriptions
+      return this.$store.getters['customer/customerSubscriptionsByAddressId'](this.addressId)
     },
     subscriptionIds() {
       return this.subscriptions?.map(itm => itm.id)
+    },
+    unchanged() {
+      return this.freqChanged === true || this.dateChanged === true ? false : true
     }
   },
   methods: {
     ...mapActions('customer', [
       'customerChargesSkip',
-      'customerChargesUnskip',
       'customerUpdateChargesDate',
       'customerUpdateSubscriptions'
     ]),
+    ...mapMutations('ui', ['UI_CLOSE_SIDEBAR', 'UI_SET_MODAL', 'UI_CLOSE_MODAL']),
     formatDayDateMMIOS(date) {
       const dateStr = convertToYYYYMMDDlocalT(date)
       return dateStr != null ? format(new Date(dateStr), 'ddd, MMM D') : null
     },
     freqSelect(freq, e) {
-      const freqPills = [...this.$refs.freqPills.children]
-      freqPills.forEach(pill => pill.classList.remove('selected'))
-      e.target.classList.add('selected')
-      this.freqVal = freq
+      this.chrgFreq = freq
+      const subFreq = this.subscriptions[0].charge_interval_frequency
+      freq != subFreq ? (this.freqChanged = true) : (this.freqChanged = false)
     },
-    async handleSkip() {
-      const res = await this.customerChargesSkip({
-        addressId: this.addressId,
-        updates: [
-          {
-            id: this.chargeId,
-            subscription_ids: this.subscriptionIds
-          }
-        ]
-      })
-      console.log('ressss', res)
-      if (res.error) {
-        console.log('ERROR', res.error)
-      }
+    setMonthChrgDelay(currentChrg, num) {
+      const date = new Date(currentChrg)
+      date.setMonth(date.getMonth() + num)
+      this.newChargeDate = date
     },
-    async handleUnskip() {
-      const { charges, onetimes, subscriptions, error } = await this.customerChargesUnskip({
-        addressId: this.addressId,
-        updates: [
-          {
-            id: '547791373',
-            subscription_ids: this.subscriptionIds
-          }
-        ]
+    setDisabledFrom(datee, num) {
+      const date = new Date(datee)
+      date.setMonth(date.getMonth() + num)
+      return date
+    },
+    showDelayModal() {
+      this.UI_SET_MODAL({
+        component: 'cModalDelay',
+        content: { one: 'wanna delay??' }
       })
     },
-    async changeNextChargeDate() {
+    // setMonthChrgDelay(nextChargeDate, 1)
+
+    // async changeNextChargeDate() {
+    //   this.loading = true
+    //   await this.setMonthChrgDelay(this.nextChargeDate)
+    //   // const { charges, onetimes, subscriptions, error, success } = await this.customerUpdateChargesDate({
+    //   const { success } = await this.customerUpdateChargesDate({
+    //     addressId: this.addressId,
+    //     updates: [
+    //       {
+    //         id: this.chargeId,
+    //         next_charge_date: format(this.newChargeDate, 'YYYY-MM-DD')
+    //       }
+    //     ]
+    //   })
+    //   if (success) {
+    //     this.loading = false
+    //     this.status = 'success'
+    //     setTimeout(() => this.UI_CLOSE_SIDEBAR(), 525)
+    //   }
+    // },
+    async handleSave() {
       this.loading = true
-      // const { charges, onetimes, subscriptions, error, success } = await this.customerUpdateChargesDate({
-      const { success } = await this.customerUpdateChargesDate({
-        addressId: this.addressId,
-        updates: [
-          {
-            id: this.chargeId,
-            next_charge_date: format(this.newChargeDate, 'YYYY-MM-DD')
-          }
-        ]
-      })
-      if (success) {
-        this.loading = false
-        this.status = 'success'
-        this.unchanged = true
+      let data
+
+      if (this.freqChanged) {
+        data = await this.customerUpdateSubscriptions({
+          addressId: this.addressId,
+          dontCommit: true,
+          updates: _buildUpdates({
+            items: this.subscriptions,
+            values: { interval: { unit: 'week', frequency: this.chrgFreq } }
+          })
+        })
+      } else {
+        data = true
       }
-    },
 
-    //////
-    async testInterval1() {
-      await this.customerUpdateSubscriptions({
-        addressId: this.addressId,
-        updates: [
-          {
-            id: 221444582,
-            charge_interval_frequency: 2,
-            order_interval_frequency: 2,
-            order_interval_unit: 'week'
-          }
-        ]
-      })
-    },
-    async testInterval() {
-      await this.customerUpdateSubscriptions({
-        addressId: this.addressId,
-        updates: _buildUpdates({
-          items: this.subscriptions,
-          values: { interval: { unit: 'week', frequency: 3 } }
+      if (data) {
+        const charges = !!data ? data.charges : false
+        const chargeId = charges ? charges[charges.length - 1].id : this.chargeId
+        await this.customerUpdateChargesDate({
+          addressId: this.addressId,
+          updates: [
+            {
+              id: chargeId,
+              next_charge_date: format(this.newChargeDate, 'YYYY-MM-DD')
+            }
+          ]
         })
-      })
-    },
+      } else {
+        alert('Error saving - please refresh and try again')
+      }
 
-    async handleTestSave() {
-      this.loading.save = true
-      await this.customerUpdateSubscriptions({
-        addressId: this.addressId,
-        updates: _buildUpdates({
-          items: this.subscriptions,
-          values: { interval: { unit: this.item.unit, frequency: this.frequencyModel } }
-        })
-      })
-      await this.customerUpdateChargesDate({
-        addressId: this.settings.address.id,
-        updates: this.chargeUpdates(this.dateModel).map(charge => {
-          return { id: charge.id, next_charge_date: this.dateModel }
-        })
-      })
-      this.loading.save = false
+      this.loading = false
       this.status = 'success'
+      setTimeout(() => {
+        this.UI_CLOSE_MODAL()
+        this.UI_CLOSE_SIDEBAR()
+      }, 500)
     }
-    //////
+  },
+  async mounted() {
+    const calEnd = this.setDisabledFrom(this.nextChargeDate, 3)
+    this.disabledDates.from = calEnd
+
+    document.addEventListener(
+      'delayConfirmed',
+      e => {
+        const { delayed } = e.detail
+        if (delayed) {
+          this.setMonthChrgDelay(this.nextChargeDate, 1)
+          setTimeout(() => this.handleSave(), 100)
+        }
+      },
+      { once: true }
+    )
   },
   watch: {
     nextChargeDate: {
       immediate: true,
       handler(val) {
         this.newChargeDate = val
+        this.chrgFreq = this.subscriptions[0]?.charge_interval_frequency
       }
     },
     newChargeDate: {
       handler(val) {
         const nxtChrg = new Date(this.nextChargeDate).getTime()
         const newChrg = new Date(val).getTime()
-        nxtChrg !== newChrg ? (this.unchanged = false) : (this.unchanged = true)
+        nxtChrg !== newChrg ? (this.dateChanged = true) : (this.dateChanged = false)
         if (this.status === 'success') this.status = false
       }
     }
