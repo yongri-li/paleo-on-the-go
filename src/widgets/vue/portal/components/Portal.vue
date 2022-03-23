@@ -49,22 +49,9 @@ export default {
     preventScroll() {
       return this.$store.getters['ui/uiSettingByKey']('preventScroll')
     },
-    allCookies() {
-      return document.cookie
-    },
-    // for testing only
-    apiAccessToken() {
-      return this.allCookies
-        .split('; ')
-        .find(row => row.includes('ss_access_token'))
-        ?.split('=')[1]
-    },
     apiTest() {
       return new apiService()
     },
-    // addressId() {
-    //   return this.$store.state.customer.resources.addresses[0]?.id
-    // },
     addresses() {
       return this.$store.state.customer.resources.addresses
     },
@@ -72,20 +59,6 @@ export default {
       const addrIds = this.addresses?.map(adr => adr.id)
       return addrIds
     }
-
-    // addresses() {
-    //   return this.$store.state.customer.resources.addresses
-    // },
-    // addressId() {
-    //   return this.$store.state.customer.resources.addresses[0].id
-    // },
-    // customerId() {
-    //   return this.$store.state.customer.resources.addresses[0].customerId
-    // }
-
-    // onetimes() {
-    //   return this.$store.state.customer.resources.onetimes
-    // },
   },
   methods: {
     ...mapMutations('customer', ['CUSTOMER_SET_ADDRESS_IDS']),
@@ -95,27 +68,19 @@ export default {
         if (this.shopifyReady) clearInterval(shopifyInterval)
       }, 100)
     },
-    //81820410
-    // For testing setup only! Remove once Portal connection is fixed
-    updateAPIheader() {
-      this.apiTest.headers['X-Api-Access-Token'] = this.apiAccessToken
-    },
     async getRCdata() {
       // const apiClient = new apiService()
       const { data } = await this.apiTest.get(
         '/v1/customer/resources?resources=addresses,charges,orders,subscriptions,onetimes'
       )
 
-      const data2 = await this.apiTest.get('/v1/customer/account')
-
+      const accounts = await this.apiTest.get('/v1/customer/account')
       const { rechargeCustomer, resources } = data //shopifyCustomer,
 
-      console.log('rechargeCustomerz', data2)
-
       this.state.customer.resources = { ...resources }
-      this.state.customer.recharge = data2.data.rechargeCustomer
-      // this.state.recharge = data2.data.rechargeCustomer
-      this.state.rechargeCustomer = data2.data.rechargeCustomer
+      this.state.customer.recharge = accounts.data.rechargeCustomer
+      // this.state.recharge = accounts.data.rechargeCustomer
+      this.state.rechargeCustomer = accounts.data.rechargeCustomer
       this.state.customer.ready = true
 
       const { portal, shop, bundle, customer } = await window.Scoutside
@@ -129,12 +94,17 @@ export default {
   async mounted() {
     //await setup(this)
     this.setReady()
-    setTimeout(() => {
-      this.updateAPIheader()
-    }, 300)
+    // setTimeout(() => {
+    //   this.updateAPIheader()
+    // }, 300)
     setTimeout(() => {
       this.getRCdata()
-    }, 500)
+    }, 100)
+
+    const ccAct = document.cookie.split('; ').find(row => row.includes('ss_access_token'))
+    const ccApiAccessToken = ccAct?.split('=')[1]
+    const lsApiAccessToken = localStorage.getItem('api_access_token')
+    lsApiAccessToken ? null : localStorage.setItem('api_access_token', ccApiAccessToken)
   },
   watch: {
     preventScroll: {

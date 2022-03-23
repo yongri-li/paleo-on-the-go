@@ -52,7 +52,8 @@
   &.c-button--isBlack {
     background-color: $color-black;
     border: 1px solid $color-black;
-    color: $color-white;
+    // color: $color-white;
+    color: $color-primary;
     &:hover {
       background-color: $color-white;
       border-color: $color-white;

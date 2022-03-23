@@ -3,24 +3,11 @@ import { apiService } from '@shared/services'
 export default {
   async customerUpdateChargesDate({ commit }, payload) {
     try {
+      const apiClient = new apiService()
       const { addressId, updates } = payload
-      // const apiClient = new apiService()
-
-      // for testing only
-      let apiClient = new apiService()
-      const allCookiez = await document.cookie
-      const apiAccessToken = await allCookiez
-        .split('; ')
-        .find(row => row.includes('ss_access_token'))
-        ?.split('=')[1]
-      apiClient.headers['X-Api-Access-Token'] = apiAccessToken
-      // for testing only end
-
       const { data } = await apiClient.put(`/v1/customer/charges/date`, { data: { addressId, updates } })
       const { charges, onetimes, subscriptions, error } = data
       const success = true
-      // const teststate = state.resources.charges
-      console.log(data, 'data from charge changeteststate')
       if (charges) await commit('CUSTOMER_UPDATE_CHARGES', { charges, keys: ['id', 'addressId'] })
       if (onetimes) await commit('CUSTOMER_UPDATE_ONETIMES', { onetimes })
       if (subscriptions) await commit('CUSTOMER_UPDATE_SUBSCRIPTIONS', { subscriptions })
@@ -48,23 +35,8 @@ export default {
   async customerChargesSkip({ commit }, payload) {
     console.log('customer charges skipsss')
     try {
-      const { addressId, updates } = payload
-
-      // for testing only
-      let apiClient = new apiService()
-      const allCookiez = await document.cookie
-      const apiAccessToken = await allCookiez
-        .split('; ')
-        .find(row => row.includes('ss_access_token'))
-        ?.split('=')[1]
-      apiClient.headers['X-Api-Access-Token'] = apiAccessToken
-      console.log('apiClientapiClient', apiAccessToken)
-      // for testing only end
-
-      // const apiClient = new apiService()
+      const apiClient = new apiService()
       const { data } = await apiClient.post(`/v1/customer/charges/skip`, { data: { addressId, updates } })
-
-      console.log('data', data)
       const { charges, onetimes, subscriptions, error } = data
       if (charges) await commit('CUSTOMER_UPDATE_CHARGES', { charges, keys: ['id', 'addressId'] })
       if (onetiems) await commit('CUSTOMER_UPDATE_ONETIMES', { onetimes })
@@ -78,19 +50,7 @@ export default {
     console.log('unskiiiippped2!')
     try {
       const { addressId, updates } = payload
-
-      // for testing only
-      let apiClient = new apiService()
-      const allCookiez = await document.cookie
-      const apiAccessToken = await allCookiez
-        .split('; ')
-        .find(row => row.includes('ss_access_token'))
-        ?.split('=')[1]
-      apiClient.headers['X-Api-Access-Token'] = apiAccessToken
-      console.log('apiClientapiClient', apiAccessToken)
-      // for testing only end
-
-      // const apiClient = new apiService()
+      const apiClient = new apiService()
       const { data } = await apiClient.post(`/v1/customer/charges/unskip`, { data: { addressId, updates } })
       if (charges) await commit('CUSTOMER_UPDATE_CHARGES', { charges, keys: ['id', 'addressId'] })
       if (onetiems) await commit('CUSTOMER_UPDATE_ONETIMES', { onetimes })

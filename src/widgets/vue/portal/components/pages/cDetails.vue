@@ -142,7 +142,7 @@
         level="2"
         :text="content.plans_heading"
       />
-      <div class="c-details__box c-details__box--isAddresses" v-if="showAddresses">
+      <div class="c-details__box c-details__box--isCancelSubs" v-if="showAddresses">
         <div class="c-details__boxSingle" v-for="address in addressList.active" :key="address.id">
           <!--           <c-detailsBlock class="c-details__boxItem">
             <div class="c-details__boxContent">
@@ -168,7 +168,7 @@
             <c-accordion>
               <c-accordionItem>
                 <div class="c-details__boxButton" slot="trigger">
-                  <section style="flex: 1">
+                  <section>
                     <address class="c-details__boxAddress" v-html="address.address1" />
                     <span class="c-details__boxShips" v-html="content.plans_text_next" />
                     <span class="c-details__boxDate" v-html="shipDate(address)" />
@@ -176,11 +176,7 @@
                   <span class="c-details__editTrigger c-button--isUnderline c-button--isBlack"></span>
                 </div>
                 <div class="" slot="content">
-                  <c-sidebarCancel
-                    class="c-pageDetails__payment"
-                    :address="address"
-                    :content="sidebarContent.cancel"
-                  />
+                  <c-sidebarCancel :address="address" :content="sidebarContent.cancel" />
                 </div>
               </c-accordionItem>
             </c-accordion>
@@ -372,7 +368,7 @@ export default {
   }
 }
 
-.c-details__box--isAddresses {
+.c-details__box--isCancelSubs {
   .c-details__boxButton {
     &.isReactivate {
     }

@@ -1,20 +1,5 @@
 <template>
   <div :class="_buildModifiers('c-sidebarCancel', modifiers)" v-if="content && address">
-    <c-p
-      class="c-sidebarCancel__address"
-      tag="address"
-      level="1"
-      v-html="
-        _buildAddress({
-          address: address,
-          options: {
-            hiddenFields: ['name', 'country'],
-            provinceName: 'short',
-            flatten: true
-          }
-        })
-      "
-    />
     <div class="c-sidebarCancel__items">
       <!--       <c-sidebarCancelItem
         class="c-sidebarCancel__item"
@@ -29,6 +14,15 @@
         :key="`${item.id}-${index}`"
       />
     </div>
+
+    <c-h
+      class="c-cancelRadios__delayHeading u-marginTop--lg"
+      v-if="content.cancel_heading"
+      tag="h5"
+      level="5"
+      :text="content.cancel_heading"
+    />
+
     <c-cancelRadios
       class="c-sidebarCancel__radios"
       v-model="cancelModel"
@@ -51,7 +45,7 @@
       @click="handleCancel"
       :loading="loading.cancel"
       :text="content.cancel_submit_button"
-      :modifiers="['isHollow', 'isBlack', 'hideTextLoading']"
+      :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
       :attributes="{ disabled: !cancelModel || loading.cancel || loading.delay }"
     />
   </div>
@@ -61,6 +55,7 @@
 import { mapMutations, mapActions } from 'vuex'
 import { _sortItemsByCharge, _buildUpdates } from '@vue/portal/utils'
 import cP from '@shared/components/core/cP.vue'
+import cH from '@shared/components/core/cH.vue'
 import cButton from '@shared/components/core/cButton.vue'
 import cSidebarCancelItem from './cSidebarCancelItem.vue'
 import cCancelRadios from '../parts/cCancelRadios.vue'
@@ -83,6 +78,7 @@ export default {
   },
   components: {
     cP,
+    cH,
     cButton,
     cSidebarCancelItem,
     cCancelRadios,
@@ -153,6 +149,12 @@ export default {
 </script>
 
 <style lang="scss">
+.c-sidebarCancel {
+  .c-h5 {
+    font-size: 1.5rem;
+  }
+}
+
 .c-sidebarCancel__address {
   margin-top: -10px;
   font-weight: 700;
@@ -161,14 +163,51 @@ export default {
   display: grid;
   grid-template-columns: repeat(6, 1fr);
   grid-gap: 2.5rem;
-  margin-bottom: 20px;
+  padding: 2rem 0 1rem;
+  border-top: 2px solid $color-ecru;
+  border-bottom: 2px solid $color-ecru;
 }
 .c-sidebarCancel__cancelButton {
-  margin-top: 30px;
+  width: 100%;
+  margin-top: 2rem;
 }
 
-/* for testing only!!!! */
-.c-details__box--isAddresses .c-accordionItem.c-accordionItem--hasTransition {
-  min-height: 800px;
+.c-details__box--isCancelSubs {
+  .withAccordion .c-accordionItem__trigger--isOpen .c-details__boxButton section {
+    opacity: 1 !important;
+  }
+
+  .withAccordion .c-accordionItem__trigger--isOpen + .c-accordionItem__content {
+    margin-top: 1.5rem !important;
+  }
+
+  .c-details__editTrigger::after {
+    content: 'Cancel Plan';
+  }
+
+  .c-details__boxButton {
+    @include media-tablet-up {
+      section {
+        flex: 1;
+      }
+    }
+  }
+
+  @include media-mobile-down {
+    .c-accordion {
+      max-width: calc(100vw - 4.5rem);
+    }
+
+    .c-sidebarCancel__items {
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 1.5rem;
+      padding: 1.5rem 0.75rem;
+    }
+  }
 }
+
+/* for TESTING only!!!! */
+/*.c-details__box--isCancelSubs .c-accordionItem.c-accordionItem--hasTransition {
+  min-height: 800px;
+}*/
 </style>

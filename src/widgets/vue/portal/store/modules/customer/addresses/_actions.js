@@ -4,18 +4,7 @@ import { mapMutations } from 'vuex'
 export default {
   async customerUpdateAddress({ commit }, payload) {
     try {
-      let apiClient = new apiService()
-
-      // for testing only
-      const allCookiez = await document.cookie
-      const apiAccessToken = await allCookiez
-        .split('; ')
-        .find(row => row.includes('ss_access_token'))
-        ?.split('=')[1]
-      apiClient.headers['X-Api-Access-Token'] = apiAccessToken
-      console.log('apiClientapiClient', apiAccessToken)
-      // for testing only end
-
+      const apiClient = new apiService()
       const { updates } = payload
       const { data } = await apiClient.put('/v1/customer/address', { data: { address: updates } }) //data: { address }
       const { address, error } = data

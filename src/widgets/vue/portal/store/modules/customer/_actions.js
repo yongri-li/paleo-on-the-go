@@ -8,8 +8,8 @@ export default {
   async customerSetState({ commit }) {
     console.log('testing here')
     try {
-      console.log('dataaaahiiii')
-      const { data } = await apiService.get('/v1/customer/account')
+      const apiClient = new apiService()
+      const { data } = await apiClient.get('/v1/customer/account')
       console.log('dta from action', data)
       const { shopifyCustomer, rechargeCustomer } = data
 
@@ -23,11 +23,12 @@ export default {
   },
   async customerSetResources({ state, commit, dispatch }, payload) {
     try {
+      const apiClient = new apiService()
       const { resources } = payload
       const resourcesInState = state.resources
       const resourceKeys = resources.filter(key => !resourcesInState[key])
       if (resourceKeys.length > 0) {
-        const { data } = await apiService.get('/v1/customer/resources', {
+        const { data } = await apiClient.get('/v1/customer/resources', {
           params: { resources: resourceKeys }
         })
 
@@ -61,7 +62,6 @@ export default {
       const { updates, address } = payload
       const apiClient = new apiService()
       const { data } = await apiClient.put('/v1/customer/billing', { data: { address } })
-      console.log('datadatadata', data)
       const { customer, error } = data
       if (customer) {
         commit('CUSTOMER_SET_RECHARGE', customer)
