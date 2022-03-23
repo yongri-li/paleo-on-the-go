@@ -34,8 +34,10 @@ import MealCartBody from './MealCartBody.vue'
 import MealCartFooter from './MealCartFooter.vue'
 
 import { mapState, mapGetters } from 'vuex'
+import { CHANGE_SIZE_SELECTED, CLEAN_CART_ITEMS } from '../../store/_mutations-type'
 
 import { changeRouter } from '../../utils'
+
 
 export default {
   components: {
@@ -84,11 +86,49 @@ export default {
       return total
     }
   },
-  mounted() {
-    const orderType = this.getSizeSelected.order_type
-    changeRouter(orderType)
+  created() {
+    // watch the params of the route to fetch the data again
+    this.$watch(
+      () => this.$route.params,
+      () => {
+        this.setSizeSelected()
+      },
+      // fetch the data when the view is created and the data is
+      // already being observed
+      { immediate: true }
+    )
   },
   methods: {
+    setSizeSelected() {
+      const orderType = this.getSizeSelected.order_type
+      const box = this.$route.params.box
+      console.log('box',box)
+
+      // this is for '/'
+      if(box === undefined) {
+        // set option for sizeSelected
+        console.log('entro al if del /')
+        changeRouter(orderType)
+        return
+      }
+
+      // this is for '/onetime'
+      if(box === 'onetime' && orderType !== 'onetime') {
+        console.log('entro al if del /onetime')
+        this.$store.commit( CHANGE_SIZE_SELECTED, { val: 'onetime' } )
+        this.$store.commit( CLEAN_CART_ITEMS )
+        return
+      }
+
+      // this is for '/subscription'
+      if(box === 'subscription' && orderType !== 'subscription') {
+        console.log('entro al if del /subscription')
+        this.$store.commit( CHANGE_SIZE_SELECTED, { val: '12items' } )
+        this.$store.commit( CLEAN_CART_ITEMS )
+        return
+      }
+
+    },
     changeCartMobile(val) {
       this.showCartMobile = val
     }
