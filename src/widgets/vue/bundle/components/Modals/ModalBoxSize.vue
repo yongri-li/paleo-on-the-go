@@ -1,5 +1,8 @@
 <template>
   <div class="modal__box-size">
+    <div class="modal__close" @click="closeModal">
+      x
+    </div>
     <div class="modal__title">
       CHANGE BOX SIZE
     </div>

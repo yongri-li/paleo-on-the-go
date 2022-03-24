@@ -97,6 +97,20 @@ export default {
     }
   }
 
+  &__close {
+    position: absolute;
+    right: 3%;
+    top: 3%;
+    font-family: $font-heading;
+    font-size: 1.5rem;
+    border-radius: 100%;
+    cursor: pointer;
+    width: 35px;
+    height: 35px;
+    border: 1px solid $color-black;
+    @include flex($justify: center);
+  }
+
 }
 
 </style>
