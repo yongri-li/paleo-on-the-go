@@ -19,7 +19,7 @@
     {{ content_for_layout }}
   </main>
   {% include 'theme-footer' %}
-  {% render 'widget-cart' %}
+  {% comment %}{% render 'widget-cart' %}{% endcomment %}
   {% render 'theme-scripts' %}
   {% render 'vendors-loyalty-lion' %}
 </body>

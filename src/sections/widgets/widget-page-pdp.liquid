@@ -1,0 +1,160 @@
+<script>
+  window.Scoutside = window.Scoutside || {}
+  window.Scoutside.pdp = window.Scoutside.pdp || {}
+
+  let pdp = {{ section.settings | json }}
+  pdp['product'] = {{ product | json }}
+  pdp['product_details'] = {{ product.metafields.product_details | json }}
+  pdp['nutritional_info'] ={
+      ...JSON.parse('{{ product.metafields.nutritional_info | json }}')
+  }
+  pdp['product']['price_hashes'] = [
+    {% for variant in product.variants %}
+        '{{ variant.price | money_without_currency | hmac_sha256: settings.fmp_app_secret }}',
+    {% endfor %}
+  ]  
+
+  const related_products = [];
+  {% assign _collection = collections[product.type] %}
+  {% for _product in _collection.products limit:4 %}
+      {% unless _product.id == product.id %}
+          related_products.push(
+              {{ _product | json }},
+              {
+                  url: '{{ _product.url }}',
+                  flag: '{{ _product.metafields.product_flags.flag }}',
+                  subtitle: '{{ _product.metafields.product_details.subtitle | json }}',
+                  nutritional_info: {
+                      ...JSON.parse('{{ _product.metafields.nutritional_info | json }}')
+                  }
+              });
+      {% endunless %}
+  {% endfor %}
+  pdp['related_products'] = related_products;
+
+  window.Scoutside.pdp = pdp
+</script>
+
+
+{% schema %}
+  {
+    "name": "Product Page",
+    "settings": [
+        {
+            "type": "header",
+            "content": "Product Gallery"
+        },
+        {
+            "id": "gallery_autoplay",
+            "type": "checkbox",
+            "label": "Enable Autoplay",
+            "default": true
+        },
+        {
+            "id": "url_getStarted",
+            "type": "url",
+            "label": "Get Started Page"
+        },
+        {
+            "type": "header",
+            "content": "Product Blurbs"
+        },
+        {
+            "id": "regular_icon",
+            "type": "image_picker",
+            "label": "Regular Meal Icon"
+        },
+        {
+            "id": "regular_text",
+            "type": "text",
+            "label": "Regular Text"
+        },
+        {
+            "id": "fresh_icon",
+            "type": "image_picker",
+            "label": "Fresh Meal Icon"
+        },
+        {
+            "id": "fresh_text",
+            "type": "text",
+            "label": "Fresh Text"
+        },
+        {
+            "type": "header",
+            "content": "Labels"
+        },
+        {
+            "id": "label_subNav",
+            "type": "text",
+            "label": "Back to Menu",
+            "default": "Back to Menu"
+        },
+        {
+            "id": "label_atc",
+            "type": "text",
+            "label": "Add to Cart",
+            "default": "Add to Cart"
+        },
+        {
+            "id": "label_getStarted",
+            "type": "text",
+            "label": "Get Started",
+            "default": "Get Started"
+        },
+        {
+            "id": "label_about",
+            "type": "text",
+            "label": "About this (Default)",
+            "default": "About This Meal"
+        },
+        {
+            "id": "label_aboutFresh",
+            "type": "text",
+            "label": "About this (Fresh)",
+            "default": "About This Dish"
+        },
+        {
+            "id": "label_nutriDesktop",
+            "type": "text",
+            "label": "Nutrition Desktop",
+            "default": "NUTRITIONAL FACTS & INGREDIENTS"
+        },
+        {
+            "id": "label_nutriMobile",
+            "type": "text",
+            "label": "Nutrition Mobile",
+            "default": "NUTRITIONAL HIGHLIGHTS"
+        },
+        {
+            "id": "label_showNutri",
+            "type": "text",
+            "label": "Show Nutrition",
+            "default": "Show Nutrition"
+        },
+        {
+            "id": "label_hideNutri",
+            "type": "text",
+            "label": "Hide Nutrition",
+            "default": "Hide Nutrition"
+        },
+        {
+            "id": "label_ingredients",
+            "type": "text",
+            "label": "Ingredients",
+            "default": "Ingredients"
+        },
+        {
+            "id": "label_prepare",
+            "type": "text",
+            "label": "How to Prepare",
+            "default": "How to Prepare"
+        },
+        {
+            "id": "label_related",
+            "type": "text",
+            "label": "Related Meals",
+            "default": "Related Meals"
+        }
+    ]
+  }
+{% endschema %}

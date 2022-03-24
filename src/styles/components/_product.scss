@@ -1,10 +1,10 @@
 // $types: (
 //   'traditional': $color-citrus,
 //   'paleo': $color-lemon,
-//   'fresh-plus': $color-evergreen,
+//   'fresh-plus': $color-secondary,
 //   'lean-mean': $color-ocean,
-//   'keto': $color-evergreen,
-//   'vegan': $color-broccoli,
+//   'keto': $color-secondary,
+//   'vegan': $color-primary,
 //   'lean-and-mean': $color-ocean
 // );
 
@@ -22,7 +22,7 @@
 // }
 
 // .c-product--addOn.c-product--cta .c-tag {
-//   background-color: $color-evergreen;
+//   background-color: $color-secondary;
 //   color: #fffefa;
 // }
 
@@ -95,10 +95,10 @@
 //     height: 25px;
 //   }
 //   &.c-product__flag--best-seller {
-//     color: $color-broccoli;
+//     color: $color-primary;
 //   }
 //   &.c-product__flag--new-item {
-//     color: $color-evergreen;
+//     color: $color-secondary;
 //   }
 // }
 
@@ -132,7 +132,7 @@
 //   .c-product--traditional.c-product--selected &,
 //   .c-product--traditional:hover & {
 //     path {
-//       stroke: $color-smooth-white;
+//       stroke: $color-white;
 //     }
 //   }
 //   &.c-product__like--liked {
@@ -142,8 +142,8 @@
 //     .c-product--traditional.c-product--selected &,
 //     .c-product--traditional:hover & {
 //       path {
-//         fill: $color-smooth-white;
-//         stroke: $color-smooth-white;
+//         fill: $color-white;
+//         stroke: $color-white;
 //       }
 //     }
 //   }
@@ -251,7 +251,7 @@
 //   width: 100%;
 //   display: flex;
 //   justify-content: center;
-//   border-top: 1px solid $color-paleo;
+//   border-top: 1px solid $color-white;
 //   margin: 0 auto;
 //   padding: 10px 0;
 //   @include media-desktop-up {
@@ -269,11 +269,11 @@
 //   text-align: center;
 //   padding: 0 4px;
 //   &:not(:last-child) {
-//     border-right: 1px solid $color-paleo;
+//     border-right: 1px solid $color-white;
 //   }
 //   .c-product:hover &,
 //   .c-product--selected & {
-//     color: $color-off-black;
+//     color: $color-black;
 //   }
 
 //   @include media-desktop-up {
@@ -297,7 +297,7 @@
 //   }
 //   .c-product--cta & {
 //     @include media-desktop-up {
-//       color: $color-smooth-white !important;
+//       color: $color-white !important;
 //     }
 //   }
 // }
