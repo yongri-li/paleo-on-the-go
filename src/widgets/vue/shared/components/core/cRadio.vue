@@ -63,6 +63,7 @@ export default {
         if (this.$parent.update) this.$parent.update(false)
       } else {
         this.checked = true
+        this.$root.$emit('setHeightFromRadio', true)
         this.$emit('input', this.$refs.input.value)
         if (this.$parent.update) this.$parent.update(this.$refs.input.value)
       }

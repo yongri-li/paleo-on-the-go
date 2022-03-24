@@ -5,7 +5,7 @@
     <article class="box__byAddressId">
       <div class="c-shipments__content" v-if="ready">
         <section v-for="(charge, i) in charges" class="c-shipments__flex">
-          <h2 class="c-h2">{{ !!charge && i < 1 ? 'Upcoming Orders' : null }}</h2>
+          <h2 v-if="!!charge && i < 1" class="c-h2">Upcoming Orders</h2>
           <c-shipmentsBox
             v-if="content"
             class="c-shipments__box"

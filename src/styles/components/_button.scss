@@ -127,6 +127,8 @@
     }
   }
   &.c-button--isBlack {
+    border-bottom: 1px solid $color-black;
+    color: $color-black;
     &:hover {
       border-color: lighten($color-black, 20%);
       color: lighten($color-black, 20%);

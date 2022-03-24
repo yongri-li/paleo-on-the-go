@@ -62,6 +62,9 @@ export default {
     modifiers: {
       type: Array,
       default: () => []
+    },
+    boxNum: {
+      type: Number
     }
   },
   components: {
@@ -77,6 +80,22 @@ export default {
         if (!this._stringEmpty(this.content[reason])) return this.content[reason]
       })
     }
+  },
+  methods: {
+    customEvtListen() {
+      this.$root.$on('accClosed', evt => {
+        if (evt === this.boxNum) this.cancelModel = false
+      })
+    },
+    removeEvtListen() {
+      this.$root.$off('accClosed')
+    }
+  },
+  created() {
+    this.customEvtListen()
+  },
+  beforeDestroy() {
+    this.removeEvtListen()
   },
   watch: {
     cancelModel: {
@@ -101,7 +120,7 @@ export default {
   align-items: center;
   background-color: $color-ecru;
   margin: 1.25rem 0;
-  padding: 1rem 2.25rem;
+  padding: 0.75rem 2.25rem;
   border: 1px solid $color-hr;
 
   > * {

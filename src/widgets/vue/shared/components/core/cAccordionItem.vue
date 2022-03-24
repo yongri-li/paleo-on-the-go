@@ -28,6 +28,9 @@ export default {
       type: Number,
       default: 275
     },
+    boxNum: {
+      type: Number
+    },
     setBoxHeight: {
       type: Boolean
     }
@@ -75,12 +78,30 @@ export default {
       if (this.maxHeight == '0px') this.maxHeight = `${maxHeight}px`
       else this.maxHeight = `0px`
       this.active = !this.active
+      if (this.active) {
+        this.customEvtListen()
+      } else {
+        this.removeEvtListen()
+        this.$root.$emit('accClosed', this.boxNum)
+      }
+    },
+    customEvtListen() {
+      this.$root.$on('setHeightFromRadio', () => {
+        this.setBoxHeightFunc()
+      })
+    },
+    removeEvtListen() {
+      this.$root.$off('setHeightFromRadio')
+    },
+    setBoxHeightFunc() {
+      const content = this.$refs.content
+      content.style.maxHeight = 'fit-content'
     }
   },
   watch: {
     setBoxHeight() {
       const content = this.$refs.content
-      if (this.setBoxHeight) content.style.maxHeight = 'fit-content'
+      if (this.setBoxHeight) this.setBoxHeightFunc()
     }
   },
   mounted() {
@@ -90,6 +111,7 @@ export default {
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.changeHeight)
+    this.removeEvtListen()
   }
 }
 </script>

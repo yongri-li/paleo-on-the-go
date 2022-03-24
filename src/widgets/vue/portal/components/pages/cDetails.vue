@@ -143,7 +143,7 @@
         :text="content.plans_heading"
       />
       <div class="c-details__box c-details__box--isCancelSubs" v-if="showAddresses">
-        <div class="c-details__boxSingle" v-for="address in addressList.active" :key="address.id">
+        <div class="c-details__boxSingle" v-for="(address, i) in addressList.active" :key="address.id">
           <!--           <c-detailsBlock class="c-details__boxItem">
             <div class="c-details__boxContent">
               <address class="c-details__boxAddress" v-html="address.address1" />
@@ -166,7 +166,7 @@
 
           <c-detailsBlock class="c-details__boxItem withAccordion" v-if="customerRecharge">
             <c-accordion>
-              <c-accordionItem>
+              <c-accordionItem :boxNum="i">
                 <div class="c-details__boxButton" slot="trigger">
                   <section>
                     <address class="c-details__boxAddress" v-html="address.address1" />
@@ -176,7 +176,7 @@
                   <span class="c-details__editTrigger c-button--isUnderline c-button--isBlack"></span>
                 </div>
                 <div class="" slot="content">
-                  <c-sidebarCancel :address="address" :content="sidebarContent.cancel" />
+                  <c-sidebarCancel :address="address" :content="sidebarContent.cancel" :boxNum="i" />
                 </div>
               </c-accordionItem>
             </c-accordion>
@@ -244,7 +244,13 @@ export default {
     cSidebarPayment,
     cSidebarCancel
   },
-  data: () => ({ ready: false, error: false }),
+  data() {
+    return {
+      ready: false,
+      error: false,
+      setBoxHeight: false
+    }
+  },
   computed: {
     ...mapGetters('customer', ['customerShopify', 'customerRecharge']),
     content() {
@@ -277,6 +283,9 @@ export default {
     ...mapMutations('ui', ['UI_SET_SIDEBAR']),
     shipDate(address) {
       return address.date ? this._formatDate(address.date, 'MMM DD, YYYY') : this.content.plans_text_never
+    },
+    setBoxMaxHeight() {
+      this.setBoxHeight = !this.setBoxHeight
     }
   },
   async created() {
@@ -336,7 +345,7 @@ export default {
   display: block;
 }
 .c-details__boxAddress {
-  margin-bottom: 4px;
+  margin-bottom: 0.5rem;
   font-size: 1.125rem;
 }
 .c-details__boxShips {

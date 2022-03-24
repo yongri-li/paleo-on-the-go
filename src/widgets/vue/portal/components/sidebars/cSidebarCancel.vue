@@ -14,7 +14,6 @@
         :key="`${item.id}-${index}`"
       />
     </div>
-
     <c-h
       class="c-cancelRadios__delayHeading u-marginTop--lg"
       v-if="content.cancel_heading"
@@ -22,11 +21,11 @@
       level="5"
       :text="content.cancel_heading"
     />
-
     <c-cancelRadios
       class="c-sidebarCancel__radios"
       v-model="cancelModel"
       :loading="loading"
+      :boxNum="boxNum"
       @delay="handleDelay"
       :content="{
         reason_1: content.cancel_reason_1,
@@ -47,6 +46,12 @@
       :text="content.cancel_submit_button"
       :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
       :attributes="{ disabled: !cancelModel || loading.cancel || loading.delay }"
+    />
+    <c-button
+      class="u-marginTop--sm"
+      text="Nevermind"
+      :modifiers="['isUnderline', 'isBlack']"
+      @click="UI_CLOSE_SIDEBAR()"
     />
   </div>
 </template>
@@ -74,6 +79,9 @@ export default {
     modifiers: {
       type: Array,
       default: () => []
+    },
+    boxNum: {
+      type: Number
     }
   },
   components: {
@@ -114,12 +122,12 @@ export default {
         addressId: this.address.id,
         updatesOnetimes: _buildUpdates({
           items: this.onetimes,
-          action: 'delay',
+          actions: ['delay'],
           values: { frequency: 1, unit: 'month' }
         }),
         updatesSubscriptions: _buildUpdates({
           items: this.subscriptions,
-          action: 'delay',
+          actions: ['delay'],
           values: { frequency: 1, unit: 'month' }
         })
       })
@@ -179,11 +187,12 @@ export default {
 
   .withAccordion .c-accordionItem__trigger--isOpen + .c-accordionItem__content {
     margin-top: 1.5rem !important;
+    /*    max-height: fit-content !important;*/
   }
 
-  .c-details__editTrigger::after {
+  /*  .c-details__editTrigger::after {
     content: 'Cancel Plan';
-  }
+  }*/
 
   .c-details__boxButton {
     @include media-tablet-up {

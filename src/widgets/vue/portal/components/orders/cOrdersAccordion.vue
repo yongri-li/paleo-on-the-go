@@ -257,7 +257,6 @@ export default {
       // let text = `${this.content.payment}`
       const status = order.billingStatus
       const statusCap = status.charAt(0).toUpperCase() + status.slice(1)
-      console.log(order, statusCap, status)
       return statusCap
     },
     summaryLines(order) {
