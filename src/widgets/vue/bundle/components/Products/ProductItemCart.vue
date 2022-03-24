@@ -5,7 +5,9 @@
   >
     <div class="pitemcart__body">
       <div class="pitemcart__figure">
-        <div class="pitemcart__figure--remove">x</div>
+        <div class="pitemcart__figure--remove" @click="removeProductToCart">
+          x
+        </div>
         <img class="pitemcart__figure--img" :src="imageUrl" :alt="product.title" />
       </div>
       <div class="pitemcart__info">
@@ -34,6 +36,7 @@
 import ProductBtnAddToCart from './ProductBtnAddToCart.vue'
 import { mapGetters } from 'vuex'
 import { formatPrice } from '../../utils'
+import { REMOVE_PRODUCT_TO_CART } from '../../store/_mutations-type'
 
 export default {
   components: {
@@ -66,6 +69,14 @@ export default {
       const discount = this.getSizeSelected.discount / 100
       const price = this.where === 'addons' ? this.product.price : this.product.price * (1 - discount)
       return formatPrice(price)
+    }
+  },
+  methods: {
+    removeProductToCart() {
+      this.$store.commit(REMOVE_PRODUCT_TO_CART, {
+        idProduct: this.product.id,
+        where: this.where,
+      })
     }
   }
 }
