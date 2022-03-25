@@ -1,6 +1,6 @@
 <template>
   <div v-if="product"
-    :class="{ active: isItemInCart }"
+    :class="{ active: isProductInCart }"
     class="pcard"
   >
     <div class="pcard__header">
@@ -19,26 +19,21 @@
           this is for metafields subtitles
         </div>
         <div class="pcard__add-to-cart">
-          <div v-if="isItemInCart"
+          <product-btn-add-to-cart
+            v-if="isProductInCart"
+            :id-collection="product.collection.id"
+            :id-product="product.id"
+            :qt-product="qtProduct"
+            :where="where"
             class="pcard__add-to-cart--open"
-          >
-            <span class="pcard__add-to-cart--btn"
-              @click="reduceToCart(product)"
-            >
-              -
-            </span>
-            <span class="pcard__add-to-cart--qt">
-              {{ qtItem }}
-            </span>
-            <span class="pcard__add-to-cart--btn"
-              @click="addToCart(product)"
-            >
-              +
-            </span>
-          </div>
+          />
           <div v-else
             class="pcard__add-to-cart--first"
-            @click="addToCart(product)"
+            @click="addToCart({
+              idCollection: product.collection.id,
+              idProduct: product.id,
+              where,
+            })"
           >
             <span>
               +
@@ -52,11 +47,22 @@
     </div>
     <div class="pcard__prices">
       <div
+        v-if="typeOrder === 'addons'"
+        class="pcard__price--addons"
+      >
+        <div class="pcard__price--number">
+          {{ boxesPricingScale[0].price }}
+        </div>
+      </div>
+      <div
+        v-else
         v-for="box in boxesPricingScale"
-        :key="box.size"
-        class="pcard__price">
+        :key="box.val"
+        :class="{ selected: box.selected }"
+        class="pcard__price"
+      >
         <div class="pcard__price--title pcard__price--data">
-          {{ box.size }}
+          {{ box.title }}
         </div>
         <div class="pcard__price--number pcard__price--data">
           {{ box.price }}
@@ -67,11 +73,15 @@
 </template>
 
 <script>
-import { mapGetters, mapActions } from 'vuex'
+import { mapState, mapGetters, mapActions } from 'vuex'
 import { formatPrice } from '../../utils'
+import ProductBtnAddToCart from './ProductBtnAddToCart.vue'
 
 export default {
   name: 'ProductCard',
+  components: {
+    ProductBtnAddToCart
+  },
   props: {
     product: {
       type: Object,
@@ -82,27 +92,13 @@ export default {
       default: false
     },
   },
-  data() {
-    return {
-      boxes: [
-        {
-          size: 8,
-          discount: 0.08
-        },
-        {
-          size: 12,
-          discount: 0.12
-        },
-        {
-          size: 16,
-          discount: 0.16
-        }
-      ]
-    }
-  },
   computed: {
+    ...mapState([
+      'sizes'
+    ]),
     ...mapGetters([
-      'getItemFromCartByID'
+      'getProductFromCartByID',
+      'getSizeSelected'
     ]),
     imageUrl() {
       const imgFound = this.product.media.find(item => item.position === 1)
@@ -110,29 +106,37 @@ export default {
       return urlFinal
     },
     boxesPricingScale() {
-      const price = this.product.price
-      const scale = [
-        {
-          size: 'One Time',
-          price: formatPrice(price)
+      return this.sizes.map(size => {
+        const selected = this.getSizeSelected.val === size.val
+        const discount = size.discount / 100
+        const price = this.product.price * (1 - discount)
+
+        return {
+          title: size.title,
+          price: formatPrice(price),
+          val: size.val,
+          selected: selected
         }
-      ]
-      this.boxes.forEach(box => {
-        scale.push({
-          size: `${box.size} Items`,
-          price: formatPrice( price * (1 - box.discount))
-        })
-      });
-      return scale
+      })
     },
-    itemInCart() {
-      return this.getItemFromCartByID(this.product.id)
+    where() {
+      const param = this.$route.params.box
+      return param === 'addons' ? 'addons' : 'items'
     },
-    isItemInCart() {
-      return !!this.itemInCart
+    productInCart() {
+      return this.getProductFromCartByID({
+        id: this.product.id,
+        where: this.where
+      })
     },
-    qtItem() {
-      return this.itemInCart?.quantity || 0
+    isProductInCart() {
+      return !!this.productInCart
+    },
+    qtProduct() {
+      return this.productInCart?.quantity || 0
+    },
+    typeOrder() {
+      return this.$route.params.box
     }
   },
   methods: {
@@ -231,36 +235,19 @@ export default {
     }
 
     &--open {
-      background-color: #FEFEFE;
       padding: .2rem;
       width: 60%;
       border-radius: 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
       font-size: 1.6rem;
 
-      @media screen and (min-width: 769px) {
-
-        padding: .2rem;
-        border: 1.5px solid #231f20;
-        border-radius: 30px;
+      @include media-tablet-up {
+        width: 50%;
         font-size: 2.2rem;
-
+        border-radius: 30px;
       }
     }
 
-    &--btn {
-      background-color: #fcd32b;
-      border-radius: 100%;
-      width: 25%;
-      text-align: center;
-      cursor: pointer;
-      -webkit-user-select: none;
-      user-select: none;
-    }
-
-    @media screen and (min-width: 769px) {
+    @include media-tablet-up {
 
       margin: 0;
       position: absolute;
@@ -287,7 +274,6 @@ export default {
     justify-content: flex-start;
     width: 100%;
     margin-top: .5rem;
-    background-color: #FEFEFE;
 
     @media screen and (min-width: 769px){
       padding: 0 .3rem;
@@ -299,6 +285,7 @@ export default {
     flex-direction: column;
     text-align: center;
     width: 25%;
+    background-color: #FEFEFE;
 
     &--data {
       font-weight: bold;
@@ -317,6 +304,14 @@ export default {
       color: #4F4C4D;
       font-size: 1rem;
     }
+
+    &--addons {
+      font-weight: 500;
+
+      @include media-tablet-up {
+        padding: 0.8rem 0 1rem;
+      }
+    }
   }
 
 }
@@ -324,31 +319,36 @@ export default {
 .active {
   background-color: #231F20;
 
-  .pcard__info {
+  .pcard {
 
-    &--title {
-      color: #FEFEFE;
+    &__info {
+
+      &--title {
+        color: #FEFEFE;
+      }
+
+      &--subtitle {
+        color: #FEFEFE;
+      }
     }
 
-    &--subtitle {
-      color: #FEFEFE;
+    &__price--addons {
+      .pcard__price--number {
+        color: $color-white;
+      }
     }
-
   }
+
 
 }
 
 .selected {
 
-  background-color: #231F20;
-
-  .pcard__price {
-
-    &--data {
-      color: #FEFEFE;
-    }
-
+  .pcard__price--data {
+    background-color: $color-black;
+    color: $color-white;
   }
+
 }
 
 </style>
