@@ -1,54 +1,36 @@
 <template>
-  <div :class="_buildModifiers('c-sidebarActivate', modifiers)" v-if="content && settings.address">
-    <c-p
-      class="c-sidebarActivate__address"
-      tag="address"
-      level="1"
-      v-html="
-        _buildAddress({
-          address: settings.address,
-          options: {
-            hiddenFields: ['name', 'country'],
-            provinceName: 'short',
-            flatten: true
-          }
-        })
-      "
-    />
-    <div class="c-sidebarActivate__items">
-      <c-sidebarActivateItem
-        class="c-sidebarActivate__item"
-        v-for="(item, index) in items"
-        :key="`${item.id}-${index}`"
-        :item="item"
-        :activeIds="activateModel"
-        :content="{ ships: content.activate_ships }"
-        @update="handleUpdate"
-      />
-      <div class="c-sidebarActivate__total" v-if="content.activate_total && total">
-        <span class="c-sidebarActivate__totalLabel" v-html="content.activate_total" />
-        <span class="c-sidebarActivate__totalValue" v-html="total" />
-      </div>
-      <c-button
-        class="c-sidebarActivate__button"
-        v-if="content.activate_button"
-        @click="handleActivate"
-        :loading="loading"
-        :text="content.activate_button"
-        :modifiers="['isDefault', 'isSecondary', 'hideTextLoading']"
-        :attributes="{ disabled: !activateModel.length > 0 || loading }"
-      />
-      <div class="c-sidebarActivate__disclaimers" v-if="content.activate_disclaimer">
-        <c-p
-          class="c-sidebarActivate__disclaimer"
-          v-for="(disclaimer, index) in _buildTextArray(content.activate_disclaimer)"
-          :key="`disclaimer-${index}`"
-          tag="p"
-          level="3"
-          :text="disclaimer"
+  <div :class="_buildModifiers('c-sidebarCancel', modifiers)" v-if="content && address">
+    <section class="c-sidebarCancel__wrapper">
+      <h6 class="c-h6">
+        {{ totalSubItems }} Meals &nbsp;<span class="c-basicTxt--md">
+          Delivers Every {{ frequency }} Week</span
+        >
+      </h6>
+      <div class="c-sidebarCancel__items">
+        <c-orders-item
+          v-for="(item, index) in subItems"
+          :item="item"
+          :content="content"
+          :key="`${item.id}-${index}`"
         />
       </div>
-    </div>
+    </section>
+    <c-button
+      class="c-sidebarCancel__cancelButton"
+      v-if="content.cancel_submit_button"
+      @click="handleActivate"
+      :loading="loading.activate"
+      text="Reactivate Subscription"
+      :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
+      :attributes="{ disabled: loading.activate }"
+    />
+    <!-- :text="content.cancel_submit_button" -->
+    <c-button
+      class="u-marginTop--sm"
+      text="Nevermind"
+      :modifiers="['isUnderline', 'isBlack']"
+      @click="$parent.$emit('closeThisAcc', boxNum)"
+    />
   </div>
 </template>
 
@@ -57,7 +39,7 @@ import { mapMutations, mapActions } from 'vuex'
 import { _sortItemsByCharge, _buildUpdates } from '@vue/portal/utils'
 import cP from '@shared/components/core/cP.vue'
 import cButton from '@shared/components/core/cButton.vue'
-import cSidebarActivateItem from './cSidebarActivateItem.vue'
+import cOrdersItem from '../orders/cOrdersItem.vue'
 
 export default {
   props: {
@@ -65,44 +47,39 @@ export default {
       type: Object,
       required: true
     },
-    settings: {
+    address: {
       type: Object,
       required: true
     },
     modifiers: {
       type: Array,
       default: () => []
+    },
+    boxNum: {
+      type: Number
     }
   },
   components: {
     cP,
     cButton,
-    cSidebarActivateItem
+    cOrdersItem
   },
   data: () => ({
-    activateModel: [],
-    loading: false
+    loading: { delay: false, activate: false }
   }),
   computed: {
     subscriptions() {
-      return this.$store.getters['customer/customerSubscriptionsByAddress'](this.settings.address)
+      return this.$store.getters['customer/customerSubscriptionsByAddress'](this.address)
     },
-    subscriptionIds() {
-      return this.subscriptions.map(subscription => subscription.id)
+    subItems() {
+      return _sortItemsByCharge({ items: [...this.subscriptions], order: 'ascending' })
     },
-    items() {
-      return _sortItemsByCharge({ items: this.subscriptions, order: 'ascending' })
+    totalSubItems() {
+      return this.subscriptions?.reduce((sum, sub) => sum + sub.quantity, 0)
     },
-    currencySymbol() {
-      return this.$store.getters['customize/customizeShopByKey']('currency_symbol')
-    },
-    total() {
-      let total = 0
-      const checkedSubscriptions = this.subscriptions.filter(subscription => {
-        return this.activateModel.includes(subscription.id)
-      })
-      checkedSubscriptions.forEach(subscription => (total += subscription.total))
-      return `${this.currencySymbol}${this._formatMoney({ amount: total })}`
+    frequency() {
+      const freqObj = this.subscriptions?.find(sub => sub.frequency)
+      return freqObj.frequency
     },
     disclaimers() {
       const { activate_disclaimer } = this.content
@@ -111,13 +88,7 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('ui', ['UI_CLOSE_SIDEBAR']),
     ...mapActions('customer', ['customerUpdateAddressItems']),
-    handleUpdate(val) {
-      const { id, action } = val
-      this.activateModel = this.activateModel.filter(item => item.id == id)
-      if (action === 'add') this.activateModel = [...this.activateModel, id]
-    },
     async handleActivate() {
       this.loading = true
       await this.customerUpdateAddressItems({
@@ -128,44 +99,73 @@ export default {
         })
       })
       this.loading = false
-      this.UI_CLOSE_SIDEBAR()
     }
-  },
-  mounted() {
-    this.activateModel = this.subscriptionIds
   }
 }
 </script>
 
 <style lang="scss">
-.c-sidebarActivate__address {
-  margin-top: -10px;
-  font-weight: 700;
+.c-sidebarCancel {
+  .c-h5 {
+    font-size: 1.5rem;
+  }
+
+  &__wrapper {
+    border-top: 2px solid #efede6;
+    border-bottom: 2px solid #efede6;
+    padding-top: 2rem;
+  }
+
+  &__address {
+    margin-top: -10px;
+    font-weight: 700;
+  }
+
+  &__items {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 2.5rem;
+    padding: 2rem 0;
+  }
+
+  &__cancelButton {
+    width: 100%;
+    margin-top: 2rem;
+  }
+
+  .c-sidebarCancel__cancelButton + button {
+    height: 1.75rem;
+  }
 }
-.c-sidebarActivate__items {
-  margin-bottom: 40px;
-}
-.c-sidebarActivate__total {
-  width: 100%;
-  max-width: 320px;
-  margin-top: 30px;
-  @include flex($justify: space-between);
-}
-.c-sidebarActivate__totalLabel {
-  @include text-heading;
-  font-size: 20px;
-}
-.c-sidebarActivate__totalValue {
-  @include text-body;
-  font-size: 20px;
-}
-.c-sidebarActivate__button {
-  width: 100%;
-  max-width: 320px;
-  margin-top: 30px;
-}
-.c-sidebarActivate__disclaimers {
-  max-width: 420px;
-  margin-top: 40px;
+
+.c-details__box--isCancelSubs {
+  .withAccordion .c-accordionItem__trigger--isOpen .c-details__boxButton section {
+    opacity: 1 !important;
+  }
+
+  .withAccordion .c-accordionItem__trigger--isOpen + .c-accordionItem__content {
+    margin-top: 1.5rem !important;
+    /*    max-height: fit-content !important;*/
+  }
+
+  .c-details__boxButton {
+    @include media-tablet-up {
+      section {
+        flex: 1;
+      }
+    }
+  }
+
+  @include media-mobile-down {
+    .c-accordion {
+      max-width: calc(100vw - 4.5rem);
+    }
+
+    .c-sidebarCancel__items {
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 1.5rem;
+      padding: 1.5rem 0.75rem;
+    }
+  }
 }
 </style>

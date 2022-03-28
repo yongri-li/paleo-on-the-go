@@ -105,6 +105,11 @@ export default {
     const ccApiAccessToken = ccAct?.split('=')[1]
     const lsApiAccessToken = localStorage.getItem('api_access_token')
     lsApiAccessToken ? null : localStorage.setItem('api_access_token', ccApiAccessToken)
+
+    // setHeaderNextBoxShip = () => {
+    //   const accountText = document.querySelector('.c-headerMain__accountText')
+    //   accountText.textContent = `Next Box Ships ${}`
+    // }
   },
   watch: {
     preventScroll: {

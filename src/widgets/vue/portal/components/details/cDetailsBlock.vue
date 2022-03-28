@@ -44,7 +44,7 @@ export default {
   @include flex($justify: space-between, $wrap: nowrap);
   background-color: $color-white;
   @include media-tablet-up {
-    padding: 20px 30px;
+    padding: 2rem;
   }
 }
 

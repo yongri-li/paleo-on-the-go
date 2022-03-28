@@ -32,7 +32,7 @@
         :modifiers="['isCta', 'isTall', 'hideTextLoading']"
         :attributes="{ disabled: loading }"
       />
-      <c-product-blurb class="u-hideMobileDown" :isFreshPlus="isFreshPlus" :content="blurbContent" />
+      <c-product-blurb class="u-hideMobileDown" :content="blurbContent" />
     </div>
 
     <c-nutrition-counter class="u-hideMobileDown" :content="productNutrition" />
@@ -50,10 +50,6 @@ export default {
       type: Object,
       required: false
     },
-    isFreshPlus: {
-      type: Boolean,
-      required: true
-    },
     blurbContent: {
       type: Object,
       required: false
@@ -70,21 +66,14 @@ export default {
       required: false
     },
     productNutrition: {
-      type: Object,
-      reuired: true
-    },
-    isFreshPlus: {
-      type: Boolean,
-      required: false,
-      default: false
+      type: Object
     },
     isFullPage: {
       type: Boolean,
       default: false
     },
     url_getStarted: {
-      type: String,
-      required: true
+      type: String
     }
   },
   data: () => ({

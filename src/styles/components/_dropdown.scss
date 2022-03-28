@@ -14,20 +14,27 @@
 
 		margin-top: 2rem;
 
-		div {
+		div,
+		a {
+			display: block;
+			font-size: 0.875rem;
+			font-weight: 200;
+			letter-spacing: 0.25px;
 			background-color: $color-black;
 			border: 1px solid $color-black;
 			color: $color-white;
-			padding: 0.5rem 1rem;
+			padding: 0.65rem 1.25rem;
 			opacity: 0;
 			transition: opacity 150ms, background-color 250ms, color 250ms;
 		}
 	}
 
-	&.is-open {
+	&.is-open,
+	&:hover {
 		cursor: pointer;
 
-		div {
+		div,
+		a {
 			opacity: 1;
 			pointer-events: auto;
 
@@ -39,7 +46,8 @@
 	}
 
 	&.c-dropdown--white {
-		div {
+		div,
+		a {
 			background-color: $color-white;
 			color: $color-black;
 

@@ -33,6 +33,9 @@ export default {
     },
     setBoxHeight: {
       type: Boolean
+    },
+    closeBoxAcc: {
+      type: Array
     }
   },
   data: () => ({
@@ -102,6 +105,13 @@ export default {
     setBoxHeight() {
       const content = this.$refs.content
       if (this.setBoxHeight) this.setBoxHeightFunc()
+    },
+    closeBoxAcc: {
+      handler(val) {
+        if (val[0] === this.boxNum) {
+          this.toggleContent()
+        }
+      }
     }
   },
   mounted() {

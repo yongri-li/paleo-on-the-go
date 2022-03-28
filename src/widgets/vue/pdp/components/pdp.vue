@@ -16,7 +16,7 @@
     </div>
 
     <div class="pdp__bodyMobile u-hideTabletUp">
-      <span class="c-eyebrow pdp__mobileEyebrow">{{ this.mobileSubHeader }}</span>
+      <span class="c-eyebrow pdp__mobileEyebrow">mobile sub header</span>
       <h4 class="c-h4 pdp__mobileDescription">{{ this.product_details.mobile_description }}</h4>
       <c-product-blurb :content="blurbContent" />
 
@@ -71,9 +71,6 @@ export default {
     cRelatedMeals
   },
   computed: {
-    mobileSubHeader() {
-      return this.isFreshPlus ? this.label_aboutFresh : this.label_about
-    },
     labels() {
       let arr = {}
       Object.entries(this.$data).forEach(([key, value]) => {

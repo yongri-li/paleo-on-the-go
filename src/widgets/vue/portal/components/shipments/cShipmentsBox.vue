@@ -1,6 +1,5 @@
 <template>
   <div :class="_buildModifiers('c-shipmentsBox', modifiers)" ref="shipmentBox">
-    <!--    <button @click="asdd">modal test</button> -->
     <c-accordion>
       <c-accordionItem
         class="c-shipments__box--wrap"
@@ -164,10 +163,6 @@ export default {
     Datepicker
   },
   computed: {
-    // ...mapGetters('customer', [
-    //   'customerUpcomingCharge',
-    //   ['customerShopify']
-    // ])
     allItems() {
       return this.charge.lineItems
     },
@@ -379,16 +374,6 @@ export default {
   }
 }
 
-/*.c-shipmentsBox__flexSmall {
-  width: 100%;
-  @include media-tablet-up {
-    max-width: 210px;
-  }
-  @include media-desktop-up {
-    max-width: 250px;
-  }
-}*/
-
 .c-shipmentsBox__shippingCharges {
   @include text-heading;
   font-size: 14px;
@@ -414,7 +399,6 @@ export default {
   color: $color-secondary;
 }
 
-/*///*/
 .c-shipmentsSummary__triggerIcon {
   transform: rotate(270deg);
 }

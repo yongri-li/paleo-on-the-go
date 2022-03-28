@@ -1,19 +1,32 @@
 <template>
   <div :class="_buildModifiers('c-sidebarCancel', modifiers)" v-if="content && address">
-    <div class="c-sidebarCancel__items">
-      <!--       <c-sidebarCancelItem
-        class="c-sidebarCancel__item"
-        v-for="(item, index) in items"
-        :key="`${item.id}-${index}`"
-        :item="item"
-      /> -->
-      <c-orders-item
-        v-for="(item, index) in items"
-        :item="item"
-        :content="content"
-        :key="`${item.id}-${index}`"
-      />
-    </div>
+    <section class="c-sidebarCancel__wrapper">
+      <h6 class="c-h6">
+        {{ totalSubItems }} Meals &nbsp;<span class="c-basicTxt--md">
+          Delivers Every {{ frequency }} Week</span
+        >
+      </h6>
+      <div class="c-sidebarCancel__items">
+        <c-orders-item
+          v-for="(item, index) in subItems"
+          :item="item"
+          :content="content"
+          :key="`${item.id}-${index}`"
+        />
+      </div>
+
+      <h6 class="c-h6">
+        {{ totalAddOns }} Add-Ons &nbsp;<span class="c-basicTxt--md">One-Time Purchase</span>
+      </h6>
+      <div class="c-sidebarCancel__items">
+        <c-orders-item
+          v-for="(item, index) in addOnItems"
+          :item="item"
+          :content="content"
+          :key="`${item.id}-${index}`"
+        />
+      </div>
+    </section>
     <c-h
       class="c-cancelRadios__delayHeading u-marginTop--lg"
       v-if="content.cancel_heading"
@@ -51,7 +64,7 @@
       class="u-marginTop--sm"
       text="Nevermind"
       :modifiers="['isUnderline', 'isBlack']"
-      @click="UI_CLOSE_SIDEBAR()"
+      @click="$parent.$emit('closeThisAcc', boxNum)"
     />
   </div>
 </template>
@@ -62,7 +75,6 @@ import { _sortItemsByCharge, _buildUpdates } from '@vue/portal/utils'
 import cP from '@shared/components/core/cP.vue'
 import cH from '@shared/components/core/cH.vue'
 import cButton from '@shared/components/core/cButton.vue'
-import cSidebarCancelItem from './cSidebarCancelItem.vue'
 import cCancelRadios from '../parts/cCancelRadios.vue'
 import cOrdersItem from '../orders/cOrdersItem.vue'
 
@@ -88,7 +100,6 @@ export default {
     cP,
     cH,
     cButton,
-    cSidebarCancelItem,
     cCancelRadios,
     cOrdersItem
   },
@@ -100,28 +111,37 @@ export default {
     subscriptions() {
       return this.$store.getters['customer/customerSubscriptionsByAddress'](this.address)
     },
-    subscriptionIds() {
-      return this.subscriptions.map(subscription => subscription.id)
+    subItems() {
+      return _sortItemsByCharge({ items: [...this.subscriptions], order: 'ascending' })
     },
-    onetimes() {
+    addOns() {
       return this.$store.getters['customer/customerOnetimesByAddress'](this.address)
     },
-    onetimeIds() {
-      return this.onetimes.map(onetime => onetime.id)
+    addOnItems() {
+      return _sortItemsByCharge({ items: [...this.addOns], order: 'ascending' })
     },
-    items() {
-      return _sortItemsByCharge({ items: [...this.subscriptions, ...this.onetimes], order: 'ascending' })
+    allItems() {
+      return _sortItemsByCharge({ items: [...this.subscriptions, ...this.addOns], order: 'ascending' })
+    },
+    totalSubItems() {
+      return this.subscriptions?.reduce((sum, sub) => sum + sub.quantity, 0)
+    },
+    totalAddOns() {
+      return this.addOnItems?.reduce((sum, sub) => sum + sub.quantity, 0)
+    },
+    frequency() {
+      const freqObj = this.subscriptions?.find(sub => sub.frequency)
+      return freqObj.frequency
     }
   },
   methods: {
-    ...mapMutations('ui', ['UI_CLOSE_SIDEBAR']),
     ...mapActions('customer', ['customerUpdateAddressItems']),
     async handleDelay() {
       this.loading.delay = true
       await this.customerUpdateAddressItems({
         addressId: this.address.id,
-        updatesOnetimes: _buildUpdates({
-          items: this.onetimes,
+        updatesaddOns: _buildUpdates({
+          items: this.addOns,
           actions: ['delay'],
           values: { frequency: 1, unit: 'month' }
         }),
@@ -132,14 +152,13 @@ export default {
         })
       })
       this.loading.delay = false
-      this.UI_CLOSE_SIDEBAR()
     },
     async handleCancel() {
       this.loading.cancel = true
       await this.customerUpdateAddressItems({
         addressId: this.address.id,
-        updatesOnetimes: _buildUpdates({
-          items: this.onetimes,
+        updatesaddOns: _buildUpdates({
+          items: this.addOns,
           actions: ['cancel'],
           values: { reason: this.cancelModel }
         }),
@@ -150,7 +169,6 @@ export default {
         })
       })
       this.loading.cancel = false
-      this.UI_CLOSE_SIDEBAR()
     }
   }
 }
@@ -161,23 +179,33 @@ export default {
   .c-h5 {
     font-size: 1.5rem;
   }
-}
 
-.c-sidebarCancel__address {
-  margin-top: -10px;
-  font-weight: 700;
-}
-.c-sidebarCancel__items {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-gap: 2.5rem;
-  padding: 2rem 0 1rem;
-  border-top: 2px solid $color-ecru;
-  border-bottom: 2px solid $color-ecru;
-}
-.c-sidebarCancel__cancelButton {
-  width: 100%;
-  margin-top: 2rem;
+  &__wrapper {
+    border-top: 2px solid #efede6;
+    border-bottom: 2px solid #efede6;
+    padding-top: 2rem;
+  }
+
+  &__address {
+    margin-top: -10px;
+    font-weight: 700;
+  }
+
+  &__items {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 2.5rem;
+    padding: 2rem 0;
+  }
+
+  &__cancelButton {
+    width: 100%;
+    margin-top: 2rem;
+  }
+
+  .c-sidebarCancel__cancelButton + button {
+    height: 1.75rem;
+  }
 }
 
 .c-details__box--isCancelSubs {
@@ -189,10 +217,6 @@ export default {
     margin-top: 1.5rem !important;
     /*    max-height: fit-content !important;*/
   }
-
-  /*  .c-details__editTrigger::after {
-    content: 'Cancel Plan';
-  }*/
 
   .c-details__boxButton {
     @include media-tablet-up {
@@ -214,9 +238,4 @@ export default {
     }
   }
 }
-
-/* for TESTING only!!!! */
-/*.c-details__box--isCancelSubs .c-accordionItem.c-accordionItem--hasTransition {
-  min-height: 800px;
-}*/
 </style>

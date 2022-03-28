@@ -144,29 +144,9 @@
       />
       <div class="c-details__box c-details__box--isCancelSubs" v-if="showAddresses">
         <div class="c-details__boxSingle" v-for="(address, i) in addressList.active" :key="address.id">
-          <!--           <c-detailsBlock class="c-details__boxItem">
-            <div class="c-details__boxContent">
-              <address class="c-details__boxAddress" v-html="address.address1" />
-              <span class="c-details__boxShips" v-html="content.plans_text_next" />
-              <span class="c-details__boxDate" v-html="shipDate(address)" />
-            </div>
-            <c-button
-              class="c-details__boxButton"
-              :text="content.plans_button_cancel"
-              :modifiers="['isUnderline', 'isPrimary']"
-              @click="
-                UI_SET_SIDEBAR({
-                  component: 'cSidebarCancel',
-                  content: sidebarContent.cancel,
-                  settings: { address: address }
-                })
-              "
-            />
-          </c-detailsBlock> -->
-
           <c-detailsBlock class="c-details__boxItem withAccordion" v-if="customerRecharge">
             <c-accordion>
-              <c-accordionItem :boxNum="i">
+              <c-accordionItem :boxNum="i" @closeThisAcc="closeSlotAcc" :closeBoxAcc="[closeBoxAcc, inc]">
                 <div class="c-details__boxButton" slot="trigger">
                   <section>
                     <address class="c-details__boxAddress" v-html="address.address1" />
@@ -182,17 +162,45 @@
             </c-accordion>
           </c-detailsBlock>
         </div>
-        <div class="c-details__boxSingle" v-for="address in addressList.inactive" :key="address.id">
+      </div>
+
+      <div class="c-details__box c-details__box--isActivateSubs" v-if="showAddresses">
+        <div class="c-details__boxSingle" v-for="(address, i) in addressList.inactive" :key="address.id">
+          <c-detailsBlock class="c-details__boxItem withAccordion" v-if="customerRecharge">
+            <c-accordion>
+              <c-accordionItem
+                :boxNum="i + 10"
+                @closeThisAcc="closeSlotAcc"
+                :closeBoxAcc="[closeBoxAcc + 10, inc]"
+              >
+                <!-- @closeThisAcc="closeSlotAcc" :closeBoxAcc="[closeBoxAcc, inc]" -->
+                <div class="c-details__boxButton" slot="trigger">
+                  <section>
+                    <address class="c-details__boxAddress" v-html="address.address1" style="margin: 0" />
+                  </section>
+                  <span class="c-details__editTrigger c-button--isUnderline c-button--isBlack"></span>
+                </div>
+                <div class="" slot="content">
+                  <c-sidebarActivate
+                    :address="address"
+                    :content="sidebarContent.activate"
+                    :boxNum="i"
+                    :settings="{ address: address }"
+                  />
+                </div>
+              </c-accordionItem>
+            </c-accordion>
+          </c-detailsBlock>
+        </div>
+        <!--         <div class="c-details__boxSingle" v-for="address in addressList.inactive" :key="address.id">
           <c-detailsBlock class="c-details__boxItem">
             <div class="c-details__boxContent">
-              <address class="c-details__boxAddress" v-html="address.address1" />
-              <span class="c-details__boxShips" v-html="content.plans_text_last" />
-              <span class="c-details__boxDate" v-html="shipDate(address)" />
+              <address class="c-details__boxAddress" v-html="address.address1" style="margin: 0" />
             </div>
             <c-button
               class="c-details__boxButton isReactivate"
               :text="content.plans_button_activate"
-              :modifiers="['isUnderline']"
+              :modifiers="['isUnderline', 'isBlack']"
               @click="
                 UI_SET_SIDEBAR({
                   component: 'cSidebarActivate',
@@ -202,7 +210,7 @@
               "
             />
           </c-detailsBlock>
-        </div>
+        </div> -->
       </div>
     </div>
   </div>
@@ -222,6 +230,7 @@ import cFormBilling from '../forms/cFormBilling.vue'
 import cFormShipping from '../forms/cFormShipping.vue'
 import cSidebarPayment from '../sidebars/cSidebarPayment.vue'
 import cSidebarCancel from '../sidebars/cSidebarCancel.vue'
+import cSidebarActivate from '../sidebars/cSidebarActivate.vue'
 
 export default {
   props: {
@@ -242,13 +251,16 @@ export default {
     cFormBilling,
     cFormShipping,
     cSidebarPayment,
-    cSidebarCancel
+    cSidebarCancel,
+    cSidebarActivate
   },
   data() {
     return {
       ready: false,
       error: false,
-      setBoxHeight: false
+      setBoxHeight: false,
+      closeBoxAcc: null,
+      inc: 0
     }
   },
   computed: {
@@ -281,6 +293,10 @@ export default {
   methods: {
     ...mapActions('customer', ['customerSetResources']),
     ...mapMutations('ui', ['UI_SET_SIDEBAR']),
+    closeSlotAcc(e) {
+      this.closeBoxAcc = e
+      this.inc += 1
+    },
     shipDate(address) {
       return address.date ? this._formatDate(address.date, 'MMM DD, YYYY') : this.content.plans_text_never
     },
