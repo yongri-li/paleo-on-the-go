@@ -18,39 +18,15 @@ export default {
   components: {
     ProductCard
   },
-  created() {
-    // watch the params of the route to fetch the data again
-    this.$watch(
-      () => this.$route.params,
-      () => {
-        this.setProducts()
-      },
-      // fetch the data when the view is created and the data is
-      // already being observed
-      { immediate: true }
-    )
-  },
-  data() {
-    return {
-      products: []
-    }
-  },
   computed: {
     ...mapState([
       'collections',
       'cart'
-    ])
-  },
-  methods: {
-    setProducts() {
+    ]),
+    products() {
       const param = this.$route.params.box
       const collectionFound = this.collections.find(collection => collection.url === param)
-      if(!!collectionFound){
-        this.products = collectionFound.products
-      }
-      else {
-        this.products = this.collections[0].products
-      }
+      return !!collectionFound ? collectionFound.products : this.collections[0].products
     }
   }
 }
@@ -69,7 +45,7 @@ export default {
   }
 
   @media screen and (min-width: 769px) {
-    max-width: 950px;
+    width: 73%;
     display: flex;
     flex-wrap: wrap;
 
