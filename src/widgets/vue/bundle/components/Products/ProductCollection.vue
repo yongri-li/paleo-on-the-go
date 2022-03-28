@@ -18,17 +18,18 @@ export default {
   components: {
     ProductCard
   },
+  props: {
+    products: {
+      type: Array,
+      required: true
+    }
+  },
   computed: {
     ...mapState([
       'collections',
       'cart'
-    ]),
-    products() {
-      const param = this.$route.params.box
-      const collectionFound = this.collections.find(collection => collection.url === param)
-      return !!collectionFound ? collectionFound.products : this.collections[0].products
-    }
-  }
+    ])
+  },
 }
 </script>
 
@@ -39,15 +40,13 @@ export default {
   .item {
     margin-bottom: 1rem;
 
-    @media screen and (min-width: 769px) {
-      width: 32%;
+    @include media-tablet-up {
+      width: 32.6%;
     }
   }
 
-  @media screen and (min-width: 769px) {
-    width: 73%;
-    display: flex;
-    flex-wrap: wrap;
+  @include media-tablet-up {
+    @include flex($align: flex-start);
 
     .item:nth-child(3n+2) {
       margin-left: 1%;

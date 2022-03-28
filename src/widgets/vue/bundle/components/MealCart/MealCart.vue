@@ -169,6 +169,7 @@ $translateY: calc(100% - $height-header-title);
       transform: translateY(0);
       height: calc(100% - $height-footer);
       z-index: 1;
+      border-radius: 0;
     }
   }
   &__info.show {
