@@ -208,7 +208,7 @@ export default {
   }
 }
 
-.c-details__box--isCancelSubs {
+.c-box__isEditSubs {
   .withAccordion .c-accordionItem__trigger--isOpen .c-details__boxButton section {
     opacity: 1 !important;
   }
