@@ -1,7 +1,8 @@
 const {
   sizes,
   collections,
-  prebuilt
+  prebuilt,
+  filters
 } = window.Scoutside.bundle
 
 const prebuiltItemsParsed = prebuilt.items.map( ({bundlename, products}) => {
@@ -28,6 +29,7 @@ const prebuiltItemsParsed = prebuilt.items.map( ({bundlename, products}) => {
 const state = {
   sizes,
   collections,
+  filters,
   prebuilt: {
     content: prebuilt.content,
     items: prebuiltItemsParsed

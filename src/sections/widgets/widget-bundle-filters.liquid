@@ -1,0 +1,52 @@
+<script>
+  const filters = []
+
+  {% for block in section.blocks %}
+    filters.push({
+      ...JSON.parse('{{ block.settings | json }}'),
+      active: false
+    })
+  {% endfor %}
+
+  window.Scoutside.bundle.filters = filters
+</script>
+
+{% schema %}
+  {
+    "name": "Bundle Filters",
+    "blocks": [
+      {
+        "name": "Filter",
+        "type": "filter",
+        "settings": [
+          {
+            "label": "Title",
+            "type": "text",
+            "id": "title"
+          },
+          {
+            "label": "Filter type",
+            "type": "radio",
+            "id": "filter_type",
+            "options": [
+              {
+                "label": "Preference",
+                "value": "preference"
+              },
+              {
+                "label": "Product Type",
+                "value": "product_type"
+              }
+            ],
+            "default": "preference"
+          },
+          {
+            "label": "Product Tag or Type",
+            "type": "text",
+            "id": "tag"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

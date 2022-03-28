@@ -6,7 +6,8 @@ import {
   CLEAN_CART_ITEMS,
   ADD_PRODUCT_TO_CART_WITH_QT,
   MODAL_CLOSE,
-  MODAL_SETUP
+  MODAL_SETUP,
+  FILTER_TOGGLE_ACTIVE
 } from './_mutations-type'
 
 export default {
@@ -63,6 +64,12 @@ export default {
     state.modal.settings = {
       open: true,
       ...settings
+    }
+  },
+  [FILTER_TOGGLE_ACTIVE] (state, { tag, active }) {
+    const indexFound = state.filters.findIndex(filter => filter.tag === tag)
+    if(indexFound > -1) {
+      state.filters[indexFound].active = active
     }
   }
 }

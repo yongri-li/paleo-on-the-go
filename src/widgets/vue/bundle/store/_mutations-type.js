@@ -7,3 +7,5 @@ export const CLEAN_CART_ITEMS = 'cleanCartItems'
 
 export const MODAL_CLOSE = 'modalClose'
 export const MODAL_SETUP = 'modalSetUp'
+
+export const FILTER_TOGGLE_ACTIVE = 'filterToggleActive'
