@@ -15,7 +15,7 @@ export default {
 #meal-builder {
   position: relative;
   background-color: #F3F0E9;
-  padding: .8rem;
+  padding: .8rem 0;
 }
 
 </style>
