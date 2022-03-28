@@ -1,5 +1,5 @@
 <template>
-  <div :class="_buildModifiers('c-sidebarCancel', modifiers)" v-if="content && address">
+  <div :class="_buildModifiers('c-sidebarCancel c-sidebarActivate', modifiers)" v-if="content && address">
     <section class="c-sidebarCancel__wrapper">
       <h6 class="c-h6">
         {{ totalSubItems }} Meals &nbsp;<span class="c-basicTxt--md">
@@ -17,14 +17,12 @@
     </section>
     <c-button
       class="c-sidebarCancel__cancelButton"
-      v-if="content.cancel_submit_button"
       @click="handleActivate"
       :loading="loading.activate"
       text="Reactivate Subscription"
       :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
       :attributes="{ disabled: loading.activate }"
     />
-    <!-- :text="content.cancel_submit_button" -->
     <c-button
       class="u-marginTop--sm"
       text="Nevermind"
@@ -65,7 +63,7 @@ export default {
     cOrdersItem
   },
   data: () => ({
-    loading: { delay: false, activate: false }
+    loading: { activate: false }
   }),
   computed: {
     subscriptions() {
@@ -104,68 +102,4 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.c-sidebarCancel {
-  .c-h5 {
-    font-size: 1.5rem;
-  }
-
-  &__wrapper {
-    border-top: 2px solid #efede6;
-    border-bottom: 2px solid #efede6;
-    padding-top: 2rem;
-  }
-
-  &__address {
-    margin-top: -10px;
-    font-weight: 700;
-  }
-
-  &__items {
-    display: grid;
-    grid-template-columns: repeat(6, 1fr);
-    grid-gap: 2.5rem;
-    padding: 2rem 0;
-  }
-
-  &__cancelButton {
-    width: 100%;
-    margin-top: 2rem;
-  }
-
-  .c-sidebarCancel__cancelButton + button {
-    height: 1.75rem;
-  }
-}
-
-.c-details__box--isCancelSubs {
-  .withAccordion .c-accordionItem__trigger--isOpen .c-details__boxButton section {
-    opacity: 1 !important;
-  }
-
-  .withAccordion .c-accordionItem__trigger--isOpen + .c-accordionItem__content {
-    margin-top: 1.5rem !important;
-    /*    max-height: fit-content !important;*/
-  }
-
-  .c-details__boxButton {
-    @include media-tablet-up {
-      section {
-        flex: 1;
-      }
-    }
-  }
-
-  @include media-mobile-down {
-    .c-accordion {
-      max-width: calc(100vw - 4.5rem);
-    }
-
-    .c-sidebarCancel__items {
-      grid-template-columns: repeat(2, 1fr);
-      grid-gap: 1.5rem;
-      padding: 1.5rem 0.75rem;
-    }
-  }
-}
-</style>
+<style lang="scss"></style>

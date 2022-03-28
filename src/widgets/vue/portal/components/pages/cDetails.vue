@@ -142,7 +142,7 @@
         level="2"
         :text="content.plans_heading"
       />
-      <div class="c-details__box c-details__box--isCancelSubs" v-if="showAddresses">
+      <div class="c-details__box c-box__isEditSubs editCancel" v-if="showAddresses">
         <div class="c-details__boxSingle" v-for="(address, i) in addressList.active" :key="address.id">
           <c-detailsBlock class="c-details__boxItem withAccordion" v-if="customerRecharge">
             <c-accordion>
@@ -164,7 +164,7 @@
         </div>
       </div>
 
-      <div class="c-details__box c-details__box--isActivateSubs" v-if="showAddresses">
+      <div class="c-details__box c-box__isEditSubs editActivate" v-if="showAddresses">
         <div class="c-details__boxSingle" v-for="(address, i) in addressList.inactive" :key="address.id">
           <c-detailsBlock class="c-details__boxItem withAccordion" v-if="customerRecharge">
             <c-accordion>
@@ -393,11 +393,92 @@ export default {
   }
 }
 
-.c-details__box--isCancelSubs {
+/*.c-box__isEditSubs {
   .c-details__boxButton {
     &.isReactivate {
     }
-    /*    min-height: 6.5rem !important;*/
+  }
+}*/
+
+.c-sidebarCancel {
+  .c-h5 {
+    font-size: 1.5rem;
+  }
+
+  &__wrapper {
+    border-top: 2px solid #efede6;
+    border-bottom: 2px solid #efede6;
+    padding-top: 2rem;
+  }
+
+  &__address {
+    margin-top: -10px;
+    font-weight: 700;
+  }
+
+  &__items {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    grid-gap: 2.5rem;
+    padding: 2rem 0;
+  }
+
+  &__cancelButton {
+    width: 100%;
+    margin-top: 2rem;
+  }
+
+  .c-sidebarCancel__cancelButton + button {
+    height: 1.75rem;
+  }
+}
+
+.c-box__isEditSubs {
+  .withAccordion .c-accordionItem__trigger--isOpen .c-details__boxButton section {
+    opacity: 1 !important;
+  }
+
+  .withAccordion .c-accordionItem__trigger--isOpen + .c-accordionItem__content {
+    margin-top: 1.5rem !important;
+    /*    max-height: fit-content !important;*/
+  }
+
+  .c-details__boxButton {
+    @include media-tablet-up {
+      section {
+        flex: 1;
+      }
+    }
+  }
+
+  @include media-mobile-down {
+    .c-accordion {
+      max-width: calc(100vw - 4.5rem);
+    }
+
+    .c-sidebarCancel__items {
+      grid-template-columns: repeat(2, 1fr);
+      grid-gap: 1.5rem;
+      padding: 1.5rem 0.75rem;
+    }
+  }
+}
+
+.editActivate {
+  .c-details__editTrigger::after {
+    content: 'Reactivate';
+  }
+
+  .c-accordionItem__trigger--isOpen {
+    .c-details__editTrigger::after {
+      content: 'Close';
+    }
+  }
+
+  .withAccordion {
+    .c-accordionItem__trigger--isOpen + .c-accordionItem__content {
+      margin-top: 0 !important;
+    }
   }
 }
 </style>
