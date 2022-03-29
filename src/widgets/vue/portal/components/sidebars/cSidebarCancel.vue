@@ -64,7 +64,7 @@
       class="u-marginTop--sm"
       text="Nevermind"
       :modifiers="['isUnderline', 'isBlack']"
-      @click="$parent.$emit('closeThisAcc', boxNum)"
+      @click="$parent.$emit('closeAccCancel', boxNum)"
     />
   </div>
 </template>

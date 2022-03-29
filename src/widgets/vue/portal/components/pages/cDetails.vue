@@ -146,7 +146,11 @@
         <div class="c-details__boxSingle" v-for="(address, i) in addressList.active" :key="address.id">
           <c-detailsBlock class="c-details__boxItem withAccordion" v-if="customerRecharge">
             <c-accordion>
-              <c-accordionItem :boxNum="i" @closeThisAcc="closeSlotAcc" :closeBoxAcc="[closeBoxAcc, inc]">
+              <c-accordionItem
+                :boxNum="i"
+                @closeAccCancel="closeAccCancelFn"
+                :closeAccCancelBox="[closeAccCancelBox, boxIncCancel]"
+              >
                 <div class="c-details__boxButton" slot="trigger">
                   <section>
                     <address class="c-details__boxAddress" v-html="address.address1" />
@@ -168,12 +172,7 @@
         <div class="c-details__boxSingle" v-for="(address, i) in addressList.inactive" :key="address.id">
           <c-detailsBlock class="c-details__boxItem withAccordion" v-if="customerRecharge">
             <c-accordion>
-              <c-accordionItem
-                :boxNum="i + 10"
-                @closeThisAcc="closeSlotAcc"
-                :closeBoxAcc="[closeBoxAcc + 10, inc]"
-              >
-                <!-- @closeThisAcc="closeSlotAcc" :closeBoxAcc="[closeBoxAcc, inc]" -->
+              <c-accordionItem :boxNum="i + 100">
                 <div class="c-details__boxButton" slot="trigger">
                   <section>
                     <address class="c-details__boxAddress" v-html="address.address1" style="margin: 0" />
@@ -184,7 +183,7 @@
                   <c-sidebarActivate
                     :address="address"
                     :content="sidebarContent.activate"
-                    :boxNum="i"
+                    :boxNum="i + 100"
                     :settings="{ address: address }"
                   />
                 </div>
@@ -259,8 +258,8 @@ export default {
       ready: false,
       error: false,
       setBoxHeight: false,
-      closeBoxAcc: null,
-      inc: 0
+      closeAccCancelBox: null,
+      boxIncCancel: 0
     }
   },
   computed: {
@@ -293,9 +292,9 @@ export default {
   methods: {
     ...mapActions('customer', ['customerSetResources']),
     ...mapMutations('ui', ['UI_SET_SIDEBAR']),
-    closeSlotAcc(e) {
-      this.closeBoxAcc = e
-      this.inc += 1
+    closeAccCancelFn(e) {
+      this.closeAccCancelBox = e
+      this.boxIncCancel++
     },
     shipDate(address) {
       return address.date ? this._formatDate(address.date, 'MMM DD, YYYY') : this.content.plans_text_never
@@ -312,6 +311,9 @@ export default {
       if (error) this.error = error
       this.ready = true
     } else this.ready = true
+  },
+  beforeDestroy() {
+    this.$root.$off('closeAccActivate')
   }
 }
 </script>

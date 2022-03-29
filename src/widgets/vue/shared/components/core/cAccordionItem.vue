@@ -34,7 +34,7 @@ export default {
     setBoxHeight: {
       type: Boolean
     },
-    closeBoxAcc: {
+    closeAccCancelBox: {
       type: Array
     }
   },
@@ -82,15 +82,20 @@ export default {
       else this.maxHeight = `0px`
       this.active = !this.active
       if (this.active) {
-        this.customEvtListen()
+        this.evtListenSetHeight()
       } else {
         this.removeEvtListen()
         this.$root.$emit('accClosed', this.boxNum)
       }
     },
-    customEvtListen() {
+    evtListenSetHeight() {
       this.$root.$on('setHeightFromRadio', () => {
         this.setBoxHeightFunc()
+      })
+    },
+    evtListenClickToggle() {
+      this.$root.$on('closeAccActivate', e => {
+        if (e[0] === this.boxNum && e[1] === 'Reactivate') this.toggleContent()
       })
     },
     removeEvtListen() {
@@ -99,6 +104,11 @@ export default {
     setBoxHeightFunc() {
       const content = this.$refs.content
       content.style.maxHeight = 'fit-content'
+    },
+    clickToggle(val) {
+      if (val[0] === this.boxNum) {
+        this.toggleContent()
+      }
     }
   },
   watch: {
@@ -106,13 +116,14 @@ export default {
       const content = this.$refs.content
       if (this.setBoxHeight) this.setBoxHeightFunc()
     },
-    closeBoxAcc: {
+    closeAccCancelBox: {
       handler(val) {
-        if (val[0] === this.boxNum) {
-          this.toggleContent()
-        }
+        this.clickToggle(val)
       }
     }
+  },
+  created() {
+    this.evtListenClickToggle()
   },
   mounted() {
     window.addEventListener('resize', this.changeHeight)
@@ -137,6 +148,7 @@ export default {
   width: 100%;
   &:hover {
     cursor: pointer;
+    /*asdas*/
   }
 }
 </style>

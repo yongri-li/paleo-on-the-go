@@ -18,16 +18,16 @@
     <c-button
       class="c-sidebarCancel__cancelButton"
       @click="handleActivate"
-      :loading="loading.activate"
+      :loading="loading"
       text="Reactivate Subscription"
       :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
-      :attributes="{ disabled: loading.activate }"
+      :attributes="{ disabled: loading }"
     />
     <c-button
       class="u-marginTop--sm"
       text="Nevermind"
       :modifiers="['isUnderline', 'isBlack']"
-      @click="$parent.$emit('closeThisAcc', boxNum)"
+      @click="$root.$emit('closeAccActivate', [boxNum, boxName])"
     />
   </div>
 </template>
@@ -63,7 +63,8 @@ export default {
     cOrdersItem
   },
   data: () => ({
-    loading: { activate: false }
+    loading: false,
+    boxName: 'Reactivate'
   }),
   computed: {
     subscriptions() {
@@ -90,7 +91,7 @@ export default {
     async handleActivate() {
       this.loading = true
       await this.customerUpdateAddressItems({
-        addressId: this.settings.address.id,
+        addressId: this.address.id,
         updatesSubscriptions: _buildUpdates({
           items: this.subscriptions,
           actions: ['activate']

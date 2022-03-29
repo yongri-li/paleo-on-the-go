@@ -83,8 +83,6 @@ export default {
     product() {
       return false
     },
-
-    ////
     charges() {
       return this.$store.getters['customer/customerCharges']
     },
@@ -102,23 +100,9 @@ export default {
         alt: `${item.productTitle}`
       }
     },
-
-    // image() {
-    //   const { item, product, customizeShop } = this
-    //   return {
-    //     src: product ? product.image : false,
-    //     alt: `${customizeShop.shop_name} ${item.productTitle}`
-    //   }
-    // },
     interval() {
       const { item, content, customizeShop } = this
       const { frequency, unit } = item
-      // const activeInterval = customizeShop.intervals?.find(interval => {
-      //   if (!frequency || !unit) return interval.frequency == 0
-      //   else return interval.frequency == frequency
-      // })
-      // let text = activeInterval.text
-      // if (frequency && unit && content.ships) text = `${content.ships} ${text}`
       let text = unit
       return text
     },
