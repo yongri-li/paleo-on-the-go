@@ -1,5 +1,6 @@
 <template>
   <div class="page o-containerLarge">
+    <stepper />
     <div class="content-products-cart">
       <div class="content-products">
         <filter-and-sorting :length-products="products.length" />
@@ -16,6 +17,7 @@
 </template>
 
 <script>
+import Stepper from '../components/Stepper/Index.vue'
 import FilterAndSorting from '../components/FilterAndSorting/FilterAndSorting.vue'
 import ProductCollection from '../components/Products/ProductCollection.vue'
 import MealCart from '../components/MealCart/MealCart.vue'
@@ -26,6 +28,7 @@ import { mapState, mapGetters } from 'vuex'
 
 export default {
   components: {
+    Stepper,
     FilterAndSorting,
     ProductCollection,
     MealCart,
