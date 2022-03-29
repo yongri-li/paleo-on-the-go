@@ -18,10 +18,10 @@
     <c-button
       class="c-sidebarCancel__cancelButton"
       @click="handleActivate"
-      :loading="loading.activate"
+      :loading="loading"
       text="Reactivate Subscription"
       :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
-      :attributes="{ disabled: loading.activate }"
+      :attributes="{ disabled: loading }"
     />
     <c-button
       class="u-marginTop--sm"
@@ -29,7 +29,6 @@
       :modifiers="['isUnderline', 'isBlack']"
       @click="$root.$emit('closeAccActivate', [boxNum, boxName])"
     />
-    <!-- @click="$parent.$emit('closeAccActivate', boxNum)" -->
   </div>
 </template>
 
@@ -64,7 +63,7 @@ export default {
     cOrdersItem
   },
   data: () => ({
-    loading: { activate: false },
+    loading: false,
     boxName: 'Reactivate'
   }),
   computed: {

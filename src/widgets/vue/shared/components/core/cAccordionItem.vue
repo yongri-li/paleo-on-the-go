@@ -95,7 +95,6 @@ export default {
     },
     evtListenClickToggle() {
       this.$root.$on('closeAccActivate', e => {
-        console.log(e)
         if (e[0] === this.boxNum && e[1] === 'Reactivate') this.toggleContent()
       })
     },
@@ -119,7 +118,6 @@ export default {
     },
     closeAccCancelBox: {
       handler(val) {
-        console.log(val, 'cancel')
         this.clickToggle(val)
       }
     }

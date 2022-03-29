@@ -172,7 +172,7 @@
         <div class="c-details__boxSingle" v-for="(address, i) in addressList.inactive" :key="address.id">
           <c-detailsBlock class="c-details__boxItem withAccordion" v-if="customerRecharge">
             <c-accordion>
-              <c-accordionItem :boxNum="i + 10">
+              <c-accordionItem :boxNum="i + 100">
                 <div class="c-details__boxButton" slot="trigger">
                   <section>
                     <address class="c-details__boxAddress" v-html="address.address1" style="margin: 0" />
@@ -183,7 +183,7 @@
                   <c-sidebarActivate
                     :address="address"
                     :content="sidebarContent.activate"
-                    :boxNum="i + 10"
+                    :boxNum="i + 100"
                     :settings="{ address: address }"
                   />
                 </div>
@@ -259,9 +259,7 @@ export default {
       error: false,
       setBoxHeight: false,
       closeAccCancelBox: null,
-      closeAccActivateBox: null,
-      boxIncCancel: 0,
-      boxIncActivate: 0
+      boxIncCancel: 0
     }
   },
   computed: {
@@ -295,17 +293,9 @@ export default {
     ...mapActions('customer', ['customerSetResources']),
     ...mapMutations('ui', ['UI_SET_SIDEBAR']),
     closeAccCancelFn(e) {
-      console.log('asdad', e)
       this.closeAccCancelBox = e
       this.boxIncCancel++
-      console.log('cnaceltrigger')
     },
-    // closeAccActivateFn(e) {
-    //   console.log('asdad22', e)
-    //   this.closeAccActivateBox = e
-    //   this.boxIncActivate++
-    //   console.log('activate_ trigger')
-    // },
     shipDate(address) {
       return address.date ? this._formatDate(address.date, 'MMM DD, YYYY') : this.content.plans_text_never
     },

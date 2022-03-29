@@ -4,7 +4,7 @@
 
     <div class="pdp__main">
       <c-product-gallery class="main__column" :autoplay="gallery_autoplay" :images="product.images" />
-      <c-product-form
+      <!--       <c-product-form
         class="main__column"
         :blurbContent="blurbContent"
         :isFullPage="isFullPage"
@@ -12,46 +12,40 @@
         :product="product"
         :productDetails="product_details"
         :productNutrition="nutritional_info"
+      /> -->
+
+      <section>
+        <h1 class="c-h1 c-heading productForm__header">{{ title }}</h1>
+        <p v-if="subtitle" class="c-p1 productForm__subHeader">{{ subtitle }}</p>
+        <p v-if="price" class="c-p1 productForm__subHeader">{{ price }}</p>
+      </section>
+
+      <c-button
+        class="c-cta productForm__atcButton"
+        v-else
+        @click="handleGetStarted"
+        :loading="loading"
+        :text="labels.getStarted"
+        :modifiers="['isCta', 'isTall', 'hideTextLoading']"
+        :attributes="{ disabled: loading }"
       />
     </div>
 
-    <div class="pdp__bodyMobile u-hideTabletUp">
-      <span class="c-eyebrow pdp__mobileEyebrow">mobile sub header</span>
-      <h4 class="c-h4 pdp__mobileDescription">{{ this.product_details.mobile_description }}</h4>
-      <c-product-blurb :content="blurbContent" />
-
-      <span class="c-eyebrow pdp__mobileEyebrow">{{ this.labels.nutriMobile }}</span>
-      <c-nutrition-counter :content="nutritional_info" />
-    </div>
-
-    <div v-if="isFullPage" class="pdp__bodyLower">
-      <span class="c-eyebrow pdp__bodyLowerEyebrow u-hideMobileDown">{{ this.labels.nutriDesktop }}</span>
-
-      <div class="bodyLower__column">
-        <c-nutrition-ingredients
-          :isMobile="isMobile"
-          :labels="labels"
-          :highlightedIngredients="product_details.ingredients_highlighted"
-          :otherIngredients="product_details.other_ingredients"
-        />
-        <c-nutrition-prepare :labels="labels" :content="product_details.how_to_prepare" />
-      </div>
-
-      <!-- <c-related-meals :products="related_products" :labels="labels" /> -->
-    </div>
+    <c-related-meals :products="related_products" :labels="labels" />
   </div>
 </template>
 
 <script>
 import { mapState, mapMutations } from 'vuex'
+import { formatPrice, handleize } from '../utils'
 import cProductGallery from './sections/cProductGallery.vue'
 import cProductForm from './sections/cProductForm.vue'
-import cProductBlurb from './sections/cProductBlurb.vue'
-import cNutritionCounter from './sections/cNutritionCounter.vue'
-import cNutritionIngredients from './sections/cNutritionIngredients.vue'
-import cNutritionPrepare from './sections/cNutritionPrepare.vue'
+import cButton from '@shared/components/core/cButton.vue'
+// import cProductBlurb from './sections/cProductBlurb.vue'
+// import cNutritionCounter from './sections/cNutritionCounter.vue'
+// import cNutritionIngredients from './sections/cNutritionIngredients.vue'
+// import cNutritionPrepare from './sections/cNutritionPrepare.vue'
 import cRelatedMeals from './sections/cRelatedMeals.vue'
-// import cSvg from '@shared/components/core/cSvg.vue'
 
 export default {
   name: 'Pdp',
@@ -64,10 +58,11 @@ export default {
   components: {
     cProductGallery,
     cProductForm,
-    cProductBlurb,
-    cNutritionCounter,
-    cNutritionIngredients,
-    cNutritionPrepare,
+    cButton,
+    // cProductBlurb,
+    // cNutritionCounter,
+    // cNutritionIngredients,
+    // cNutritionPrepare,
     cRelatedMeals
   },
   computed: {
@@ -81,34 +76,23 @@ export default {
       })
       return arr
     },
-    blurbContent() {
-      return {
-        fresh_text: this.fresh_text,
-        fresh_icon: this.fresh_icon,
-        regular_text: this.regular_text,
-        regular_icon: this.regular_icon
-      }
+    price() {
+      return `${formatPrice(this.product.price)}`
     },
-    productSubTitle() {
-      const product_title = this.product.title.toLowerCase()
-      if (product_title.includes('with')) {
-        return `with${product_title.split('with')[1]}`
+    subtitle() {
+      const title = this.product.title.toLowerCase()
+      if (title.includes('with')) {
+        return `with${title.split('with')[1]}`
       } else {
         return false
       }
     },
-    productTitle() {
-      const product_title = this.product.title.toLowerCase()
-      if (product_title.includes('with')) {
-        return `${product_title.split('with')[0]}`
+    title() {
+      const subtitle = this.product.title.toLowerCase()
+      if (subtitle.includes('with')) {
+        return `${subtitle.split('with')[0]}`
       } else {
         return this.product.title
-      }
-    },
-    productTitles() {
-      return {
-        title: this.product.title,
-        subtitle: this.product_details.subtitle
       }
     },
     subNavLink() {
@@ -138,9 +122,6 @@ export default {
     onResize() {
       this.isMobile = window.innerWidth < 768
     },
-    showFullPageIfCustomer() {
-      if (this.isCustomer) this.isFullPage = true
-    },
     useRefPathToSetFullPage() {
       const prevPath = document.referrer
       if (prevPath.includes('/collections/')) {
@@ -167,10 +148,10 @@ export default {
         mainNavLf.style.display = 'none'
         mainNavRt.style.display = 'none'
       }
-    },
-    backToMeals() {
-      sessionStorage.setItem('from_pdp', 'true')
     }
+    // backToMeals() {
+    //   sessionStorage.setItem('from_pdp', 'true')
+    // }
   },
   beforeDestroy() {
     if (typeof window !== 'undefined') {
@@ -185,7 +166,6 @@ export default {
   },
   mounted() {
     this.hideMainNavonFullPage()
-    this.showFullPageIfCustomer()
   }
 }
 </script>

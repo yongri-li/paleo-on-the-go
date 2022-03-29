@@ -4,7 +4,6 @@
 
 <script>
 export default {
-	//name: 'cColorBlock'
 	props: {
 		color: {
 			type: String
@@ -14,7 +13,6 @@ export default {
 </script>
 
 <style lang="scss">
-/*/// asd  */
 .color__div {
 	&--black {
 		background-color: $color-black;

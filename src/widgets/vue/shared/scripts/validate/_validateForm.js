@@ -5,7 +5,7 @@ export const _validateForm = items => {
   let errors = {}
   let messagesArray = []
   items.forEach(item => {
-    const { name, value, rules, messages } = item //reference
+    const { name, value, rules, messages } = item
     let itemError = false
     rules.forEach((rule, index) => {
       const validationFunction = require(`./_${rule}`)[`_${rule}`]
@@ -13,7 +13,7 @@ export const _validateForm = items => {
 
       switch (rule) {
         case 'validateMatch':
-          isValid = validationFunction(value) //,reference
+          isValid = validationFunction(value)
           break
         default:
           isValid = validationFunction(value)
