@@ -27,8 +27,9 @@
       class="u-marginTop--sm"
       text="Nevermind"
       :modifiers="['isUnderline', 'isBlack']"
-      @click="$parent.$emit('closeThisAcc', boxNum)"
+      @click="$root.$emit('closeAccActivate', [boxNum, boxName])"
     />
+    <!-- @click="$parent.$emit('closeAccActivate', boxNum)" -->
   </div>
 </template>
 
@@ -63,7 +64,8 @@ export default {
     cOrdersItem
   },
   data: () => ({
-    loading: { activate: false }
+    loading: { activate: false },
+    boxName: 'Reactivate'
   }),
   computed: {
     subscriptions() {
@@ -90,7 +92,7 @@ export default {
     async handleActivate() {
       this.loading = true
       await this.customerUpdateAddressItems({
-        addressId: this.settings.address.id,
+        addressId: this.address.id,
         updatesSubscriptions: _buildUpdates({
           items: this.subscriptions,
           actions: ['activate']
