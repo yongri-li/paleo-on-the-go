@@ -4,7 +4,7 @@
     class="pcard"
   >
     <div class="pcard__header">
-      <div class="pcard__header--figure">
+      <div class="pcard__header--figure" @click="openModal">
         <img
           class="pcard__header--img"
           :src="imageUrl"
@@ -12,7 +12,7 @@
         />
       </div>
       <div class="pcard__info">
-        <div class="pcard__info--title">
+        <div class="pcard__info--title" @click="openModal">
           {{ product.title }}
         </div>
         <div class="pcard__info--subtitle">
@@ -45,7 +45,7 @@
         </div>
       </div>
     </div>
-    <div class="pcard__prices">
+    <div class="pcard__prices" @click="openModal">
       <div
         v-if="typeOrder === 'addons'"
         class="pcard__price--addons"
@@ -74,6 +74,7 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
+import { MODAL_SETUP } from '../../store/_mutations-type'
 import { formatPrice } from '../../utils'
 import ProductBtnAddToCart from './ProductBtnAddToCart.vue'
 
@@ -85,7 +86,8 @@ export default {
   props: {
     product: {
       type: Object,
-      default: null
+      default: null,
+      required: true
     },
     addToCartOpen: {
       type: Boolean,
@@ -144,6 +146,16 @@ export default {
       'addToCart',
       'reduceToCart'
     ]),
+    openModal() {
+      this.$store.commit(MODAL_SETUP, {
+        component: 'ModalProduct',
+        settings: {
+          params: {
+            product: this.product
+          }
+        }
+      })
+    }
   }
 }
 </script>
