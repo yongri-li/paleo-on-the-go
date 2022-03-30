@@ -79,7 +79,21 @@
       {{ lengthProducts }} items
     </div>
     <div class="fas__sort">
-      Sort By
+      <!-- Sort By -->
+      <v-select
+        placeholder="Sort By"
+        label="label"
+        :options="options"
+        :searchable="false"
+        :clearable="false"
+        :value="selected"
+        @input="setSorting"
+      >
+        <template v-slot:option="option">
+          {{ option.label }}
+          <span class="vs__dropdown-option--radio"></span>
+        </template>
+      </v-select>
     </div>
   </div>
 </template>
@@ -100,7 +114,15 @@ export default {
         showFilters: false,
         showPreference: false,
         showProductType: false,
-      }
+      },
+      options: [
+        {
+          label: 'Best Selling'
+        },
+        {
+          label: 'Newest'
+        }
+      ],
     }
   },
   computed: {
@@ -113,6 +135,10 @@ export default {
     productType() {
       return filters.filter(fil => fil.filter_type === 'product_type')
     },
+    selected() {
+      const sortRouter = this.$route.query.sort
+      return sortRouter ? { label: sortRouter } : { label: 'Best Selling' }
+    }
   },
   mounted() {
     this.setFiltersRouter()
@@ -193,12 +219,22 @@ export default {
     lengthFilterActive(filters) {
       const filtersActive = filters.filter(item => item.active)
       return filtersActive.length
+    },
+    setSorting(val) {
+      const queryRouter = this.$route.query
+      if(queryRouter.sort !== val.label) {
+        const query = {
+          ...queryRouter,
+          sort: val.label
+        }
+        this.$router.push({ query })
+      }
     }
   }
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
 .fas {
   @include flex();
@@ -369,23 +405,61 @@ export default {
   }
 
   &__items {
-    width: 40%;
+    width: 50%;
     color: #A7A5A6;
     font-size: 1rem;
 
     @include media-tablet-up {
-      width: 10%;
+      width: 5%;
       text-align: right;
     }
   }
 
   &__sort {
-    width: 50%;
+    width: 40%;
     text-align: right;
+    font-size: 1rem;
+    font-weight: 500;
 
     @include media-tablet-up {
-      width: 10%;
+      width: 15%;
     }
+
+    .v-select {
+      .vs__dropdown-toggle {
+        border: none;
+      }
+
+      .vs__dropdown-option{
+        &--highlight {
+          background-color: $color-black;
+          color: $color-primary;
+        }
+      }
+
+      .vs__dropdown-menu {
+        width: 90%;
+        min-width: 90%;
+        left: 10%;
+
+        @include media-tablet-up {
+          width: 80%;
+          min-width: 80%;
+          left: 20%;
+        }
+      }
+
+      .vs__selected-options {
+        justify-content: flex-end;
+      }
+
+      .vs__search {
+        width: 0;
+        flex-grow: 0;
+        padding: 0;
+      }
+    }
+
   }
 }
 

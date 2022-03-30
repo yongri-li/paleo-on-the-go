@@ -1,3 +1,5 @@
+import { sortProducts } from '../utils'
+
 export default {
   getProductFromCollectionsByIDs: (state) => ({idCollection, idProduct}) => {
     const collectionFound = state.collections.find(collection => collection.id === idCollection)
@@ -57,6 +59,9 @@ export default {
         }
       }
     })
-    return products
+    return sortProducts({
+      products: [...products],
+      sortType: queryRouter.sort
+    })
   }
 }
