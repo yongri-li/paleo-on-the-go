@@ -5,33 +5,25 @@
     </div>
     <div class="modal__product--content">
       <div class="modal__product--figure">
-        <img
+        <c-product-gallery
+          :images="product.images"
+          :is-modal="true"
           class="modal__product--img"
-          :src="imageUrl"
-          :alt="product.title"
         />
       </div>
       <div class="modal__product--data">
-        <div class="modal__product--data-title">
-          {{ product.title }}
-        </div>
-        <div class="modal__product--data-subtitle">
-          this is a metafield like subtitle
-        </div>
-        <div class="modal__product--data-pills">
-          <div class="modal__product--data-pills-item">
-            Description
+        <div class="modal__product--data-header">
+          <div class="modal__product--data-title">
+            {{ product.title }}
           </div>
-          <div class="modal__product--data-pills-item">
-            Ingredientes
-          </div>
-          <div class="modal__product--data-pills-item">
-            Heating
+          <div class="modal__product--data-subtitle">
+            {{ product.subtitle }}
           </div>
         </div>
-        <div class="modal__product--data-pills-content">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus accusantium ut temporibus similique impedit ex nam rerum perferendis explicabo. Consectetur officia esse nostrum nobis. Nulla sequi eius illum quae corporis?
-        </div>
+        <c-select-tabs
+          :pdpinfo="product.info"
+          class="modal__product--data-pills"
+        />
         <div class="modal__product--add-to-cart" @click="addToCartModal">
           Add To Box
         </div>
@@ -42,8 +34,14 @@
 
 <script>
 import { mapActions } from 'vuex'
+import cProductGallery from '@shared/components/parts/cProductGallery.vue'
+import cSelectTabs from '@shared/components/parts/cSelectTabs.vue'
 
 export default {
+  components: {
+    cProductGallery,
+    cSelectTabs
+  },
   props: {
     params: {
       type: Object
@@ -61,7 +59,7 @@ export default {
     where() {
       const param = this.$route.params.box
       return param === 'addons' ? 'addons' : 'items'
-    }
+    },
   },
   methods: {
     ...mapActions([
@@ -82,7 +80,7 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .modal__product {
   background-color: #F3F0E9;
   text-align: initial;
@@ -123,6 +121,26 @@ export default {
     }
   }
 
+  &--img {
+    margin-top: -15%;
+
+    @include media-tablet-up {
+      margin-top: 0;
+      position: relative;
+
+      .pdp__thumbnails {
+        position: absolute;
+        bottom: 3%;
+        top: auto;
+        width: 100%;
+      }
+    }
+
+    .pdp__galleryImageWrapper {
+      width: 100%;
+    }
+  }
+
   &--data {
     padding: 1rem;
     height: 70%;
@@ -134,9 +152,13 @@ export default {
       padding: 5rem 3rem 1rem;
     }
 
+    &-header {
+      height: 25%;
+    }
+
     &-title {
       font-family: $font-heading;
-      font-size: 2.6rem;
+      font-size: 5vh;
 
       @include media-tablet-up {
         font-size: 3rem;
@@ -145,7 +167,7 @@ export default {
 
     &-subtitle {
       color: #7B7979;
-      font-size: 1.2rem;
+      font-size: 2.5vh;
       margin-bottom: 1.5rem;
 
       @include media-tablet-up {
@@ -154,31 +176,8 @@ export default {
     }
 
     &-pills {
-      @include flex();
-
-      &-item {
-        font-size: 1.1rem;
-        background-color: $color-white;
-        padding: .4rem .6rem;
-        border-radius: 15px;
-        margin-right: 1rem;
-        cursor: pointer;
-      }
-
-      &-content {
-        padding: 1.5rem 0;
-        margin-top: 1rem;
-        height: 60%;
-        max-height: 230px;
-        overflow-y: auto;
-        font-size: 1.1rem;
-        line-height: 160%;
-
-        @include media-tablet-up {
-          height: 50%;
-          max-height: 230px;
-        }
-      }
+      height: 65%;
+      overflow-y: auto;
     }
   }
 
