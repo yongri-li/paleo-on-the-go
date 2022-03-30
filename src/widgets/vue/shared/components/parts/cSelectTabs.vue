@@ -4,15 +4,15 @@
 			<div
 				v-for="(val, name, i) in pdpinfo"
 				class="pdp__tabs--tab"
-				:class="active === i ? 'isActive' : null"
+				:class="active === i && 'isActive'"
 				:key="name"
-				@click="tabSelect(i)"
+				@click="selectTab(i)"
 			>
 				{{ name }}
 			</div>
 		</div>
 		<div class="pdp__tabs--info">
-			<article v-for="(val, name, i) in pdpinfo" :key="i" :class="active === i ? 'isActive' : null">
+			<article v-for="(val, name, i) in pdpinfo" :key="i" :class="active === i && 'isActive'">
 				{{ val }}
 			</article>
 		</div>
@@ -32,7 +32,7 @@ export default {
 		}
 	},
 	methods: {
-		tabSelect(tab) {
+		selectTab(tab) {
 			this.active = tab
 		}
 	}
@@ -47,6 +47,12 @@ export default {
 		display: flex;
 		align-items: center;
 		justify-content: space-between;
+
+		@include media-mobile-down {
+			grid-gap: 0.75rem;
+			overflow-x: scroll;
+			width: calc(100vw - 1rem);
+		}
 	}
 
 	&--tab {
@@ -82,6 +88,10 @@ export default {
 		article:not(:first-child) {
 			position: absolute;
 			top: 1.5rem;
+		}
+
+		@include media-mobile-down {
+			padding-right: 1rem;
 		}
 	}
 }

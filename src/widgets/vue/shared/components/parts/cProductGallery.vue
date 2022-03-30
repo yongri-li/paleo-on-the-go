@@ -1,20 +1,16 @@
 <template>
-  <div class="pdp__galleryContainer">
+  <div class="pdp__galleryContainer" :class="isModal && 'isModal'">
     <div v-if="loading" class="pdp__loader"></div>
     <div v-show="!loading" class="pdp__thumbnails u-hideMobileDown">
-      <div v-for="(image, index) in images" :key="index" class="pdp__thumbnailWrapper">
-        <button class="pdp__thumbnailButton" type="button" @click="() => handleThumbnailClick(index)">
-          <img
-            :src="image"
-            :class="{ 'pdp__thumbnail--active': index == activeIndex }"
-            class="pdp__thumbnail"
-          />
+      <div v-for="(image, i) in images" :key="i" class="pdp__thumbnailWrapper">
+        <button class="pdp__thumbnailButton" type="button" @click="() => handleThumbnailClick(i)">
+          <img :src="image" :class="{ 'pdp__thumbnail--active': i == activeIndex }" class="pdp__thumbnail" />
         </button>
       </div>
     </div>
     <div v-show="!loading" class="pdp__gallery">
-      <div v-for="(image, index) in images" :key="index">
-        <div class="pdp__galleryImageWrapper" :data-index="index">
+      <div v-for="(image, i) in images" :key="i">
+        <div class="pdp__galleryImageWrapper" :data-index="i">
           <img :src="image" class="pdp__galleryImage" />
         </div>
       </div>
@@ -35,6 +31,10 @@ export default {
       default: false,
       required: false,
       type: Boolean
+    },
+    isModal: {
+      type: Boolean,
+      default: false
     }
   },
   data: () => ({
@@ -87,9 +87,6 @@ export default {
   flex-direction: column-reverse;
   justify-content: center;
 
-  @include media-tablet-up {
-  }
-
   @include media-desktop-up {
   }
 
@@ -116,6 +113,22 @@ export default {
       width: 100%;
       height: 100%;
       z-index: 1;
+    }
+  }
+
+  &.isModal {
+    .pdp__thumbnails {
+      top: unset;
+      bottom: 2rem;
+
+      .pdp__thumbnailButton {
+        background: none;
+      }
+
+      .pdp__thumbnail {
+        border-radius: 50%;
+        border: 2px solid $color-black;
+      }
     }
   }
 }

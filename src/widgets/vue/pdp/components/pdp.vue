@@ -1,14 +1,12 @@
 <template>
   <div class="pdp__container">
-    <div class="pdp__sub-nav"></div>
-
     <div class="pdp__main">
       <c-product-gallery class="main__column" :autoplay="gallery_autoplay" :images="product.images" />
 
       <section class="pdp__content">
         <div class="pdp__content--wrap">
           <h1 class="c-h1 c-heading">{{ product.title }}</h1>
-          <h5 v-if="subtitle" class="c-h5 pdp__content--wrap__subHeader">{{ subtitle }}</h5>
+          <h5 v-if="subtitle" class="c-h5 pdp__content--wrap__subheader">{{ subtitle }}</h5>
           <h5 v-if="price" class="c-h5 pdp__content--wrap__price">{{ price }}</h5>
 
           <div class="pdp__content--ctas">
@@ -19,7 +17,7 @@
               :text="isCustomer ? (added ? addedTxt : labels.atc) : labels.getStarted"
               :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
               :attributes="{ disabled: loading }"
-              :class="added ? 'item--added' : ''"
+              :class="added ? 'item--added' : null"
             />
           </div>
 
@@ -33,12 +31,11 @@
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
-import { formatPrice, handleize } from '../utils'
-import cProductGallery from './sections/cProductGallery.vue'
+import { formatPrice } from '../utils'
+import cProductGallery from '@shared/components/parts/cProductGallery.vue'
 import cButton from '@shared/components/core/cButton.vue'
-import cRelatedMeals from './sections/cRelatedMeals.vue'
 import cSelectTabs from '@shared/components/parts/cSelectTabs.vue'
+import cRelatedMeals from './sections/cRelatedMeals.vue'
 
 export default {
   name: 'Pdp',
@@ -71,76 +68,19 @@ export default {
     price() {
       return `Starts at ${formatPrice(this.product.price)}`
     },
-    subNavLink() {
-      const bundleLnk = sessionStorage.getItem('bundle_url')
-      const lastPg = document.referrer
-      return bundleLnk ? bundleLnk : lastPg
-    },
     isCustomer() {
       return customer.email && customer.shopify_id ? true : false
-    },
-    ...mapState([])
+    }
   },
   methods: {
     onResize() {
       this.isMobile = window.innerWidth < 768
     },
-    orParams() {
-      const queryString = window.location.search
-      const urlParams = new URLSearchParams(queryString)
-      if (urlParams.has('quickview')) {
-        const isQuickview = urlParams.get('quickview')
-        if (isQuickview) {
-          this.controllerData.includes('fullPage') ? '' : this.controllerData.push('fullPage')
-        }
-      }
-    },
-    hideMainNavonFullPage() {
-      const fullPgClass = document.querySelector('.pdp__fullpage')
-      const mainNav = document.querySelector('.c-headerMain__wrapper')
-      const mainNavLf = document.querySelector('.c-headerMain__primary')
-      const mainNavRt = document.querySelector('.c-headerMain__secondary')
-      if (fullPgClass) {
-        mainNav.style.justifyContent = 'center'
-        mainNavLf.style.display = 'none'
-        mainNavRt.style.display = 'none'
-      }
-    },
     handleAdd() {
       this.loading = true
 
-      sessionStorage.setItem('from_pdp', 'true')
+      /// Add Shared Cart function here.
 
-      // const item = this.product
-      // const mealJson = sessionStorage.getItem('bundle_content')
-      // const addonJson = sessionStorage.getItem('addon_content')
-      // const meals = JSON.parse(mealJson)
-      // const addons = JSON.parse(addonJson)
-      // let qty
-
-      // if (this.isFreshAddOn) {
-      //   for (const itmQty in addons) {
-      //     if (addons[itmQty].id === item.id) {
-      //       qty = addons[itmQty].quantity
-      //     }
-      //   }
-      // } else {
-      //   for (const itmQty in meals) {
-      //     if (meals[itmQty].id === item.id) {
-      //       qty = meals[itmQty].quantity
-      //     }
-      //   }
-      // }
-
-      // item.quantity = qty + 1
-      // sessionStorage.setItem('addcart_item', JSON.stringify(item))
-      // if (this.isFreshAddOn) {
-      //   sessionStorage.setItem('is_addOn', true)
-      // } else {
-      //   sessionStorage.setItem('is_addOn', false)
-      // }
-
-      // sessionStorage.setItem('from_pdp', 'true');
       setTimeout(() => {
         this.loading = false
         this.added = true
@@ -159,7 +99,6 @@ export default {
     }
   },
   beforeMount() {
-    this.checkForParams()
     this.onResize()
     window.addEventListener('resize', this.onResize, { passive: true })
   }
@@ -172,65 +111,8 @@ export default {
   background-color: $color-ecru;
   padding: 2rem 1rem;
 
-  @include media-tablet-up {
-    padding: 0px 15px 45px;
-  }
-
   @include media-desktop-up {
     padding: 0px 80px 64px;
-  }
-}
-.pdp__sub-nav {
-  height: 40px;
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  border-bottom: 1px solid $color-white;
-  background: $color-white;
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 0;
-  font-weight: 600;
-
-  @include media-tablet-up {
-    position: relative;
-    height: 68px;
-    border-color: transparent;
-    background: transparent;
-    cursor: auto;
-  }
-
-  @include media-tablet-down {
-    padding-left: 10px;
-  }
-}
-.sub-nav__link {
-  display: grid;
-  grid-column-gap: 8px;
-  grid-template-rows: 1fr;
-  font-size: 14px;
-  color: $color-grey;
-  letter-spacing: 0.01em;
-  margin-bottom: 0px;
-  height: 100%;
-  width: 100%;
-  justify-content: flex-start;
-  align-items: center;
-  cursor: pointer;
-
-  @include media-tablet-up {
-    height: auto;
-    width: auto;
-  }
-
-  svg {
-    position: relative;
-    top: -1px;
-  }
-  > span {
-    font-weight: 600;
-    grid-row: 1;
   }
 }
 .pdp__main {
@@ -242,7 +124,6 @@ export default {
     display: flex;
     flex-flow: row;
     grid-gap: 3.5rem;
-    padding-top: 0px;
   }
   .main__column {
     flex: 1.5;
@@ -252,13 +133,13 @@ export default {
     flex: 2;
 
     &--wrap {
-      max-width: clamp(300px, 45vw, 1000px);
+      max-width: clamp(390px, 45vw, 1000px);
 
       .c-heading {
         margin-bottom: 0;
       }
 
-      &__subHeader {
+      &__subheader {
         color: $color-info;
         padding-top: 10px;
         font-size: 1.5rem;
