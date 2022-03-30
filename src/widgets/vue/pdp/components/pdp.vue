@@ -1,7 +1,7 @@
 <template>
   <div class="pdp__container">
     <div class="pdp__main">
-      <c-product-gallery class="main__column" :autoplay="gallery_autoplay" :images="product.images" />
+      <cProductGallery class="main__column" :autoplay="gallery_autoplay" :images="product.images" />
 
       <section class="pdp__content">
         <div class="pdp__content--wrap">
