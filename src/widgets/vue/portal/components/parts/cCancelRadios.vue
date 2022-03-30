@@ -1,14 +1,13 @@
 <template>
-  <c-radioGroup :class="_buildModifiers('c-cancelRadios', modifiers)"
+  <c-radioGroup
+    :class="_buildModifiers('c-cancelRadios', modifiers)"
     v-if="content"
     v-model="cancelModel"
     :modifiers="modifiers"
   >
-    <div class="c-cancelRadios__item"
-      v-for="(reason, index) in cancelReasons"
-      :key="`reason-${index}`"
-    >
-      <c-radio class="c-cancelRadios__radio"
+    <div class="c-cancelRadios__item" v-for="(reason, index) in cancelReasons" :key="`reason-${index}`">
+      <c-radio
+        class="c-cancelRadios__radio"
         :active="cancelModel"
         :uncheck="true"
         :modifiers="['isBlack']"
@@ -17,26 +16,26 @@
           value: reason
         }"
       />
-      <div class="c-cancelRadios__delay"
-        v-if="delay && content && cancelModel === reason"
-      >
-          <c-h class="c-cancelRadios__delayHeading"
-            v-if="content.delay_heading"
-            tag="h4"
-            level="4"
-            :text="content.delay_heading"
-          />
-          <c-button class="c-cancelRadios__delayButton"
-            v-if="content.delay_button"
-            @click="$emit('delay')"
-            :loading="loading.delay"
-            :text="content.delay_button"
-            :modifiers="['isDefault', 'isSecondary', 'hideTextLoading']"
-            :attributes="{ disabled: !cancelModel || loading.cancel || loading.delay }"
-          />
-        </div>
+      <div class="c-cancelRadios__delay" v-if="delay && content && cancelModel === reason">
+        <c-h
+          class="c-cancelRadios__delayHeading"
+          v-if="content.delay_heading"
+          tag="h5"
+          level="5"
+          :text="content.delay_heading"
+        />
+        <c-button
+          class="c-cancelRadios__delayButton"
+          v-if="content.delay_button"
+          @click="$emit('delay')"
+          :loading="loading.delay"
+          :text="content.delay_button"
+          :modifiers="['isDefault', 'isBlack', 'hideTextLoading']"
+          :attributes="{ disabled: !cancelModel || loading.cancel || loading.delay }"
+        />
+      </div>
     </div>
-  </c-RadioGroup>
+  </c-radioGroup>
 </template>
 
 <script>
@@ -62,19 +61,41 @@ export default {
     },
     modifiers: {
       type: Array,
-      default: () => ([])
+      default: () => []
+    },
+    boxNum: {
+      type: Number
     }
   },
   components: {
-    cRadioGroup, cRadio, cH, cButton
+    cRadioGroup,
+    cRadio,
+    cH,
+    cButton
   },
   data: () => ({ cancelModel: false }),
   computed: {
     cancelReasons() {
       return ['reason_1', 'reason_2', 'reason_3', 'reason_4', 'reason_5'].map(reason => {
-        if(!this._stringEmpty(this.content[reason])) return this.content[reason]
+        if (!this._stringEmpty(this.content[reason])) return this.content[reason]
       })
     }
+  },
+  methods: {
+    customEvtListen() {
+      this.$root.$on('accClosed', evt => {
+        if (evt === this.boxNum) this.cancelModel = false
+      })
+    },
+    removeEvtListen() {
+      this.$root.$off('accClosed')
+    }
+  },
+  created() {
+    this.customEvtListen()
+  },
+  beforeDestroy() {
+    this.removeEvtListen()
   },
   watch: {
     cancelModel: {
@@ -88,14 +109,37 @@ export default {
 </script>
 
 <style lang="scss">
-  .c-cancelRadios__delay {
-    margin: 15px 0 30px;
-    padding: 10px 15px 15px;
-    background-color: $color-white;
-    border: 1px solid $color-hr;
+.c-cancelRadios {
+  @include media-tablet-down {
+    max-width: calc(100vw - 4.5rem);
   }
+}
+
+.c-cancelRadios__delay {
+  display: flex;
+  align-items: center;
+  background-color: $color-ecru;
+  margin: 1.25rem 0;
+  padding: 0.75rem 2.25rem;
+  border: 1px solid $color-hr;
+
+  > * {
+    flex: 1;
+  }
+
   .c-cancelRadios__delayHeading {
-    margin-bottom: 15px;
     text-align: left;
+    max-width: clamp(280px, 50%, 600px);
+    margin: 0;
   }
+
+  @include media-mobile-down {
+    flex-direction: column;
+    align-items: flex-start;
+
+    .c-cancelRadios__delayHeading {
+      margin-bottom: 1rem;
+    }
+  }
+}
 </style>

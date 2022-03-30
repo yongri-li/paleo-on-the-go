@@ -8,16 +8,16 @@ const getApiData = (cookie, ssdata) => {
     .find(row => row.includes(ssdata))
     ?.split('=')[1]
 }
+const lsAccToken = localStorage.getItem('api_access_token')
 const apiUrl = getApiData(allCookies, 'ss_api_url')
 const apiKey = getApiData(allCookies, 'ss_api_key')
 const apiCustomerToken = getApiData(allCookies, 'ss_customer_token')
-const apiAccessToken = getApiData(allCookies, 'ss_access_token')
+let apiAccessToken = getApiData(allCookies, 'ss_access_token')
+if (!apiAccessToken) apiAccessToken = lsAccToken
 
 export default class API {
   constructor() {
     this.url = decodeURIComponent(apiUrl)
-    //this.url = cookieService.getItem({ key: 'ss_api_url' })
-
     this.headers = {
       'Content-Type': 'application/json; charset=utf-8',
       'X-Api-Key': apiKey,

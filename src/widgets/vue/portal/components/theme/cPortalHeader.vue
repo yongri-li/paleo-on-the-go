@@ -18,13 +18,13 @@
       u-hideTabletUp`"
     >
       <div class="c-portalHeader__mobileTrigger" @click="open = !open">
-        <c-svg class="c-portalHeader__mobileSvg" name="circleChevron" />
         <span class="c-portalHeader__mobileLabel" v-if="activeLink" v-html="activeLink.text" />
+        <c-svg class="c-portalHeader__mobileSvg" name="circleChevron" />
       </div>
       <transition name="t-mobileNav-slide">
-        <nav class="c-portalHeader__mobileNav" v-if="open">
+        <nav class="c-portalHeader__mobileNav" v-if="open" @click="closeNavClk">
           <component
-            class="c-portalHeader__mobileLink"
+            class="c-portalHeader__mobileLink asdasd"
             v-for="(link, index) in navigation"
             :key="index"
             :is="link.tag"
@@ -93,6 +93,9 @@ export default {
     handleResize() {
       const width = window.innerWidth
       if (width >= 768) this.open = false
+    },
+    closeNavClk() {
+      this.open = false
     }
   },
   mounted() {
@@ -114,6 +117,11 @@ export default {
   position: relative;
   @include media-tablet-up {
     height: 58px;
+  }
+  @include media-mobile-down {
+    background-color: $color-black;
+    position: sticky;
+    top: 106px;
   }
 }
 .c-portalHeader__main {
@@ -166,12 +174,10 @@ export default {
   height: 100%;
   padding: 0 15px;
   @include flex($align: center);
-  @include hover-fade;
 }
 .c-portalHeader__mobileSvg {
   width: 24px;
   display: flex !important;
-  margin-right: 20px;
   color: $color-white;
   transition: transform 0.2s ease-in-out;
   transform-origin: 50% 50%;
@@ -182,27 +188,27 @@ export default {
 .c-portalHeader__mobileLabel {
   color: $color-white;
   font-family: $font-heading;
-  font-size: 16px;
+  font-size: 1.125rem;
   font-weight: 500;
+  flex: 1;
 }
 .c-portalHeader__mobileNav {
   height: auto;
   position: relative;
   @include flex($direction: column);
-  background-color: lighten($color-secondary, 15%);
+  @include shadow-card;
+  background-color: $color-white;
   transition: max-height 0.2s ease-in-out;
   overflow: hidden;
 }
 .c-portalHeader__mobileLink {
   width: 100%;
-  padding: 10px 20px;
-  color: $color-white;
-  font-family: $font-heading;
-  font-size: 16px;
-  font-weight: 400;
-  @include hover-fade;
+  padding: 1.125rem 1rem;
+  color: $color-black;
+  font-size: 1rem;
+  font-weight: 600;
   &:last-child {
-    margin-bottom: 30px;
+    margin-bottom: 0.5rem;
   }
 }
 .t-mobileNav-slide-enter,

@@ -2,8 +2,11 @@
 
 {% assign logo_text = "{{ logo_text }}" %}
 {% assign login_text = "{{ login_text }}" %}
-{% assign account_text = "{{ account_text }}" %}
 {% assign start_text = "{{ start_text }}" %}
+{% assign account_text = "{{ account_text }}" %}
+{% assign name_text = customer.first_name %}
+
+{% comment %}{% endcomment %}
 
 {% if section.settings.logo_text != blank %}{% assign logo_text = section.settings.logo_text %}{% endif %}
 {% if section.settings.login_text != blank %}{% assign login_text = section.settings.login_text %}{% endif %}
@@ -45,16 +48,32 @@
 
     <div class="c-headerMain__secondary">      
       {% if customer %}
-        <a href="/account" class="c-headerMain__account">
-          {% if section.settings.account_image %}
-            <img class="c-headerMain__accountImage"
-              src="{{ section.settings.account_image | img_url }}"
-              alt="{{ section.settings.account_image.alt }}" 
-            />
-          {% else %}
+        <nav class="c-dropdown">
+          <a href="/account#/shipments" class="c-headerMain__account">
+            <span class="c-headerMain__nameText">Welcome back, {{name_text}}</span>
             <span class="c-headerMain__accountText">{{ account_text }}</span>
-          {% endif %}
-        </a>
+            {% if section.settings.account_image %}
+              <img class="c-headerMain__accountImage"
+                src="{{ section.settings.account_image | img_url }}"
+                alt="{{ section.settings.account_image.alt }}" 
+              />            
+            {% endif %}
+          </a>          
+          <section class="c-dropdown--wrap">
+            <a href="/account#/shipments">
+              Upcoming Orders
+            </a>
+            <a href="/account#/details">
+              Account Details
+            </a>
+            <a href="/account#/orders">
+              Order History
+            </a>     
+            <a href="/account/logout">
+              Sign Out
+            </a>                                
+          </section>
+        </nav>        
       {% else %}
    <!--    <button class="c-button c-button--isHollow c-button--isBlack"> -->
         <a href="/account/login" class="c-button c-button--isHollow c-button--isBlack">
@@ -75,6 +94,7 @@
     </div>
   </div>
 </div>
+
 
 {% schema %}
   {

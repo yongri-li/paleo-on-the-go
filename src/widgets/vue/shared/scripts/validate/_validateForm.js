@@ -1,26 +1,27 @@
 import { _arrayRemoveDuplicates } from '@shared/scripts'
 
 export const _validateForm = items => {
+  console.log('items', items)
   let errors = {}
   let messagesArray = []
   items.forEach(item => {
-    const { name, value, reference, rules, messages } = item
+    const { name, value, rules, messages } = item
     let itemError = false
     rules.forEach((rule, index) => {
       const validationFunction = require(`./_${rule}`)[`_${rule}`]
       let isValid = true
 
-      switch(rule) {
+      switch (rule) {
         case 'validateMatch':
-          isValid = validationFunction(value, reference)
-          break;
+          isValid = validationFunction(value)
+          break
         default:
           isValid = validationFunction(value)
       }
 
-      if(!isValid) {
+      if (!isValid) {
         errors[name] = true
-        if(!itemError) messagesArray.push(messages[index])
+        if (!itemError) messagesArray.push(messages[index])
         else messagesArray.splice(messagesArray.length - 1, 1, messages[index])
         itemError = true
       }

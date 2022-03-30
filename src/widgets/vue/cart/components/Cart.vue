@@ -3,6 +3,7 @@
     <c-overlay class="c-cart__overlay" :show="show" @close="show = false" />
     <c-drawer class="c-cart__drawer" :show="show" @close="show = false" side="right">
       <c-cartHeader />
+      adasda sda sd as da s d s YOYOYO
       <!-- <c-cartItems />
       <c-cartEmpty />
       <c-cartSummary />

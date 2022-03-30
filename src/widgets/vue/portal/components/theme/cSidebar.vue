@@ -6,9 +6,10 @@
       :show="show"
       :side="sidebar.side"
       :closable="false"
-      :modifiers="['isFullWidth', ...sidebar.modifiers]"
+      :modifiers="[...sidebar.modifiers]"
       @close="UI_CLOSE_SIDEBAR"
     >
+      <!-- 'isFullWidth',  -->
       <div class="c-sidebar__container o-container">
         <button
           class="c-sidebar__back"
@@ -18,16 +19,17 @@
           <c-svg class="c-sidebar__backIcon" name="chevron" />
           <span class="c-sidebar__backText" v-html="backText" />
         </button>
-        <c-h class="c-sidebar__heading" v-if="heading" tag="h1" level="1" :text="heading" />
+        <c-h class="c-sidebar__heading" v-if="heading" tag="h3" level="3" :text="heading" />
         <component
           class="c-sidebar__content"
           :is="sidebarComponent"
           :content="sidebar.content"
           :settings="sidebar.settings"
+          :addressNum="sidebar.addressNum"
+          :charge="sidebar.charge"
         />
       </div>
     </c-drawer>
-    <c-sidebarPayment class="c-pageDetails__payment" v-if="showPayment" :settings="sidebar.settings" />
   </div>
 </template>
 
@@ -37,7 +39,6 @@ import cOverlay from '@shared/components/core/cOverlay.vue'
 import cDrawer from '@shared/components/core/cDrawer.vue'
 import cSvg from '@shared/components/core/cSvg.vue'
 import cH from '@shared/components/core/cH.vue'
-import cSidebarPayment from '../sidebars/cSidebarPayment.vue'
 
 export default {
   data: () => ({
@@ -47,13 +48,11 @@ export default {
     cOverlay,
     cDrawer,
     cSvg,
-    cH,
-    cSidebarPayment
+    cH
   },
   computed: {
     show() {
-      if (this.sidebar.component === 'cSidebarPayment') return false
-      else return this.sidebarComponent ? true : false
+      return this.sidebarComponent ? true : false
     },
     sidebar() {
       return this.$store.getters['ui/uiByKey']('sidebar')
@@ -61,15 +60,12 @@ export default {
     backText() {
       const { content } = this.sidebar
       const backKey = Object.keys(content).find(key => key.endsWith('_back'))
-      return backKey ? content[backKey] : false
+      return backKey ? content[backKey] : 'Back'
     },
     heading() {
       const { content } = this.sidebar
       const headingKey = Object.keys(content).find(key => key.endsWith('_heading'))
       return headingKey ? content[headingKey] : false
-    },
-    showPayment() {
-      return this.$route.name === 'details'
     }
   },
   methods: {
@@ -105,6 +101,12 @@ export default {
 }
 .c-sidebar__container {
   padding: 40px 0 60px;
+
+  .c-sidebar__content {
+    @include media-tablet-down {
+      max-width: calc(100vw - 2rem);
+    }
+  }
 }
 .c-sidebar__back {
   @include flex;
@@ -118,11 +120,13 @@ export default {
   margin-right: 8px;
 }
 .c-sidebar__backText {
-  font-size: 17px;
-  font-weight: 700;
-  text-transform: uppercase;
+  font-size: 1rem;
+  font-weight: 400;
+  letter-spacing: 0.025rem;
+  text-transform: capitalize;
 }
 .c-sidebar__heading {
-  color: $color-secondary;
+  color: $color-black;
+  margin-top: 1.5rem;
 }
 </style>

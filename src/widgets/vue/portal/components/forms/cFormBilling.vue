@@ -1,19 +1,10 @@
 <template>
-  <form :class="_buildModifiers('c-formBilling', modifiers)"
-    @submit.prevent="handleSubmit"
-    v-if="content"
-  >
-    <c-alert class="c-formBilling__alert"
-      v-if="!hideAlert && status"
-      :role="status"
-      :messages="messages"
-    />
+  <form :class="_buildModifiers('c-formBilling', modifiers)" @submit.prevent="handleSubmit" v-if="content">
+    <c-alert class="c-formBilling__alert" v-if="!hideAlert && status" :role="status" :messages="messages" />
     <div class="c-formBilling__fieldGroup">
-      <c-field class="c-formBilling__field"
-        v-if="content.first_label"
-        :label="content.first_label"
-      >
-        <c-input class="c-formBilling__input"
+      <c-field class="c-formBilling__field" v-if="content.first_label" :label="content.first_label">
+        <c-input
+          class="c-formBilling__input"
           v-model="billingModel.firstName"
           :error="errors.firstName"
           :modifiers="['isDefault']"
@@ -23,11 +14,9 @@
           }"
         />
       </c-field>
-      <c-field class="c-formBilling__field"
-        v-if="content.last_label"
-        :label="content.last_label"
-      >
-        <c-input class="c-formBilling__input"
+      <c-field class="c-formBilling__field" v-if="content.last_label" :label="content.last_label">
+        <c-input
+          class="c-formBilling__input"
           v-model="billingModel.lastName"
           :error="errors.lastName"
           :modifiers="['isDefault']"
@@ -38,12 +27,10 @@
         />
       </c-field>
     </div>
-    <div class="c-formBilling__fieldGroup">
-      <c-field class="c-formBilling__field"
-        v-if="content.address1_label"
-        :label="content.address1_label"
-      >
-        <c-input class="c-formBilling__input"
+    <div>
+      <c-field class="c-formBilling__field" v-if="content.address1_label" :label="content.address1_label">
+        <c-input
+          class="c-formBilling__input"
           v-model="billingModel.address1"
           :error="errors.address1"
           :modifiers="['isDefault']"
@@ -53,12 +40,13 @@
           }"
         />
       </c-field>
-      <c-field class="c-formBilling__field"
-        v-if="content.address2_label"
-        :label="content.address2_label"
-      >
-        <c-input class="c-formBilling__input"
+    </div>
+    <div class="c-formBilling__fieldGroup">
+      <c-field class="c-formBilling__field" v-if="content.address2_label" :label="content.address2_label">
+        <c-input
+          class="c-formBilling__input"
           v-model="billingModel.address2"
+          placeholder="Ex. Unit A"
           :error="errors.address2"
           :modifiers="['isDefault']"
           :attributes="{
@@ -67,13 +55,23 @@
           }"
         />
       </c-field>
+      <c-field class="c-formBilling__field" v-if="content.zip_label" :label="content.zip_label">
+        <c-input
+          class="c-formBilling__input"
+          v-model="billingModel.zip"
+          :error="errors.zip"
+          :modifiers="['isDefault']"
+          :attributes="{
+            type: 'text',
+            value: billingModel.zip
+          }"
+        />
+      </c-field>
     </div>
     <div class="c-formBilling__fieldGroup">
-      <c-field class="c-formBilling__field"
-        v-if="content.city_label"
-        :label="content.city_label"
-      >
-        <c-input class="c-formBilling__input"
+      <c-field class="c-formBilling__field" v-if="content.city_label" :label="content.city_label">
+        <c-input
+          class="c-formBilling__input"
           v-model="billingModel.city"
           :error="errors.city"
           :modifiers="['isDefault']"
@@ -83,13 +81,11 @@
           }"
         />
       </c-field>
-      <c-field class="c-formBilling__field"
-        v-if="content.province_label"
-        :label="content.province_label"
-      >
-        <c-provinceSelect class="c-formBilling__select"
+      <c-field class="c-formBilling__field" v-if="content.province_label" :label="content.province_label">
+        <c-provinceSelect
+          class="c-formBilling__select"
           v-model="billingModel.province"
-          :country="billingModel.country"
+          country="United States"
           :error="errors.province"
           :modifiers="['isDefault']"
           :attributes="{
@@ -97,8 +93,9 @@
           }"
         />
       </c-field>
+      <!-- :country="billingModel.country" -->
     </div>
-    <div class="c-formBilling__fieldGroup">
+    <!--     <div class="c-formBilling__fieldGroup">
       <c-field class="c-formBilling__field"
         v-if="content.zip_label"
         :label="content.zip_label"
@@ -127,22 +124,20 @@
           }"
         />
       </c-field>
-    </div>
-    <c-button class="c-formBilling__button"
+    </div> -->
+    <c-button
+      class="c-formBilling__button"
       v-if="content.button_text"
       :loading="loading"
       :success="status === 'success'"
-      :attributes="{ 
-        disabled: status === 'success' 
+      :attributes="{
+        disabled: status === 'success'
       }"
       :text="{
         default: content.button_text,
         success: content.button_success
       }"
-      :modifiers="[
-        'isDefault', 'isSecondary', 
-        'hideTextLoading', 'isSubmit'
-      ]"
+      :modifiers="['isDefault', 'isPrimary', 'hideTextLoading', 'isSubmit']"
     />
   </form>
 </template>
@@ -168,23 +163,35 @@ export default {
     },
     modifiers: {
       type: Array,
-      default: () => ([])
+      default: () => []
     }
   },
-  data: () => ({
-    billingModel: { 
-      firstName: '', lastName: '',
-      address1: '', address2: '', city: '',
-      province: '', zip: '', country: ''
-    },
-    loading: false,
-    status: false,
-    messages: [],
-    errors: {}
-  }),
-  components: { 
-    cAlert, cField, cInput, cButton,
-    cProvinceSelect, cCountrySelect
+  data() {
+    return {
+      billingModel: {
+        firstName: '',
+        lastName: '',
+        address1: '',
+        address2: '',
+        city: '',
+        province: '',
+        zip: '',
+        country: 'United States'
+      },
+      loading: false,
+      status: false,
+      messages: [],
+      errors: {},
+      test: 'testing'
+    }
+  },
+  components: {
+    cAlert,
+    cField,
+    cInput,
+    cButton,
+    cProvinceSelect,
+    cCountrySelect
   },
   computed: {
     ...mapGetters('customer', ['customerRecharge']),
@@ -198,84 +205,74 @@ export default {
       this.status = false
       this.errors = {}
       this.messages = []
-      const { 
-        firstName, lastName,
-        address1, address2, city,
-        province, zip, country 
-      } = this.billingModel
+      const { firstName, lastName, address1, address2, city, province, zip, country } = this.billingModel
       const formValidation = this._validateForm([
-        { 
-          name: 'firstName', value: firstName, 
+        {
+          name: 'firstName',
+          value: firstName,
           rules: ['validateRequired'],
-          messages: [
-            this.content.error_required
-          ]
+          // messages: [this.content.error_required] ? [this.content.error_required] : ['First Name required']
+          messages: ['First Name required']
         },
-        { 
-          name: 'lastName', value: lastName, 
+        {
+          name: 'lastName',
+          value: lastName,
           rules: ['validateRequired'],
-          messages: [
-            this.content.error_required
-          ]
+          messages: ['Last Name required']
         },
-        { 
-          name: 'address1', value: address1, 
+        {
+          name: 'address1',
+          value: address1,
           rules: ['validateRequired'],
-          messages: [
-            this.content.error_required
-          ]
+          messages: ['Address required']
         },
-        { 
-          name: 'city', value: city, 
+        {
+          name: 'city',
+          value: city,
           rules: ['validateRequired'],
-          messages: [
-            this.content.error_required
-          ]
+          messages: ['City required']
         },
-        { 
-          name: 'province', value: province, 
+        {
+          name: 'province',
+          value: province,
           rules: ['validateRequired'],
-          messages: [
-            this.content.error_required
-          ]
+          messages: ['State or province required']
         },
-         { 
-          name: 'zip', value: zip, 
+        {
+          name: 'zip',
+          value: zip,
           rules: ['validateRequired'],
-          messages: [
-            this.content.error_required
-          ]
+          messages: ['Zip Code required']
         },
-         { 
-          name: 'country', value: country, 
-          rules: ['validateRequired'],
-          messages: [
-            this.content.error_required
-          ]
+        {
+          name: 'country',
+          value: country,
+          rules: [],
+          messages: ['Country required']
         }
       ])
-      if(formValidation.hasErrors) this.status = 'error'
+      if (formValidation.hasErrors) this.status = 'error'
       this.errors = { ...formValidation.errors }
-      this.messages = [ ...formValidation.messages ]
+      this.messages = [...formValidation.messages]
     },
     async handleSubmit() {
       this.validateForm()
-      if(!this.hasErrors) {
+      if (!this.hasErrors) {
         this.loading = true
         const { customer, error } = await this.customerUpdateBilling({ address: this.billingModel })
-        if(!error) {
+        console.log('customer, error', customer, error)
+        if (!error) {
           this.status = 'success'
-          if(!this.hideAlert && this.content.success_text) {
+          if (!this.hideAlert && this.content.success_text) {
             this.messages.push(this.content.success_text)
           }
-        } 
-        else {
+        } else {
           this.status = 'error'
-          switch(error) {
+          switch (error) {
             case 'LIMIT_EXCEEDED':
               this.messages.push(this.content.error_limit)
-              break;
-            default: 
+              break
+            default:
               this.messages.push(this.content.error_general)
           }
         }
@@ -284,14 +281,15 @@ export default {
     }
   },
   watch: {
-    'customerRecharge': {
+    customerRecharge: {
       immediate: true,
       handler(val) {
-        if(val) this.billingModel = { 
-          firstName: val.firstName,
-          lastName: val.lastName,
-          ...val.billingAddress,
-        }
+        if (val)
+          this.billingModel = {
+            firstName: val.firstName,
+            lastName: val.lastName,
+            ...val.billingAddress
+          }
       }
     }
   }
@@ -299,10 +297,10 @@ export default {
 </script>
 
 <style lang="scss">
-  .c-formBilling__fieldGroup {
-    @include grid($columns: 1fr, $auto-flow: row, $gap: 0 40px);
-    @include media-tablet-up {
-      grid-template-columns: 1fr 1fr;
-    }
+.c-formBilling__fieldGroup {
+  @include grid($columns: 1fr, $auto-flow: row, $gap: 0 40px);
+  @include media-tablet-up {
+    grid-template-columns: 1fr 1fr;
   }
+}
 </style>

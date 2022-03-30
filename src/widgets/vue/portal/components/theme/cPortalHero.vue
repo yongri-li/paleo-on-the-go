@@ -1,5 +1,9 @@
 <template>
-  <div class="c-shipments__hero" v-if="content" :style="{ backgroundImage: `url('${content.bg_image_lg}')` }">
+  <div
+    class="c-shipments__hero"
+    v-if="content && !isMobile"
+    :style="{ backgroundImage: `url('${content.bg_image_lg}')` }"
+  >
     <section class="c-shipments__hero--wrap">
       <h1 class="c-h1">
         Your Next Box is<br />
@@ -21,6 +25,11 @@ import { convertToYYYYMMDDlocalT } from '@shared/utils'
 
 export default {
   name: 'cPortalHero',
+  data() {
+    return {
+      isMobile: false
+    }
+  },
   props: {
     modifiers: {
       type: Array,
@@ -41,7 +50,14 @@ export default {
       const dateCvt = new Date(date)
       const dateStr = convertToYYYYMMDDlocalT(dateCvt)
       return dateStr != null ? format(new Date(dateStr), 'MMM D') : null
+    },
+    onResize() {
+      this.isMobile = window.innerWidth < 768 ? true : false
     }
+  },
+  created() {
+    if (window.innerWidth < 768) this.isMobile = true
+    window.addEventListener('resize', this.onResize)
   }
 }
 </script>

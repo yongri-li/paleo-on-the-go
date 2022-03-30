@@ -1,10 +1,9 @@
 <template>
   <div :class="_buildModifiers('c-orders', modifiers)">
-    <c-ordersLoading class="c-orders__loading" 
-      v-if="!ready"
-    />
+    <c-ordersLoading class="c-orders__loading" v-if="!ready" />
     <div class="c-orders__content" v-if="ready">
-      <c-ordersEmpty class="c-orders__empty"
+      <c-ordersEmpty
+        class="c-orders__empty"
         v-if="!orders"
         :content="{
           preheading: content.empty_preheading,
@@ -13,25 +12,27 @@
           button_url: content.empty_button_url
         }"
       />
-      <div class="c-orders__content" 
-        v-if="orders"
-      >
-        <c-h class="c-orders__heading"
+      <div class="c-orders__content" v-if="orders">
+        <c-h
+          class="c-orders__heading"
           v-if="content.page_heading"
-          tag="h1"
-          level="1"
+          tag="h2"
+          level="2"
           :text="content.page_heading"
         />
-        <c-h class="c-orders__subheading"
+        <c-h
+          class="c-orders__subheading"
           v-if="content.last_heading"
           tag="h5"
           level="5"
           :modifiers="['isLabel']"
           :text="content.last_heading"
         />
-        <c-ordersAccordion class="c-orders__accordion"
+        <c-ordersAccordion
+          class="c-orders__accordion"
           :orders="[orders[0]]"
           :open="0"
+          :addressId="addressId"
           :content="{
             name: content.order_name,
             processing: content.order_processing,
@@ -50,16 +51,19 @@
           }"
         />
         <span class="c-orders__scrollTo" ref="scrollTo" />
-        <c-h class="c-orders__subheading"
+        <c-h
+          class="c-orders__subheading"
           v-if="activeOrders.length > 0 && content.previous_heading"
           tag="h5"
           level="5"
           :modifiers="['isLabel']"
           :text="content.previous_heading"
         />
-        <c-ordersAccordion class="c-orders__accordion"
+        <c-ordersAccordion
+          class="c-orders__accordion"
           v-if="activeOrders.length > 0"
           :orders="activeOrders"
+          :addressId="addressId"
           :content="{
             name: content.order_name,
             processing: content.order_processing,
@@ -76,7 +80,8 @@
             total: content.order_total
           }"
         />
-        <c-pagination class="c-orders__pagination"
+        <c-pagination
+          class="c-orders__pagination"
           :active="activePagination"
           :count="paginationCount"
           @update="updatePagination"
@@ -98,15 +103,23 @@ export default {
   props: {
     modifiers: {
       type: Array,
-      default: () => ([])
+      default: () => []
+    },
+    addressId: {
+      type: String
     }
   },
-  components: { 
-    cH, cPagination,
-    cOrdersLoading, cOrdersEmpty, cOrdersAccordion
+  components: {
+    cH,
+    cPagination,
+    cOrdersLoading,
+    cOrdersEmpty,
+    cOrdersAccordion
   },
-  data: () => ({ 
-    activePagination: 1, ready: false, error: false 
+  data: () => ({
+    activePagination: 1,
+    ready: false,
+    error: false
   }),
   computed: {
     ...mapGetters('customer', ['customerOrders']),
@@ -114,22 +127,20 @@ export default {
       return this.$store.getters['customize/customizeContentByKey']('orders')
     },
     orders() {
-      return this.customerOrders ? this.customerOrders.length > 0 
-        ? this.customerOrders : false
-        : false
+      return this.customerOrders ? (this.customerOrders.length > 0 ? this.customerOrders : false) : false
     },
     activeOrders() {
-      if(this.orders) {
-        let prevOrders = [ ...this.orders ]
+      if (this.orders) {
+        let prevOrders = [...this.orders]
         prevOrders.shift()
         const startIndex = (this.activePagination - 1) * 5
-        const endIndex = this.activePagination  * 5
+        const endIndex = this.activePagination * 5
         return prevOrders.slice(startIndex, endIndex)
       }
     },
     paginationCount() {
-      if(this.orders) {
-        let prevOrders = [ ...this.orders ]
+      if (this.orders) {
+        let prevOrders = [...this.orders]
         prevOrders.shift()
         return Math.ceil(prevOrders.length / 5)
       }
@@ -142,41 +153,41 @@ export default {
       const { scrollTo } = this.$refs
       setTimeout(() => {
         const outOfViewport = this._domOutOfViewport(scrollTo)
-        if(outOfViewport.any) this._eventScrollTo(scrollTo, 350)
+        if (outOfViewport.any) this._eventScrollTo(scrollTo, 350)
       })
     }
   },
   async created() {
     const { success, error } = await this.customerSetResources({
-      resources: [ 'orders' ]
+      resources: ['orders']
     })
-    if(error) this.error = error
+    if (error) this.error = error
     this.ready = true
   }
 }
 </script>
 
 <style lang="scss">
-  .c-orders {
-    max-width: 1000px;
-    margin: 0 auto;
-    padding: 30px 0 60px;
-    @include media-desktop-up {
-      padding-top: 40px;
-    }
+.c-orders {
+  max-width: 1240px;
+  margin: 0 auto;
+  padding: 2rem 0 4rem;
+  @include media-desktop-up {
+    padding-top: 40px;
   }
-  .c-orders__heading {
-    color: $color-secondary;
-    margin-bottom: 40px;
-  }
-  .c-orders__accordion {
-    margin-bottom: 60px;
-  }
-  .c-orders__scrollTo {
-    display: block;
-    height: 50px;
-    margin-top: -50px;
-    opacity: 0;
-    z-index: $z-index-behind;
-  }
+}
+.c-orders__heading {
+  color: $color-black;
+  margin-bottom: 2.125rem;
+}
+.c-orders__accordion {
+  margin-bottom: 60px;
+}
+.c-orders__scrollTo {
+  display: block;
+  height: 50px;
+  margin-top: -50px;
+  opacity: 0;
+  z-index: $z-index-behind;
+}
 </style>

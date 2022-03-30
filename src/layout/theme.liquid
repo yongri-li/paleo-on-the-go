@@ -23,7 +23,7 @@
   {% if template != 'page.bundle' %}
     {% include 'theme-footer' %}
   {% endif %}
-  {% render 'widget-cart' %}
+  {% comment %}{% render 'widget-cart' %}{% endcomment %}
   {% render 'theme-scripts' %}
   {% render 'vendors-loyalty-lion' %}
 </body>

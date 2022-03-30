@@ -4,7 +4,7 @@ export default {
   customizeShopByPrefix: state => prefix => {
     let output = {}
     Object.keys(state.shop).forEach(key => {
-      if(key.startsWith(prefix)) output[key] = state.shop[key]
+      if (key.startsWith(prefix)) output[key] = state.shop[key]
     })
     return output
   },
@@ -13,8 +13,15 @@ export default {
   customizeSidebarByPrefix: state => prefix => {
     let output = {}
     Object.keys(state.content.sidebars).forEach(key => {
-      if(key.startsWith(prefix)) output[key] = state.content.sidebars[key]
+      if (key.startsWith(prefix)) output[key] = state.content.sidebars[key]
     })
     return output
   },
+  customizeModalByPrefix: state => prefix => {
+    let output = {}
+    Object.keys(state.content.modals).forEach(key => {
+      if (key.startsWith(prefix)) output[key] = state.content.modals[key]
+    })
+    return output
+  }
 }

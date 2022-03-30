@@ -26,7 +26,7 @@
   }
 
   @include media-mobile-down {
-    font-size: 34px;
+    font-size: 2rem;
   }
 }
 
@@ -78,7 +78,8 @@
   }
 
   @include media-mobile-down {
-    font-size: 24px;
+    font-size: 1.25rem;
+    font-weight: 500;
   }
 }
 
@@ -95,4 +96,17 @@
 
 .isBold {
   font-weight: 700;
+}
+
+.c-basicTxt--md {
+  font-family: Roboto, sans-serif;
+  line-height: 1.4;
+  font-weight: 400;
+  font-size: 1.125rem;
+  opacity: 0.75;
+  text-transform: capitalize;
+}
+
+hr {
+  border: 0.5px solid #ddd;
 }

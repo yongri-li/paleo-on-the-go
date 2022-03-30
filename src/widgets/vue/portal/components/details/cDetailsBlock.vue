@@ -44,14 +44,12 @@ export default {
   @include flex($justify: space-between, $wrap: nowrap);
   background-color: $color-white;
   @include media-tablet-up {
-    padding: 20px 30px;
+    padding: 2rem;
   }
 }
 
 .withAccordion {
   .c-detailsBlock__inner {
-    min-height: 10px;
-
     .c-accordion {
       flex: 1;
 
@@ -59,6 +57,7 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        min-height: 3.5rem;
       }
 
       .c-accordionItem__trigger .c-details__boxButton section {
@@ -75,7 +74,13 @@ export default {
       }
 
       .c-accordionItem__trigger--isOpen + .c-accordionItem__content {
-        margin-top: -38px;
+        margin-top: -3rem;
+      }
+    }
+
+    .c-accordionItem__trigger--isOpen {
+      .c-details__boxButton {
+        align-items: flex-start;
       }
     }
   }

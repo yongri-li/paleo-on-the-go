@@ -1,7 +1,7 @@
 <template>
   <c-accordion :class="_buildModifiers('c-shipmentsSummary', modifiers)" v-if="shipment && content">
     <c-accordionItem class="c-shipmentsSummary__item">
-      <div class="c-shipmentsSummary__trigger" slot="trigger">
+      <div class="c-shipmentsSummary__trigger" slot="trigger" @click="emitBoxHeight">
         <div
           class="c-shipmentsSummary__triggerLabel"
           v-if="content.label_order"
@@ -24,7 +24,12 @@
           :class="index == summaryLines.length - 1 ? 'c-shipmentsSumary__contentLine--isTotal' : ''"
         >
           <div class="c-shipmentsSummary__contentLabel" v-if="line.label" v-html="line.label" />
-          <div class="c-shipmentsSummary__contentValue" v-if="line.value" v-html="line.value" />
+          <div
+            class="c-shipmentsSummary__contentValue"
+            :class="line.label === 'Discount' ? 'summary__isDiscount' : null"
+            v-if="line.value"
+            v-html="line.value"
+          />
         </div>
       </div>
     </c-accordionItem>
@@ -76,6 +81,11 @@ export default {
         return { label: line.label, value }
       })
     }
+  },
+  methods: {
+    emitBoxHeight() {
+      this.$emit('summaryAccOpen')
+    }
   }
 }
 </script>
@@ -83,11 +93,13 @@ export default {
 <style lang="scss">
 .c-shipmentsSummary__item {
   width: 100%;
+  border: 1px solid $color-ecru;
 }
 .c-shipmentsSummary__trigger {
-  height: 48px;
+  height: 4rem;
+  padding: 1rem;
   width: 100%;
-  padding: 0 17px;
+  transition: all 175ms;
   @include flex($justify: space-between, $wrap: nowrap);
   @include media-mobile-down {
     padding-right: 10px;
@@ -95,21 +107,14 @@ export default {
 }
 .c-shipmentsSummary__triggerLabel,
 .c-shipmentsSummary__triggerValue {
-  color: $color-primary;
   font-size: 18px;
   font-weight: 600;
   padding-right: 10px;
-}
-.c-shipmentsSummary__triggerValue {
-  color: $color-primary;
 }
 .c-shipmentsSummary__triggerLabel {
   flex-grow: 1;
 }
 .c-shipmentsSummary__triggerCircle {
-  min-width: 29px;
-  width: 29px;
-  height: 29px;
   border: 2px solid $color-black;
   border-radius: 50%;
   @include flex($justify: center);
@@ -121,6 +126,32 @@ export default {
     border-color: $color-primary;
     svg path {
       fill: $color-primary;
+    }
+  }
+}
+.c-shipments__box .c-shipmentsSummary__item {
+  .c-accordionItem__trigger--isOpen {
+    .c-shipmentsSummary__trigger {
+      background-color: $color-black;
+      color: #fff;
+    }
+  }
+  .c-shipmentsSummary__triggerCircle {
+    min-width: 2.25rem;
+    width: 2.25rem;
+    height: 2.25rem;
+    margin-left: 0.25rem;
+    @include media-mobile-down {
+      margin-left: 0;
+      min-width: 1.85rem;
+      width: 1.85rem;
+      height: 1.85rem;
+    }
+  }
+
+  @include media-mobile-down {
+    .c-shipmentsSummary__trigger {
+      padding: 1rem;
     }
   }
 }
@@ -137,27 +168,32 @@ export default {
 .c-shipmentsSummary__content {
   color: $color-grey;
   width: 100%;
-  padding: 0 17px 17px;
+  padding: 1rem;
 }
 .c-shipmentsSumary__contentLine {
   padding-right: 33px;
   @include flex($justify: space-between);
   color: $color-grey;
   font-size: 16px;
-  font-weight: 600;
   margin-bottom: 7px;
   @include media-desktop-up {
     padding-right: 50px;
   }
   &.c-shipmentsSumary__contentLine--isTotal {
-    color: $color-primary;
-    font-weight: 600;
+    color: $color-black;
+    font-size: 1.5rem;
+    font-weight: 500;
     margin-bottom: 0;
     margin-top: 15px;
     padding-top: 15px;
     border-top: 1px solid #dbd9d4;
     @include media-mobile-down {
       font-size: 18px;
+    }
+  }
+  .c-shipmentsSummary__contentValue {
+    &.summary__isDiscount {
+      color: $color-secondary;
     }
   }
 }

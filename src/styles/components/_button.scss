@@ -3,7 +3,7 @@
   position: relative;
   @include flex($display: inline-flex, $justify: center, $align: center);
   width: auto;
-  max-width: 260px;
+  max-width: 270px;
   font-family: $font-body;
   font-size: 16px;
   font-weight: 600;
@@ -45,13 +45,15 @@
 
 .c-button--isSubmit {
   margin-top: 10px;
+  position: relative;
 }
 
 .c-button--isDefault {
   &.c-button--isBlack {
     background-color: $color-black;
     border: 1px solid $color-black;
-    color: $color-white;
+    // color: $color-white;
+    color: $color-primary;
     &:hover {
       background-color: $color-white;
       border-color: $color-white;
@@ -125,6 +127,8 @@
     }
   }
   &.c-button--isBlack {
+    border-bottom: 1px solid $color-black;
+    color: $color-black;
     &:hover {
       border-color: lighten($color-black, 20%);
       color: lighten($color-black, 20%);

@@ -4,20 +4,23 @@
 
     <article class="box__byAddressId">
       <div class="c-shipments__content" v-if="ready">
-        <section class="c-shipments__flex">
-          <h2 class="c-h2">{{ Object.keys(nextCharge).length ? 'Upcoming Orders' : 'Order History' }}</h2>
+        <section v-for="(charge, i) in charges" class="c-shipments__flex">
+          <h2 v-if="!!charge && i < 1" class="c-h2">Upcoming Orders</h2>
           <c-shipmentsBox
+            v-if="content"
             class="c-shipments__box"
-            :charge="nextCharge"
+            :charge="charge"
             :addons="null"
-            :content="{
-              test: 'hey'
-            }"
-            :shipDate="formatDayDateIOS(nextCharge.scheduledAt)"
+            :content="content"
+            :boxNumber="i"
+            :addressId="addressIds[i]"
+            :shipDate="formatDayDateIOS(charge.scheduledAt)"
           />
         </section>
       </div>
     </article>
+
+    <c-faqAccordion v-if="content" :content="content.portal_faq" />
   </div>
 </template>
 
@@ -26,6 +29,7 @@ import { mapGetters, mapState, mapActions, mapMutations } from 'vuex'
 import cShipmentsLoading from '../shipments/cShipmentsLoading.vue'
 import cShipmentsEmpty from '../shipments/cShipmentsEmpty.vue'
 import cShipmentsBox from '../shipments/cShipmentsBox.vue'
+import cFaqAccordion from '@shared/components/core/cFaqAccordion.vue'
 import { format } from 'date-fns'
 import { convertToYYYYMMDDlocalT } from '@shared/utils'
 
@@ -39,29 +43,17 @@ export default {
   components: {
     cShipmentsLoading,
     cShipmentsEmpty,
-    cShipmentsBox
+    cShipmentsBox,
+    cFaqAccordion
   },
   computed: {
-    ...mapGetters('customer', [
-      'customerUpcomingCharge',
-      'customerSubscriptionById',
-      'customerSubscriptionsByAddress',
-      'customerSubscriptionsByIds',
-      ['customerShopify']
-    ]),
+    ...mapState('customer', ['addressIds']),
+    ...mapGetters('customer', ['customerUpcomingCharge', 'customerUpcomingCharges', ['customerShopify']]),
     content() {
       return this.$store.getters['customize/customizeContentByKey']('shipments')
     },
-    // subscriptions() {
-    //   // return this.$store.getters['customize/customizeContentByKey']('shipments')
-    //   //return this.$store.getters['customer/customerSubscriptionsByAddress'](this.nextCharge.addressId)
-    //   return this.$store.state.customer.resources.subscriptions
-    // },
-    nextCharge() {
-      return this.customerUpcomingCharge[0]
-      // return this.customerUpcomingCharges?.filter(
-      //   (chrg) => chrg.status !== ('REFUNDED' || 'CANCELLED')
-      // )
+    charges() {
+      return this.customerUpcomingCharges
     }
   },
   methods: {
@@ -84,24 +76,13 @@ export default {
 </script>
 
 <style lang="scss">
-/*.c-shipments__flex {
-  max-width: 1240px;
-  margin: 0 auto;
-  padding: 30px 0 60px;
-  @include flex($direction: column, $wrap: nowrap);
-  @include media-desktop-up {
-    padding-top: 40px;
-    @include flex($justify: space-between, $align: flex-start, $wrap: nowrap);
-  }
-}*/
-
 .c-shipments {
   background-color: $color-ecru;
 }
 
 .c-shipments__flex {
   max-width: 1240px;
-  padding: 2rem 0 4rem;
+  padding: 2rem 0;
   margin: 0 auto;
 }
 </style>
