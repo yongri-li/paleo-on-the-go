@@ -4,10 +4,14 @@
 
   let pdp = {{ section.settings | json }}
   pdp['product'] = {{ product | json }}
-  pdp['product_details'] = {{ product.metafields.product_details | json }}
-  pdp['nutritional_info'] ={
-      ...JSON.parse('{{ product.metafields.nutritional_info | json }}')
-  }
+  pdp['subtitle'] = `{{ product.metafields.my_fields.subtitle }}`
+  pdp['info'] = {
+    description: `{{ product.description }}`,
+    ingredients: `{{ product.metafields.my_fields.ingredient }}`,
+    heating: `{{ product.metafields.my_fields.heating }}`,
+    nutrition: `{{ product.metafields.my_fields.nutrition }}`    
+  }  
+
   pdp['product']['price_hashes'] = [
     {% for variant in product.variants %}
         '{{ variant.price | money_without_currency | hmac_sha256: settings.fmp_app_secret }}',

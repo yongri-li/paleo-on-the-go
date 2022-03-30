@@ -12,7 +12,7 @@
         v-for="(pill, i) in 4"
         :class="i + 1 == chrgFreq ? 'selected' : null"
         :data-freq="i + 1"
-        @click="freqSelect(pill, $event)"
+        @click="freqSelect(pill)"
       >
         {{ i + 1 }} {{ i > 0 ? 'Weeks' : 'Week' }}
       </div>
@@ -118,7 +118,7 @@ export default {
       const dateStr = convertToYYYYMMDDlocalT(date)
       return dateStr != null ? format(new Date(dateStr), 'ddd, MMM D') : null
     },
-    freqSelect(freq, e) {
+    freqSelect(freq) {
       this.chrgFreq = freq
       const subFreq = this.subscriptions[0].charge_interval_frequency
       freq != subFreq ? (this.freqChanged = true) : (this.freqChanged = false)

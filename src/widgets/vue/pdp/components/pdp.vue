@@ -4,31 +4,28 @@
 
     <div class="pdp__main">
       <c-product-gallery class="main__column" :autoplay="gallery_autoplay" :images="product.images" />
-      <!--       <c-product-form
-        class="main__column"
-        :blurbContent="blurbContent"
-        :isFullPage="isFullPage"
-        :labels="labels"
-        :product="product"
-        :productDetails="product_details"
-        :productNutrition="nutritional_info"
-      /> -->
 
-      <section>
-        <h1 class="c-h1 c-heading productForm__header">{{ title }}</h1>
-        <p v-if="subtitle" class="c-p1 productForm__subHeader">{{ subtitle }}</p>
-        <p v-if="price" class="c-p1 productForm__subHeader">{{ price }}</p>
+      <section class="pdp__content">
+        <div class="pdp__content--wrap">
+          <h1 class="c-h1 c-heading">{{ product.title }}</h1>
+          <h5 v-if="subtitle" class="c-h5 pdp__content--wrap__subHeader">{{ subtitle }}</h5>
+          <h5 v-if="price" class="c-h5 pdp__content--wrap__price">{{ price }}</h5>
+
+          <div class="pdp__content--ctas">
+            <c-button
+              class="c-cta pdp__main--atcButton"
+              @click="isCustomer ? handleAdd : handleGetStarted"
+              :loading="loading"
+              :text="isCustomer ? (added ? addedTxt : labels.atc) : labels.getStarted"
+              :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
+              :attributes="{ disabled: loading }"
+              :class="added ? 'item--added' : ''"
+            />
+          </div>
+
+          <cSelectTabs :pdpinfo="info" />
+        </div>
       </section>
-
-      <c-button
-        class="c-cta productForm__atcButton"
-        v-else
-        @click="handleGetStarted"
-        :loading="loading"
-        :text="labels.getStarted"
-        :modifiers="['isCta', 'isTall', 'hideTextLoading']"
-        :attributes="{ disabled: loading }"
-      />
     </div>
 
     <c-related-meals :products="related_products" :labels="labels" />
@@ -39,31 +36,26 @@
 import { mapState, mapMutations } from 'vuex'
 import { formatPrice, handleize } from '../utils'
 import cProductGallery from './sections/cProductGallery.vue'
-import cProductForm from './sections/cProductForm.vue'
 import cButton from '@shared/components/core/cButton.vue'
-// import cProductBlurb from './sections/cProductBlurb.vue'
-// import cNutritionCounter from './sections/cNutritionCounter.vue'
-// import cNutritionIngredients from './sections/cNutritionIngredients.vue'
-// import cNutritionPrepare from './sections/cNutritionPrepare.vue'
 import cRelatedMeals from './sections/cRelatedMeals.vue'
+import cSelectTabs from '@shared/components/parts/cSelectTabs.vue'
 
 export default {
   name: 'Pdp',
   data: () => ({
     ...window.Scoutside.pdp,
     controllerData: [],
-    isFullPage: false,
-    isMobile: false
+    isFullPage: true,
+    isMobile: false,
+    loading: false,
+    added: false,
+    addedTxt: 'Added'
   }),
   components: {
     cProductGallery,
-    cProductForm,
     cButton,
-    // cProductBlurb,
-    // cNutritionCounter,
-    // cNutritionIngredients,
-    // cNutritionPrepare,
-    cRelatedMeals
+    cRelatedMeals,
+    cSelectTabs
   },
   computed: {
     labels() {
@@ -77,23 +69,7 @@ export default {
       return arr
     },
     price() {
-      return `${formatPrice(this.product.price)}`
-    },
-    subtitle() {
-      const title = this.product.title.toLowerCase()
-      if (title.includes('with')) {
-        return `with${title.split('with')[1]}`
-      } else {
-        return false
-      }
-    },
-    title() {
-      const subtitle = this.product.title.toLowerCase()
-      if (subtitle.includes('with')) {
-        return `${subtitle.split('with')[0]}`
-      } else {
-        return this.product.title
-      }
+      return `Starts at ${formatPrice(this.product.price)}`
     },
     subNavLink() {
       const bundleLnk = sessionStorage.getItem('bundle_url')
@@ -103,32 +79,13 @@ export default {
     isCustomer() {
       return customer.email && customer.shopify_id ? true : false
     },
-    ...mapState([
-      'account',
-      'children',
-      'bundle',
-      'navigation',
-      'plans',
-      'selectedPlan',
-      'types',
-      'sortOptionsNewCustomer',
-      'sortOptionsExistingCustomer',
-      'customer',
-      'activeStep',
-      'masterCollections'
-    ])
+    ...mapState([])
   },
   methods: {
     onResize() {
       this.isMobile = window.innerWidth < 768
     },
-    useRefPathToSetFullPage() {
-      const prevPath = document.referrer
-      if (prevPath.includes('/collections/')) {
-        this.isFullPage = true
-      }
-    },
-    checkForParams() {
+    orParams() {
       const queryString = window.location.search
       const urlParams = new URLSearchParams(queryString)
       if (urlParams.has('quickview')) {
@@ -148,10 +105,53 @@ export default {
         mainNavLf.style.display = 'none'
         mainNavRt.style.display = 'none'
       }
+    },
+    handleAdd() {
+      this.loading = true
+
+      sessionStorage.setItem('from_pdp', 'true')
+
+      // const item = this.product
+      // const mealJson = sessionStorage.getItem('bundle_content')
+      // const addonJson = sessionStorage.getItem('addon_content')
+      // const meals = JSON.parse(mealJson)
+      // const addons = JSON.parse(addonJson)
+      // let qty
+
+      // if (this.isFreshAddOn) {
+      //   for (const itmQty in addons) {
+      //     if (addons[itmQty].id === item.id) {
+      //       qty = addons[itmQty].quantity
+      //     }
+      //   }
+      // } else {
+      //   for (const itmQty in meals) {
+      //     if (meals[itmQty].id === item.id) {
+      //       qty = meals[itmQty].quantity
+      //     }
+      //   }
+      // }
+
+      // item.quantity = qty + 1
+      // sessionStorage.setItem('addcart_item', JSON.stringify(item))
+      // if (this.isFreshAddOn) {
+      //   sessionStorage.setItem('is_addOn', true)
+      // } else {
+      //   sessionStorage.setItem('is_addOn', false)
+      // }
+
+      // sessionStorage.setItem('from_pdp', 'true');
+      setTimeout(() => {
+        this.loading = false
+        this.added = true
+      }, 1000)
+    },
+    handleGetStarted() {
+      this.loading = true
+      this.isCustomer
+        ? (window.location.href = '/account/#/details')
+        : (window.location = this.url_getStarted)
     }
-    // backToMeals() {
-    //   sessionStorage.setItem('from_pdp', 'true')
-    // }
   },
   beforeDestroy() {
     if (typeof window !== 'undefined') {
@@ -161,29 +161,16 @@ export default {
   beforeMount() {
     this.checkForParams()
     this.onResize()
-    this.useRefPathToSetFullPage()
     window.addEventListener('resize', this.onResize, { passive: true })
-  },
-  mounted() {
-    this.hideMainNavonFullPage()
   }
 }
 </script>
 
 <style lang="scss">
-.pdp__control {
-  border: 2px solid red;
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  height: 70px;
-  width: 400px;
-  background: #fff;
-  z-index: 999;
-}
 .pdp__container {
-  padding: 40px 15px 20px;
   position: relative;
+  background-color: $color-ecru;
+  padding: 2rem 1rem;
 
   @include media-tablet-up {
     padding: 0px 15px 45px;
@@ -249,79 +236,40 @@ export default {
 .pdp__main {
   display: flex;
   flex-flow: column-reverse;
-  padding-bottom: 35px;
-  padding-top: 38px;
+  padding: 2rem 0 5rem;
 
   @include media-tablet-up {
     display: flex;
     flex-flow: row;
+    grid-gap: 3.5rem;
     padding-top: 0px;
   }
   .main__column {
-    flex: 1;
+    flex: 1.5;
+    justify-self: flex-end;
   }
-}
+  .pdp__content {
+    flex: 2;
 
-.pdp__bodyMobile {
-  text-align: center;
-  display: flex;
-  flex-flow: column;
-  justify-content: center;
-  padding-top: 35px;
-  border-top: 1px solid $color-white;
-}
+    &--wrap {
+      max-width: clamp(300px, 45vw, 1000px);
 
-.pdp__mobileEyebrow {
-  padding-bottom: 20px;
+      .c-heading {
+        margin-bottom: 0;
+      }
 
-  @include media-tablet-up {
-    padding-bottom: 10px;
-  }
-}
-
-.pdp__mobileDescription {
-  font-size: 18px;
-  line-height: 27px;
-  letter-spacing: -0.02em;
-  text-align: center;
-}
-
-.pdp__bodyLower {
-  width: 100%;
-  display: flex;
-  flex-flow: column;
-  flex-wrap: wrap;
-
-  @include media-tablet-up {
-    flex-flow: row;
-    flex-wrap: wrap;
-    padding: 40px 0px;
-    border-top: 1px solid $color-white;
-  }
-  @include media-desktop-up {
-    padding: 40px 60px;
-  }
-}
-
-.bodyLower__column {
-  flex: 1;
-
-  &:nth-child(3) {
-    padding-top: 24px;
-
-    @include media-tablet-up {
-      padding-top: 0px;
-      padding-left: 25px;
+      &__subHeader {
+        color: $color-info;
+        padding-top: 10px;
+        font-size: 1.5rem;
+        padding: 0;
+        margin-bottom: 1.25rem;
+      }
     }
 
-    @include media-desktop-up {
-      padding-left: 60px;
+    &--ctas {
+      margin: 1.5rem 0 0.5rem;
     }
   }
-}
-
-.pdp__bodyLowerEyebrow {
-  padding-bottom: 32px;
-  text-align: center;
 }
 </style>

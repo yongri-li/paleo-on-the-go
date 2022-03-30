@@ -2,16 +2,8 @@
   <div class="pdp__galleryContainer">
     <div v-if="loading" class="pdp__loader"></div>
     <div v-show="!loading" class="pdp__thumbnails u-hideMobileDown">
-      <div
-        v-for="(image, index) in images"
-        :key="index"
-        class="pdp__thumbnailWrapper"
-      >
-        <button
-          class="pdp__thumbnailButton"
-          type="button"
-          @click="() => handleThumbnailClick(index)"
-        >
+      <div v-for="(image, index) in images" :key="index" class="pdp__thumbnailWrapper">
+        <button class="pdp__thumbnailButton" type="button" @click="() => handleThumbnailClick(index)">
           <img
             :src="image"
             :class="{ 'pdp__thumbnail--active': index == activeIndex }"
@@ -31,79 +23,75 @@
 </template>
 
 <script>
-import { tns } from "tiny-slider/src/tiny-slider";
+import { tns } from 'tiny-slider/src/tiny-slider'
 
 export default {
   props: {
     images: {
       required: true,
-      type: Array,
+      type: Array
     },
     autoplay: {
       default: false,
       required: false,
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   data: () => ({
     activeIndex: 0,
     loading: false,
-    slider: false,
+    slider: false
   }),
   methods: {
     buildSlider() {
-      this.loading = true;
+      this.loading = true
 
-      const enableThumbnails = this.images.length > 1 ? true : false;
-      const controlsContainer =
-        this.images.length > 1 ? ".pdp__thumbnails" : false;
+      const enableThumbnails = this.images.length > 1 ? true : false
+      const controlsContainer = this.images.length > 1 ? '.pdp__thumbnails' : false
 
       const slider = tns({
         autoplay: this.autoplay,
         autoplayButtonOutput: false,
         center: true,
-        container: ".pdp__gallery",
+        container: '.pdp__gallery',
         // controlsContainer: controlsContainer,
-        controls: false,
+        controls: true,
         items: 1,
         loop: false,
-        mode: "gallery",
+        mode: 'gallery',
         mouseDrag: true,
         navAsThumbnails: enableThumbnails,
-        navPosition: "bottom",
-      });
+        navPosition: 'bottom'
+      })
 
-      this.slider = slider;
+      this.slider = slider
 
-      this.slider.events.on("indexChanged", (info, event) => {
-        this.activeIndex = info.index;
-      });
+      this.slider.events.on('indexChanged', (info, event) => {
+        this.activeIndex = info.index
+      })
 
-      this.loading = false;
+      this.loading = false
     },
     handleThumbnailClick(index) {
-      this.slider.goTo(index);
-    }    
+      this.slider.goTo(index)
+    }
   },
   mounted() {
-    this.buildSlider();
-  },
-};
+    this.buildSlider()
+  }
+}
 </script>
 
 <style lang="scss">
 .pdp__galleryContainer {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column-reverse;
+  justify-content: center;
 
   @include media-tablet-up {
-    grid-column-gap: 10px;
-    grid-template-columns: 80px 1fr;
   }
 
   @include media-desktop-up {
-    grid-column-gap: 40px;
-    grid-template-columns: 80px 1fr;
   }
 
   .tns-nav {
@@ -119,31 +107,34 @@ export default {
   .tns-outer {
     height: fit-content;
     position: sticky;
-    top: 20px;
+    top: 1.25rem;
+
+    .tns-controls {
+      position: absolute;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
   }
 }
 
 .pdp__thumbnails {
-  display: grid;
-  grid-template-rows: 70px;
-  grid-row-gap: 20px;
-  height: fit-content;
-  position: sticky;
-  top: 20px;
+  position: relative;
+  top: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   z-index: 2;
 }
 
 .pdp__galleryImageWrapper {
-  border-radius: 50%;
-  /*box-shadow: 8px 8px 10px rgba(16, 31, 45, 0.3);*/
-  width: 80%;
-  &[data-index="0"] {
-    box-shadow: 8px 8px 10px rgba(16, 31, 45, 0.3);
-  }
   @include media-mobile-down {
     width: 90%;
     margin: 0 auto;
-  }  
+  }
 }
 
 .pdp__thumbnailWrapper {
@@ -154,11 +145,9 @@ export default {
 }
 
 .pdp__thumbnail {
-  border-radius: 12px;
-  border: 1px solid #e2dfd7;
   box-sizing: border-box;
   cursor: pointer;
-  height: 70px;
+  height: 4.5rem;
   opacity: 0.3;
 
   &.pdp__thumbnail--active {
@@ -169,11 +158,11 @@ export default {
 .pdp__thumbnailButton {
   -webkit-appearance: none;
   border: none;
+  background-color: $color-ecru;
 }
 
 .pdp__galleryImage {
-  border-radius: 25px;
-  margin: 0 auto;
   display: block;
+  margin: 0 auto;
 }
 </style>
