@@ -1,0 +1,60 @@
+<template>
+  <div class="items">
+    <your-box-body-items-info />
+    <div class="items__products">
+      <product-item-cart
+        v-for="item in 8"
+        :key="item"
+        :product="products[0]"
+        type-class="addons"
+        class="item"
+      />
+    </div>
+  </div>
+</template>
+
+<script>
+import YourBoxBodyItemsInfo from './YourBoxBodyItemsInfo.vue'
+import ProductItemCart from '../Products/ProductItemCart.vue'
+
+export default {
+  components: {
+    YourBoxBodyItemsInfo,
+    ProductItemCart
+  },
+  data() {
+    return {
+      products: [
+        {"id":1615889530935,"title":"Bacon Apple Chicken Burger","handle":"bacon-apple-chicken-burger-maple-cranberry-sauce","description":"<div id=\"tab-1\">\"OMG...this tastes like Thanksgiving turkey and dressing. So far, it's my absolute favorite that I have tried. Absolutely delicious. My husband thinks it rocks, also. Yum!!!\" ...From the kitchen of the Paleo Mom, a tender burger is made from a blend of bacon and chicken and is topped with a sweet maple-cranberry sauce. This savory and juicy paleo chicken-bacon burger is one of our top dishes sold. 7 Ounce portion Serves 1 Our broiler chickens are hand raised on green pastures with as much sunshine as they want to enjoy. They are happy and healthy and spend their days in the grass coming and going from their mobile coops. They have access to Non-GMO, Soy Free, Non-GMO Corn Free feed free choice throughout the day. They are given essential oils to keep them healthy naturally from the inside out. Our chickens are treated humanely and with respect throughout their entire life and are always handled with care. We also include kelp in our chicken feed and water to support their immune systems.</div>\n<div id=\"tab-2\">\n<div>organic free range ground chicken</div>\n<div>cranberries</div>\n<div>sugar free bacon</div>\n<div>organic Granny Smith Apples</div>\n<div>onion</div>\n<div>maple syrup</div>\n<div>rosemary</div>\n<div>sea salt</div>\n</div>\n<div id=\"tab-3\">Must be received and stored frozen (up to 6 months). Thawing and reheating instructions:  Remove container from freezer and defrost overnight in refrigerator.  Oven: Preheat oven to 350°F. Remove film from container. Cover with foil and place on cookie sheet. Bake 10-12 minutes until hot (165°F). Microwave: Pull back film to vent. Heat on high for 2-3 minutes until hot (165°F)</div>","published_at":"2018-10-26T03:14:41-05:00","created_at":"2019-06-18T12:47:18-05:00","vendor":"Paleo On The Go","type":"Real Food","tags":["aip","AIP Friendly","bacon","bacon apple chicken burger","cassava-free","coconut-free","cranberry","entree","entrees","Full Menu","keto","maple","paleo","related","seafood-free","with pork"],"price":1350,"price_min":1350,"price_max":1350,"available":true,"price_varies":false,"compare_at_price":null,"compare_at_price_min":0,"compare_at_price_max":0,"compare_at_price_varies":false,"variants":[{"id":14121663692855,"title":"Default Title","option1":"Default Title","option2":null,"option3":null,"sku":"bacon-apple-chicken-burger","requires_shipping":true,"taxable":false,"featured_image":null,"available":true,"name":"Bacon Apple Chicken Burger","public_title":null,"options":["Default Title"],"price":1350,"weight":454,"compare_at_price":null,"inventory_management":"shopify","barcode":"","requires_selling_plan":false,"selling_plan_allocations":[{"price_adjustments":[{"position":1,"price":1283}],"price":1283,"compare_at_price":1350,"per_delivery_price":1283,"selling_plan_id":572784839,"selling_plan_group_id":"d6008301a9de1f8833ef5a83fc36c3bba7a371c3"},{"price_adjustments":[{"position":1,"price":1283}],"price":1283,"compare_at_price":1350,"per_delivery_price":1283,"selling_plan_id":572817607,"selling_plan_group_id":"d6008301a9de1f8833ef5a83fc36c3bba7a371c3"}]}],"images":["//cdn.shopify.com/s/files/1/0088/3163/1415/products/BaconAppleChickenBurger1web.jpg?v=1575463357","//cdn.shopify.com/s/files/1/0088/3163/1415/products/DSC_4324web.jpg?v=1575463357","//cdn.shopify.com/s/files/1/0088/3163/1415/products/BaconAppleChIng.jpg?v=1575463357","//cdn.shopify.com/s/files/1/0088/3163/1415/products/BaconAppleChickenBurger2.jpg?v=1575463357","//cdn.shopify.com/s/files/1/0088/3163/1415/products/BaconAppleChickenBurger3web.jpg?v=1575463357","//cdn.shopify.com/s/files/1/0088/3163/1415/products/BaconApleChickenBurger.jpg?v=1575463357"],"featured_image":"//cdn.shopify.com/s/files/1/0088/3163/1415/products/BaconAppleChickenBurger1web.jpg?v=1575463357","options":["Title"],"media":[{"alt":null,"id":1599758172215,"position":1,"preview_image":{"aspect_ratio":1,"height":1200,"width":1200,"src":"https://cdn.shopify.com/s/files/1/0088/3163/1415/products/BaconAppleChickenBurger1web.jpg?v=1575463357"},"aspect_ratio":1,"height":1200,"media_type":"image","src":"https://cdn.shopify.com/s/files/1/0088/3163/1415/products/BaconAppleChickenBurger1web.jpg?v=1575463357","width":1200},{"alt":null,"id":1599758204983,"position":2,"preview_image":{"aspect_ratio":1,"height":778,"width":778,"src":"https://cdn.shopify.com/s/files/1/0088/3163/1415/products/DSC_4324web.jpg?v=1575463357"},"aspect_ratio":1,"height":778,"media_type":"image","src":"https://cdn.shopify.com/s/files/1/0088/3163/1415/products/DSC_4324web.jpg?v=1575463357","width":778},{"alt":null,"id":1599758237751,"position":3,"preview_image":{"aspect_ratio":1,"height":1200,"width":1200,"src":"https://cdn.shopify.com/s/files/1/0088/3163/1415/products/BaconAppleChIng.jpg?v=1575463357"},"aspect_ratio":1,"height":1200,"media_type":"image","src":"https://cdn.shopify.com/s/files/1/0088/3163/1415/products/BaconAppleChIng.jpg?v=1575463357","width":1200},{"alt":null,"id":1599758270519,"position":4,"preview_image":{"aspect_ratio":1,"height":1200,"width":1200,"src":"https://cdn.shopify.com/s/files/1/0088/3163/1415/products/BaconAppleChickenBurger2.jpg?v=1575463357"},"aspect_ratio":1,"height":1200,"media_type":"image","src":"https://cdn.shopify.com/s/files/1/0088/3163/1415/products/BaconAppleChickenBurger2.jpg?v=1575463357","width":1200},{"alt":null,"id":1599758303287,"position":5,"preview_image":{"aspect_ratio":1.001,"height":1002,"width":1003,"src":"https://cdn.shopify.com/s/files/1/0088/3163/1415/products/BaconAppleChickenBurger3web.jpg?v=1575463357"},"aspect_ratio":1.001,"height":1002,"media_type":"image","src":"https://cdn.shopify.com/s/files/1/0088/3163/1415/products/BaconAppleChickenBurger3web.jpg?v=1575463357","width":1003},{"alt":null,"id":1599758336055,"position":6,"preview_image":{"aspect_ratio":0.574,"height":1188,"width":682,"src":"https://cdn.shopify.com/s/files/1/0088/3163/1415/products/BaconApleChickenBurger.jpg?v=1575463357"},"aspect_ratio":0.574,"height":1188,"media_type":"image","src":"https://cdn.shopify.com/s/files/1/0088/3163/1415/products/BaconApleChickenBurger.jpg?v=1575463357","width":682}],"requires_selling_plan":false,"selling_plan_groups":[{"id":"d6008301a9de1f8833ef5a83fc36c3bba7a371c3","name":"Subscribe & save","options":[{"name":"Deliver every","position":1,"values":["week","2 weeks"]}],"selling_plans":[{"id":572784839,"name":"Weekly subscription","description":"","options":[{"name":"Deliver every","position":1,"value":"week"}],"recurring_deliveries":true,"price_adjustments":[{"order_count":null,"position":1,"value_type":"percentage","value":5}]},{"id":572817607,"name":"2 week subscription","description":"","options":[{"name":"Deliver every","position":1,"value":"2 weeks"}],"recurring_deliveries":true,"price_adjustments":[{"order_count":null,"position":1,"value_type":"percentage","value":5}]}],"app_id":"Seal Subscriptions"}],"content":"<div id=\"tab-1\">\"OMG...this tastes like Thanksgiving turkey and dressing. So far, it's my absolute favorite that I have tried. Absolutely delicious. My husband thinks it rocks, also. Yum!!!\" ...From the kitchen of the Paleo Mom, a tender burger is made from a blend of bacon and chicken and is topped with a sweet maple-cranberry sauce. This savory and juicy paleo chicken-bacon burger is one of our top dishes sold. 7 Ounce portion Serves 1 Our broiler chickens are hand raised on green pastures with as much sunshine as they want to enjoy. They are happy and healthy and spend their days in the grass coming and going from their mobile coops. They have access to Non-GMO, Soy Free, Non-GMO Corn Free feed free choice throughout the day. They are given essential oils to keep them healthy naturally from the inside out. Our chickens are treated humanely and with respect throughout their entire life and are always handled with care. We also include kelp in our chicken feed and water to support their immune systems.</div>\n<div id=\"tab-2\">\n<div>organic free range ground chicken</div>\n<div>cranberries</div>\n<div>sugar free bacon</div>\n<div>organic Granny Smith Apples</div>\n<div>onion</div>\n<div>maple syrup</div>\n<div>rosemary</div>\n<div>sea salt</div>\n</div>\n<div id=\"tab-3\">Must be received and stored frozen (up to 6 months). Thawing and reheating instructions:  Remove container from freezer and defrost overnight in refrigerator.  Oven: Preheat oven to 350°F. Remove film from container. Cover with foil and place on cookie sheet. Bake 10-12 minutes until hot (165°F). Microwave: Pull back film to vent. Heat on high for 2-3 minutes until hot (165°F)</div>","url":"/products/bacon-apple-chicken-burger-maple-cranberry-sauce","collection":{"id":286122049735,"handle":"build-a-box-one-time","updated_at":"2022-03-29T17:35:13-05:00","published_at":"2022-03-07T11:34:26-06:00","sort_order":"best-selling","template_suffix":"","published_scope":"web","title":"Build a Box One-Time","body_html":""},"subtitle":"with Maple Cranberry Sauce","info":{"description":"<div id=\"tab-1\">\"OMG...this tastes like Thanksgiving turkey and dressing. So far, it's my absolute favorite that I have tried. Absolutely delicious. My husband thinks it rocks, also. Yum!!!\" ...From the kitchen of the Paleo Mom, a tender burger is made from a blend of bacon and chicken and is topped with a sweet maple-cranberry sauce. This savory and juicy paleo chicken-bacon burger is one of our top dishes sold. 7 Ounce portion Serves 1 Our broiler chickens are hand raised on green pastures with as much sunshine as they want to enjoy. They are happy and healthy and spend their days in the grass coming and going from their mobile coops. They have access to Non-GMO, Soy Free, Non-GMO Corn Free feed free choice throughout the day. They are given essential oils to keep them healthy naturally from the inside out. Our chickens are treated humanely and with respect throughout their entire life and are always handled with care. We also include kelp in our chicken feed and water to support their immune systems.</div>\n<div id=\"tab-2\">\n<div>organic free range ground chicken</div>\n<div>cranberries</div>\n<div>sugar free bacon</div>\n<div>organic Granny Smith Apples</div>\n<div>onion</div>\n<div>maple syrup</div>\n<div>rosemary</div>\n<div>sea salt</div>\n</div>\n<div id=\"tab-3\">Must be received and stored frozen (up to 6 months). Thawing and reheating instructions:  Remove container from freezer and defrost overnight in refrigerator.  Oven: Preheat oven to 350°F. Remove film from container. Cover with foil and place on cookie sheet. Bake 10-12 minutes until hot (165°F). Microwave: Pull back film to vent. Heat on high for 2-3 minutes until hot (165°F)</div>","ingredients":"","heating":"","nutrition":""}},
+      ]
+    }
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.items {
+  background-color: #EFEDE6;
+  padding: .3rem .5rem .5rem;
+  margin-bottom: 2rem;
+
+  &__products {
+    background-color: $color-white;
+    padding: 1rem;
+
+    @include media-tablet-up {
+      @include flex();
+      padding: 0 .5rem 1rem;
+
+      .item {
+        width: 32.6%;
+      }
+      .item:nth-child(3n+2) {
+        margin-left: 1%;
+        margin-right: 1%;
+      }
+    }
+  }
+
+}
+</style>

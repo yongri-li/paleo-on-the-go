@@ -1,0 +1,102 @@
+<template>
+  <div class="your-box">
+    <div class="your-box__title">
+      YOUR BOX
+    </div>
+    <div class="your-box__content">
+      <div class="your-box__content-header">
+        <div class="your-box__content-column product">
+          Product
+        </div>
+        <div class="your-box__content-column qty u-hideMobileDown">
+          QTY
+        </div>
+        <div class="your-box__content-column price u-hideMobileDown">
+          Price
+        </div>
+      </div>
+      <your-box-body class="your-box__content-body"/>
+    </div>
+  </div>
+</template>
+
+<script>
+import YourBoxBody from './YourBoxBody.vue'
+
+export default {
+  components: {
+    YourBoxBody
+  }
+}
+</script>
+
+<style lang="scss" scoped>
+.your-box {
+
+  margin-bottom: 2rem;
+
+  &__title {
+    font-family: $font-heading;
+    font-size: 3rem;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+  }
+
+  &__content {
+    @include media-tablet-up {
+      &-column.product{
+        width: 55%;
+      }
+
+      &-column.qty{
+        width: 10%;
+        text-align: center;
+      }
+
+      &-column.price{
+        width: 22%;
+        text-align: right;
+      }
+    }
+  }
+
+  &__content-header {
+    text-transform: uppercase;
+    font-weight: 500;
+    font-size: 1.2rem;
+    letter-spacing: 0.06em;
+
+    @include media-tablet-up {
+      font-size: 1rem;
+      padding: 0 .4rem;
+      @include flex();
+
+      &-column.product{
+        width: 60%;
+        border: 1px solid red;
+      }
+
+      &-column.qty{
+        border: 1px solid blue;
+        width: 10%;
+      }
+
+      &-column.price{
+        border: 1px solid green;
+        width: 15%;
+        text-align: right;
+      }
+    }
+  }
+
+  &__content-body {
+    border: 1px solid #EFEDE6;
+    padding: .4rem;
+    margin-top: 1rem;
+
+    @include media-tablet-up {
+      margin-top: 0;
+    }
+  }
+}
+</style>
