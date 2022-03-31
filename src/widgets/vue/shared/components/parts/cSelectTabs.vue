@@ -12,9 +12,12 @@
 			</div>
 		</div>
 		<div class="pdp__tabs--info">
-			<article v-for="(val, name, i) in pdpinfo" :key="i" :class="active === i && 'isActive'">
-				{{ val }}
-			</article>
+			<article
+				v-for="(val, name, i) in pdpinfo"
+				:key="i"
+				:class="active === i && 'isActive'"
+				v-html="val"
+			></article>
 		</div>
 	</section>
 </template>

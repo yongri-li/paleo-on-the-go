@@ -47,8 +47,6 @@ export default {
       this.loading = true
 
       const enableThumbnails = this.images.length > 1 ? true : false
-      const controlsContainer = this.images.length > 1 ? '.pdp__thumbnails' : false
-
       const slider = tns({
         autoplay: this.autoplay,
         autoplayButtonOutput: false,
@@ -102,8 +100,9 @@ export default {
 
   .tns-outer {
     height: fit-content;
-    position: sticky;
-    top: 1.25rem;
+    position: relative;
+    /*    position: sticky;
+    top: 1.25rem;*/
 
     .tns-controls {
       position: absolute;
@@ -135,10 +134,11 @@ export default {
 
 .pdp__thumbnails {
   position: relative;
-  top: 6rem;
+  /*top: 6rem;*/
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: 1.5rem;
   z-index: 2;
 }
 

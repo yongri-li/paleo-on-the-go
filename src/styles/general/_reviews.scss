@@ -1,0 +1,20 @@
+.pdp__productReviews {
+  padding: 4.5rem 0 2rem;
+
+  .spr-header-title {
+    display: block;
+    font-family: Knockout, sans-serif;
+    line-height: 1.125;
+    font-weight: 700;
+    font-size: 4rem;
+    text-transform: uppercase;
+    margin: 0 0 24px;
+    letter-spacing: 1px;
+  }
+
+  .spr-container {
+    a {
+      color: $color-secondary;
+    }
+  }
+}
