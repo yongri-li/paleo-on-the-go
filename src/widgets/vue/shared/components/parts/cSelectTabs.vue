@@ -54,7 +54,7 @@ export default {
 		@include media-mobile-down {
 			grid-gap: 0.75rem;
 			overflow-x: scroll;
-			width: calc(100vw - 1rem);
+			width: calc(100vw - 2rem);
 		}
 	}
 

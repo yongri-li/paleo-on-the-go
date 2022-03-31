@@ -126,7 +126,7 @@ export default {
 
       .pdp__thumbnail {
         border-radius: 50%;
-        border: 2px solid $color-black;
+        border: 5px solid $color-white;
       }
     }
   }

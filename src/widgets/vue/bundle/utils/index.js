@@ -15,3 +15,15 @@ export const changeRouter = param => {
 
   return false
 }
+
+export const sortProducts = ({products, sortType}) => {
+  if(sortType) {
+    sortType = sortType.toLowerCase().replace(/ /g,'-')
+
+    if(sortType === 'newest') {
+      products.sort((a,b) => new Date(b.created_at) - new Date(a.created_at))
+    }
+  }
+
+  return products
+}

@@ -8,17 +8,21 @@
   {% render 'theme-api' %}
   {{ content_for_header }}
   <style>
-    #preview-bar-iframe { 
-      display: none !important 
+    #preview-bar-iframe {
+      display: none !important
     }
   </style>
 </head>
 <body class="o-body" data-body>
-  {% render 'theme-header' %}
+  {% if template != 'page.bundle' %}
+    {% render 'theme-header' %}
+  {% endif %}
   <main class="o-main {% if template == 'index' %}o-homepage{% endif %}" data-main>
     {{ content_for_layout }}
   </main>
-  {% include 'theme-footer' %}
+  {% if template != 'page.bundle' %}
+    {% include 'theme-footer' %}
+  {% endif %}
   {% comment %}{% render 'widget-cart' %}{% endcomment %}
   {% render 'theme-scripts' %}
   {% render 'vendors-loyalty-lion' %}

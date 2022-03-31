@@ -1,7 +1,11 @@
 <template>
   <div class="page o-containerLarge">
+    <stepper />
     <div class="content-products-cart">
-      <product-collection />
+      <div class="content-products">
+        <filter-and-sorting :length-products="products.length" />
+        <product-collection :products="products" />
+      </div>
       <meal-cart />
     </div>
     <footer-banner
@@ -13,15 +17,19 @@
 </template>
 
 <script>
+import Stepper from '../components/Stepper/Index.vue'
+import FilterAndSorting from '../components/FilterAndSorting/FilterAndSorting.vue'
 import ProductCollection from '../components/Products/ProductCollection.vue'
 import MealCart from '../components/MealCart/MealCart.vue'
 import FooterBanner from '../components/FooterBanner.vue'
 import Modal from '../components/Modals/Modal.vue'
 
-import { mapState } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 
 export default {
   components: {
+    Stepper,
+    FilterAndSorting,
     ProductCollection,
     MealCart,
     FooterBanner,
@@ -52,7 +60,13 @@ export default {
   computed: {
     ...mapState([
       'modal'
-    ])
+    ]),
+    ...mapGetters([
+      'getProductsFromRoute'
+    ]),
+    products() {
+      return this.getProductsFromRoute(this.$route)
+    }
   },
   methods: {
     setFooter() {
@@ -79,11 +93,14 @@ export default {
 <style lang="scss" scoped>
 
 .content-products-cart {
+  @include media-tablet-up {
+    @include flex($justify: space-between, $align: flex-start);
+  }
 
-  @media screen and (min-width: 769px) {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
+  .content-products {
+    @include media-tablet-up {
+      width: 72%;
+    }
   }
 }
 

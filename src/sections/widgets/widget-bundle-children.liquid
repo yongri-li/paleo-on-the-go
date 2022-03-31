@@ -13,7 +13,14 @@
             {
               ...JSON.parse(JSON.stringify({{ _product | json }})),
               url: '{{ _product.url }}',
-              collection: JSON.parse('{{ _collection | json }}')
+              collection: JSON.parse('{{ _collection | json }}'),
+              subtitle: '{{ _product.metafields.my_fields.subtitle }}',
+              info: {
+                description: `{{ _product.description }}`,
+                ingredients: `{{ _product.metafields.my_fields.ingredient }}`,
+                heating: `{{ _product.metafields.my_fields.heating }}`,
+                nutrition: `{{ _product.metafields.my_fields.nutrition }}`
+              }
             },
           {% endfor %}
         {% endpaginate %}
