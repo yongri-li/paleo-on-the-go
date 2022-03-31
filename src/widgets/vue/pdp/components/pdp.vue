@@ -25,7 +25,7 @@
         </div>
       </section>
     </div>
-    <!--   <div id="shopify-product-reviews" v-html="reviews"></div> -->
+    <!--   <div id="shopify-product-reviews" v-html="reviews"></div>   -->
     <c-related-meals :products="related_products" :labels="labels" />
   </div>
 </template>
@@ -110,10 +110,14 @@ export default {
   position: relative;
 
   .pdp__main {
+    position: relaive;
     display: flex;
     flex-flow: column-reverse;
     background-color: $color-ecru;
     padding: 2rem 1rem 5rem;
+
+    /* use if want sticky scroll elmement...
+    overflow-y: scroll;*/
 
     @include media-tablet-up {
       display: flex;
@@ -122,13 +126,17 @@ export default {
     }
 
     @include media-desktop-up {
-      padding: 3rem 4vw 8rem;
+      padding: 3rem 4vw 5rem;
     }
 
     .main__column {
       flex: 1.5;
       justify-self: flex-end;
       height: 100%;
+
+      /* use if want sticky scroll elmement...
+      position: sticky;
+      top: 0;*/
     }
 
     .pdp__content {

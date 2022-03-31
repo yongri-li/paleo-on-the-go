@@ -3,7 +3,7 @@ export default {
   contentByPrefix: state => prefix => {
     const content = {}
     Object.keys(state.content).forEach(key => {
-      if(key.startsWith(prefix)) content[key] = state.content[key]
+      if (key.startsWith(prefix)) content[key] = state.content[key]
     })
     return content
   }

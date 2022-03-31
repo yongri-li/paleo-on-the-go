@@ -1,6 +1,6 @@
 <template>
   <div class="c-relatedMeals o-containerLarge">
-    <h2 class="c-h1">
+    <h2 class="c-h2">
       <span class="u-highlightText--secondary">{{ heading[0] }}</span> {{ heading[1] }}
     </h2>
     <div class="c-relatedMeals__container">
@@ -101,17 +101,6 @@ export default {
 </script>
 
 <style lang="scss">
-/*.c-relatedMeals__container {
-  width: 100%;
-  border-top: 1px solid $color-white;
-  padding: 27px 0px;
-  margin-top: 30px;
-
-  @include media-desktop-up {
-    padding: 40px 0px;
-  }
-}*/
-
 .c-relatedMeals {
   position: relative;
 
