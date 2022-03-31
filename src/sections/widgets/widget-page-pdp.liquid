@@ -1,17 +1,17 @@
 <script>
   window.Scoutside = window.Scoutside || {}
   window.Scoutside.pdp = window.Scoutside.pdp || {}
-
   let pdp = {{ section.settings | json }}
+
   pdp['product'] = {{ product | json }}
   pdp['subtitle'] = `{{ product.metafields.my_fields.subtitle }}`
   pdp['info'] = {
     description: `{{ product.description }}`,
     ingredients: `{{ product.metafields.my_fields.ingredient }}`,
     heating: `{{ product.metafields.my_fields.heating }}`,
-    nutrition: `{{ product.metafields.my_fields.nutrition }}`    
-  }  
-
+    nutrition: `{{ product.metafields.my_fields.nutrition }}`
+  } 
+  
   pdp['product']['price_hashes'] = [
     {% for variant in product.variants %}
         '{{ variant.price | money_without_currency | hmac_sha256: settings.fmp_app_secret }}',
@@ -19,26 +19,17 @@
   ]  
 
   const related_products = [];
-  {% assign _collection = collections[product.type] %}
-  {% for _product in _collection.products limit:4 %}
-      {% unless _product.id == product.id %}
-          related_products.push(
-              {{ _product | json }},
-              {
-                  url: '{{ _product.url }}',
-                  flag: '{{ _product.metafields.product_flags.flag }}',
-                  subtitle: '{{ _product.metafields.product_details.subtitle | json }}',
-                  nutritional_info: {
-                      ...JSON.parse('{{ _product.metafields.nutritional_info | json }}')
-                  }
-              });
-      {% endunless %}
-  {% endfor %}
+  {%- for collection in collections limit:100 -%}
+    {%- if collection.id == 286781505735 -%}  
+      {%- for _product in collection.products limit:4 -%}
+        related_products.push({{ _product | json }});
+      {%- endfor -%} 
+    {%- endif -%}
+  {%- endfor -%}  
   pdp['related_products'] = related_products;
 
   window.Scoutside.pdp = pdp
 </script>
-
 
 {% schema %}
   {

@@ -1,6 +1,6 @@
 <template>
-  <div class="pdp__container">
-    <div class="pdp__main">
+  <div class="pdp__wrap">
+    <div class="pdp__main o-containerFullWidth">
       <cProductGallery class="main__column" :autoplay="gallery_autoplay" :images="product.images" />
 
       <section class="pdp__content">
@@ -25,7 +25,7 @@
         </div>
       </section>
     </div>
-
+    <!--   <div id="shopify-product-reviews" v-html="reviews"></div> -->
     <c-related-meals :products="related_products" :labels="labels" />
   </div>
 </template>
@@ -106,50 +106,53 @@ export default {
 </script>
 
 <style lang="scss">
-.pdp__container {
+.pdp__wrap {
   position: relative;
-  background-color: $color-ecru;
-  padding: 2rem 1rem;
 
-  @include media-desktop-up {
-    padding: 0px 80px 64px;
-  }
-}
-.pdp__main {
-  display: flex;
-  flex-flow: column-reverse;
-  padding: 2rem 0 5rem;
-
-  @include media-tablet-up {
+  .pdp__main {
     display: flex;
-    flex-flow: row;
-    grid-gap: 3.5rem;
-  }
-  .main__column {
-    flex: 1.5;
-    justify-self: flex-end;
-  }
-  .pdp__content {
-    flex: 2;
+    flex-flow: column-reverse;
+    background-color: $color-ecru;
+    padding: 2rem 1rem 5rem;
 
-    &--wrap {
-      max-width: clamp(390px, 45vw, 1000px);
-
-      .c-heading {
-        margin-bottom: 0;
-      }
-
-      &__subheader {
-        color: $color-info;
-        padding-top: 10px;
-        font-size: 1.5rem;
-        padding: 0;
-        margin-bottom: 1.25rem;
-      }
+    @include media-tablet-up {
+      display: flex;
+      flex-flow: row;
+      grid-gap: 3.5rem;
     }
 
-    &--ctas {
-      margin: 1.5rem 0 0.5rem;
+    @include media-desktop-up {
+      padding: 3rem 4vw 8rem;
+    }
+
+    .main__column {
+      flex: 1.5;
+      justify-self: flex-end;
+      height: 100%;
+    }
+
+    .pdp__content {
+      flex: 2;
+
+      &--wrap {
+        max-width: clamp(390px, 45vw, 1000px);
+
+        .c-heading {
+          margin-bottom: 0;
+        }
+
+        &__subheader {
+          color: $color-info;
+          padding-top: 10px;
+          font-size: 1.5rem;
+          padding: 0;
+          margin-bottom: 1.25rem;
+        }
+      }
+
+      &--ctas {
+        margin: 1.5rem 0 0.5rem;
+      }
     }
   }
 }

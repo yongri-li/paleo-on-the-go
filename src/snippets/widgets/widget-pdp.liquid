@@ -5,6 +5,11 @@
   data-vue-pdp
 >
 </v-pdp>
+<div id="shopify-product-reviews" class="yooo" data-id="{{product.id}}">
+  {{ product.metafields.spr.reviews }}
+</div>
+
+<c-faqAccordion :content="content.portal_faq" />
 
 {{ 'widget-pdp.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'widget-pdp.js' | asset_url }}"></script>

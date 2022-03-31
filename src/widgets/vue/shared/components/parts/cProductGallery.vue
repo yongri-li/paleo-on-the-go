@@ -47,8 +47,6 @@ export default {
       this.loading = true
 
       const enableThumbnails = this.images.length > 1 ? true : false
-      const controlsContainer = this.images.length > 1 ? '.pdp__thumbnails' : false
-
       const slider = tns({
         autoplay: this.autoplay,
         autoplayButtonOutput: false,

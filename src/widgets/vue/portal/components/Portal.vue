@@ -91,6 +91,12 @@ export default {
       this.state.products = { ...portal.products.catalog }
     }
   },
+  created() {
+    const ccAct = document.cookie.split('; ').find(row => row.includes('ss_access_token'))
+    const ccApiAccessToken = ccAct?.split('=')[1]
+    const lsApiAccessToken = localStorage.getItem('api_access_token')
+    lsApiAccessToken ? null : localStorage.setItem('api_access_token', ccApiAccessToken)
+  },
   async mounted() {
     //await setup(this)
     this.setReady()
@@ -99,12 +105,7 @@ export default {
     // }, 300)
     setTimeout(() => {
       this.getRCdata()
-    }, 100)
-
-    const ccAct = document.cookie.split('; ').find(row => row.includes('ss_access_token'))
-    const ccApiAccessToken = ccAct?.split('=')[1]
-    const lsApiAccessToken = localStorage.getItem('api_access_token')
-    lsApiAccessToken ? null : localStorage.setItem('api_access_token', ccApiAccessToken)
+    }, 101)
 
     // setHeaderNextBoxShip = () => {
     //   const accountText = document.querySelector('.c-headerMain__accountText')
