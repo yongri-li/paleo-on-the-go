@@ -3,26 +3,26 @@
     <div class="info-mobile u-hideTabletUp">
       <div class="info-mobile__section">
         <div class="info__item-number">
-          12 item box
+          {{ sizeSelected.title }} box
         </div>
         <div class="info__price">
           <div class="info__price--sub">
-            $44.95
+            {{ formatPrice(getItemSubtotal) }}
           </div>
           <div class="info__price--final">
-            $40.95
+            {{ totalItems }}
           </div>
         </div>
       </div>
       <div class="info-mobile__section">
-        <div class="info__edit">
+        <div class="info__edit" @click="backToEditBundle">
           <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="8.49985" cy="8.49985" r="5.88462" fill="#231F20"/>
             <path d="M8.5 0C3.80588 0 0 3.80588 0 8.5C0 13.1941 3.80588 17 8.5 17C13.1941 17 17 13.1941 17 8.5C17 3.80588 13.1941 0 8.5 0ZM4.95833 12.0417L5.67092 9.18283L7.871 11.3822L4.95833 12.0417ZM8.61333 10.7107L6.34525 8.44262L10.4826 4.25L12.75 6.51667L8.61333 10.7107Z" fill="#FCD32B"/>
           </svg>
           Edit
         </div>
-        <div class="info__remove">
+        <div class="info__remove" @click="removeBundle">
           Remove
         </div>
       </div>
@@ -49,9 +49,9 @@
     <div class="info-desk u-hideMobileDown">
       <div class="info-desk__colum product">
         <div class="info__item-number">
-          12 item box
+          {{ sizeSelected.title }} box
         </div>
-        <div class="info__edit">
+        <div class="info__edit" @click="backToEditBundle">
           <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="8.49985" cy="8.49985" r="5.88462" fill="#231F20"/>
             <path d="M8.5 0C3.80588 0 0 3.80588 0 8.5C0 13.1941 3.80588 17 8.5 17C13.1941 17 17 13.1941 17 8.5C17 3.80588 13.1941 0 8.5 0ZM4.95833 12.0417L5.67092 9.18283L7.871 11.3822L4.95833 12.0417ZM8.61333 10.7107L6.34525 8.44262L10.4826 4.25L12.75 6.51667L8.61333 10.7107Z" fill="#FCD32B"/>
@@ -78,13 +78,13 @@
       </div>
       <div class="info__price">
         <div class="info__price--sub">
-          $44.95
+          {{ formatPrice(getItemSubtotal) }}
         </div>
         <div class="info__price--final">
-          $40.95
+          {{ totalItems }}
         </div>
       </div>
-      <div class="info__remove">
+      <div class="info__remove" @click="removeBundle">
         Remove
       </div>
     </div>
@@ -92,21 +92,53 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
+import { formatPrice } from '@shared/utils'
+import { CLEAN_ALL_CART } from '@shared/cartdrawer/store/_mutations-type'
+
 export default {
+  props: {
+    sizeSelected: {
+      type: Object,
+      required: true
+    }
+  },
   data() {
     return {
       options: [
         {
-          label: '1 Week'
-        },
-        {
           label: '2 Week'
         },
         {
-          label: '3 Week'
+          label: '4 Week'
+        },
+        {
+          label: '6 Week'
+        },
+        {
+          label: '8 Week'
         },
       ],
       selected: false,
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'getItemSubtotal'
+    ]),
+    totalItems() {
+      const discount = this.sizeSelected.discount / 100
+      const total = this.getItemSubtotal * (1 - discount)
+      return this.formatPrice(total)
+    }
+  },
+  methods: {
+    formatPrice,
+    backToEditBundle() {
+      window.location = '/pages/bundle'
+    },
+    removeBundle() {
+      this.$store.commit(CLEAN_ALL_CART)
     }
   }
 }

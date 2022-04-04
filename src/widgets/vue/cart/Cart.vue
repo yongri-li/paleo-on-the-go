@@ -2,7 +2,7 @@
   <div class="page o-containerLarge">
     <summary-component class="content-summary" />
     <div class="content-box-cart">
-      <your-box />
+      <your-box v-if="cart.items.length"/>
     </div>
   </div>
 </template>
@@ -11,10 +11,18 @@
 import SummaryComponent from './components/Summary/Summary.vue'
 import YourBox from './components/YourBox/YourBox.vue'
 
+import { mapState } from 'vuex'
+
 export default {
   components: {
     SummaryComponent,
     YourBox
+  },
+  computed: {
+    ...mapState([
+      'cart',
+      'sizes'
+    ])
   }
 }
 </script>

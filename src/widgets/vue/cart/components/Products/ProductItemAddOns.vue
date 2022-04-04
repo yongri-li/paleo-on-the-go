@@ -4,42 +4,70 @@
       <div class="pitemaddons__figure">
         <img
           class="pitemaddons__figure--img"
-          src="https://cdn.shopify.com/s/files/1/0088/3163/1415/products/BaconAppleChickenBurger1web_150x150.jpg?v=1575463357"
-          alt="Product Title"
+          :src="imageUrl"
+          :alt="product.title"
         />
       </div>
       <div class="pitemaddons__info">
         <div class="pitemaddons__info--title">
-          Product Title
+          {{ product.title }}
         </div>
         <div class="pitemaddons__info--subtitle">
           with dasljdal adsajdla
         </div>
         <div class="pitemaddons__price u-hideTabletUp">
-          $40.95
+          {{ finalPrice }}
         </div>
         <div class="pitemaddons__qt u-hideTabletUp">
-          QTY: 1
+          QTY: {{ product.quantity }}
         </div>
       </div>
     </div>
     <div class="pitemaddons__qt u-hideMobileDown">
-      1
+      {{ product.quantity }}
     </div>
     <div class="pitemaddons__price u-hideMobileDown">
-      $40.95
+      {{ finalPrice }}
     </div>
   </div>
 </template>
 
+<script>
+import { formatPrice } from '@shared/utils'
+
+export default {
+  props: {
+    product: {
+      type: Object,
+      required: true
+    },
+  },
+  computed: {
+    imageUrl() {
+      const imgFound = this.product.media.find(item => item.position === 1)
+      const urlFinal = imgFound.src.replace('.jpg','_150x150.jpg').replace('.png','_150x150.png')
+      return urlFinal
+    },
+    finalPrice() {
+      return formatPrice(this.product.price * this.product.quantity)
+    }
+  }
+}
+</script>
+
 <style lang="scss" scoped>
 .pitemaddons {
+
+  @include media-tablet-up {
+    @include flex($align: center);
+  }
 
   &__colum.product {
     @include flex($align: flex-start);
 
     @include media-tablet-up {
       width: 55%;
+      align-items: center;
     }
   }
 
@@ -53,6 +81,8 @@
   }
 
   &__info {
+    width: 65%;
+
     &--title {
       font-family: Knockout,sans-serif;
       font-size: 1.5rem;
@@ -62,10 +92,6 @@
       text-overflow: ellipsis;
       display: -webkit-box;
       text-transform: capitalize;
-
-      @include media-tablet-up {
-        margin-top: .5rem;
-      }
     }
 
     &--subtitle {

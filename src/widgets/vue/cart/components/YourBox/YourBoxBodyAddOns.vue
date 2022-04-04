@@ -4,6 +4,9 @@
       Add Ons
     </div>
     <product-item-add-ons
+      v-for="addon in addons"
+      :key="addon.id"
+      :product="addon"
       class="addons__content"
     />
   </div>
@@ -13,6 +16,12 @@
 import ProductItemAddOns from '../Products/ProductItemAddOns.vue'
 
 export default {
+  props: {
+    addons: {
+      type: Array,
+      required: true
+    }
+  },
   components: {
     ProductItemAddOns
   },
@@ -35,11 +44,6 @@ export default {
   &__content {
     background-color: #efede6;
     padding: .5rem;
-
-    @include media-tablet-up {
-      @include flex($align: flex-start);
-
-    }
   }
 }
 </style>
