@@ -36,7 +36,7 @@
 import ProductBtnAddToCart from './ProductBtnAddToCart.vue'
 import { mapGetters } from 'vuex'
 import { formatPrice } from '../../utils'
-import { REMOVE_PRODUCT_TO_CART } from '../../store/_mutations-type'
+import { REMOVE_PRODUCT_TO_CART } from '@shared/cartdrawer/store/_mutations-type'
 
 export default {
   components: {

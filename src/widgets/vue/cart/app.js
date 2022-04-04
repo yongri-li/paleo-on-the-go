@@ -1,7 +1,7 @@
 import Vue from 'vue';
 import mixins from '@shared/mixins'
 import plugins from '@shared/plugins'
-import store from './store'
+import store from '@shared/cartdrawer/store'
 import Cart from "./Cart.vue"
 
 import vSelect from 'vue-select'

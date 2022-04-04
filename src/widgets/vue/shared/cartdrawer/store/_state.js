@@ -1,11 +1,16 @@
-const {
-  sizes,
-  collections,
-  prebuilt,
-  filters
-} = window.Scoutside.bundle
+let bundle = window.Scoutside.bundle || {}
+bundle = Object.assign({
+  sizes: [],
+  collections: [],
+  prebuilt: {
+    content: {},
+    items: []
+  },
+  filters: []
+}, bundle)
+console.log(bundle)
 
-const prebuiltItemsParsed = prebuilt.items.map( ({bundlename, products}) => {
+const prebuiltItemsParsed = bundle.prebuilt.items.map( ({bundlename, products}) => {
   const splitProducts = products.replace(/\n/g,',').split(',')
   const productsParse = []
   splitProducts.forEach(product => {
@@ -27,11 +32,11 @@ const prebuiltItemsParsed = prebuilt.items.map( ({bundlename, products}) => {
 })
 
 const state = {
-  sizes,
-  collections,
-  filters,
+  sizes: bundle.sizes,
+  collections: bundle.collections,
+  filters: bundle.filters,
   prebuilt: {
-    content: prebuilt.content,
+    content: bundle.prebuilt.content,
     items: prebuiltItemsParsed
   },
   cart: {

@@ -74,7 +74,7 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
-import { MODAL_SETUP } from '../../store/_mutations-type'
+import { MODAL_SETUP } from '@shared/cartdrawer/store/_mutations-type'
 import { formatPrice } from '../../utils'
 import ProductBtnAddToCart from './ProductBtnAddToCart.vue'
 

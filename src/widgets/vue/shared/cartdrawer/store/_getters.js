@@ -1,6 +1,29 @@
-import { sortProducts } from '../utils'
+import { sortProducts } from '../../utils'
 
 export default {
+  getProductsFromRoute: (state) => ($route) => {
+    const param = $route.params.box
+    const collectionFound = state.collections.find(collection => collection.url === param)
+    let products = !!collectionFound ? collectionFound.products : state.collections[0].products
+
+    const queryRouter = $route.query
+    const keys = Object.keys(queryRouter)
+    keys.forEach(key => {
+      if(queryRouter[key]) {
+        const valSplit = queryRouter[key].split(',')
+        if(key === 'preference' || key === 'product_type') {
+          let prop = key === 'preference' ? 'tags' : 'type'
+          valSplit.forEach(val => {
+            products = products.filter(product => product[prop].includes(val))
+          })
+        }
+      }
+    })
+    return sortProducts({
+      products: [...products],
+      sortType: queryRouter.sort
+    })
+  },
   getProductFromCollectionsByIDs: (state) => ({idCollection, idProduct}) => {
     const collectionFound = state.collections.find(collection => collection.id === idCollection)
     const productFound = collectionFound.products.find(product => product.id === idProduct)
@@ -41,27 +64,18 @@ export default {
       orderType: sizeFound.order_type
     }
   },
-  getProductsFromRoute: (state) => ($route) => {
-    const param = $route.params.box
-    const collectionFound = state.collections.find(collection => collection.url === param)
-    let products = !!collectionFound ? collectionFound.products : state.collections[0].products
-
-    const queryRouter = $route.query
-    const keys = Object.keys(queryRouter)
-    keys.forEach(key => {
-      if(queryRouter[key]) {
-        const valSplit = queryRouter[key].split(',')
-        if(key === 'preference' || key === 'product_type') {
-          let prop = key === 'preference' ? 'tags' : 'type'
-          valSplit.forEach(val => {
-            products = products.filter(product => product[prop].includes(val))
-          })
-        }
-      }
+  getAddOnsSubtotal: (state) => {
+    let subtotal = 0
+    state.cart.addons.forEach(addon => {
+      subtotal += addon.price * addon.quantity
     })
-    return sortProducts({
-      products: [...products],
-      sortType: queryRouter.sort
+    return subtotal
+  },
+  getItemSubtotal: (state) => {
+    let subtotal = 0
+    state.cart.items.forEach(item => {
+      subtotal += item.price * item.quantity
     })
+    return subtotal
   }
 }

@@ -4,6 +4,7 @@ import {
   REMOVE_PRODUCT_TO_CART,
   CHANGE_SIZE_SELECTED,
   CLEAN_CART_ITEMS,
+  CLEAN_ALL_CART,
   ADD_PRODUCT_TO_CART_WITH_QT,
   MODAL_CLOSE,
   MODAL_SETUP,
@@ -56,11 +57,17 @@ export default {
   [CLEAN_CART_ITEMS] (state) {
     state.cart.items = []
   },
+  [CLEAN_ALL_CART] (state) {
+    state.cart = {
+      items: [],
+      addons: []
+    }
+  },
   [MODAL_CLOSE] (state) {
     state.modal.settings.open = false
   },
   [MODAL_SETUP] (state, { component, settings }) {
-    state.modal.component = require(`../components/Modals/${component}.vue`).default
+    state.modal.component = require(`../../../bundle/components/Modals/${component}.vue`).default
     state.modal.settings = {
       open: true,
       ...settings

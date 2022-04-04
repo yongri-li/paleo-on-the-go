@@ -100,7 +100,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { FILTER_TOGGLE_ACTIVE } from '../../store/_mutations-type'
+import { FILTER_TOGGLE_ACTIVE } from '@shared/cartdrawer/store/_mutations-type'
 
 export default {
   props: {

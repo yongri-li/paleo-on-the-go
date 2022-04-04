@@ -34,7 +34,7 @@ import MealCartBody from './MealCartBody.vue'
 import MealCartFooter from './MealCartFooter.vue'
 
 import { mapState, mapGetters } from 'vuex'
-import { CHANGE_SIZE_SELECTED, CLEAN_CART_ITEMS } from '../../store/_mutations-type'
+import { CHANGE_SIZE_SELECTED, CLEAN_ALL_CART } from '@shared/cartdrawer/store/_mutations-type'
 
 import { changeRouter } from '../../utils'
 
@@ -116,7 +116,7 @@ export default {
       if(box === 'onetime' && orderType !== 'onetime') {
         console.log('entro al if del /onetime')
         this.$store.commit( CHANGE_SIZE_SELECTED, { val: 'onetime' } )
-        this.$store.commit( CLEAN_CART_ITEMS )
+        this.$store.commit( CLEAN_ALL_CART )
         return
       }
 
@@ -124,7 +124,7 @@ export default {
       if(box === 'subscription' && orderType !== 'subscription') {
         console.log('entro al if del /subscription')
         this.$store.commit( CHANGE_SIZE_SELECTED, { val: '12items' } )
-        this.$store.commit( CLEAN_CART_ITEMS )
+        this.$store.commit( CLEAN_ALL_CART )
         return
       }
 

@@ -106,6 +106,8 @@ export default {
       }
       else {
         console.log('hay que ir al checkout')
+        // maybe add a loading
+        window.location = '/cart'
       }
     }
   }
