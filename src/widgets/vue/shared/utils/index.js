@@ -382,3 +382,8 @@ export const sortProducts = ({products, sortType}) => {
 
   return products
 }
+
+export const getPriceWithDiscount = ({price, discount}) => {
+  discount = discount / 100
+  return price * (1 - discount)
+}

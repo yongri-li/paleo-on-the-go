@@ -41,7 +41,8 @@ const state = {
   },
   cart: {
     items: [],
-    addons: []
+    addons: [],
+    pdp: []
   },
   modal: {
     settings: {
