@@ -5,9 +5,13 @@
         Subtotal
       </div>
       <div class="subtotal__price">
-        $89.95
+        {{ finalSubtotal }}
       </div>
-      <div class="subtotal__checkout">
+      <div
+        :class="{ agree: agree }"
+        class="subtotal__checkout"
+        @click="checkout"
+      >
         Checkout
       </div>
       <div class="subtotal__msg">
@@ -18,9 +22,13 @@
           type="checkbox"
           name="agreecheck"
           id="agreecheck"
+          v-model="agree"
           class="subtotal__agree--check"
         />
-        <label for="agreecheck" class="subtotal__agree--label">
+        <label
+          for="agreecheck"
+          class="subtotal__agree--label"
+        >
           I agree with the
         </label>
         <a href="#" target="_blank"
@@ -32,6 +40,36 @@
     </div>
   </div>
 </template>
+
+<script>
+import { mapGetters } from 'vuex'
+import { formatPrice } from '@shared/utils'
+
+export default {
+  data() {
+    return {
+      agree: false
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'getSizeSelected',
+      'getItemSubtotal',
+      'getAddOnsSubtotal'
+    ]),
+    finalSubtotal() {
+      const discount = this.getSizeSelected.discount / 100
+      const total = this.getItemSubtotal * (1 - discount) + this.getAddOnsSubtotal
+      return formatPrice(total)
+    }
+  },
+  methods: {
+    checkout() {
+      console.log('funciona el click')
+    }
+  },
+}
+</script>
 
 <style lang="scss" scoped>
 
@@ -61,8 +99,13 @@
     padding: 1rem 0;
     font-size: 1.3rem;
     font-weight: 500;
-    opacity: .5;
     margin-bottom: 1.5rem;
+    opacity: .5;
+    pointer-events: none;
+  }
+  &__checkout.agree {
+    opacity: 1;
+    pointer-events: initial;
   }
 
   &__msg {
