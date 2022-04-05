@@ -1,18 +1,18 @@
 <template>
   <div class="page o-containerLarge">
-    <stepper />
+    <!-- <stepper /> -->
     <div class="content-products-cart">
       <div class="content-products">
-        <filter-and-sorting :length-products="products.length" />
+        <!-- <filter-and-sorting :length-products="products.length" /> -->
         <product-collection :products="products" />
       </div>
-      <meal-cart />
+      <!-- <meal-cart /> -->
     </div>
-    <footer-banner
+    <!-- <footer-banner
       :items="footerBanner.item"
       :title="footerBanner.content.title"
     />
-    <modal v-if="modal.settings.open"/>
+    <modal v-if="modal.settings.open"/> -->
   </div>
 </template>
 
@@ -58,10 +58,10 @@ export default {
     }
   },
   computed: {
-    ...mapState([
+    ...mapState('cartdrawer',[
       'modal'
     ]),
-    ...mapGetters([
+    ...mapGetters('cartdrawer',[
       'getProductsFromRoute'
     ]),
     products() {

@@ -1,9 +1,10 @@
 <template>
   <div class="page o-containerLarge">
-    <summary-component class="content-summary" />
+    <!-- <summary-component class="content-summary" />
     <div class="content-box-cart">
       <your-box v-if="cart.items.length"/>
-    </div>
+    </div> -->
+    Pruebaaa
   </div>
 </template>
 
@@ -19,9 +20,12 @@ export default {
     YourBox
   },
   computed: {
-    ...mapState([
+    ...mapState('cartdrawer',[
       'cart',
       'sizes'
+    ]),
+    ...mapState('ui',[
+      'test'
     ])
   }
 }

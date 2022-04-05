@@ -95,10 +95,10 @@ export default {
     },
   },
   computed: {
-    ...mapState([
+    ...mapState('cartdrawer',[
       'sizes'
     ]),
-    ...mapGetters([
+    ...mapGetters('cartdrawer',[
       'getProductFromCartByID',
       'getSizeSelected'
     ]),
@@ -142,12 +142,12 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
+    ...mapActions('cartdrawer',[
       'addToCart',
       'reduceToCart'
     ]),
     openModal() {
-      this.$store.commit(MODAL_SETUP, {
+      this.$store.cartdrawer.commit(MODAL_SETUP, {
         component: 'ModalProduct',
         settings: {
           params: {

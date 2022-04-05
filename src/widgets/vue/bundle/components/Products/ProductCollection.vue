@@ -25,7 +25,7 @@ export default {
     }
   },
   computed: {
-    ...mapState([
+    ...mapState('cartdrawer',[
       'collections',
       'cart'
     ])
