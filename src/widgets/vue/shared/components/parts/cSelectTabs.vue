@@ -79,8 +79,12 @@ export default {
 		padding: 1.5rem 0;
 
 		article {
+			display: -webkit-box;
+			-webkit-line-clamp: 8;
+			-webkit-box-orient: vertical;
 			line-height: 1.5;
 			opacity: 0;
+			overflow: hidden;
 			transition: opacity 175ms;
 		}
 

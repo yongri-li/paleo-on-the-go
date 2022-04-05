@@ -1,0 +1,71 @@
+{% assign master_collection_handle = section.settings.master_collection %}
+
+<script>
+  let plp = {{ section.settings | json }}  
+
+  const master_collection_items = [];
+  {%- for collection in collections limit: 100 -%}
+    {%- if collection.handle == master_collection_handle -%}  
+      {%- for _product in collection.products limit: 999 -%}
+        master_collection_items.push({{ _product | json }});
+      {%- endfor -%} 
+    {%- endif -%}
+  {%- endfor -%}  
+
+  const collections = [];
+  {% for block in section.blocks %}
+    {% assign _collection = collections[block.settings.collection] %}
+
+    collections.push({
+      ...JSON.parse(JSON.stringify({{ _collection | json }})),
+      icon: '{{ block.settings.icon | img_url: "master" }}',
+      short_description: '{{ block.settings.short_description }}',
+      products: [
+        {%- for _product in _collection.products limit:999 -%}      
+          {
+            ...JSON.parse(JSON.stringify({{ _product | json }})),
+            subtitle: `{{ _product.metafields.my_fields.subtitle }}`,
+            url: '{{ _product.url }}',
+            // flag: '{{ _product.metafields.my_fields.flag }}'
+          },
+        {%- endfor -%} 
+      ]  
+    });
+  {% endfor %}  
+
+  plp['master_collection_items'] = master_collection_items;  
+  plp['sub_collection_items'] = collections  
+  
+  window.Scoutside.plp = plp   
+</script>
+
+{% schema %}
+  {
+    "name": "Master Collection",
+    "settings": [
+      {
+        "id": "master_collection",
+        "type": "collection",
+        "label": "Master Collection"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "children",
+        "name": "Sub Collection",
+        "settings": [
+          {
+            "id": "collection",
+            "type": "collection",
+            "label": "Collection"
+          },
+          {
+            "id": "short_description",
+            "type": "richtext",
+            "label": "Short Description"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

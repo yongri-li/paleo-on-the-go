@@ -1,21 +1,19 @@
 <template>
   <div class="pdp__wrap">
     <div class="pdp__main o-containerFullWidth">
-      <cProductGallery class="main__column" :autoplay="gallery_autoplay" :images="product.images" />
-
       <section class="pdp__content">
         <div class="pdp__content--wrap">
           <div class="rating__leaf--warp">
-            <span v-html="ratingLeaf" v-for="leaf in 5"></span>
+            <!--             <span v-html="ratingLeaf" v-for="leaf in 5"></span>
             <button>{{ ratingsCount }} Reviews</button>
-            <div v-if="ratings">{{ ratings.value }}</div>
+            <div v-if="ratings">{{ ratings.value }}</div> -->
           </div>
-          <h1 class="c-h1 c-heading">{{ product.title }}</h1>
-          <h5 v-if="subtitle" class="c-h5 pdp__content--wrap__subheader">{{ subtitle }}</h5>
-          <h5 v-if="price" class="c-h5 pdp__content--wrap__price">{{ price }}</h5>
+          <!-- <h1 class="c-h1 c-heading">{{ product.title }}</h1> -->
+          <!-- <h5 v-if="subtitle" class="c-h5 pdp__content--wrap__subheader">{{ subtitle }}</h5> -->
+          <!-- <h5 v-if="price" class="c-h5 pdp__content--wrap__price">{{ price }}</h5> -->
 
           <div class="pdp__content--ctas">
-            <c-button
+            <!--             <c-button
               class="c-cta pdp__main--atcButton"
               @click="isCustomer ? handleAdd : handleGetStarted"
               :loading="loading"
@@ -23,29 +21,29 @@
               :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
               :attributes="{ disabled: loading }"
               :class="added ? 'item--added' : null"
-            />
+            /> -->
           </div>
 
-          <cSelectTabs :pdpinfo="info" />
+          <!--  <cSelectTabs :pdpinfo="info" /> -->
         </div>
       </section>
     </div>
     <!--   <div id="shopify-product-reviews" v-html="reviews"></div>   -->
-    <c-related-meals :products="related_products" :labels="labels" />
+    <!-- <c-related-meals :products="sub_collection_items" :labels="labels" /> -->
+    <c-related-meals :products="sub_collection_items[0].products" />
   </div>
 </template>
 
 <script>
 import { formatPrice } from '../utils'
-import cProductGallery from '@shared/components/parts/cProductGallery.vue'
 import cButton from '@shared/components/core/cButton.vue'
 import cSelectTabs from '@shared/components/parts/cSelectTabs.vue'
 import cRelatedMeals from './sections/cRelatedMeals.vue'
 
 export default {
-  name: 'Pdp',
+  name: 'Plp',
   data: () => ({
-    ...window.Scoutside.pdp,
+    ...window.Scoutside.plp,
     controllerData: [],
     isFullPage: true,
     isMobile: false,
@@ -54,7 +52,6 @@ export default {
     addedTxt: 'Added'
   }),
   components: {
-    cProductGallery,
     cButton,
     cRelatedMeals,
     cSelectTabs
@@ -70,9 +67,9 @@ export default {
       })
       return arr
     },
-    price() {
-      return `Starts at ${formatPrice(this.product.price)}`
-    },
+    // price() {
+    //   return `Starts at ${formatPrice(this.product.price)}`
+    // },
     isCustomer() {
       return customer.email && customer.shopify_id ? true : false
     },
@@ -81,13 +78,13 @@ export default {
       <path d="M9.16859 -3.09007e-05L0.403564 16.3262L8.03129 23.6963L8.03129 29.0255L10.2961 29.0255L10.2961 23.6963L17.9238 16.3262L9.16859 -3.09007e-05ZM3.20759 15.891L8.03129 6.89608L8.03129 20.5626L3.20759 15.891ZM10.2961 6.89608L15.1296 15.891L10.2961 20.5626L10.2961 6.89608Z" fill="#8ECEAB"/>
       </svg>
       `
-    },
-    ratingsCount() {
-      return this.rating_count ? this.rating_count : 0
-    },
-    ratings() {
-      return this.rating ? JSON.parse(this.rating) : null
     }
+    // ratingsCount() {
+    //   return this.rating_count ? this.rating_count : 0
+    // },
+    // ratings() {
+    //   return this.rating ? JSON.parse(this.rating) : null
+    // }
   },
   methods: {
     onResize() {
@@ -96,7 +93,7 @@ export default {
     handleAdd() {
       this.loading = true
 
-      /// Add Shared Cart function here.
+      ///// Add Shared Cart function here.
 
       setTimeout(() => {
         this.loading = false
@@ -157,9 +154,9 @@ export default {
       justify-self: flex-end;
       height: 100%;
 
-      /* use if want sticky scroll elmement...
+      /*  use if want sticky scroll elmement...
       position: sticky;
-      top: 0;*/
+      top: 0; */
     }
 
     .pdp__content {
