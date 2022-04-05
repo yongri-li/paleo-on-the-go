@@ -11,7 +11,6 @@
 
 <script>
 import ProductCard from './ProductCard.vue'
-import { mapState } from 'vuex'
 
 export default {
   name: 'ProductCollection',
@@ -23,13 +22,7 @@ export default {
       type: Array,
       required: true
     }
-  },
-  computed: {
-    ...mapState('cartdrawer',[
-      'collections',
-      'cart'
-    ])
-  },
+  }
 }
 </script>
 

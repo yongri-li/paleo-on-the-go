@@ -46,7 +46,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
+    ...mapActions('mealcart', [
       'addToCart',
       'reduceToCart'
     ]),

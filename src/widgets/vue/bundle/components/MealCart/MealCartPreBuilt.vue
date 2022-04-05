@@ -28,7 +28,7 @@
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex'
-import { CLEAN_ALL_CART } from '@shared/cartdrawer/store/_mutations-type'
+import { CLEAN_ALL_CART } from '../../store/modules/mealcart/_mutations-type'
 
 export default {
   data() {
@@ -37,10 +37,10 @@ export default {
     }
   },
   computed: {
-    ...mapState([
+    ...mapState('mealcart', [
       'prebuilt'
     ]),
-    ...mapGetters([
+    ...mapGetters('mealcart', [
       'getSizeSelected',
       'getPrebuiltByBox',
       'getProductPrebuilt'
@@ -58,7 +58,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
+    ...mapActions('mealcart', [
       'validateSetPrebuilt'
     ]),
     setBundleSelected(val) {
@@ -75,7 +75,7 @@ export default {
       else {
         this.selected = false
 
-        this.$store.commit(CLEAN_ALL_CART)
+        this.$store.commit(`mealcart/${CLEAN_ALL_CART}`)
       }
     }
   }

@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { formatPrice } from '../../utils'
+import { formatPrice } from '@shared/utils'
 
 export default {
   props: {

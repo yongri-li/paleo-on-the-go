@@ -46,7 +46,7 @@ export default {
     this.valSelected = this.getSizeSelected.val
   },
   computed: {
-    ...mapGetters([
+    ...mapGetters('mealcart', [
       'getSizeSelected'
     ])
   },
@@ -58,7 +58,7 @@ export default {
       this.$emit('close')
     },
     saveChanged() {
-      this.$store.dispatch('validateChangeSizeSelected', this.valSelected)
+      this.$store.dispatch('mealcart/validateChangeSizeSelected', this.valSelected)
     }
   }
 }

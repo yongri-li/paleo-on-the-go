@@ -39,7 +39,7 @@ export default {
       this.$emit('close')
     },
     saveChanged() {
-      this.$store.dispatch('setPrebuiltBoxToCart', this.params.listProduct)
+      this.$store.dispatch('mealcart/setPrebuiltBoxToCart', this.params.listProduct)
     }
   }
 }

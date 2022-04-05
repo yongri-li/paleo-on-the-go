@@ -28,7 +28,9 @@ import MealCartBoxSizes from './MealCartBoxSizes.vue'
 import MealCartPreBuilt from './MealCartPreBuilt.vue'
 import MealCartProductList from './MealCartProductList.vue'
 
-import { MODAL_SETUP } from '@shared/cartdrawer/store/_mutations-type'
+import { mapActions } from 'vuex'
+
+import { MODAL_SETUP } from '../../store/modules/modals/_mutations-type'
 
 export default {
   components: {
@@ -51,11 +53,14 @@ export default {
     }
   },
   methods: {
+    ...mapActions('mealcart',[
+      'validateChangeSizeSelected'
+    ]),
     changeSizeSelected(newVal) {
-      this.$store.dispatch('validateChangeSizeSelected', newVal)
+      this.validateChangeSizeSelected(newVal)
     },
     openModal() {
-      this.$store.commit(MODAL_SETUP, { component: 'ModalBoxSize' })
+      this.$store.commit(`modals/${MODAL_SETUP}`, { component: 'ModalBoxSize' })
     }
   }
 }

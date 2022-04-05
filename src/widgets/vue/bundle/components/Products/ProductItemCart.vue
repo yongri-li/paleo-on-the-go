@@ -35,8 +35,8 @@
 <script>
 import ProductBtnAddToCart from './ProductBtnAddToCart.vue'
 import { mapGetters } from 'vuex'
-import { formatPrice } from '../../utils'
-import { REMOVE_PRODUCT_TO_CART } from '@shared/cartdrawer/store/_mutations-type'
+import { formatPrice } from '@shared/utils'
+import { REMOVE_PRODUCT_TO_CART } from '../../store/modules/mealcart/_mutations-type'
 
 export default {
   components: {
@@ -53,7 +53,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
+    ...mapGetters('mealcart', [
       'getSizeSelected'
     ]),
     imageUrl() {
@@ -73,7 +73,7 @@ export default {
   },
   methods: {
     removeProductToCart() {
-      this.$store.commit(REMOVE_PRODUCT_TO_CART, {
+      this.$store.commit(`mealcart/${REMOVE_PRODUCT_TO_CART}`, {
         idProduct: this.product.id,
         where: this.where,
       })

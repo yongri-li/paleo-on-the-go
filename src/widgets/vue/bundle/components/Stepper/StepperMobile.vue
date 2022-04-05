@@ -17,7 +17,7 @@ import { changeRouter } from '../../utils'
 
 export default {
   computed: {
-    ...mapGetters([
+    ...mapGetters('mealcart', [
       'getSizeSelected'
     ]),
     step() {

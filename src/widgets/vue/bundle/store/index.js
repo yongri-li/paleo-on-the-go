@@ -9,7 +9,11 @@ const persist = new VuexPersistence({
   reducer: (state) => ({
     cartdrawer: {
       cart: state.cartdrawer.cart,
-      sizes: state.cartdrawer.sizes
+      sizeSelected: state.cartdrawer.sizeSelected
+    },
+    mealcart: {
+      cart: state.mealcart.cart,
+      sizes: state.mealcart.sizes
     }
   })
 })

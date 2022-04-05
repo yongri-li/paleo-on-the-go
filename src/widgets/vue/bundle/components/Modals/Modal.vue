@@ -17,7 +17,7 @@
 
 <script>
 import cOverlay from '@shared/components/core/cOverlay.vue'
-import { MODAL_CLOSE } from '@shared/cartdrawer/store/_mutations-type'
+import { MODAL_CLOSE } from '../../store/modules/modals/_mutations-type'
 
 import { mapState } from 'vuex'
 
@@ -26,14 +26,14 @@ export default {
     cOverlay
   },
   computed: {
-    ...mapState([
+    ...mapState('modals', [
       'modal'
     ])
   },
   methods: {
     closeModal() {
       console.log('funciona el click')
-      this.$store.commit(MODAL_CLOSE)
+      this.$store.commit(`modals/${MODAL_CLOSE}`)
     }
   }
 }
