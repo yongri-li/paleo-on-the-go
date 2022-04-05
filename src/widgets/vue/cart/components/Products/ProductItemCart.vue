@@ -5,10 +5,11 @@
   >
     <div class="pitemcart__body">
       <div class="pitemcart__figure">
-        <div class="pitemcart__figure--remove" @click="removeProductToCart">
-          x
-        </div>
-        <img class="pitemcart__figure--img" :src="imageUrl" :alt="product.title" />
+        <img
+          class="pitemcart__figure--img"
+          :src="imageUrl"
+          :alt="product.title"
+        />
       </div>
       <div class="pitemcart__info">
         <div class="pitemcart__info--title">
@@ -22,26 +23,13 @@
         </div>
       </div>
     </div>
-    <product-btn-add-to-cart
-      class="pitemcart__add-to-cart"
-      :id-collection="product.collection.id"
-      :id-product="product.id"
-      :qt-product="product.quantity"
-      :where="where"
-    />
   </div>
 </template>
 
 <script>
-import ProductBtnAddToCart from './ProductBtnAddToCart.vue'
-import { mapGetters } from 'vuex'
-import { formatPrice } from '../../utils'
-import { REMOVE_PRODUCT_TO_CART } from '@shared/cartdrawer/store/_mutations-type'
+import { formatPrice } from '@shared/utils'
 
 export default {
-  components: {
-    ProductBtnAddToCart
-  },
   props: {
     product: {
       type: Object,
@@ -53,32 +41,18 @@ export default {
     }
   },
   computed: {
-    ...mapGetters([
-      'getSizeSelected'
-    ]),
     imageUrl() {
       const imgFound = this.product.media.find(item => item.position === 1)
       const urlFinal = imgFound.src.replace('.jpg','_150x150.jpg').replace('.png','_150x150.png')
       return urlFinal
     },
-    where() {
-      const param = this.$route.params.box
-      return param === 'addons' ? 'addons' : 'items'
-    },
     finalPrice() {
-      const discount = this.getSizeSelected.discount / 100
-      const price = this.where === 'addons' ? this.product.price : this.product.price * (1 - discount)
+      // const discount = this.getSizeSelected.discount / 100
+      // const price = this.where === 'addons' ? this.product.price : this.product.price * (1 - discount)
+      const price = this.product.price
       return formatPrice(price)
     }
   },
-  methods: {
-    removeProductToCart() {
-      this.$store.commit(REMOVE_PRODUCT_TO_CART, {
-        idProduct: this.product.id,
-        where: this.where,
-      })
-    }
-  }
 }
 </script>
 

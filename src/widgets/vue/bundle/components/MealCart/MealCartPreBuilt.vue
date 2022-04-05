@@ -28,7 +28,7 @@
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex'
-import { CLEAN_CART_ITEMS } from '../../store/_mutations-type'
+import { CLEAN_ALL_CART } from '@shared/cartdrawer/store/_mutations-type'
 
 export default {
   data() {
@@ -75,7 +75,7 @@ export default {
       else {
         this.selected = false
 
-        this.$store.commit(CLEAN_CART_ITEMS)
+        this.$store.commit(CLEAN_ALL_CART)
       }
     }
   }

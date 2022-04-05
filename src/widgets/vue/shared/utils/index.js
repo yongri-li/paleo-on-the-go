@@ -370,3 +370,20 @@ export function stillProcessingWarningPopup() {
 export function removeReloadWarning() {
   window.removeEventListener('beforeunload', warningPop)
 }
+
+export const sortProducts = ({products, sortType}) => {
+  if(sortType) {
+    sortType = sortType.toLowerCase().replace(/ /g,'-')
+
+    if(sortType === 'newest') {
+      products.sort((a,b) => new Date(b.created_at) - new Date(a.created_at))
+    }
+  }
+
+  return products
+}
+
+export const getPriceWithDiscount = ({price, discount}) => {
+  discount = discount / 100
+  return price * (1 - discount)
+}

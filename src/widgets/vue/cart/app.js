@@ -1,15 +1,11 @@
 import Vue from 'vue';
 import mixins from '@shared/mixins'
 import plugins from '@shared/plugins'
-import store from './store'
-import Cart from "./components/Cart.vue"
+import store from '@shared/cartdrawer/store'
+import Cart from "./Cart.vue"
 
-/* Register Filters */
-// filters.forEach(filter => {
-//   const key = Object.keys(filter)[0];
-//   const fn = filter[key]
-//   Vue.filter(key, fn)
-// });
+import vSelect from 'vue-select'
+import 'vue-select/dist/vue-select.css';
 
 /* Register Mixins */
 Vue.mixin(mixins);
@@ -19,4 +15,5 @@ plugins.forEach(plugin => Vue.use(plugin));
 
 /* Register Component */
 Cart.store = store
+Vue.component('v-select', vSelect)
 Vue.customElement('v-cart', Cart)

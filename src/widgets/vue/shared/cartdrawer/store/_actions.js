@@ -3,13 +3,13 @@ import {
   REDUCE_PRODUCT_TO_CART,
   REMOVE_PRODUCT_TO_CART,
   CHANGE_SIZE_SELECTED,
-  CLEAN_CART_ITEMS,
+  CLEAN_ALL_CART,
   ADD_PRODUCT_TO_CART_WITH_QT,
   MODAL_SETUP,
   MODAL_CLOSE
 } from './_mutations-type'
 
-import { changeRouter } from '../utils'
+import { changeRouter } from '../../../bundle/utils'
 
 export default {
   addToCart({ commit, getters }, {idCollection, idProduct, where}) {
@@ -45,7 +45,7 @@ export default {
     const sizeSelected = getters.getSizeSelected
     const changed = changeRouter(sizeSelected.order_type)
     if(changed) {
-      commit( CLEAN_CART_ITEMS )
+      commit( CLEAN_ALL_CART )
     }
 
     commit( MODAL_CLOSE )
@@ -65,7 +65,7 @@ export default {
     }
   },
   setPrebuiltBoxToCart({ commit, getters }, listProduct) {
-    commit(CLEAN_CART_ITEMS)
+    commit(CLEAN_ALL_CART)
 
     listProduct.forEach(product => {
       const [id, qt] = product.split('x')

@@ -17,7 +17,7 @@
 
 <script>
 import cOverlay from '@shared/components/core/cOverlay.vue'
-import { MODAL_CLOSE } from '../../store/_mutations-type'
+import { MODAL_CLOSE } from '@shared/cartdrawer/store/_mutations-type'
 
 import { mapState } from 'vuex'
 

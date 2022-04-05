@@ -28,7 +28,7 @@ import MealCartBoxSizes from './MealCartBoxSizes.vue'
 import MealCartPreBuilt from './MealCartPreBuilt.vue'
 import MealCartProductList from './MealCartProductList.vue'
 
-import { MODAL_SETUP } from '../../store/_mutations-type'
+import { MODAL_SETUP } from '@shared/cartdrawer/store/_mutations-type'
 
 export default {
   components: {
