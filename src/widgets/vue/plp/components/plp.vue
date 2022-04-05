@@ -1,75 +1,64 @@
 <template>
-  <div class="pdp__wrap">
-    <div class="pdp__main o-containerFullWidth">
-      <section class="pdp__content">
-        <div class="pdp__content--wrap">
-          <div class="rating__leaf--warp">
-            <!--             <span v-html="ratingLeaf" v-for="leaf in 5"></span>
-            <button>{{ ratingsCount }} Reviews</button>
-            <div v-if="ratings">{{ ratings.value }}</div> -->
+  <div class="c-plp o-containerFullWidth">
+    <c-page-hero :content="heroContent" class="c-plp__hero" />
+    <section class="c-plp__body">
+      <nav class="c-plp__body--nav">
+        <ul>
+          <li v-for="(collection, i) in collections" @click="activeNum = i">{{ collection.title }}</li>
+        </ul>
+      </nav>
+      <article>
+        <h3>{{ collections[activeNum].title }}</h3>
+        <div class="c-plp__body--grid">
+          <div
+            v-for="(product, index) in collections[activeNum].products"
+            :key="index"
+            class="c-plpGrid__item"
+            v-if="product.available"
+          >
+            <c-product-card :product="product" />
           </div>
-          <!-- <h1 class="c-h1 c-heading">{{ product.title }}</h1> -->
-          <!-- <h5 v-if="subtitle" class="c-h5 pdp__content--wrap__subheader">{{ subtitle }}</h5> -->
-          <!-- <h5 v-if="price" class="c-h5 pdp__content--wrap__price">{{ price }}</h5> -->
-
-          <div class="pdp__content--ctas">
-            <!--             <c-button
-              class="c-cta pdp__main--atcButton"
-              @click="isCustomer ? handleAdd : handleGetStarted"
-              :loading="loading"
-              :text="isCustomer ? (added ? addedTxt : labels.atc) : labels.getStarted"
-              :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
-              :attributes="{ disabled: loading }"
-              :class="added ? 'item--added' : null"
-            /> -->
-          </div>
-
-          <!-- <cSelectTabs :pdpinfo="info" /> -->
         </div>
-      </section>
-    </div>
-    <!--   <div id="shopify-product-reviews" v-html="reviews"></div>   -->
-    <!-- <c-related-meals :products="sub_collection_items" :labels="labels" /> -->
-    <c-related-meals :products="sub_collection_items[0].products" />
+
+        <!--         <hr />
+        <h3>{{ collections[activeNum].title }}</h3>
+        <div class="c-plp__body--grid">
+          <div
+            v-for="(product, index) in collections[activeNum].products"
+            :key="index"
+            class="c-plpGrid__item"
+            v-if="product.available"
+          >
+            <c-product-card :product="product" />
+          </div>
+        </div> -->
+      </article>
+    </section>
   </div>
 </template>
 
 <script>
 import { formatPrice } from '../utils'
-import cButton from '@shared/components/core/cButton.vue'
-import cSelectTabs from '@shared/components/parts/cSelectTabs.vue'
-import cRelatedMeals from './sections/cRelatedMeals.vue'
+import cProductCard from './sections/cProductCard.vue'
+import cPageHero from '@shared/components/parts/cPageHero.vue'
 
 export default {
   name: 'Plp',
   data: () => ({
     ...window.Scoutside.plp,
-    controllerData: [],
-    isFullPage: true,
-    isMobile: false,
-    loading: false,
-    added: false,
-    addedTxt: 'Added'
+    activeNum: 0
   }),
   components: {
-    cButton,
-    cRelatedMeals,
-    cSelectTabs
+    cProductCard,
+    cPageHero
   },
   computed: {
-    labels() {
-      let arr = {}
-      Object.entries(this.$data).forEach(([key, value]) => {
-        if (key.includes('label_')) {
-          const label = key.replace('label_', '')
-          arr[label] = value
-        }
-      })
-      return arr
-    },
     // price() {
     //   return `Starts at ${formatPrice(this.product.price)}`
     // },
+    collections() {
+      return this.sub_collection_items
+    },
     isCustomer() {
       return customer.email && customer.shopify_id ? true : false
     },
@@ -78,6 +67,16 @@ export default {
       <path d="M9.16859 -3.09007e-05L0.403564 16.3262L8.03129 23.6963L8.03129 29.0255L10.2961 29.0255L10.2961 23.6963L17.9238 16.3262L9.16859 -3.09007e-05ZM3.20759 15.891L8.03129 6.89608L8.03129 20.5626L3.20759 15.891ZM10.2961 6.89608L15.1296 15.891L10.2961 20.5626L10.2961 6.89608Z" fill="#8ECEAB"/>
       </svg>
       `
+    },
+    heroContent() {
+      let obj = {}
+      Object.entries(this.$data).map(([key, val]) => {
+        if (key.includes('hero_')) {
+          const label = key.replace('hero_', '')
+          obj[label] = val
+        }
+      })
+      return obj
     }
     // ratingsCount() {
     //   return this.rating_count ? this.rating_count : 0
@@ -87,13 +86,13 @@ export default {
     // }
   },
   methods: {
-    onResize() {
-      this.isMobile = window.innerWidth < 768
-    },
+    // onResize() {
+    //   this.isMobile = window.innerWidth < 768
+    // },
     handleAdd() {
       this.loading = true
 
-      ///// Add Shared Cart function here.
+      ////// Add Shared Cart function here.
 
       setTimeout(() => {
         this.loading = false
@@ -106,98 +105,92 @@ export default {
         ? (window.location.href = '/account/#/details')
         : (window.location = this.url_getStarted)
     }
-  },
-  beforeDestroy() {
-    if (typeof window !== 'undefined') {
-      window.removeEventListener('resize', this.onResize, { passive: true })
-    }
-  },
-  beforeMount() {
-    this.onResize()
-    window.addEventListener('resize', this.onResize, { passive: true })
   }
+  // beforeDestroy() {
+  //   if (typeof window !== 'undefined') {
+  //     window.removeEventListener('resize', this.onResize, { passive: true })
+  //   }
+  // },
+  // beforeMount() {
+  //   this.onResize()
+  //   window.addEventListener('resize', this.onResize, { passive: true })
+  // }
 }
 </script>
 
 <style lang="scss">
-.pdp__wrap {
+.c-plp {
   position: relative;
 
-  .pdp__main {
-    position: relaive;
-    display: flex;
-    flex-flow: column;
-    background-color: $color-ecru;
+  &__body {
+    position: relative;
+    height: 100%;
+    overflow: visible;
+    display: flex; /* enables flex content for its children */
+    box-sizing: border-box;
+    padding: 3.5rem 0;
 
-    /* use if want sticky scroll elmement...
-    overflow-y: scroll;*/
-
-    @include media-tablet-up {
+    & > nav,
+    article {
+      height: 100%; /* allows both columns to span the full height of the browser window */
       display: flex;
-      flex-flow: row;
-      grid-gap: 3.5rem;
-      /*   flex-flow: column-reverse;*/
+      flex-direction: column;
+
+      flex-grow: 1; /* ensures that the container will take up the full height of the parent container */
+      overflow-y: auto;
+    }
+
+    nav {
+      position: sticky;
+      top: 100px;
+      flex-shrink: 0; /* makes sure that content is not cut off in a smaller browser window */
+
+      li {
+        cursor: pointer;
+      }
+    }
+
+    &--grid {
+      display: grid;
+      grid-template: auto / repeat(3, 1fr);
+      grid-gap: 2rem;
     }
 
     @include media-desktop-up {
-      padding: 3rem 4vw 5rem;
-    }
+      width: 92vw;
+      max-width: 1600px;
+      margin: 0 auto;
 
-    @include media-mobile-down {
-      .pdp__gallery {
-        width: 100vw;
-      }
-    }
-
-    .main__column {
-      flex: 1.5;
-      justify-self: flex-end;
-      height: 100%;
-
-      /*  use if want sticky scroll elmement...
-      position: sticky;
-      top: 0; */
-    }
-
-    .pdp__content {
-      flex: 2;
-
-      &--wrap {
-        max-width: clamp(390px, 45vw, 1000px);
-
-        .c-heading {
-          margin-bottom: 0;
-        }
-
-        &__subheader {
-          color: $color-info;
-          padding-top: 10px;
-          font-size: 1.5rem;
-          padding: 0;
-          margin-bottom: 1.25rem;
-        }
-      }
-
-      &--ctas {
-        margin: 1.5rem 0 0.5rem;
-      }
-
-      @include media-mobile-down {
-        padding: 1rem;
+      nav {
+        width: 20%;
       }
     }
   }
 
-  .rating__leaf--warp {
-    display: inline-flex;
-    grid-gap: 0.25rem;
+  &__hero {
+    .c-homeHero {
+      height: auto;
+    }
 
-    button {
-      border: none;
-      background: none;
-      font-family: Roboto;
-      font-size: 1rem;
-      text-decoration: underline;
+    .c-topHero__imgWrap {
+      flex: 1;
+    }
+
+    .c-topHero__ctaWrap {
+      &--inner {
+        h4 {
+          letter-spacing: 1px;
+        }
+      }
+
+      @include media-desktop-up {
+        padding: 0;
+
+        &--inner {
+          padding: 3rem 0 3rem 4vw;
+          max-width: 75%;
+        }
+      }
     }
   }
 }

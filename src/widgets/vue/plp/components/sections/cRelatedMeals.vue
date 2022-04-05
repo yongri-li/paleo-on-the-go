@@ -13,10 +13,7 @@
     </div>
     <div class="c-relatedMeals__slider slider" data-menu-slider>
       <div v-for="(product, index) in products" :key="index" class="c-relatedMeals__product">
-        <c-product-card :product="product" />
-        <!-- v-if="product.available" -->
-
-        asasdsa das das ds {{ product.available }}
+        <c-product-card v-if="product.available" :product="product" />
       </div>
       <!--       <div class="c-relatedMeals__slider__grid-item" v-for="product in wildcardz" :key="product.id">
         <c-product

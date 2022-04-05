@@ -8,7 +8,7 @@
   }
 }
 
-.c-homeHero__ctaWrap {
+.c-topHero__ctaWrap {
   flex: 1;
   display: flex;
   justify-content: center;
@@ -29,7 +29,7 @@
   }
 }
 
-.c-homeHero__imgWrap {
+.c-topHero__imgWrap {
   flex: 2;
   background-size: cover;
 }
@@ -76,7 +76,7 @@ marquee span {
   }
 }
 
-.c-homeHero {
+.c-topHero {
   display: flex;
   /*height: 100vh;*/
   height: calc(100vh - 106px);
@@ -89,7 +89,7 @@ marquee span {
     height: auto;
     background-color: $color-white;
 
-    .c-homeHero__imgWrap {
+    .c-topHero__imgWrap {
       min-height: 260px;
     }
   }

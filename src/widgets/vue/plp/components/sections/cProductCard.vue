@@ -1,12 +1,11 @@
 <template>
-  <div
-    :class="[
+  <div :class="[`c-product--cta`, { 'c-product--selected': selected }]">
+    <!--     :class="[
       `c-product c-product--${modifier} c-product--cta`,
       {
         'c-product--selected': selected
       }
-    ]"
-  >
+    ]" -->
     <div class="c-product__inner">
       <div class="c-product__image-side">
         <a :href="product.url" class="c-product__image-frame">
@@ -21,7 +20,7 @@
       <div class="c-product__info">
         <div>
           <span class="c-tag">
-            {{ tagText }}
+            <!--     {{ tagText }} -->
           </span>
           <div class="c-product__title-wrapper">
             <a :href="product.url">
@@ -29,19 +28,19 @@
                 {{ title }}
               </h4>
             </a>
-            <span v-if="productSecondaryTitle" class="c-product__subtitle">
-              {{ productSecondaryTitle }}
+            <span class="c-product__subtitle">
+              <!--   {{ productSecondaryTitle }} -->
             </span>
           </div>
         </div>
       </div>
     </div>
-    <ul v-if="nutritionalInfo" class="c-product__details">
-      <li v-if="nutritionalInfo.calories" class="c-product__detail">{{ nutritionalInfo.calories }} Cal</li>
-      <li v-if="nutritionalInfo.carbohydrates" class="c-product__detail">
-        {{ nutritionalInfo.carbohydrates }}g Carb
+    <ul class="c-product__details">
+      <li class="c-product__detail"></li>
+      <li class="c-product__detail">
+        <!--  {{ nutritionalInfo.carbohydrates }}g Carb -->
       </li>
-      <li v-if="nutritionalInfo.protein" class="c-product__detail">{{ nutritionalInfo.protein }}g Protein</li>
+      <li class="c-product__detail"></li>
       <!--      <li class="c-product__detail">
         {{ nutritionalInfo.fat }}g Fat
       </li> -->
@@ -71,12 +70,12 @@ export default {
     }
   },
   computed: {
-    // selected() {
-    //   return this.quantity > 0
-    // },
+    selected() {
+      return this.quantity > 0
+    },
     title() {
       return this.product.title
-    }
+    },
     // modifier() {
     //   return this.isAddOn ? 'addOn' : this.productTypeHandle
     // },
@@ -101,12 +100,12 @@ export default {
     // tagText() {
     //   return this.tag ? this.tag : this.product.type
     // },
-    // flag() {
-    //   return this.product.flag
-    // },
-    // flagHandle() {
-    //   return handleize(this.flag)
-    // }
+    flag() {
+      return this.product.flag
+    },
+    flagHandle() {
+      return handleize(this.flag)
+    }
   }
 }
 </script>
