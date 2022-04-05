@@ -108,6 +108,18 @@ export default {
     margin-top: 4rem;
   }
 
+  @include media-mobile-down {
+    margin-top: 3.5rem;
+
+    &__container {
+      top: 0.25rem;
+    }
+
+    .u-highlightText--secondary {
+      display: inline;
+    }
+  }
+
   &__container {
     position: absolute;
     display: flex;

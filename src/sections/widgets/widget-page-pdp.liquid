@@ -11,6 +11,8 @@
     heating: `{{ product.metafields.my_fields.heating }}`,
     nutrition: `{{ product.metafields.my_fields.nutrition }}`
   } 
+  pdp['rating_count'] = `{{ product.metafields.reviews.rating_count }}`
+  pdp['rating'] = `{{ product.metafields.reviews.rating }}`
   
   pdp['product']['price_hashes'] = [
     {% for variant in product.variants %}

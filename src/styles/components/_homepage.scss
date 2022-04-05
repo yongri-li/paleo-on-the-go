@@ -514,6 +514,24 @@ marquee span {
   div {
     grid-gap: 1rem;
   }
+
+  @include media-mobile-down {
+    section {
+      flex-direction: column;
+
+      input {
+        min-width: 10rem;
+      }
+
+      .c-button--isDefault {
+        min-width: 8rem;
+      }
+    }
+
+    div {
+      grid-gap: 0;
+    }
+  }
 }
 
 /////////

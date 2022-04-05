@@ -43,5 +43,11 @@ export default {
 <style lang="scss">
 .pdp__faq--wrap {
   position: relative;
+
+  @include media-mobile-down {
+    .c-homeFaq {
+      padding: 0 1rem;
+    }
+  }
 }
 </style>

@@ -85,17 +85,20 @@ export default {
   flex-direction: column-reverse;
   justify-content: center;
 
-  @include media-desktop-up {
-  }
-
   .tns-nav {
     display: flex;
     justify-content: center;
-    padding-top: 1.5rem;
+    position: absolute;
+    width: 100%;
+    bottom: 1.125rem;
 
     @include media-tablet-up {
       display: none;
     }
+  }
+
+  @include media-desktop-up {
+    position: relative;
   }
 
   .tns-outer {
@@ -144,7 +147,7 @@ export default {
 
 .pdp__galleryImageWrapper {
   @include media-mobile-down {
-    width: 90%;
+    width: 100%;
     margin: 0 auto;
   }
 }

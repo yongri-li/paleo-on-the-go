@@ -17,4 +17,22 @@
       color: $color-secondary;
     }
   }
+
+  .spr-review-header-title {
+    font-size: 1.125rem;
+  }
+
+  .spr-review-header-byline {
+    font-style: unset;
+    font-size: 1rem;
+
+    strong {
+      font-weight: 400;
+      text-transform: uppercase;
+    }
+  }
+
+  .spr-review-content-body {
+    font-size: 1rem;
+  }
 }

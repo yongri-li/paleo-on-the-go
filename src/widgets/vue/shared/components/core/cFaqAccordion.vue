@@ -46,8 +46,12 @@ export default {
 <style lang="scss">
 .vueComp__portal {
   max-width: 1240px;
-  padding: 3rem 0 5rem;
+  padding: 5rem 1rem;
   margin: 0 auto;
+
+  @include media-desktop-up {
+    padding: 3rem 0 5rem;
+  }
 
   .c-homeFaqs__item {
     width: 100%;

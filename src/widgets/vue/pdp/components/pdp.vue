@@ -5,6 +5,11 @@
 
       <section class="pdp__content">
         <div class="pdp__content--wrap">
+          <div class="rating__leaf--warp">
+            <span v-html="ratingLeaf" v-for="leaf in 5"></span>
+            <button>{{ rating_count }} Reviews</button>
+            <div>{{ ratings.value }}</div>
+          </div>
           <h1 class="c-h1 c-heading">{{ product.title }}</h1>
           <h5 v-if="subtitle" class="c-h5 pdp__content--wrap__subheader">{{ subtitle }}</h5>
           <h5 v-if="price" class="c-h5 pdp__content--wrap__price">{{ price }}</h5>
@@ -70,6 +75,15 @@ export default {
     },
     isCustomer() {
       return customer.email && customer.shopify_id ? true : false
+    },
+    ratingLeaf() {
+      return `<svg width="18" height="30" viewBox="0 0 18 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M9.16859 -3.09007e-05L0.403564 16.3262L8.03129 23.6963L8.03129 29.0255L10.2961 29.0255L10.2961 23.6963L17.9238 16.3262L9.16859 -3.09007e-05ZM3.20759 15.891L8.03129 6.89608L8.03129 20.5626L3.20759 15.891ZM10.2961 6.89608L15.1296 15.891L10.2961 20.5626L10.2961 6.89608Z" fill="#8ECEAB"/>
+      </svg>
+      `
+    },
+    ratings() {
+      return JSON.parse(this.rating)
     }
   },
   methods: {
@@ -112,9 +126,8 @@ export default {
   .pdp__main {
     position: relaive;
     display: flex;
-    flex-flow: column-reverse;
+    flex-flow: column;
     background-color: $color-ecru;
-    padding: 2rem 1rem 5rem;
 
     /* use if want sticky scroll elmement...
     overflow-y: scroll;*/
@@ -123,10 +136,17 @@ export default {
       display: flex;
       flex-flow: row;
       grid-gap: 3.5rem;
+      /*   flex-flow: column-reverse;*/
     }
 
     @include media-desktop-up {
       padding: 3rem 4vw 5rem;
+    }
+
+    @include media-mobile-down {
+      .pdp__gallery {
+        width: 100vw;
+      }
     }
 
     .main__column {
@@ -160,6 +180,10 @@ export default {
 
       &--ctas {
         margin: 1.5rem 0 0.5rem;
+      }
+
+      @include media-mobile-down {
+        padding: 1rem;
       }
     }
   }
