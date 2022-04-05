@@ -24,7 +24,7 @@
             /> -->
           </div>
 
-          <!--  <cSelectTabs :pdpinfo="info" /> -->
+          <!-- <cSelectTabs :pdpinfo="info" /> -->
         </div>
       </section>
     </div>
