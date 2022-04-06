@@ -1,7 +1,7 @@
 const state = {
   cartItems: {
     box: [],
-    pdp: []
+    general: []
   },
   sizeSelected: {}
 }

@@ -3,6 +3,7 @@
     <!-- <summary-component class="content-summary" /> -->
     <div class="content-box-cart">
       <your-box v-if="cartItems.box.length"/>
+      <your-cart v-if="cartItems.general.length"/>
     </div>
   </div>
 </template>
@@ -10,13 +11,15 @@
 <script>
 import SummaryComponent from './components/Summary/Summary.vue'
 import YourBox from './components/YourBox/YourBox.vue'
+import YourCart from './components/YourCart/YourCart.vue'
 
 import { mapState } from 'vuex'
 
 export default {
   components: {
     SummaryComponent,
-    YourBox
+    YourBox,
+    YourCart
   },
   computed: {
     ...mapState('cartdrawer',[

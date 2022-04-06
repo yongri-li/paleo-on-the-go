@@ -1,14 +1,8 @@
 <script>
   window.Scoutside = window.Scoutside || {}
   window.Scoutside.cart = window.Scoutside.cart || {}
-  
-  var cart = {{ section.settings | json }}
-  {% assign bloop = 0 %}
-  {% for block in section.blocks %}
-    cart['{{ block.type }}'] = cart['{{ block.type }}'] || []
-    cart['{{ block.type }}'].push({{ block.settings | json }})
-  {% endfor %}
 
+  const cart = {{ section.settings | json }}
   window.Scoutside.cart = cart
 </script>
 
@@ -17,31 +11,19 @@
     "name": "Cart",
     "settings": [
       {
-        "type": "header",
-        "content": "Header"
-      },
-      {
-        "id": "header_text",
+        "label": "Title Box",
         "type": "text",
-        "label": "Header Text"
+        "id": "title_box"
       },
       {
-        "id": "header_count",
-        "type": "checkbox",
-        "label": "Header Show Count"
-      },
-      {
-        "type": "header",
-        "content": "Item"
-      },
-      {
-        "id": "item_remove_button",
+        "label": "Title Cart",
         "type": "text",
-        "label": "Item Remove Button"
+        "id": "title_cart"
       },
       {
-        "type": "header",
-        "content": "Summary"
+        "label": "Message Subtotal",
+        "type": "text",
+        "id": "message_subtotal"
       }
     ]
   }

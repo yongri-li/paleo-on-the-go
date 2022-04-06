@@ -1,32 +1,32 @@
 <template>
-  <div class="your-box">
-    <div class="your-box__title">
-      {{ settings.title_box }}
+  <div class="your-cart">
+    <div class="your-cart__title">
+      {{ settings.title_cart }}
     </div>
-    <div class="your-box__content">
-      <div class="your-box__content-header">
-        <div class="your-box__content-column product">
+    <div class="your-cart__content">
+      <div class="your-cart__content-header">
+        <div class="your-cart__content-column product">
           Product
         </div>
-        <div class="your-box__content-column qty u-hideMobileDown">
+        <div class="your-cart__content-column qty u-hideMobileDown">
           QTY
         </div>
-        <div class="your-box__content-column price u-hideMobileDown">
+        <div class="your-cart__content-column price u-hideMobileDown">
           Price
         </div>
       </div>
-      <your-box-body class="your-box__content-body"/>
+      <your-cart-body class="your-cart__content-body"/>
     </div>
   </div>
 </template>
 
 <script>
-import YourBoxBody from './YourBoxBody.vue'
+import YourCartBody from './YourCartBody.vue'
 import { mapState } from 'vuex'
 
 export default {
   components: {
-    YourBoxBody
+    YourCartBody
   },
   computed: {
     ...mapState('ui', [
@@ -37,7 +37,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.your-box {
+.your-cart {
 
   margin-bottom: 2rem;
 
@@ -96,6 +96,7 @@ export default {
     border: 1px solid #EFEDE6;
     padding: .4rem;
     margin-top: 1rem;
+    background-color: #efede6;
 
     @include media-tablet-up {
       margin-top: 0;

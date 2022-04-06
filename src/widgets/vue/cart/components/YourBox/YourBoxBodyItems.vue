@@ -2,7 +2,7 @@
   <div class="items">
     <your-box-body-items-info />
     <div class="items__products">
-      <product-item-cart
+      <product-item-box
         v-for="item in items"
         :key="item.id"
         :product="item"
@@ -15,12 +15,12 @@
 
 <script>
 import YourBoxBodyItemsInfo from './YourBoxBodyItemsInfo.vue'
-import ProductItemCart from '../Products/ProductItemCart.vue'
+import ProductItemBox from '../Products/ProductItemBox.vue'
 
 export default {
   components: {
     YourBoxBodyItemsInfo,
-    ProductItemCart
+    ProductItemBox
   },
   props: {
     items: {

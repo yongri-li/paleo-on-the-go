@@ -1,5 +1,5 @@
 const state = {
-  test: 'Funcionaaaaaa'
+  settings: {...window.Scoutside.cart}
 }
 
 export default () => ({ ...state })
