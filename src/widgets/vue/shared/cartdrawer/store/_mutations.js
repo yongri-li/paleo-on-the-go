@@ -1,13 +1,13 @@
 import {
-  CLEAN_ALL_CART
+  ADD_BOX_TO_CART,
+  SET_SIZE_SELECTED
 } from './_mutations-type'
 
 export default {
-  [CLEAN_ALL_CART] (state) {
-    state.cart = {
-      box: [],
-      addons: [],
-      pdp: []
-    }
+  [ADD_BOX_TO_CART] (state, { items }) {
+    state.cartItems.box = [...items]
   },
+  [SET_SIZE_SELECTED] (state, { sizeSelected }) {
+    state.sizeSelected = sizeSelected
+  }
 }

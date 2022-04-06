@@ -8,8 +8,8 @@ Vue.use(Vuex)
 const persist = new VuexPersistence({
   reducer: (state) => ({
     cartdrawer: {
-      cart: state.cartdrawer.cart,
-      sizes: state.cartdrawer.sizes
+      cartItems: state.cartdrawer.cartItems,
+      sizeSelected: state.cartdrawer.sizeSelected
     }
   })
 })

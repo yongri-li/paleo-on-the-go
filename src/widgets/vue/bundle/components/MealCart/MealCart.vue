@@ -18,6 +18,7 @@
       />
     </div>
     <meal-cart-footer
+      :cart="cart"
       :subtotal="cartSubTotal"
       :size-selected="getSizeSelected"
       :cart-length="cartLength"

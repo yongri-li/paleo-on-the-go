@@ -21,8 +21,8 @@ export default {
   },
   computed: {
     ...mapState('cartdrawer',[
-      'cart',
-      'sizes'
+      'cartItems',
+      'sizeSelected'
     ]),
     ...mapState('ui',[
       'test'
