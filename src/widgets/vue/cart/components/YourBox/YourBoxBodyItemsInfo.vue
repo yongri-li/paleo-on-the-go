@@ -6,11 +6,14 @@
           {{ sizeSelected.title }} box
         </div>
         <div class="info__price">
-          <div class="info__price--sub">
-            {{ formatPrice(getItemSubtotal) }}
+          <div
+            class="info__price--sub"
+            :class="{'u-hide': isOneTime}"
+          >
+            {{ formatPrice(getBoxPrices.sub) }}
           </div>
           <div class="info__price--final">
-            {{ totalItems }}
+            {{ formatPrice(getBoxPrices.final) }}
           </div>
         </div>
       </div>
@@ -27,13 +30,18 @@
         </div>
       </div>
       <div class="info-mobile__section">
-        <div class="info__frequency">
+        <div
+          class="info__frequency"
+          :class="{'u-hidden': isOneTime}"
+        >
           <v-select
             placeholder="Ships Every 1 Week"
             label="label"
             :options="options"
             :searchable="false"
-            :class="{ selected: selected }"
+            :clearable="false"
+            :value="frequency"
+            @input="setFrequency"
           >
             <template v-slot:option="option">
               {{ option.label }}
@@ -58,13 +66,18 @@
           </svg>
           Edit
         </div>
-        <div class="info__frequency">
+        <div
+          class="info__frequency"
+          :class="{'u-hidden': isOneTime}"
+        >
           <v-select
             placeholder="Ships Every 1 Week"
             label="label"
             :options="options"
             :searchable="false"
-            :class="{ selected: selected }"
+            :clearable="false"
+            :value="frequency"
+            @input="setFrequency"
           >
             <template v-slot:option="option">
               {{ option.label }}
@@ -77,11 +90,14 @@
         1
       </div>
       <div class="info__price">
-        <div class="info__price--sub">
-          {{ formatPrice(getItemSubtotal) }}
+        <div
+          class="info__price--sub"
+          :class="{'u-hide': isOneTime}"
+        >
+          {{ formatPrice(getBoxPrices.sub) }}
         </div>
         <div class="info__price--final">
-          {{ totalItems }}
+          {{ formatPrice(getBoxPrices.final) }}
         </div>
       </div>
       <div class="info__remove" @click="removeBundle">
@@ -92,44 +108,46 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
 import { formatPrice } from '@shared/utils'
-import { CLEAN_ALL_CART } from '@shared/cartdrawer/store/_mutations-type'
+// import { CLEAN_ALL_CART } from '@shared/cartdrawer/store/_mutations-type'
 
 export default {
-  props: {
-    sizeSelected: {
-      type: Object,
-      required: true
-    }
-  },
   data() {
     return {
       options: [
         {
-          label: '2 Week'
+          label: '2 Week',
+          week: 2
         },
         {
-          label: '4 Week'
+          label: '4 Week',
+          week: 4
         },
         {
-          label: '6 Week'
+          label: '6 Week',
+          week: 6
         },
         {
-          label: '8 Week'
+          label: '8 Week',
+          week: 8
         },
       ],
-      selected: false,
+      frequency: {
+        label: '2 Week',
+        week: 2
+      }
     }
   },
   computed: {
-    ...mapGetters([
-      'getItemSubtotal'
+    ...mapState('cartdrawer', [
+      'sizeSelected'
     ]),
-    totalItems() {
-      const discount = this.sizeSelected.discount / 100
-      const total = this.getItemSubtotal * (1 - discount)
-      return this.formatPrice(total)
+    ...mapGetters('cartdrawer', [
+      'getBoxPrices'
+    ]),
+    isOneTime() {
+      return (this.getBoxPrices.sub === this.getBoxPrices.final)
     }
   },
   methods: {
@@ -138,7 +156,11 @@ export default {
       window.location = '/pages/bundle'
     },
     removeBundle() {
-      this.$store.commit(CLEAN_ALL_CART)
+      // this.$store.commit(CLEAN_ALL_CART)
+      console.log('clean cart')
+    },
+    setFrequency(val) {
+      this.frequency = val
     }
   }
 }

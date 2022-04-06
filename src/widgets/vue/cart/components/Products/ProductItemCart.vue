@@ -10,6 +10,9 @@
           :src="imageUrl"
           :alt="product.title"
         />
+        <div class="pitemcart__figure--qt">
+          {{ product.quantity }}
+        </div>
       </div>
       <div class="pitemcart__info">
         <div class="pitemcart__info--title">
@@ -89,6 +92,19 @@ export default {
       width: 25px;
       height: 25px;
       @include flex($justify: center)
+    }
+
+    &--qt {
+      background-color: $color-primary;
+      font-size: .8rem;
+      font-weight: 700;
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 20px;
+      height: 20px;
+      border-radius: 100%;
+      @include flex($justify: center);
     }
   }
 

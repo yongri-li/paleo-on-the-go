@@ -1,10 +1,9 @@
 <template>
   <div class="page o-containerLarge">
-    <!-- <summary-component class="content-summary" />
+    <!-- <summary-component class="content-summary" /> -->
     <div class="content-box-cart">
-      <your-box v-if="cart.items.length"/>
-    </div> -->
-    Pruebaaa
+      <your-box v-if="cartItems.box.length"/>
+    </div>
   </div>
 </template>
 

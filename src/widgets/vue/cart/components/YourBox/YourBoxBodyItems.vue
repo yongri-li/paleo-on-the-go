@@ -1,6 +1,6 @@
 <template>
   <div class="items">
-    <your-box-body-items-info :size-selected="sizeSelected" />
+    <your-box-body-items-info />
     <div class="items__products">
       <product-item-cart
         v-for="item in items"
@@ -25,10 +25,6 @@ export default {
   props: {
     items: {
       type: Array,
-      required: true
-    },
-    sizeSelected: {
-      type: Object,
       required: true
     }
   }
