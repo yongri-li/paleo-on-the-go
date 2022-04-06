@@ -15,7 +15,7 @@
         Checkout
       </div>
       <div class="subtotal__msg">
-        Shipping & Taxes Calculated At Checkout
+        {{ settings.message_subtotal }}
       </div>
       <div class="subtotal__agree">
         <input
@@ -43,7 +43,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
-import { formatPrice, getPriceWithDiscount } from '@shared/utils'
+import { formatPrice } from '@shared/utils'
 
 export default {
   data() {
@@ -52,53 +52,58 @@ export default {
     }
   },
   computed: {
-    ...mapState([
-      'cart'
+    ...mapState('ui', [
+      'settings'
     ]),
-    ...mapGetters([
-      'getSizeSelected',
-      'getItemSubtotal',
-      'getAddOnsSubtotal'
+    ...mapState('cartdrawer', [
+      'cartItems',
+      'sizeSelected'
+    ]),
+    ...mapState('frequency', [
+      'frequencySelected'
+    ]),
+    ...mapGetters('cartdrawer', [
+      'getBoxPrices',
+      'getGeneralPrices'
     ]),
     finalSubtotal() {
-      const discount = this.getSizeSelected.discount / 100
-      const total = this.getItemSubtotal * (1 - discount) + this.getAddOnsSubtotal
-      return formatPrice(total)
+      return formatPrice(this.getBoxPrices.final + this.getGeneralPrices)
     },
     items() {
-      const box = this.getItemForCart('items')
-      const addons = this.getItemForCart('addons')
-      const pdp = this.getItemForCart('pdp')
+      const box = this.getItemForCart('box')
+      const general = this.getItemForCart('general')
 
       return [
         ...box,
-        ...addons,
-        ...pdp
+        ...general
       ]
     }
   },
   methods: {
     getItemForCart(itemType) {
-      const subprops = {
-        shipping_interval_frequency: 2,
+      const subsprops = {
+        shipping_interval_frequency: this.frequencySelected.week,
         shipping_interval_unit_type: 'week'
       }
-      const otherProps = itemType === 'pdp' ? {} : subprops
-      const discount = itemType === 'addons' ? 0 : this.getSizeSelected.discount
 
-      return this.cart[itemType].map(item => (
-        {
+      return this.cartItems[itemType].map(item => {
+        const isSubscription = item.order_type === 'subscription'
+        const otherProps = isSubscription ? subsprops : {}
+        const discount = isSubscription ? (this.sizeSelected.discount / 100) : 0
+
+        return {
           id: item.variants[0].id,
           quantity: item.quantity,
-          price: getPriceWithDiscount({ price: item.price, discount }),
+          price: item.price * (1 - discount),
           properties: {
-            _onetime: itemType === 'onetime',
-            _subscription: itemType === 'items',
-            _addons: itemType === 'addons',
+            _onetime: item.order_type === 'onetime',
+            _subscription: item.order_type === 'subscription',
+            _addons: item.order_type === 'addons',
+            _general: item.order_type === 'general',
             ...otherProps,
           }
         }
-      ))
+      })
     },
     buildCartData() {
       return {
@@ -111,12 +116,13 @@ export default {
     },
     async sendProductToCart(cartData) {
       // clean cart
-      await fetch('/cart/clear.js', {
+      const clearRequest =  await fetch('/cart/clear.js', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
         }
       });
+      console.log('clearRequest', clearRequest)
 
       // add product to cart
       const addRequest = await fetch('/cart/add.js', {
@@ -180,11 +186,19 @@ export default {
         return
       }
 
-      // know if is onetime or only have product add from pdp
-      const isBox = this.cart.items.length
-      const isOneTime = this.getSizeSelected.order_type === 'onetime'
-
-      if((isBox && isOneTime) || !isBox) {
+      // know if have subscriptions
+      const hasBox = this.cartItems.box.length
+      if(hasBox) {
+        console.log('tiene un box')
+        const hasSusbscriptions = this.sizeSelected.order_type === 'subscription'
+        if(!hasSusbscriptions) {
+          console.log('no tiene subscripciones')
+          window.location = '/checkout'
+          return
+        }
+      }
+      else {
+        console.log('no tiene box')
         window.location = '/checkout'
         return
       }
@@ -198,6 +212,8 @@ export default {
       // console.log(appResponse)
 
       const domain = 'paleo-on-the-go-sandbox.myshopify.com'
+      const url = `https://checkout.rechargeapps.com/r/checkout?myshopify_domain=${domain}&cart_token=${token}`;
+      console.log(url)
       window.location = `https://checkout.rechargeapps.com/r/checkout?myshopify_domain=${domain}&cart_token=${token}`;
     }
   },

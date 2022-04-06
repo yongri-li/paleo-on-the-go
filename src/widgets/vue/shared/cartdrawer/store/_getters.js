@@ -24,5 +24,12 @@ export default {
       sub,
       final
     }
+  },
+  getGeneralPrices: (state) => {
+    let final = 0
+    state.cartItems.general.forEach(({price, quantity}) => {
+      final += price * quantity
+    })
+    return final
   }
 }

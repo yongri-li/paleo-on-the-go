@@ -37,10 +37,10 @@
           <v-select
             placeholder="Ships Every 1 Week"
             label="label"
-            :options="options"
+            :options="frequencies"
             :searchable="false"
             :clearable="false"
-            :value="frequency"
+            :value="frequencySelected"
             @input="setFrequency"
           >
             <template v-slot:option="option">
@@ -73,10 +73,10 @@
           <v-select
             placeholder="Ships Every 1 Week"
             label="label"
-            :options="options"
+            :options="frequencies"
             :searchable="false"
             :clearable="false"
-            :value="frequency"
+            :value="frequencySelected"
             @input="setFrequency"
           >
             <template v-slot:option="option">
@@ -110,6 +110,7 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import { formatPrice } from '@shared/utils'
+import { CHANGE_FREQUENCY_SELECTED } from '../../store/modules/frequency/_mutations-type'
 // import { CLEAN_ALL_CART } from '@shared/cartdrawer/store/_mutations-type'
 
 export default {
@@ -143,6 +144,10 @@ export default {
     ...mapState('cartdrawer', [
       'sizeSelected'
     ]),
+    ...mapState('frequency', [
+      'frequencies',
+      'frequencySelected'
+    ]),
     ...mapGetters('cartdrawer', [
       'getBoxPrices'
     ]),
@@ -160,7 +165,7 @@ export default {
       console.log('clean cart')
     },
     setFrequency(val) {
-      this.frequency = val
+      this.$store.commit(`frequency/${CHANGE_FREQUENCY_SELECTED}`, val)
     }
   }
 }

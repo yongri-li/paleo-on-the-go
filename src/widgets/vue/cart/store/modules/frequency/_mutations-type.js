@@ -1,0 +1,1 @@
+export const CHANGE_FREQUENCY_SELECTED = 'changeFrequencySelected'

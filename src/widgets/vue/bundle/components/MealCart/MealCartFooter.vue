@@ -120,7 +120,7 @@ export default {
         })
         console.log('hay que ir al checkout')
         // maybe add a loading
-        // window.location = '/cart'
+        window.location = '/cart'
       }
     },
   }
