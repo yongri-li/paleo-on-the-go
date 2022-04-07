@@ -8,7 +8,7 @@
       :modifiers="['isSecondary', 'isHollow', 'isLargest']"
     />
     <transition name="t-content-fade" v-if="customerReady" mode="out-in">
-      <router-view class="c-portal__content" :key="$route.name" />
+      <router-view class="c-portal__content" :key="$route.name" :allProducts="allProducts" />
       <!-- :addressId="addressId" -->
     </transition>
     <c-sidebar class="c-portal__sidebar" v-if="customerReady" data-portal-header />
@@ -31,6 +31,11 @@ export default {
     modifiers: {
       type: Array,
       default: () => []
+    }
+  },
+  data() {
+    return {
+      allProducts: window.Scoutside.portal.products.allproducts
     }
   },
   components: {
@@ -92,10 +97,10 @@ export default {
     }
   },
   created() {
-    const ccAct = document.cookie.split('; ').find(row => row.includes('ss_access_token'))
-    const ccApiAccessToken = ccAct?.split('=')[1]
-    const lsApiAccessToken = localStorage.getItem('api_access_token')
-    lsApiAccessToken ? null : localStorage.setItem('api_access_token', ccApiAccessToken)
+    // const ccAct = document.cookie.split('; ').find(row => row.includes('ss_access_token'))
+    // const ccApiAccessToken = ccAct?.split('=')[1]
+    // const lsApiAccessToken = localStorage.getItem('api_access_token')
+    // lsApiAccessToken ? null : localStorage.setItem('api_access_token', ccApiAccessToken)
   },
   async mounted() {
     //await setup(this)
@@ -105,7 +110,7 @@ export default {
     // }, 300)
     setTimeout(() => {
       this.getRCdata()
-    }, 101)
+    }, 1775)
 
     // setHeaderNextBoxShip = () => {
     //   const accountText = document.querySelector('.c-headerMain__accountText')

@@ -14,6 +14,7 @@
             :content="content"
             :boxNumber="i"
             :addressId="addressIds[i]"
+            :allProducts="allProducts"
             :shipDate="formatDayDateIOS(charge.scheduledAt)"
           />
         </section>
@@ -38,6 +39,10 @@ export default {
     modifiers: {
       type: Array,
       default: () => []
+    },
+    allProducts: {
+      type: Array,
+      required: true
     }
   },
   components: {

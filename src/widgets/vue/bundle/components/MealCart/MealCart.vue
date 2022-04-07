@@ -1,9 +1,6 @@
 <template>
   <div class="meal-cart">
-    <div
-      :class="{ show: showCartMobile }"
-      class="meal-cart__info"
-    >
+    <div :class="{ show: showCartMobile }" class="meal-cart__info">
       <meal-cart-header
         :type-class="typeClass"
         :have-products-class="haveProductsClass"
@@ -38,7 +35,6 @@ import { CHANGE_SIZE_SELECTED, CLEAN_ALL_CART } from '@shared/cartdrawer/store/_
 
 import { changeRouter } from '../../utils'
 
-
 export default {
   components: {
     MealCartHeader,
@@ -51,12 +47,8 @@ export default {
     }
   },
   computed: {
-    ...mapState([
-      'cart'
-    ]),
-    ...mapGetters([
-      'getSizeSelected'
-    ]),
+    ...mapState(['cart']),
+    ...mapGetters(['getSizeSelected']),
     haveProductsClass() {
       return this.cart.items.length ? 'with-products' : 'without-products'
     },
@@ -86,7 +78,7 @@ export default {
       return total
     }
   },
-  created() {
+  mounted() {
     // watch the params of the route to fetch the data again
     this.$watch(
       () => this.$route.params,
@@ -100,12 +92,20 @@ export default {
   },
   methods: {
     setSizeSelected() {
+      const boxSize = sessionStorage.getItem('boxSize')
+      const referrerPage = document.referrer
       const orderType = this.getSizeSelected.order_type
       const box = this.$route.params.box
-      console.log('box',box)
+      console.log(boxSize, box)
+
+      if (box && referrerPage.includes('/account')) {
+        this.$store.commit(CHANGE_SIZE_SELECTED, { val: `${boxSize}items` })
+        console.log(boxSize, box)
+        return
+      }
 
       // this is for '/'
-      if(box === undefined) {
+      if (box === undefined && !referrerPage.includes('/account')) {
         // set option for sizeSelected
         console.log('entro al if del /')
         changeRouter(orderType)
@@ -113,21 +113,20 @@ export default {
       }
 
       // this is for '/onetime'
-      if(box === 'onetime' && orderType !== 'onetime') {
+      if (box === 'onetime' && orderType !== 'onetime') {
         console.log('entro al if del /onetime')
-        this.$store.commit( CHANGE_SIZE_SELECTED, { val: 'onetime' } )
-        this.$store.commit( CLEAN_ALL_CART )
+        this.$store.commit(CHANGE_SIZE_SELECTED, { val: 'onetime' })
+        this.$store.commit(CLEAN_ALL_CART)
         return
       }
 
       // this is for '/subscription'
-      if(box === 'subscription' && orderType !== 'subscription') {
+      if (box === 'subscription' && orderType !== 'subscription') {
         console.log('entro al if del /subscription')
-        this.$store.commit( CHANGE_SIZE_SELECTED, { val: '12items' } )
-        this.$store.commit( CLEAN_ALL_CART )
+        this.$store.commit(CHANGE_SIZE_SELECTED, { val: '12items' })
+        this.$store.commit(CLEAN_ALL_CART)
         return
       }
-
     },
     changeCartMobile(val) {
       this.showCartMobile = val
@@ -137,13 +136,11 @@ export default {
 </script>
 
 <style lang="scss">
-
 $height-footer: 115px;
 $height-header-title: 59px;
 $translateY: calc(100% - $height-header-title);
 
 .meal-cart {
-
   @include media-tablet-up {
     width: 27%;
     height: 90vh;
@@ -161,7 +158,7 @@ $translateY: calc(100% - $height-header-title);
     filter: drop-shadow(0px -4px 34px rgba(0, 0, 0, 0.1));
     border-radius: 20px 20px 0px 0px;
     transform: translateY($translateY);
-    transition: all .3s ease-out;
+    transition: all 0.3s ease-out;
 
     @include media-tablet-up {
       position: relative;
@@ -190,7 +187,5 @@ $translateY: calc(100% - $height-header-title);
       z-index: 1;
     }
   }
-
 }
-
 </style>
