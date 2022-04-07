@@ -63,7 +63,7 @@
 			<!-- <nav> -->
 			<!-- 			<nav :class="['c-dropdown', { 'is-open': isOpen }]" @click="isOpen = !isOpen">
 				<header>This is the top</header>
-				<section class="c-dropdown--wrap">
+				<section class="c-dropdown__wrap">
 					<div><a href="#">One Clk</a></div>
 					<div>Tow</div>
 					<div>Three</div>

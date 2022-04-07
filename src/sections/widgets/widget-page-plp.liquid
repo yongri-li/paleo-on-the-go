@@ -26,7 +26,7 @@
             ...JSON.parse(JSON.stringify({{ _product | json }})),
             subtitle: `{{ _product.metafields.my_fields.subtitle }}`,
             url: '{{ _product.url }}',
-            // flag: '{{ _product.metafields.my_fields.flag }}'
+            flag: '{{ _product.metafields.my_fields.flag }}'
           },
         {%- endfor -%} 
       ]  
@@ -79,7 +79,21 @@
         "id": "hero_bg_image",
         "type": "image_picker",
         "label": "Background Image"
-      }
+      },
+      {
+        "type": "header",
+        "content": "Bottom Banner"
+      },
+      {
+        "id": "banner_tagline",
+        "type": "text",
+        "label": "Tagline"
+      },
+      {
+        "id": "banner_klayvio_link",
+        "type": "text",
+        "label": "Klayvio Link"
+      }       
     ],
     "blocks": [
       {

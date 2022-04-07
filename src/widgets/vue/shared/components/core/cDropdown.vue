@@ -1,7 +1,9 @@
 <template>
 	<nav :class="['c-dropdown', { 'is-open': isOpen }]" @click="isOpen = !isOpen">
 		<header>{{ title }}</header>
-		<section class="c-dropdown--wrap">
+		<section class="c-dropdown__wrap">
+			<!-- <div @click="isOpen = false">Close</div> -->
+			<div>Close</div>
 			<div v-for="item in items" @click="handleSelect">
 				{{ item }}
 			</div>
@@ -24,8 +26,7 @@ export default {
 	},
 	data() {
 		return {
-			isOpen: false,
-			textt: 'This is the top'
+			isOpen: false
 		}
 	},
 	methods: {

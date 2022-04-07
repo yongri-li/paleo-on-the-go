@@ -1,61 +1,68 @@
 <template>
   <div class="c-plp o-containerFullWidth">
-    <c-page-hero :content="heroContent" class="c-plp__hero" />
+    <c-page-hero :content="content[0]" class="c-plp__hero" />
     <section class="c-plp__body">
       <nav class="c-plp__body--nav">
+        <div class="trigger-filters" @click="triggerFilters">Filter</div>
+        <br />
+        <c-dropdownFull
+          :items="filterItems"
+          :isOpen="isFilterOpen"
+          @getFilters="addFilterTag"
+          @closeDropdown="triggerFilters"
+        />
         <ul>
           <li v-for="(collection, i) in collections" @click="activeNum = i">{{ collection.title }}</li>
         </ul>
       </nav>
       <article>
-        <h3>{{ collections[activeNum].title }}</h3>
+        <h2 class="c-h2">{{ collections[activeNum].title }}</h2>
+        <span v-html="collections[activeNum].short_description"></span>
         <div class="c-plp__body--grid">
           <div
-            v-for="(product, index) in collections[activeNum].products"
+            v-for="(product, index) in filteredCollection"
             :key="index"
             class="c-plpGrid__item"
             v-if="product.available"
           >
-            <c-product-card :product="product" />
+            <c-product-card :product="product" title="Filter" />
+            <!-- v-if="filterByTag(product.tags, filterTags)" -->
           </div>
         </div>
-
-        <!--         <hr />
-        <h3>{{ collections[activeNum].title }}</h3>
-        <div class="c-plp__body--grid">
-          <div
-            v-for="(product, index) in collections[activeNum].products"
-            :key="index"
-            class="c-plpGrid__item"
-            v-if="product.available"
-          >
-            <c-product-card :product="product" />
-          </div>
-        </div> -->
       </article>
     </section>
+    <c-BottomBanner :content="content[1]" />
   </div>
 </template>
 
 <script>
 import { formatPrice } from '../utils'
-import cProductCard from './sections/cProductCard.vue'
+import cProductCard from '@shared/components/parts/cProductCard.vue'
 import cPageHero from '@shared/components/parts/cPageHero.vue'
+import cBottomBanner from '@shared/components/core/cBottomBanner.vue'
+import cDropdownFull from '@shared/components/core/cDropdownFull.vue'
 
 export default {
   name: 'Plp',
   data: () => ({
     ...window.Scoutside.plp,
-    activeNum: 0
+    activeNum: 0,
+    filterTags: [],
+    isFilterOpen: false
   }),
   components: {
+    cPageHero,
     cProductCard,
-    cPageHero
+    cBottomBanner,
+    cDropdownFull
   },
   computed: {
     // price() {
     //   return `Starts at ${formatPrice(this.product.price)}`
     // },
+    filterItems() {
+      return ['Coconut Free', 'Seafood Free', 'Pork Free', 'Cassava Free']
+    },
     collections() {
       return this.sub_collection_items
     },
@@ -68,16 +75,30 @@ export default {
       </svg>
       `
     },
-    heroContent() {
-      let obj = {}
-      Object.entries(this.$data).map(([key, val]) => {
-        if (key.includes('hero_')) {
-          const label = key.replace('hero_', '')
-          obj[label] = val
-        }
+    content() {
+      const getContent = label => {
+        let obj = {}
+        Object.entries(this.$data).map(([key, val]) => {
+          if (key.startsWith(label)) {
+            const name = key.replace(label, '')
+            obj[name] = val
+          }
+        })
+        return obj
+      }
+      const hero = getContent('hero_')
+      const banner = getContent('banner_')
+      return [hero, banner]
+    },
+    filteredProducts() {
+      return this.collections[this.activeNum].products.filter(prd => {
+        if (prd.tags.some(tag => this.filterTags.includes(tag))) return prd
       })
-      return obj
+    },
+    filteredCollection() {
+      return !this.filterTags.length ? this.collections[this.activeNum].products : this.filteredProducts
     }
+
     // ratingsCount() {
     //   return this.rating_count ? this.rating_count : 0
     // },
@@ -86,9 +107,24 @@ export default {
     // }
   },
   methods: {
+    triggerFilters() {
+      this.isFilterOpen = !this.isFilterOpen
+    },
     // onResize() {
     //   this.isMobile = window.innerWidth < 768
     // },
+    addFilterTag(filters) {
+      // this.filterTags.length ? (this.filterTags = []) : this.filterTags.push(tag)
+      // this.filterTags.push(tag)
+      this.filterTags = filters
+    },
+    clearFilters() {
+      this.filterTags = []
+    },
+    filterByTag(productTags, filterTags) {
+      if (!this.filterTags.length) return true
+      return productTags.some(tag => filterTags.includes(tag))
+    },
     handleAdd() {
       this.loading = true
 
@@ -122,38 +158,55 @@ export default {
 .c-plp {
   position: relative;
 
+  .c-topHero {
+    height: auto;
+  }
+
   &__body {
     position: relative;
     height: 100%;
     overflow: visible;
-    display: flex; /* enables flex content for its children */
+    display: flex;
     box-sizing: border-box;
     padding: 3.5rem 0;
 
-    & > nav,
+    &--nav,
     article {
-      height: 100%; /* allows both columns to span the full height of the browser window */
+      height: 100%;
       display: flex;
       flex-direction: column;
 
-      flex-grow: 1; /* ensures that the container will take up the full height of the parent container */
+      flex-grow: 1;
       overflow-y: auto;
     }
 
-    nav {
+    article {
+      .c-h2 {
+        margin-bottom: 10px;
+      }
+    }
+
+    &--nav {
       position: sticky;
-      top: 100px;
-      flex-shrink: 0; /* makes sure that content is not cut off in a smaller browser window */
+      top: 112px;
+      flex-shrink: 0;
+      z-index: $z-index-top;
 
       li {
         cursor: pointer;
+        margin: 1rem 0;
+      }
+
+      .trigger-filters {
+        cursor: pointer;
+        font-weight: 700;
       }
     }
 
     &--grid {
       display: grid;
       grid-template: auto / repeat(3, 1fr);
-      grid-gap: 2rem;
+      grid-gap: 3rem;
     }
 
     @include media-desktop-up {
@@ -161,8 +214,50 @@ export default {
       max-width: 1600px;
       margin: 0 auto;
 
-      nav {
+      &--nav {
         width: 20%;
+      }
+    }
+
+    @include media-mobile-down {
+      &--nav {
+        display: none;
+      }
+
+      article {
+        padding: 1rem;
+      }
+
+      &--grid {
+        grid-gap: 1rem;
+        grid-template: auto / 1fr;
+      }
+
+      .c-product__inner {
+        display: flex;
+        align-items: center;
+        grid-gap: 0.75rem;
+
+        .c-product__title {
+          font-size: 1.125rem;
+          margin: 0 0 0.25rem;
+        }
+
+        .c-product__title-wrapper {
+          font-size: 1rem;
+        }
+
+        .c-product__image-side {
+          flex: 1;
+        }
+
+        .c-product__info {
+          flex: 1.5;
+        }
+
+        .c-product__flag {
+          display: none;
+        }
       }
     }
   }
@@ -180,6 +275,7 @@ export default {
       &--inner {
         h4 {
           letter-spacing: 1px;
+          margin-top: 0;
         }
       }
 

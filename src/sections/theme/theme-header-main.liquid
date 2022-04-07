@@ -48,7 +48,7 @@
 
     <div class="c-headerMain__secondary">      
       {% if customer %}
-        <nav class="c-dropdown">
+        <nav class="c-dropdown hoverOpen">
           <a href="/account#/shipments" class="c-headerMain__account">
             <span class="c-headerMain__nameText">Welcome back, {{name_text}}</span>
             <span class="c-headerMain__accountText">{{ account_text }}</span>
@@ -59,7 +59,7 @@
               />            
             {% endif %}
           </a>          
-          <section class="c-dropdown--wrap">
+          <section class="c-dropdown__wrap">
             <a href="/account#/shipments">
               Upcoming Orders
             </a>

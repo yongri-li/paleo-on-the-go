@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import cProductCard from './cProductCard.vue'
+import cProductCard from '@shared/components/parts/cProductCard.vue'
 import cSvg from '@shared/components/core/cSvg.vue'
 import { tns } from 'tiny-slider/src/tiny-slider'
 
@@ -161,7 +161,7 @@ export default {
     }
 
     @include media-tablet-up {
-      gap: 10px;
+      gap: 2rem;
     }
   }
 }

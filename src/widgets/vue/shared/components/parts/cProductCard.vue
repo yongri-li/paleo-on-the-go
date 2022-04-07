@@ -1,11 +1,6 @@
 <template>
   <div :class="[`c-product--cta`, { 'c-product--selected': selected }]">
-    <!--     :class="[
-      `c-product c-product--${modifier} c-product--cta`,
-      {
-        'c-product--selected': selected
-      }
-    ]" -->
+    <!-- c-product--${modifier} -->
     <div class="c-product__inner">
       <div class="c-product__image-side">
         <a :href="product.url" class="c-product__image-frame">
@@ -18,33 +13,19 @@
         </a>
       </div>
       <div class="c-product__info">
-        <div>
-          <span class="c-tag">
-            <!--     {{ tagText }} -->
+        <div class="c-product__title-wrapper">
+          <a :href="product.url">
+            <h4 class="c-product__title c-h4">
+              {{ product.title }}
+            </h4>
+          </a>
+          <span class="c-product__subtitle">
+            {{ product.subtitle }}
           </span>
-          <div class="c-product__title-wrapper">
-            <a :href="product.url">
-              <h4 class="c-product__title c-h4">
-                {{ title }}
-              </h4>
-            </a>
-            <span class="c-product__subtitle">
-              <!--   {{ productSecondaryTitle }} -->
-            </span>
-          </div>
+          <strong class="c-product__price">Starts at {{ price }}</strong>
         </div>
       </div>
     </div>
-    <ul class="c-product__details">
-      <li class="c-product__detail"></li>
-      <li class="c-product__detail">
-        <!--  {{ nutritionalInfo.carbohydrates }}g Carb -->
-      </li>
-      <li class="c-product__detail"></li>
-      <!--      <li class="c-product__detail">
-        {{ nutritionalInfo.fat }}g Fat
-      </li> -->
-    </ul>
   </div>
 </template>
 
@@ -64,25 +45,22 @@ export default {
     },
     tag: {
       type: String
-    },
-    likable: {
-      type: Boolean
     }
   },
   computed: {
     selected() {
       return this.quantity > 0
     },
-    title() {
-      return this.product.title
-    },
+    // title() {
+    //   return this.product.title
+    // },
     // modifier() {
     //   return this.isAddOn ? 'addOn' : this.productTypeHandle
     // },
     // productTypeHandle() {
     //   return handleize(this.product.type)
     // },
-    // productSecondaryTitle() {
+    // subTitle() {
     //   return this.product.subtitle
     // },
     // downcaseTags() {
@@ -105,16 +83,27 @@ export default {
     },
     flagHandle() {
       return handleize(this.flag)
+    },
+    price() {
+      return formatPrice(this.product.price)
     }
   }
 }
 </script>
 <style lang="scss" scoped>
 .c-product {
-  cursor: pointer;
-}
-.c-product__subtitle {
-  color: $color-grey;
-  font-size: 15px;
+  &__flag {
+    position: absolute;
+    background-color: $color-black;
+    color: $color-primary;
+    font-size: 18px;
+    font-weight: 500;
+    padding: 0.5rem 2.25rem;
+  }
+
+  &__flag--seasonal-item {
+    background-color: $color-primary;
+    color: $color-black;
+  }
 }
 </style>
