@@ -86,7 +86,7 @@ export default {
     }
   },
   computed: {
-    ...mapState([
+    ...mapState('mealcart', [
       'cart'
     ]),
     cartAddOnsLenght() {

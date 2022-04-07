@@ -52,7 +52,7 @@ export default {
   },
   computed: {
     ...mapState({
-      stateSizes: 'sizes'
+      stateSizes: state => state.mealcart.sizes
     }),
     sizes() {
       return this.stateSizes.map( (size, index) => {

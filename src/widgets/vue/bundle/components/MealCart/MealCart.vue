@@ -18,6 +18,7 @@
       />
     </div>
     <meal-cart-footer
+      :cart="cart"
       :subtotal="cartSubTotal"
       :size-selected="getSizeSelected"
       :cart-length="cartLength"
@@ -33,8 +34,7 @@ import MealCartHeader from './MealCartHeader.vue'
 import MealCartBody from './MealCartBody.vue'
 import MealCartFooter from './MealCartFooter.vue'
 
-import { mapState, mapGetters } from 'vuex'
-import { CHANGE_SIZE_SELECTED, CLEAN_ALL_CART } from '@shared/cartdrawer/store/_mutations-type'
+import { mapState, mapGetters, mapActions } from 'vuex'
 
 import { changeRouter } from '../../utils'
 
@@ -51,10 +51,10 @@ export default {
     }
   },
   computed: {
-    ...mapState([
+    ...mapState('mealcart', [
       'cart'
     ]),
-    ...mapGetters([
+    ...mapGetters('mealcart', [
       'getSizeSelected'
     ]),
     haveProductsClass() {
@@ -99,6 +99,9 @@ export default {
     )
   },
   methods: {
+    ...mapActions('mealcart', [
+      'setSizeFromRoute'
+    ]),
     setSizeSelected() {
       const orderType = this.getSizeSelected.order_type
       const box = this.$route.params.box
@@ -115,16 +118,14 @@ export default {
       // this is for '/onetime'
       if(box === 'onetime' && orderType !== 'onetime') {
         console.log('entro al if del /onetime')
-        this.$store.commit( CHANGE_SIZE_SELECTED, { val: 'onetime' } )
-        this.$store.commit( CLEAN_ALL_CART )
+        this.setSizeSelected({ val: 'onetime' })
         return
       }
 
       // this is for '/subscription'
       if(box === 'subscription' && orderType !== 'subscription') {
         console.log('entro al if del /subscription')
-        this.$store.commit( CHANGE_SIZE_SELECTED, { val: '12items' } )
-        this.$store.commit( CLEAN_ALL_CART )
+        this.setSizeSelected({ val: '12items' })
         return
       }
 

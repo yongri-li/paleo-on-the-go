@@ -100,7 +100,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { FILTER_TOGGLE_ACTIVE } from '@shared/cartdrawer/store/_mutations-type'
+import { FILTER_TOGGLE_ACTIVE } from '../../store/modules/filters/_mutations-type'
 
 export default {
   props: {
@@ -126,7 +126,7 @@ export default {
     }
   },
   computed: {
-    ...mapState([
+    ...mapState('filters',[
       'filters'
     ]),
     preferences() {
@@ -173,7 +173,7 @@ export default {
         }
 
         // change active to false
-        this.$store.commit(FILTER_TOGGLE_ACTIVE, {
+        this.$store.commit(`filters/${FILTER_TOGGLE_ACTIVE}`, {
           tag: item.tag,
           active: false
         })
@@ -191,7 +191,7 @@ export default {
         }
 
         // change active to true
-        this.$store.commit(FILTER_TOGGLE_ACTIVE, {
+        this.$store.commit(`filters/${FILTER_TOGGLE_ACTIVE}`, {
           tag: item.tag,
           active: true
         })
@@ -208,7 +208,7 @@ export default {
         if(key === 'preference' || key === 'product_type') {
           const valSplit = queryRouter[key].split(',')
           valSplit.forEach(val => {
-            this.$store.commit(FILTER_TOGGLE_ACTIVE, {
+            this.$store.commit(`filters/${FILTER_TOGGLE_ACTIVE}`, {
               tag: val,
               active: true
             })

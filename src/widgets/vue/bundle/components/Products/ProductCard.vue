@@ -74,7 +74,7 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
-import { MODAL_SETUP } from '@shared/cartdrawer/store/_mutations-type'
+import { MODAL_SETUP } from '../../store/modules/modals/_mutations-type'
 import { formatPrice } from '../../utils'
 import ProductBtnAddToCart from './ProductBtnAddToCart.vue'
 
@@ -95,10 +95,10 @@ export default {
     },
   },
   computed: {
-    ...mapState([
+    ...mapState('mealcart',[
       'sizes'
     ]),
-    ...mapGetters([
+    ...mapGetters('mealcart',[
       'getProductFromCartByID',
       'getSizeSelected'
     ]),
@@ -142,12 +142,11 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
+    ...mapActions('mealcart',[
       'addToCart',
-      'reduceToCart'
     ]),
     openModal() {
-      this.$store.commit(MODAL_SETUP, {
+      this.$store.commit(`modals/${MODAL_SETUP}`, {
         component: 'ModalProduct',
         settings: {
           params: {

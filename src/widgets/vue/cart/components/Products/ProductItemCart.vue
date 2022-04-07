@@ -1,27 +1,41 @@
 <template>
-  <div
-    :class="[typeClass]"
-    class="pitemcart"
-  >
-    <div class="pitemcart__body">
-      <div class="pitemcart__figure">
+  <div class="pitem">
+    <div class="pitem__colum product">
+      <div class="pitem__figure">
         <img
-          class="pitemcart__figure--img"
+          class="pitem__figure--img"
           :src="imageUrl"
           :alt="product.title"
         />
       </div>
-      <div class="pitemcart__info">
-        <div class="pitemcart__info--title">
+      <div class="pitem__info">
+        <div class="pitem__info--title">
           {{ product.title }}
         </div>
-        <div class="pitemcart__info--description">
+        <!-- <div class="pitem__info--subtitle">
           with dasljdal adsajdla
-        </div>
-        <div class="pitemcart__info--price">
+        </div> -->
+        <div class="pitem__price u-hideTabletUp">
           {{ finalPrice }}
         </div>
+        <div class="pitem__qt-remove u-hideTabletUp">
+          <div class="pitem__qt">
+            QTY: {{ product.quantity }}
+          </div>
+          <div class="pitem__remove">
+            Remove
+          </div>
+        </div>
       </div>
+    </div>
+    <div class="pitem__qt u-hideMobileDown">
+      {{ product.quantity }}
+    </div>
+    <div class="pitem__price u-hideMobileDown">
+      {{ finalPrice }}
+    </div>
+    <div class="pitem__remove u-hideMobileDown">
+      Remove
     </div>
   </div>
 </template>
@@ -35,10 +49,6 @@ export default {
       type: Object,
       required: true
     },
-    typeClass: {
-      type: String,
-      default: 'subscription'
-    }
   },
   computed: {
     imageUrl() {
@@ -47,56 +57,42 @@ export default {
       return urlFinal
     },
     finalPrice() {
-      // const discount = this.getSizeSelected.discount / 100
-      // const price = this.where === 'addons' ? this.product.price : this.product.price * (1 - discount)
-      const price = this.product.price
-      return formatPrice(price)
+      return formatPrice(this.product.price * this.product.quantity)
     }
-  },
+  }
 }
 </script>
 
 <style lang="scss" scoped>
+.pitem {
 
-.pitemcart {
-  @include flex($justify: space-between);
-  margin-top: 1.2rem;
+  @include media-tablet-up {
+    @include flex($align: center);
+  }
 
-  &__body {
-    @include flex($justify: space-between);
-    width: 70%;
+  &__colum.product {
+    @include flex($align: flex-start);
+
+    @include media-tablet-up {
+      width: 55%;
+      align-items: center;
+    }
   }
 
   &__figure {
-    position: relative;
-    width: 25%;
-    display: flex;
+    width: 30%;
+    margin-right: 5%;
 
-    &--img {
-      border-radius: 100%;
-    }
-
-    &--remove {
-      cursor: pointer;
-      font-family: $font-heading;
-      position: absolute;
-      right: -3px;
-      top: -6px;
-      background-color: $color-black;
-      color: $color-white;
-      box-shadow: 2px 4px 5px rgb(0 0 0 / 25%);
-      border-radius: 100%;
-      width: 25px;
-      height: 25px;
-      @include flex($justify: center)
+    @include media-tablet-up {
+      width: 20%;
     }
   }
 
   &__info {
-    width: 70%;
+    width: 65%;
 
     &--title {
-      font-family: $font-heading;
+      font-family: Knockout,sans-serif;
       font-size: 1.5rem;
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
@@ -106,49 +102,45 @@ export default {
       text-transform: capitalize;
     }
 
-    &--description {
-      color: #7B7979;
+    &--subtitle {
+      color: #7b7979;
       font-size: .9rem;
     }
+  }
 
-    &--price {
-      margin-top: 0.7rem;
+  &__price {
+    font-size: 1.2rem;
+    margin: .5rem 0;
+
+    @include media-tablet-up {
+      width: 23%;
+      text-align: right;
+      margin: 0;
+    }
+  }
+
+  &__qt-remove {
+    font-size: .9rem;
+    @include flex($justify: space-between);
+  }
+
+  &__qt {
+    @include media-tablet-up {
+      width: 10%;
       font-size: 1rem;
-      font-weight: 500;
+      text-align: center;
     }
   }
 
-  &__add-to-cart {
-    width: 26%;
-    font-size: 1.5rem;
-    border-radius: 20px;
-    padding: 0.2rem;
+  &__remove {
+    color: $color-info;
+    text-decoration: underline;
+    cursor: pointer;
+    @include media-tablet-up {
+      width: 12%;
+      font-size: 1rem;
+      text-align: right;
+    }
   }
 }
-
-.addons.pitemcart {
-
-  .pitemcart {
-
-    &__body {
-      width: 100%;
-    }
-
-    &__figure {
-
-      &--remove {
-        display: none;
-      }
-
-    }
-
-    &__add-to-cart {
-      display: none;
-    }
-
-  }
-
-}
-
-
 </style>

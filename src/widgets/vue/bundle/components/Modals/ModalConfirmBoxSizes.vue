@@ -39,7 +39,7 @@ export default {
       this.$emit('close')
     },
     saveChanged() {
-      this.$store.dispatch('changeSizeSelected', this.params.newVal)
+      this.$store.dispatch('mealcart/changeSizeSelected', this.params.newVal)
     }
   }
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="your-box">
     <div class="your-box__title">
-      YOUR BOX
+      {{ settings.title_box }}
     </div>
     <div class="your-box__content">
       <div class="your-box__content-header">
@@ -22,10 +22,16 @@
 
 <script>
 import YourBoxBody from './YourBoxBody.vue'
+import { mapState } from 'vuex'
 
 export default {
   components: {
     YourBoxBody
+  },
+  computed: {
+    ...mapState('ui', [
+      'settings'
+    ])
   }
 }
 </script>
@@ -73,16 +79,13 @@ export default {
 
       &-column.product{
         width: 60%;
-        border: 1px solid red;
       }
 
       &-column.qty{
-        border: 1px solid blue;
         width: 10%;
       }
 
       &-column.price{
-        border: 1px solid green;
         width: 15%;
         text-align: right;
       }

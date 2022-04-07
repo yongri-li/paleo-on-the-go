@@ -58,10 +58,10 @@ export default {
     }
   },
   computed: {
-    ...mapState([
+    ...mapState('modals',[
       'modal'
     ]),
-    ...mapGetters([
+    ...mapGetters('products',[
       'getProductsFromRoute'
     ]),
     products() {

@@ -25,10 +25,15 @@
 </template>
 
 <script>
-import { formatPrice } from '../../utils'
+import { formatPrice } from '@shared/utils'
+import { mapActions } from 'vuex'
 
 export default {
   props: {
+    cart: {
+      type: Object,
+      required: true
+    },
     subtotal: {
       type: Number,
       required: true
@@ -96,7 +101,10 @@ export default {
     }
   },
   methods: {
-    nextStep() {
+    ...mapActions('cartdrawer',[
+      'setDataFromBox'
+    ]),
+    async nextStep() {
       console.log('funciona el click')
       const param = this.$route.params.box
       console.log('param', param)
@@ -105,11 +113,16 @@ export default {
         this.$router.push('/addons')
       }
       else {
+        await this.setDataFromBox({
+          items: this.cart.items,
+          addons: this.cart.addons,
+          sizeSelected: this.sizeSelected
+        })
         console.log('hay que ir al checkout')
         // maybe add a loading
         window.location = '/cart'
       }
-    }
+    },
   }
 }
 </script>

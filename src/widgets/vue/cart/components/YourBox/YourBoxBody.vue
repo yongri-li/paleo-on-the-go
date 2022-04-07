@@ -1,12 +1,11 @@
 <template>
   <div class="yb-body">
     <your-box-body-items
-      :items="cart.items"
-      :size-selected="getSizeSelected"
+      :items="items"
     />
     <your-box-body-add-ons
-      v-if="cart.addons.length"
-      :addons="cart.addons"
+      v-if="getAddonsItems.length"
+      :addons="getAddonsItems"
     />
   </div>
 </template>
@@ -15,7 +14,7 @@
 import YourBoxBodyItems from './YourBoxBodyItems.vue'
 import YourBoxBodyAddOns from './YourBoxBodyAddOns.vue'
 
-import { mapState, mapGetters } from 'vuex'
+import { mapGetters } from 'vuex'
 
 export default {
   components: {
@@ -23,12 +22,17 @@ export default {
     YourBoxBodyAddOns
   },
   computed: {
-    ...mapState([
-      'cart'
+    ...mapGetters('cartdrawer', [
+      'getSubscriptionItems',
+      'getOnetimeItems',
+      'getAddonsItems'
     ]),
-    ...mapGetters([
-      'getSizeSelected'
-    ])
+    items() {
+      return [
+        ...this.getSubscriptionItems,
+        ...this.getOnetimeItems
+      ]
+    }
   }
 }
 </script>
