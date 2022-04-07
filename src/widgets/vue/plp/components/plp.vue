@@ -233,29 +233,31 @@ export default {
         grid-template: auto / 1fr;
       }
 
-      .c-product__inner {
-        display: flex;
-        align-items: center;
-        grid-gap: 0.75rem;
+      .c-product {
+        &__inner {
+          display: flex;
+          align-items: center;
+          grid-gap: 0.75rem;
+        }
 
-        .c-product__title {
+        &__title {
           font-size: 1.125rem;
           margin: 0 0 0.25rem;
         }
 
-        .c-product__title-wrapper {
+        &__title-wrapper {
           font-size: 1rem;
         }
 
-        .c-product__image-side {
+        &__image-side {
           flex: 1;
         }
 
-        .c-product__info {
+        &__info {
           flex: 1.5;
         }
 
-        .c-product__flag {
+        &__flag {
           display: none;
         }
       }

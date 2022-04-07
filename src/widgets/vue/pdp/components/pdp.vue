@@ -1,5 +1,5 @@
 <template>
-  <div class="pdp__wrap">
+  <div class="c-pdp">
     <div class="pdp__main o-containerFullWidth">
       <cProductGallery class="main__column" :autoplay="gallery_autoplay" :images="product.images" />
 
@@ -123,7 +123,7 @@ export default {
 </script>
 
 <style lang="scss">
-.pdp__wrap {
+.c-pdp {
   position: relative;
 
   .pdp__main {
@@ -131,9 +131,6 @@ export default {
     display: flex;
     flex-flow: column;
     background-color: $color-ecru;
-
-    /* use if want sticky scroll elmement...
-    overflow-y: scroll;*/
 
     @include media-tablet-up {
       display: flex;
@@ -156,10 +153,6 @@ export default {
       flex: 1.5;
       justify-self: flex-end;
       height: 100%;
-
-      /* use if want sticky scroll elmement...
-      position: sticky;
-      top: 0;*/
     }
 
     .pdp__content {

@@ -1,30 +1,28 @@
 <template>
-	<nav :class="['c-dropdown-Full', { 'is-open': isOpen }]">
-		<section class="c-dropdown-Full__wrap">
-			<div class="c-dropdown-Full__wrap--inner">
-				<section class="inner-flexwrap">
-					<div @click="closeDropdown">Close &#10005;</div>
-					<div>
-						<div class="item-tabs" v-for="tab in filters" :data-val="tab">
-							{{ tab }} <span @click="handleFilter('cut', $event)"> &#10005;</span>
-						</div>
+	<nav :class="['c-dropdownFull', { 'is-open': isOpen }]">
+		<section class="c-dropdownFull__wrap">
+			<section class="inner-flexwrap">
+				<div @click="closeDropdown">Close &#10005;</div>
+				<div>
+					<div class="item-tabs" v-for="tab in filters" :data-val="tab">
+						{{ tab }} <span @click="handleFilter('cut', $event)"> &#10005;</span>
 					</div>
-				</section>
-				<hr />
-				<section class="inner-flexwrap">
-					<div>&nbsp;</div>
-					<div>
-						<div
-							class="select-items"
-							v-for="item in items"
-							:data-val="item"
-							@click="handleFilter('add', $event)"
-						>
-							{{ item }}
-						</div>
+				</div>
+			</section>
+			<hr />
+			<section class="inner-flexwrap">
+				<div>&nbsp;</div>
+				<div>
+					<div
+						class="select-items"
+						v-for="item in items"
+						:data-val="item"
+						@click="handleFilter('add', $event)"
+					>
+						{{ item }}
 					</div>
-				</section>
-			</div>
+				</div>
+			</section>
 		</section>
 	</nav>
 </template>
@@ -71,7 +69,7 @@ export default {
 </script>
 
 <style lang="scss">
-.c-dropdown-Full__wrap {
+.c-dropdownFull__wrap {
 	.inner-flexwrap,
 	.inner-flexwrap > div {
 		display: flex;
@@ -99,7 +97,8 @@ export default {
 		padding: 0.5rem 1rem;
 
 		span {
-			padding-left: 1rem;
+			padding: 0 0.5rem;
+			margin-right: -0.5rem;
 			font-weight: 900;
 		}
 	}
