@@ -13,10 +13,10 @@
             :addons="null"
             :content="content"
             :boxNumber="i"
-            :addressId="addressIds[i]"
             :allProducts="allProducts"
             :shipDate="formatDayDateIOS(charge.scheduledAt)"
           />
+          <!-- :addressId="addressIds[i]" -->
         </section>
       </div>
     </article>

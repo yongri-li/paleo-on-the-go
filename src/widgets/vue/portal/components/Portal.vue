@@ -74,20 +74,17 @@ export default {
       }, 100)
     },
     async getRCdata() {
-      // const apiClient = new apiService()
+      const apiClient = new apiService()
       const { data } = await this.apiTest.get(
         '/v1/customer/resources?resources=addresses,charges,orders,subscriptions,onetimes'
       )
-
       const accounts = await this.apiTest.get('/v1/customer/account')
-      const { rechargeCustomer, resources } = data //shopifyCustomer,
-
+      const { rechargeCustomer, resources } = data
+      console.log('dataa', data)
       this.state.customer.resources = { ...resources }
       this.state.customer.recharge = accounts.data.rechargeCustomer
-      // this.state.recharge = accounts.data.rechargeCustomer
       this.state.rechargeCustomer = accounts.data.rechargeCustomer
       this.state.customer.ready = true
-
       const { portal, shop, bundle, customer } = await window.Scoutside
       this.state.customer.shopifyCustomer = customer
       this.state.shopify = customer
@@ -101,21 +98,18 @@ export default {
     // const ccApiAccessToken = ccAct?.split('=')[1]
     // const lsApiAccessToken = localStorage.getItem('api_access_token')
     // lsApiAccessToken ? null : localStorage.setItem('api_access_token', ccApiAccessToken)
+    //this.getRCdata()
   },
   async mounted() {
     //await setup(this)
     this.setReady()
+    this.getRCdata()
     // setTimeout(() => {
     //   this.updateAPIheader()
     // }, 300)
-    setTimeout(() => {
-      this.getRCdata()
-    }, 1775)
-
-    // setHeaderNextBoxShip = () => {
-    //   const accountText = document.querySelector('.c-headerMain__accountText')
-    //   accountText.textContent = `Next Box Ships ${}`
-    // }
+    // setTimeout(() => {
+    //   this.getRCdata()
+    // }, 1131)
   },
   watch: {
     preventScroll: {

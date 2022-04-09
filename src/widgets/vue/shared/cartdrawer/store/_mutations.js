@@ -1,3 +1,4 @@
+import { _arrayMergeByKeys } from '@shared/scripts'
 import {
   ADD_PRODUCT_TO_CART,
   ADD_PRODUCTS_TO_CART,
@@ -80,5 +81,35 @@ export default {
     if (indexFound > -1) {
       state.filters[indexFound].active = active
     }
+  },
+  CUSTOMER_UPDATE_SUBSCRIPTIONS(state, payload) {
+    const prevSubscriptions = [...state.resources.subscriptions]
+    const { subscriptions, keys } = payload
+    const filteredSubscriptions = _arrayMergeByKeys({
+      prevArray: prevSubscriptions,
+      newArray: subscriptions,
+      keys
+    })
+    state.resources.subscriptions = [...filteredSubscriptions, ...subscriptions]
+  },
+  CUSTOMER_UPDATE_CHARGES(state, payload) {
+    const prevCharges = [...state.resources.charges]
+    const { charges, keys } = payload
+    const filteredCharges = _arrayMergeByKeys({
+      prevArray: prevCharges,
+      newArray: charges,
+      keys
+    })
+    state.resources.charges = [...filteredCharges, ...charges]
+  },
+  CUSTOMER_UPDATE_ONETIMES(state, payload) {
+    const prevOnetimes = [...state.resources.onetimes]
+    const { onetimes, keys } = payload
+    const filteredOnetimes = _arrayMergeByKeys({
+      prevArray: prevOnetimes,
+      newArray: onetimes,
+      keys
+    })
+    state.resources.onetimes = [...filteredOnetimes, ...onetimes]
   }
 }

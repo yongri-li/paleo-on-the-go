@@ -213,7 +213,8 @@ export default {
       @media screen and (min-width: 769px) {
         background-color: #fefefe;
         padding: 0;
-        width: 17%;
+        width: 3.5rem;
+        height: 3.5rem;
         border-radius: 100%;
         border: 1.5px solid #231f20;
       }

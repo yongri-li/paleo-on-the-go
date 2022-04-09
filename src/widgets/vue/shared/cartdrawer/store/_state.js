@@ -1,28 +1,30 @@
 let bundle = window.Scoutside.bundle || {}
-bundle = Object.assign({
-  sizes: [],
-  collections: [],
-  prebuilt: {
-    content: {},
-    items: []
+bundle = Object.assign(
+  {
+    sizes: [],
+    collections: [],
+    prebuilt: {
+      content: {},
+      items: []
+    },
+    filters: []
   },
-  filters: []
-}, bundle)
+  bundle
+)
 console.log(bundle)
 
-const prebuiltItemsParsed = bundle.prebuilt.items.map( ({bundlename, products}) => {
-  const splitProducts = products.replace(/\n/g,',').split(',')
+const prebuiltItemsParsed = bundle.prebuilt.items.map(({ bundlename, products }) => {
+  const splitProducts = products.replace(/\n/g, ',').split(',')
   const productsParse = []
   splitProducts.forEach(product => {
     const length = productsParse.length
-    if(product.includes('size-')) {
+    if (product.includes('size-')) {
       productsParse.push({
-        size: product.replace('size-',''),
+        size: product.replace('size-', ''),
         list: []
       })
-    }
-    else if(product.includes('x')){
-      productsParse[length-1].list.push(product)
+    } else if (product.includes('x')) {
+      productsParse[length - 1].list.push(product)
     }
   })
   return {
@@ -48,7 +50,9 @@ const state = {
     settings: {
       open: false,
       params: {},
-      cancel: () => { console.log('close the modal') },
+      cancel: () => {
+        console.log('close the modal')
+      },
       continue: () => {}
     },
     component: false,
@@ -57,6 +61,13 @@ const state = {
       description: ''
     }
   }
+  // resources: {
+  //   addresses: false,
+  //   charges: false,
+  //   onetimes: false,
+  //   orders: false,
+  //   subscriptions: false
+  // }
 }
 
 export default () => ({ ...state })

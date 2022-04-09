@@ -2,7 +2,7 @@
   <div class="page o-containerLarge">
     <summary-component class="content-summary" />
     <div class="content-box-cart">
-      <your-box v-if="cart.items.length"/>
+      <your-box v-if="cart.items.length" />
     </div>
   </div>
 </template>
@@ -19,10 +19,7 @@ export default {
     YourBox
   },
   computed: {
-    ...mapState([
-      'cart',
-      'sizes'
-    ])
+    ...mapState(['cart', 'sizes'])
   }
 }
 </script>

@@ -1,12 +1,9 @@
 <template>
   <div class="meal-cart__footer">
     <div class="meal-cart__box-total">
-      <div class="meal-cart__box-total--title">
-        BOX TOTAL
-      </div>
+      <div class="meal-cart__box-total--title">BOX TOTAL</div>
       <div class="meal-cart__box-total--amounts">
-        <div v-if="subtotal > 0"
-          class="meal-cart__box-total--sub">
+        <div v-if="subtotal > 0" class="meal-cart__box-total--sub">
           {{ subtotalFormat }}
         </div>
         <div class="meal-cart__box-total--final">
@@ -14,18 +11,25 @@
         </div>
       </div>
     </div>
-    <div
-      :class="{ disable: notContinue }"
-      class="meal-cart__btn-next"
+
+    <c-button
+      class="c-cta meal-cart__btn-next"
       @click="nextStep"
-    >
-      {{ ctabtn }}
-    </div>
+      :loading="loading"
+      :text="ctabtn"
+      :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
+      :attributes="{ disable: notContinue }"
+    />
+    <br />
   </div>
 </template>
 
 <script>
 import { formatPrice } from '../../utils'
+import { mapActions } from 'vuex'
+import cButton from '@shared/components/core/cButton.vue'
+import { apiService } from '@shared/services'
+import { stillProcessingWarningPopup, removeReloadWarning } from '@shared/utils'
 
 export default {
   props: {
@@ -45,15 +49,35 @@ export default {
       type: Number,
       required: true
     },
+    addons: {
+      type: Array
+    },
+    subs: {
+      type: Array
+    },
+    fromPortal: {
+      type: Boolean
+    },
     typeClass: {
       type: String,
       default: 'subscription'
     },
+    addressId: {
+      type: [String, Number],
+      required: true
+    }
   },
   data() {
     return {
-      notContinue: false
+      notContinue: false,
+      loading: false,
+      rechargeSubIds: [],
+      rechargeAddonIds: []
+      // newSubItems: []
     }
+  },
+  components: {
+    cButton
   },
   computed: {
     final() {
@@ -61,32 +85,38 @@ export default {
       const total = this.subtotal * (1 - discount) + this.cartAddOns
       return total === 0 ? '$0.00' : formatPrice(total)
     },
+    isCustomer() {
+      return customer.email && customer.shopify_id ? true : false
+    },
     subtotalFormat() {
       return formatPrice(this.subtotal + this.cartAddOns)
     },
     ctabtn() {
-      if(this.cartLength === 0) {
+      if (this.cartLength === 0) {
         this.notContinue = true
         return 'Add items to Continue'
       }
 
+      const param = this.$route.params.box
+      if (param === 'addons' && this.fromPortal && this.isCustomer) return 'Save Changes'
+
       const diff = this.cartLength - this.sizeSelected.number_size
-      if(diff > 0) {
+      if (diff > 0) {
         this.notContinue = true
         return `Remove ${diff} items to Continue`
       }
 
-      if(diff < 0) {
+      if (diff < 0) {
         this.notContinue = true
         return `Add ${diff * -1} items to Continue`
       }
 
-      if(this.cartAddOns === 0 && this.typeClass === 'addons') {
+      if (this.cartAddOns === 0 && this.typeClass === 'addons') {
         this.notContinue = false
         return `No Thanks Continue to Checkout`
       }
 
-      if(this.typeClass === 'subscription') {
+      if (this.typeClass === 'subscription') {
         this.notContinue = false
         return 'Continue'
       }
@@ -96,31 +126,74 @@ export default {
     }
   },
   methods: {
-    nextStep() {
-      console.log('funciona el click')
-      const param = this.$route.params.box
-      console.log('param', param)
-      if(param === 'subscription') {
-        console.log('hay que ir a addons')
-        this.$router.push('/addons')
+    ...mapActions([
+      'customerCreateSubscriptions',
+      'customerDeleteSubscriptions',
+      'customerDeleteOnetimes',
+      'customerCreateOnetimes'
+    ]),
+    async updateAddonsAndSubs() {
+      this.loading = true
+      stillProcessingWarningPopup()
+
+      if (this.addons.length) {
+        await this.customerDeleteOnetimes({
+          addressId: this.addressId,
+          addOnsIds: this.rechargeAddonIds
+        })
+
+        const subscriptions = await this.customerCreateOnetimes({
+          addressId: this.addressId,
+          creates: this.addons
+        })
       }
-      else {
-        console.log('hay que ir al checkout')
-        // maybe add a loading
+      await this.customerDeleteSubscriptions({
+        addressId: this.addressId,
+        ids: this.rechargeSubIds
+      })
+
+      const subscriptions = await this.customerCreateSubscriptions({
+        addressId: this.addressId,
+        creates: this.subs
+      })
+      removeReloadWarning()
+      if (subscriptions) window.location = '/account#/shipments'
+    },
+    nextStep() {
+      const param = this.$route.params.box
+      if (param === 'subscription') {
+        this.$router.push('/addons')
+      } else if (this.fromPortal && this.isCustomer) {
+        this.updateAddonsAndSubs()
+      } else {
         window.location = '/cart'
       }
+    },
+    async getRCdata() {
+      const apiClient = new apiService()
+      const { data } = await apiClient.get('/v1/customer/resources?resources=subscriptions,onetimes')
+      console.log(data)
+      const { subscriptions, onetimes } = data.resources
+      const curSubs = subscriptions.filter(sub => sub.addressId === this.addressId)
+      const subIds = curSubs.map(sub => sub.id)
+      const curAddons = onetimes.filter(addon => addon.addressId === this.addressId)
+      const addonIds = curAddons.map(addon => addon.id)
+      this.rechargeSubIds = subIds
+      this.rechargeAddonIds = addonIds
     }
+  },
+  mounted() {
+    this.getRCdata()
+    //setTimeout(() => this.getRCdata(), 300)
   }
 }
 </script>
 
 <style lang="scss" scoped>
-
 .meal-cart {
-
   &__footer {
     box-shadow: 0px 4px 34px rgba(0, 0, 0, 0.1);
-    padding: .8rem 1rem;
+    padding: 0.8rem 1rem;
 
     @include media-tablet-up {
       padding: 0;
@@ -131,7 +204,7 @@ export default {
     @include flex($align: flex-end, $justify: space-between);
 
     @include media-tablet-up {
-      padding: .6rem .6rem 0;
+      padding: 0.6rem 0.6rem 0;
     }
 
     &--title {
@@ -150,7 +223,7 @@ export default {
     }
 
     &--sub {
-      color: #A7A5A6;
+      color: #a7a5a6;
       font-size: 1.1rem;
       margin-right: 0.3rem;
       text-decoration: line-through;
@@ -171,12 +244,11 @@ export default {
   }
 
   &__btn-next {
-    cursor: pointer;
-    background: $color-primary;
-    padding: 1rem 0;
+    width: 100%;
+    max-width: 500px;
+    font-size: 1.25rem;
+    padding: 1.5rem 2rem;
     margin-top: 0.5rem;
-    font-weight: 600;
-    @include flex($justify: center);
 
     @include media-tablet-up {
       padding: 1.5rem 0;
@@ -187,9 +259,7 @@ export default {
 
   .disable {
     pointer-events: none;
-    opacity: .6;
+    opacity: 0.6;
   }
-
 }
-
 </style>

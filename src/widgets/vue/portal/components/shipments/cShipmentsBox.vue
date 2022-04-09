@@ -1,7 +1,5 @@
 <template>
   <div :class="_buildModifiers('c-shipmentsBox', modifiers)" ref="shipmentBox">
-    <button @click="testProdAdd">test prod add</button>
-    <button @click="clearcart">clear cart</button>
     <c-accordion>
       <c-accordionItem
         class="c-shipments__box--wrap"
@@ -135,9 +133,6 @@ export default {
     boxNumber: {
       type: [Number, String]
     },
-    addressId: {
-      type: [Number, String]
-    },
     modifiers: {
       type: Array,
       default: () => []
@@ -149,8 +144,6 @@ export default {
   },
   data() {
     return {
-      address: {},
-      shipment: {},
       isUpcoming: true,
       setBoxHeight: false
     }
@@ -169,6 +162,12 @@ export default {
     Datepicker
   },
   computed: {
+    addressId() {
+      return this.charge.addressId
+    },
+    address() {
+      return this.$store.getters['customer/customerAddressById'](this.addressId)
+    },
     allItems() {
       return this.charge.lineItems
     },
@@ -180,7 +179,6 @@ export default {
       return this.addOnItems.map(item => item.productId)
     },
     subscriptions() {
-      // return this.$store.state.customer.resources.subscriptions
       return this.$store.getters['customer/customerSubscriptionsByAddressId'](this.addressId)
     },
     subscriptionItems() {
@@ -194,7 +192,7 @@ export default {
     },
     frequency() {
       const freqObj = this.subscriptionItems?.find(sub => sub.frequency)
-      return freqObj.frequency
+      return !!freqObj ? freqObj.frequency : 1
     },
     totalSubItems() {
       return this.subscriptionItems?.reduce((sum, sub) => sum + sub.quantity, 0)
@@ -227,12 +225,6 @@ export default {
     ...mapMutations('ui', ['UI_SET_SIDEBAR', 'UI_SET_MODAL']),
     ...mapMutations('customer', ['CUSTOMER_SET_THIS_CHARGEID', 'CUSTOMER_SET_NEXT_CHARGEDATE']),
     ...mapActions(['newAddToCart', 'newCleanCart', 'addToCartFromPortal']),
-    testProdAdd() {
-      this.addToCartFromPortal({
-        productsArr: this.portalProducts,
-        where: 'items'
-      })
-    },
     clearcart() {
       this.newCleanCart()
     },
@@ -245,6 +237,8 @@ export default {
         where: 'items'
       })
       sessionStorage.setItem('boxSize', this.totalSubItems)
+      sessionStorage.setItem('addressId', this.addressId)
+      sessionStorage.setItem('nextChargeDate', this.charge.scheduledAt)
       window.location.href = '/pages/bundle/#/subscription'
     },
     handleEditSchedule() {

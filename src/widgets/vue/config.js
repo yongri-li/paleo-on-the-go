@@ -1,5 +1,5 @@
 module.exports = {
-  srcPath: "../../",
-  sharedPath: "./shared",
-  vuePath: "./"
+  srcPath: '../../',
+  sharedPath: './shared',
+  vuePath: './'
 }

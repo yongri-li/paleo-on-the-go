@@ -34,8 +34,8 @@ import cButton from '@shared/components/core/cButton.vue'
 export default {
   props: {
     address: {
-      type: Object,
-      required: true
+      type: Object
+      // required: true
     },
     shipment: {
       type: Object,

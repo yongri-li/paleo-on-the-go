@@ -19,7 +19,11 @@
       :size-selected="getSizeSelected"
       :cart-length="cartLength"
       :cart-add-ons="cartAddOns"
+      :addons="addOnsUpdates"
+      :addressId="addressId"
+      :subs="subscriptionUpdates"
       :type-class="typeClass"
+      :from-portal="fromPortal"
       class="meal-cart__bottom"
     />
   </div>
@@ -43,7 +47,10 @@ export default {
   },
   data() {
     return {
-      showCartMobile: false
+      showCartMobile: false,
+      fromPortal: false,
+      addressId: null,
+      nextChargeDate: null
     }
   },
   computed: {
@@ -76,9 +83,49 @@ export default {
         total += addon.price * addon.quantity
       })
       return total
+    },
+    isCustomer() {
+      return customer.email && customer.shopify_id ? true : false
+    },
+    addOnsUpdates() {
+      return this.cart.addons.map(addOn => {
+        return {
+          addressId: this.addressId,
+          next_charge_scheduled_at: this.nextChargeDate,
+          price: (addOn.variants[0].price / 100).toFixed(2),
+          product_title: addOn.title,
+          product_type: addOn.type,
+          quantity: addOn.quantity,
+          shopify_product_id: addOn.id,
+          shopify_variant_id: addOn.variants[0].id,
+          properties: {
+            _addOn: true
+          }
+        }
+      })
+    },
+    subscriptionUpdates() {
+      return this.cart.items.map(child => {
+        return {
+          address_id: this.addressId,
+          charge_interval_frequency: 1,
+          next_charge_scheduled_at: this.nextChargeDate,
+          order_interval_frequency: 1,
+          order_interval_unit: 'week',
+          price: (child.variants[0].price / 100).toFixed(2),
+          hash: child.price_hashes,
+          tags: child.tags,
+          shopify_variant_id: child.variants[0].id,
+          quantity: child.quantity
+        }
+      })
     }
   },
   mounted() {
+    const addressId = sessionStorage.getItem('addressId')
+    const nextChargeDate = sessionStorage.getItem('nextChargeDate')
+    this.addressId = addressId
+    this.nextChargeDate = nextChargeDate
     // watch the params of the route to fetch the data again
     this.$watch(
       () => this.$route.params,
@@ -96,12 +143,13 @@ export default {
       const referrerPage = document.referrer
       const orderType = this.getSizeSelected.order_type
       const box = this.$route.params.box
-      console.log(boxSize, box)
 
-      if (box && referrerPage.includes('/account')) {
-        this.$store.commit(CHANGE_SIZE_SELECTED, { val: `${boxSize}items` })
-        console.log(boxSize, box)
-        return
+      if (referrerPage.includes('/account')) {
+        this.fromPortal = true
+        if (box) {
+          this.$store.commit(CHANGE_SIZE_SELECTED, { val: `${boxSize}items` })
+          return
+        }
       }
 
       // this is for '/'
