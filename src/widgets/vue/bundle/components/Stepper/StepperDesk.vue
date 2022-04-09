@@ -2,18 +2,22 @@
   <div class="sp">
     <div class="sp__logo">
       <a href="/" class="sp__logo--link">
-        <img src="https://cdn.shopify.com/s/files/1/0088/3163/1415/files/paleo__logo.png?v=1644951785" alt="Logo Paleo On the Go" />
+        <img
+          src="https://cdn.shopify.com/s/files/1/0088/3163/1415/files/paleo__logo.png?v=1644951785"
+          alt="Logo Paleo On the Go"
+        />
       </a>
     </div>
     <div class="sp__content">
-      <div v-for="(step, index) in steps"
+      <div
+        v-for="(step, index) in steps"
         :key="index"
         class="sp__item"
-        :class="{active: step.active, clickeable: step.param}"
+        :class="{ active: step.active, clickeable: step.param }"
         @click="backRouter(step)"
       >
         <div class="sp__item--number">
-          {{ index+1 }}
+          {{ index + 1 }}
         </div>
         <div class="sp__item--title">
           {{ step.name }}
@@ -30,6 +34,9 @@ import { changeRouter } from '../../utils'
 
 export default {
   computed: {
+    isCustomer() {
+      return customer.email && customer.shopify_id ? true : false
+    },
     steps() {
       const param = this.$route.params.box
       const steps = [
@@ -40,7 +47,7 @@ export default {
         },
         {
           name: 'Add-Ons',
-          active: ( param === 'addons' )
+          active: param === 'addons'
         },
         {
           name: 'Review',
@@ -52,9 +59,18 @@ export default {
         }
       ]
 
-      if(param === 'onetime') {
-        steps.splice(1,1)
+      if (param === 'onetime') {
+        steps.splice(1, 1)
         steps[0].param = 'onetime'
+      }
+
+      if ((this.isCustomer && param === 'addons') || param === 'subscription') {
+        steps.splice(3, 1)
+        steps[2].name = 'Udpate Box'
+      }
+
+      if (this.isCustomer && param === 'addons') {
+        steps[2].active = true
       }
 
       return steps
@@ -62,7 +78,7 @@ export default {
   },
   methods: {
     backRouter(step) {
-      if(step.active && step.param) {
+      if (step.active && step.param) {
         changeRouter(step.param)
       }
     }
@@ -110,7 +126,7 @@ export default {
     }
 
     &--line {
-      border: .5px solid $color-black;
+      border: 0.5px solid $color-black;
       width: 2rem;
       margin-left: 1rem;
     }
@@ -127,14 +143,12 @@ export default {
       color: $color-primary;
     }
   }
-    &__item.clickeable {
-      cursor: pointer;
-    }
+  &__item.clickeable {
+    cursor: pointer;
+  }
 
   &__empty {
     width: 20%;
   }
-
 }
-
 </style>

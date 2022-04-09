@@ -77,6 +77,7 @@ if (isHomepage) {
 document.addEventListener('scroll', e => {
 	let scrollPosition = window.scrollY
 	const header = document.querySelector('.c-header')
-
-	scrollPosition > 0 ? header.classList.add('scrolled') : header.classList.remove('scrolled')
+	if (header) {
+		scrollPosition > 0 ? header.classList.add('scrolled') : header.classList.remove('scrolled')
+	}
 })

@@ -16,7 +16,7 @@ export default {
 
 <style lang="scss" scoped>
 .summary {
-  border-bottom: 1px solid #EFEDE6;
+  border-bottom: 1px solid #efede6;
   margin-bottom: 2rem;
   padding-bottom: 2rem;
 }

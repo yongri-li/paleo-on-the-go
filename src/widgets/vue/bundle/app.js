@@ -6,7 +6,7 @@ import router from './_router'
 import Bundle from './Bundle.vue'
 
 import vSelect from 'vue-select'
-import 'vue-select/dist/vue-select.css';
+import 'vue-select/dist/vue-select.css'
 
 /* Register Mixins */
 Vue.mixin(mixins)

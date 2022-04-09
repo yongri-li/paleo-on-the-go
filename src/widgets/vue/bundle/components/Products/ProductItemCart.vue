@@ -1,13 +1,8 @@
 <template>
-  <div
-    :class="[typeClass]"
-    class="pitemcart"
-  >
+  <div :class="[typeClass]" class="pitemcart">
     <div class="pitemcart__body">
       <div class="pitemcart__figure">
-        <div class="pitemcart__figure--remove" @click="removeProductToCart">
-          x
-        </div>
+        <div class="pitemcart__figure--remove" @click="removeProductToCart">x</div>
         <img class="pitemcart__figure--img" :src="imageUrl" :alt="product.title" />
       </div>
       <div class="pitemcart__info">
@@ -15,7 +10,7 @@
           {{ product.title }}
         </div>
         <div class="pitemcart__info--description">
-          with dasljdal adsajdla
+          {{ product.subtitle }}
         </div>
         <div class="pitemcart__info--price">
           {{ finalPrice }}
@@ -35,8 +30,8 @@
 <script>
 import ProductBtnAddToCart from './ProductBtnAddToCart.vue'
 import { mapGetters } from 'vuex'
-import { formatPrice } from '@shared/utils'
-import { REMOVE_PRODUCT_TO_CART } from '../../store/modules/mealcart/_mutations-type'
+import { formatPrice } from '../../utils'
+import { REMOVE_PRODUCT_TO_CART } from '@shared/cartdrawer/store/_mutations-type'
 
 export default {
   components: {
@@ -53,12 +48,10 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('mealcart', [
-      'getSizeSelected'
-    ]),
+    ...mapGetters(['getSizeSelected']),
     imageUrl() {
       const imgFound = this.product.media.find(item => item.position === 1)
-      const urlFinal = imgFound.src.replace('.jpg','_150x150.jpg').replace('.png','_150x150.png')
+      const urlFinal = imgFound.src.replace('.jpg', '_150x150.jpg').replace('.png', '_150x150.png')
       return urlFinal
     },
     where() {
@@ -73,9 +66,9 @@ export default {
   },
   methods: {
     removeProductToCart() {
-      this.$store.commit(`mealcart/${REMOVE_PRODUCT_TO_CART}`, {
+      this.$store.commit(REMOVE_PRODUCT_TO_CART, {
         idProduct: this.product.id,
-        where: this.where,
+        where: this.where
       })
     }
   }
@@ -83,7 +76,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .pitemcart {
   @include flex($justify: space-between);
   margin-top: 1.2rem;
@@ -114,7 +106,7 @@ export default {
       border-radius: 100%;
       width: 25px;
       height: 25px;
-      @include flex($justify: center)
+      @include flex($justify: center);
     }
   }
 
@@ -133,8 +125,8 @@ export default {
     }
 
     &--description {
-      color: #7B7979;
-      font-size: .9rem;
+      color: #7b7979;
+      font-size: 0.9rem;
     }
 
     &--price {
@@ -153,28 +145,20 @@ export default {
 }
 
 .addons.pitemcart {
-
   .pitemcart {
-
     &__body {
       width: 100%;
     }
 
     &__figure {
-
       &--remove {
         display: none;
       }
-
     }
 
     &__add-to-cart {
       display: none;
     }
-
   }
-
 }
-
-
 </style>

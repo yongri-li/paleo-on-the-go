@@ -99,7 +99,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapMutations, mapActions } from 'vuex'
 import cH from '@shared/components/core/cH.vue'
 import cSvg from '@shared/components/core/cSvg.vue'
 import cIcon from '@shared/components/core/cIcon.vue'
@@ -133,18 +133,17 @@ export default {
     boxNumber: {
       type: [Number, String]
     },
-    addressId: {
-      type: [Number, String]
-    },
     modifiers: {
       type: Array,
       default: () => []
+    },
+    allProducts: {
+      type: Array,
+      required: true
     }
   },
   data() {
     return {
-      address: {},
-      shipment: {},
       isUpcoming: true,
       setBoxHeight: false
     }
@@ -163,6 +162,12 @@ export default {
     Datepicker
   },
   computed: {
+    addressId() {
+      return this.charge.addressId
+    },
+    address() {
+      return this.$store.getters['customer/customerAddressById'](this.addressId)
+    },
     allItems() {
       return this.charge.lineItems
     },
@@ -174,18 +179,23 @@ export default {
       return this.addOnItems.map(item => item.productId)
     },
     subscriptions() {
-      // return this.$store.state.customer.resources.subscriptions
       return this.$store.getters['customer/customerSubscriptionsByAddressId'](this.addressId)
     },
     subscriptionItems() {
       return this.allItems.filter(item => !this.addOnItemsIds.includes(item.productId))
     },
+    subProductIds() {
+      return this.subscriptionItems.map(prd => prd.productId * 1)
+    },
+    subProductQtys() {
+      return this.subscriptionItems.map(prd => prd.quantity)
+    },
     frequency() {
-      const freqObj = this.subscriptions?.find(sub => sub.frequency)
-      return freqObj.frequency
+      const freqObj = this.subscriptionItems?.find(sub => sub.frequency)
+      return !!freqObj ? freqObj.frequency : 1
     },
     totalSubItems() {
-      return this.subscriptions?.reduce((sum, sub) => sum + sub.quantity, 0)
+      return this.subscriptionItems?.reduce((sum, sub) => sum + sub.quantity, 0)
     },
     totalAddOns() {
       return this.addOnItems?.reduce((sum, sub) => sum + sub.quantity, 0)
@@ -201,15 +211,36 @@ export default {
     sidebarEditSchedule() {
       const content = this.$store.getters['customize/customizeSidebarByPrefix']('edit_schedule')
       return { content }
+    },
+    portalProducts() {
+      const products = this.subProductIds.map((id, i) => {
+        let item = { ...this.allProducts.find(prod => prod.id === id) }
+        item.quantity = this.subProductQtys[i]
+        return item
+      })
+      return products
     }
   },
   methods: {
     ...mapMutations('ui', ['UI_SET_SIDEBAR', 'UI_SET_MODAL']),
     ...mapMutations('customer', ['CUSTOMER_SET_THIS_CHARGEID', 'CUSTOMER_SET_NEXT_CHARGEDATE']),
+    ...mapActions(['newAddToCart', 'newCleanCart', 'addToCartFromPortal']),
+    clearcart() {
+      this.newCleanCart()
+    },
     setBoxMaxHeight() {
       this.setBoxHeight = !this.setBoxHeight
     },
-    handleChangeMeals() {},
+    handleChangeMeals() {
+      this.addToCartFromPortal({
+        productsArr: this.portalProducts,
+        where: 'items'
+      })
+      sessionStorage.setItem('boxSize', this.totalSubItems)
+      sessionStorage.setItem('addressId', this.addressId)
+      sessionStorage.setItem('nextChargeDate', this.charge.scheduledAt)
+      window.location.href = '/pages/bundle/#/subscription'
+    },
     handleEditSchedule() {
       this.CUSTOMER_SET_THIS_CHARGEID(this.charge.id)
       this.CUSTOMER_SET_NEXT_CHARGEDATE(this.charge.scheduledAt)

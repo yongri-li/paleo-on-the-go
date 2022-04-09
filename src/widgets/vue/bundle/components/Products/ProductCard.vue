@@ -1,23 +1,14 @@
 <template>
-  <div v-if="product"
-    :class="{ active: isProductInCart }"
-    class="pcard"
-  >
+  <div v-if="product" :class="{ active: isProductInCart }" class="pcard">
     <div class="pcard__header">
       <div class="pcard__header--figure" @click="openModal">
-        <img
-          class="pcard__header--img"
-          :src="imageUrl"
-          :alt="product.title"
-        />
+        <img class="pcard__header--img" :src="imageUrl" :alt="product.title" />
       </div>
       <div class="pcard__info">
         <div class="pcard__info--title" @click="openModal">
           {{ product.title }}
         </div>
-        <div class="pcard__info--subtitle">
-          this is for metafields subtitles
-        </div>
+        <div class="pcard__info--subtitle">this is for metafields subtitles</div>
         <div class="pcard__add-to-cart">
           <product-btn-add-to-cart
             v-if="isProductInCart"
@@ -27,29 +18,25 @@
             :where="where"
             class="pcard__add-to-cart--open"
           />
-          <div v-else
+          <div
+            v-else
             class="pcard__add-to-cart--first"
-            @click="addToCart({
-              idCollection: product.collection.id,
-              idProduct: product.id,
-              where,
-            })"
+            @click="
+              addToCart({
+                idCollection: product.collection.id,
+                idProduct: product.id,
+                where
+              })
+            "
           >
-            <span>
-              +
-            </span>
-            <span class="pcard__add-to-cart--txt">
-              Add
-            </span>
+            <span> + </span>
+            <span class="pcard__add-to-cart--txt"> Add </span>
           </div>
         </div>
       </div>
     </div>
     <div class="pcard__prices" @click="openModal">
-      <div
-        v-if="typeOrder === 'addons'"
-        class="pcard__price--addons"
-      >
+      <div v-if="typeOrder === 'addons'" class="pcard__price--addons">
         <div class="pcard__price--number">
           {{ boxesPricingScale[0].price }}
         </div>
@@ -74,7 +61,7 @@
 
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
-import { MODAL_SETUP } from '../../store/modules/modals/_mutations-type'
+import { MODAL_SETUP } from '@shared/cartdrawer/store/_mutations-type'
 import { formatPrice } from '../../utils'
 import ProductBtnAddToCart from './ProductBtnAddToCart.vue'
 
@@ -92,19 +79,14 @@ export default {
     addToCartOpen: {
       type: Boolean,
       default: false
-    },
+    }
   },
   computed: {
-    ...mapState('mealcart',[
-      'sizes'
-    ]),
-    ...mapGetters('mealcart',[
-      'getProductFromCartByID',
-      'getSizeSelected'
-    ]),
+    ...mapState(['sizes']),
+    ...mapGetters(['getProductFromCartByID', 'getSizeSelected']),
     imageUrl() {
       const imgFound = this.product.media.find(item => item.position === 1)
-      const urlFinal = imgFound.src.replace('.jpg','_450x450.jpg').replace('.png','_450x450.png')
+      const urlFinal = imgFound.src.replace('.jpg', '_450x450.jpg').replace('.png', '_450x450.png')
       return urlFinal
     },
     boxesPricingScale() {
@@ -142,11 +124,9 @@ export default {
     }
   },
   methods: {
-    ...mapActions('mealcart',[
-      'addToCart',
-    ]),
+    ...mapActions(['addToCart', 'reduceToCart']),
     openModal() {
-      this.$store.commit(`modals/${MODAL_SETUP}`, {
+      this.$store.commit(MODAL_SETUP, {
         component: 'ModalProduct',
         settings: {
           params: {
@@ -160,10 +140,9 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .pcard {
-  background-color: #FEFEFE;
-  padding: .5rem;
+  background-color: #fefefe;
+  padding: 0.5rem;
 
   &__header {
     display: flex;
@@ -173,15 +152,14 @@ export default {
     &--figure {
       width: 40%;
 
-      @media screen and (min-width: 769px){
+      @media screen and (min-width: 769px) {
         width: 100%;
       }
     }
 
-    @media screen and (min-width: 769px){
+    @media screen and (min-width: 769px) {
       flex-direction: column;
     }
-
   }
 
   &__info {
@@ -189,7 +167,7 @@ export default {
     position: relative;
 
     &--title {
-      color: #231F20;
+      color: #231f20;
       font-family: 'Knockout', sans-serif;
       font-size: 1.5rem;
       line-height: 110%;
@@ -201,27 +179,26 @@ export default {
       text-overflow: ellipsis;
       display: -webkit-box;
 
-      @media screen and (min-width: 769px){
+      @media screen and (min-width: 769px) {
         height: 53px;
       }
     }
 
     &--subtitle {
-      color: #7B7979;
-      font-size: .8rem;
+      color: #7b7979;
+      font-size: 0.8rem;
     }
 
-    @media screen and (min-width: 769px){
+    @media screen and (min-width: 769px) {
       width: 100%;
-      padding: .3rem;
+      padding: 0.3rem;
     }
-
   }
 
   &__add-to-cart {
     margin-top: 1rem;
     font-weight: bold;
-    color: #231F20;
+    color: #231f20;
 
     &--first {
       cursor: pointer;
@@ -234,19 +211,17 @@ export default {
       justify-content: space-evenly;
 
       @media screen and (min-width: 769px) {
-
         background-color: #fefefe;
         padding: 0;
-        width: 17%;
+        width: 3.5rem;
+        height: 3.5rem;
         border-radius: 100%;
         border: 1.5px solid #231f20;
-
       }
-
     }
 
     &--open {
-      padding: .2rem;
+      padding: 0.2rem;
       width: 60%;
       border-radius: 20px;
       font-size: 1.6rem;
@@ -259,7 +234,6 @@ export default {
     }
 
     @include media-tablet-up {
-
       margin: 0;
       position: absolute;
       left: 0;
@@ -276,7 +250,6 @@ export default {
       &--qt {
         font-size: 1.8rem;
       }
-
     }
   }
 
@@ -284,10 +257,10 @@ export default {
     display: flex;
     justify-content: flex-start;
     width: 100%;
-    margin-top: .5rem;
+    margin-top: 0.5rem;
 
-    @media screen and (min-width: 769px){
-      padding: 0 .3rem;
+    @media screen and (min-width: 769px) {
+      padding: 0 0.3rem;
     }
   }
 
@@ -296,23 +269,23 @@ export default {
     flex-direction: column;
     text-align: center;
     width: 25%;
-    background-color: #FEFEFE;
+    background-color: #fefefe;
 
     &--data {
       font-weight: bold;
-      border: 1px solid #EFEDE6;
+      border: 1px solid #efede6;
       box-sizing: border-box;
-      padding: .3rem 0;
+      padding: 0.3rem 0;
     }
 
     &--title {
-      color: #231F20;
+      color: #231f20;
       text-transform: uppercase;
-      font-size: .8rem;
+      font-size: 0.8rem;
     }
 
     &--number {
-      color: #4F4C4D;
+      color: #4f4c4d;
       font-size: 1rem;
     }
 
@@ -324,22 +297,19 @@ export default {
       }
     }
   }
-
 }
 
 .active {
-  background-color: #231F20;
+  background-color: #231f20;
 
   .pcard {
-
     &__info {
-
       &--title {
-        color: #FEFEFE;
+        color: #fefefe;
       }
 
       &--subtitle {
-        color: #FEFEFE;
+        color: #fefefe;
       }
     }
 
@@ -349,17 +319,12 @@ export default {
       }
     }
   }
-
-
 }
 
 .selected {
-
   .pcard__price--data {
     background-color: $color-black;
     color: $color-white;
   }
-
 }
-
 </style>

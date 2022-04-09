@@ -8,7 +8,7 @@
       :modifiers="['isSecondary', 'isHollow', 'isLargest']"
     />
     <transition name="t-content-fade" v-if="customerReady" mode="out-in">
-      <router-view class="c-portal__content" :key="$route.name" />
+      <router-view class="c-portal__content" :key="$route.name" :allProducts="allProducts" />
       <!-- :addressId="addressId" -->
     </transition>
     <c-sidebar class="c-portal__sidebar" v-if="customerReady" data-portal-header />
@@ -31,6 +31,11 @@ export default {
     modifiers: {
       type: Array,
       default: () => []
+    }
+  },
+  data() {
+    return {
+      allProducts: window.Scoutside.portal.products.allproducts
     }
   },
   components: {
@@ -69,20 +74,17 @@ export default {
       }, 100)
     },
     async getRCdata() {
-      // const apiClient = new apiService()
+      const apiClient = new apiService()
       const { data } = await this.apiTest.get(
         '/v1/customer/resources?resources=addresses,charges,orders,subscriptions,onetimes'
       )
-
       const accounts = await this.apiTest.get('/v1/customer/account')
-      const { rechargeCustomer, resources } = data //shopifyCustomer,
-
+      const { rechargeCustomer, resources } = data
+      console.log('dataa', data)
       this.state.customer.resources = { ...resources }
       this.state.customer.recharge = accounts.data.rechargeCustomer
-      // this.state.recharge = accounts.data.rechargeCustomer
       this.state.rechargeCustomer = accounts.data.rechargeCustomer
       this.state.customer.ready = true
-
       const { portal, shop, bundle, customer } = await window.Scoutside
       this.state.customer.shopifyCustomer = customer
       this.state.shopify = customer
@@ -92,25 +94,22 @@ export default {
     }
   },
   created() {
-    const ccAct = document.cookie.split('; ').find(row => row.includes('ss_access_token'))
-    const ccApiAccessToken = ccAct?.split('=')[1]
-    const lsApiAccessToken = localStorage.getItem('api_access_token')
-    lsApiAccessToken ? null : localStorage.setItem('api_access_token', ccApiAccessToken)
+    // const ccAct = document.cookie.split('; ').find(row => row.includes('ss_access_token'))
+    // const ccApiAccessToken = ccAct?.split('=')[1]
+    // const lsApiAccessToken = localStorage.getItem('api_access_token')
+    // lsApiAccessToken ? null : localStorage.setItem('api_access_token', ccApiAccessToken)
+    //this.getRCdata()
   },
   async mounted() {
     //await setup(this)
     this.setReady()
+    this.getRCdata()
     // setTimeout(() => {
     //   this.updateAPIheader()
     // }, 300)
-    setTimeout(() => {
-      this.getRCdata()
-    }, 101)
-
-    // setHeaderNextBoxShip = () => {
-    //   const accountText = document.querySelector('.c-headerMain__accountText')
-    //   accountText.textContent = `Next Box Ships ${}`
-    // }
+    // setTimeout(() => {
+    //   this.getRCdata()
+    // }, 1131)
   },
   watch: {
     preventScroll: {

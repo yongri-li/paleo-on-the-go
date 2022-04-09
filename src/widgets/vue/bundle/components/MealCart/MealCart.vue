@@ -1,9 +1,6 @@
 <template>
   <div class="meal-cart">
-    <div
-      :class="{ show: showCartMobile }"
-      class="meal-cart__info"
-    >
+    <div :class="{ show: showCartMobile }" class="meal-cart__info">
       <meal-cart-header
         :type-class="typeClass"
         :have-products-class="haveProductsClass"
@@ -18,12 +15,15 @@
       />
     </div>
     <meal-cart-footer
-      :cart="cart"
       :subtotal="cartSubTotal"
       :size-selected="getSizeSelected"
       :cart-length="cartLength"
       :cart-add-ons="cartAddOns"
+      :addons="addOnsUpdates"
+      :addressId="addressId"
+      :subs="subscriptionUpdates"
       :type-class="typeClass"
+      :from-portal="fromPortal"
       class="meal-cart__bottom"
     />
   </div>
@@ -34,10 +34,10 @@ import MealCartHeader from './MealCartHeader.vue'
 import MealCartBody from './MealCartBody.vue'
 import MealCartFooter from './MealCartFooter.vue'
 
-import { mapState, mapGetters, mapActions } from 'vuex'
+import { mapState, mapGetters } from 'vuex'
+import { CHANGE_SIZE_SELECTED, CLEAN_ALL_CART } from '@shared/cartdrawer/store/_mutations-type'
 
 import { changeRouter } from '../../utils'
-
 
 export default {
   components: {
@@ -47,16 +47,15 @@ export default {
   },
   data() {
     return {
-      showCartMobile: false
+      showCartMobile: false,
+      fromPortal: false,
+      addressId: null,
+      nextChargeDate: null
     }
   },
   computed: {
-    ...mapState('mealcart', [
-      'cart'
-    ]),
-    ...mapGetters('mealcart', [
-      'getSizeSelected'
-    ]),
+    ...mapState(['cart']),
+    ...mapGetters(['getSizeSelected']),
     haveProductsClass() {
       return this.cart.items.length ? 'with-products' : 'without-products'
     },
@@ -84,9 +83,49 @@ export default {
         total += addon.price * addon.quantity
       })
       return total
+    },
+    isCustomer() {
+      return customer.email && customer.shopify_id ? true : false
+    },
+    addOnsUpdates() {
+      return this.cart.addons.map(addOn => {
+        return {
+          addressId: this.addressId,
+          next_charge_scheduled_at: this.nextChargeDate,
+          price: (addOn.variants[0].price / 100).toFixed(2),
+          product_title: addOn.title,
+          product_type: addOn.type,
+          quantity: addOn.quantity,
+          shopify_product_id: addOn.id,
+          shopify_variant_id: addOn.variants[0].id,
+          properties: {
+            _addOn: true
+          }
+        }
+      })
+    },
+    subscriptionUpdates() {
+      return this.cart.items.map(child => {
+        return {
+          address_id: this.addressId,
+          charge_interval_frequency: 1,
+          next_charge_scheduled_at: this.nextChargeDate,
+          order_interval_frequency: 1,
+          order_interval_unit: 'week',
+          price: (child.variants[0].price / 100).toFixed(2),
+          hash: child.price_hashes,
+          tags: child.tags,
+          shopify_variant_id: child.variants[0].id,
+          quantity: child.quantity
+        }
+      })
     }
   },
-  created() {
+  mounted() {
+    const addressId = sessionStorage.getItem('addressId')
+    const nextChargeDate = sessionStorage.getItem('nextChargeDate')
+    this.addressId = addressId
+    this.nextChargeDate = nextChargeDate
     // watch the params of the route to fetch the data again
     this.$watch(
       () => this.$route.params,
@@ -99,16 +138,22 @@ export default {
     )
   },
   methods: {
-    ...mapActions('mealcart', [
-      'setSizeFromRoute'
-    ]),
     setSizeSelected() {
+      const boxSize = sessionStorage.getItem('boxSize')
+      const referrerPage = document.referrer
       const orderType = this.getSizeSelected.order_type
       const box = this.$route.params.box
-      console.log('box',box)
+
+      if (referrerPage.includes('/account')) {
+        this.fromPortal = true
+        if (box) {
+          this.$store.commit(CHANGE_SIZE_SELECTED, { val: `${boxSize}items` })
+          return
+        }
+      }
 
       // this is for '/'
-      if(box === undefined) {
+      if (box === undefined && !referrerPage.includes('/account')) {
         // set option for sizeSelected
         console.log('entro al if del /')
         changeRouter(orderType)
@@ -116,19 +161,20 @@ export default {
       }
 
       // this is for '/onetime'
-      if(box === 'onetime' && orderType !== 'onetime') {
+      if (box === 'onetime' && orderType !== 'onetime') {
         console.log('entro al if del /onetime')
-        this.setSizeSelected({ val: 'onetime' })
+        this.$store.commit(CHANGE_SIZE_SELECTED, { val: 'onetime' })
+        this.$store.commit(CLEAN_ALL_CART)
         return
       }
 
       // this is for '/subscription'
-      if(box === 'subscription' && orderType !== 'subscription') {
+      if (box === 'subscription' && orderType !== 'subscription') {
         console.log('entro al if del /subscription')
-        this.setSizeSelected({ val: '12items' })
+        this.$store.commit(CHANGE_SIZE_SELECTED, { val: '12items' })
+        this.$store.commit(CLEAN_ALL_CART)
         return
       }
-
     },
     changeCartMobile(val) {
       this.showCartMobile = val
@@ -138,13 +184,11 @@ export default {
 </script>
 
 <style lang="scss">
-
 $height-footer: 115px;
 $height-header-title: 59px;
 $translateY: calc(100% - $height-header-title);
 
 .meal-cart {
-
   @include media-tablet-up {
     width: 27%;
     height: 90vh;
@@ -162,7 +206,7 @@ $translateY: calc(100% - $height-header-title);
     filter: drop-shadow(0px -4px 34px rgba(0, 0, 0, 0.1));
     border-radius: 20px 20px 0px 0px;
     transform: translateY($translateY);
-    transition: all .3s ease-out;
+    transition: all 0.3s ease-out;
 
     @include media-tablet-up {
       position: relative;
@@ -191,7 +235,5 @@ $translateY: calc(100% - $height-header-title);
       z-index: 1;
     }
   }
-
 }
-
 </style>
