@@ -1,60 +1,55 @@
 {% assign customerTags = customer.tags | join:',' %}
 
-{% comment %}
-<!-- {% unless customerTags == 'Active Subscriber' %} -->
-{% endcomment %}
-  <article class="c-homePlans">
+<article class="c-homePlans">
 
-    <span class="c-homePlans__floatingBadge">
-      <img src="{{ section.settings.badge_image | img_url: 'master' }}" alt="">  
-    </span>    
+  <span class="c-homePlans__floatingBadge">
+    <img src="{{ section.settings.badge_image | img_url: 'master' }}" alt="">  
+  </span>    
 
-    <div class="c-homePlans__inner">
-      <div>
-        <h2 class="c-h1">{{section.settings.title}}</h2>
-        <p>{{section.settings.copy}}</p>
-      </div>
-
-      <a href="#" target="_blank" data-get-started
-        class="c-button c-button--isDefault c-button--isPrimary c-button--lrg u-hideTabletUp u-marginCenter u-marginTop--md">
-        Get Started
-      </a>
-
-      <div class="u-spacer--xl"></div>
-
-      <div class="u-relative">
-        <div class="c-homePlans__subs-title">
-          Subscribe &amp; Save
-        </div>
-
-        <div class="c-plansGrid">
-          {% for block in section.blocks %}
-
-            <section class="c-plansGrid__plan">
-              {% if block.settings.show_flag %}
-                <span class="c-plansGrid__plan--flag">{{block.settings.flag_text}}</span>
-              {% endif %}
-              <img src="{{ block.settings.image | img_url: 'master' }}" alt="">
-              <h2 class="c-h2">10 Items</h2>
-              <div>
-                <span class="c-plansGrid__plan--savings">10% Savings</span>
-              </div>
-              <button class="c-button c-button--isDefault c-button--isPrimary" data-get-started>
-                {{block.settings.button}}
-              </button>
-            </section>
-
-          {% endfor %}
-        </div>  
-      </div>
-
-      <h4 class="c-h4 isSmaller">{{section.settings.lower_callout}}</h4>
-      <a href="{{section.settings.onetimes_url}}" class="u-textUnderline">Buy One Time</a>
+  <div class="c-homePlans__inner">
+    <div>
+      <h2 class="c-h1">{{section.settings.title}}</h2>
+      <p>{{section.settings.copy}}</p>
     </div>
-  </article>
-{% comment %}
-<!-- {% endunless %} -->
-{% endcomment %}
+
+    <a href="#" target="_blank" data-get-started
+      class="c-button c-button--isDefault c-button--isPrimary c-button--lrg u-hideTabletUp u-marginCenter u-marginTop--md">
+      Get Started
+    </a>
+
+    <div class="u-spacer--xl"></div>
+
+    <div class="u-relative">
+      <div class="c-homePlans__subs-title">
+        Subscribe &amp; Save
+      </div>
+
+      <div class="c-plansGrid">
+        {% for block in section.blocks %}
+
+          <section class="c-plansGrid__plan">
+            {% if block.settings.show_flag %}
+              <span class="c-plansGrid__plan--flag">{{block.settings.flag_text}}</span>
+            {% endif %}
+            <img src="{{ block.settings.image | img_url: 'master' }}" alt="">
+            <h2 class="c-h2">10 Items</h2>
+            <div>
+              <span class="c-plansGrid__plan--savings">10% Savings</span>
+            </div>
+            <button class="c-button c-button--isDefault c-button--isPrimary" data-get-started>
+              {{block.settings.button}}
+            </button>
+          </section>
+
+        {% endfor %}
+      </div>  
+    </div>
+
+    <h4 class="c-h4 isSmaller">{{section.settings.lower_callout}}</h4>
+    <a href="{{section.settings.onetimes_url}}" class="u-textUnderline">Buy One Time</a>
+  </div>
+</article>
+
 
 {% schema %}
   {

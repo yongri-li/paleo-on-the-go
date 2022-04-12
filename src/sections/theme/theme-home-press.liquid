@@ -1,0 +1,36 @@
+<article class="c-homePress">
+  <section>
+    {%- for block in section.blocks -%}
+      <div class="c-homePress__item">
+        <img src="{{block.settings.image | img_url: 'master'}}" alt="">
+      </div>
+    {%- endfor -%}
+  </section>
+</article>
+
+
+{% schema %}
+  {
+    "name": "Press Logos",
+    "max_blocks": 5,    
+    "blocks":[
+      {
+        "type": "tile",
+        "name": "Brand Logo",
+        "settings": [
+          {
+            "id": "image",
+            "type": "image_picker",
+            "label": "Logo Image"
+          }         
+        ]
+      }
+    ],    
+    "presets": [
+      {
+        "name": "Press",
+        "category": "Homepage"
+      }
+    ]
+  }
+{% endschema %}
