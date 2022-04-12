@@ -37,6 +37,10 @@ export default {
     isCustomer() {
       return customer.email && customer.shopify_id ? true : false
     },
+    fromPortal() {
+      const referrerPage = document.referrer
+      return referrerPage.includes('/account') ? true : false
+    },
     steps() {
       const param = this.$route.params.box
       const steps = [
@@ -64,12 +68,12 @@ export default {
         steps[0].param = 'onetime'
       }
 
-      if ((this.isCustomer && param === 'addons') || param === 'subscription') {
+      if (this.isCustomer && this.fromPortal && param !== 'onetime') {
         steps.splice(3, 1)
         steps[2].name = 'Udpate Box'
       }
 
-      if (this.isCustomer && param === 'addons') {
+      if (this.isCustomer && this.fromPortal && param === 'addons') {
         steps[2].active = true
       }
 

@@ -6,7 +6,7 @@
 				<h1 class="c-h1">{{ content.heading }}</h1>
 				<p>{{ content.main_copy }}</p>
 				<div class="u-spacer--md u-hideTabletDown"></div>
-				<a href="/" target="_blank" class="c-button c-button--isDefault c-button--isPrimary c-button--lrg">
+				<a :href="content.btn_url" class="c-button c-button--isDefault c-button--isPrimary c-button--lrg">
 					{{ content.btn_cta }}
 				</a>
 			</div>

@@ -103,13 +103,13 @@ export default {
   async mounted() {
     //await setup(this)
     this.setReady()
-    this.getRCdata()
+    //this.getRCdata()
     // setTimeout(() => {
     //   this.updateAPIheader()
     // }, 300)
-    // setTimeout(() => {
-    //   this.getRCdata()
-    // }, 1131)
+    setTimeout(() => {
+      this.getRCdata()
+    }, 1131)
   },
   watch: {
     preventScroll: {

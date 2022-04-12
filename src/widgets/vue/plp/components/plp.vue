@@ -3,7 +3,9 @@
     <c-page-hero :content="content[0]" class="c-plp__hero" />
     <section class="c-plp__body">
       <nav class="c-plp__body--nav">
-        <div class="trigger-filters" @click="triggerFilters">Filter</div>
+        <div class="trigger-filters" @click="triggerFilters">
+          <c-svg class="asdsad" name="filter" />Filter
+        </div>
         <br />
         <c-dropdownFull
           :items="filterItems"
@@ -41,6 +43,7 @@ import cProductCard from '@shared/components/parts/cProductCard.vue'
 import cPageHero from '@shared/components/parts/cPageHero.vue'
 import cBottomBanner from '@shared/components/core/cBottomBanner.vue'
 import cDropdownFull from '@shared/components/core/cDropdownFull.vue'
+import cSvg from '@shared/components/core/cSvg.vue'
 
 export default {
   name: 'Plp',
@@ -54,7 +57,8 @@ export default {
     cPageHero,
     cProductCard,
     cBottomBanner,
-    cDropdownFull
+    cDropdownFull,
+    cSvg
   },
   computed: {
     // price() {
@@ -124,16 +128,6 @@ export default {
     filterByTag(productTags, filterTags) {
       if (!this.filterTags.length) return true
       return productTags.some(tag => filterTags.includes(tag))
-    },
-    handleAdd() {
-      this.loading = true
-
-      ////// Add Shared Cart function here.
-
-      setTimeout(() => {
-        this.loading = false
-        this.added = true
-      }, 1000)
     },
     handleGetStarted() {
       this.loading = true

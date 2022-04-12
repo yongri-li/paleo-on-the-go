@@ -52,12 +52,20 @@
 .c-headerMain__menuNav {
   display: flex;
 
-  li {
+  li.c-headerMain__menuNavItem {
     margin: 0 1.75rem;
-    transition: color 150ms;
 
-    &:hover {
+    a {
+      transition: color 150ms;
+    }
+
+    &:hover a {
       color: $color-primary;
+    }
+
+    &--active a {
+      border-bottom: 2px solid $color-primary;
+      margin: 0 1.75rem;
     }
   }
 }

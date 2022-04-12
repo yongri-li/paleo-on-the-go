@@ -4,7 +4,7 @@
     <h2 class="c-h1">
       <span class="u-highlightText--secondary">Current</span> Menu
       <span class="c-homeMenu__viewFull u-hideMobileDown">
-        <a href="">View Full Menu <span class="htmlChevron">&rsaquo;&rsaquo;</span></a>
+        <a href="/collections/all">View Full Menu <span class="htmlChevron">&rsaquo;&rsaquo;</span></a>
       </span>
     </h2>
 
@@ -32,7 +32,7 @@
               <img src="{{section.settings.highlight_icon | img_url: 'master' }}" alt="" class="highlight-icon u-hideMobileDown">
               <img src="{{section.settings.item_img_one | img_url: 'master' }}" alt="">
               <span class="hover-background">
-                <button class="c-button c-button--isDefault c-button--isPrimary">Learn More</button>
+                <a href="{{section.settings.item_url_one}}" class="c-button c-button--isDefault c-button--isPrimary">Learn More</a>
               </span>
            </div>
            <h4 class="c-h4 isSmaller">{{section.settings.item_title_one}}</h4>           
@@ -45,7 +45,7 @@
              <div class="c-homeMenu__flex--imgWrap">
                 <img src="{{section.settings.item_img_two | img_url: 'master' }}" alt="">
                 <span class="hover-background">
-                  <button class="c-button c-button--isDefault c-button--isPrimary">Learn More</button>
+                  <a href="{{section.settings.item_url_two}}" class="c-button c-button--isDefault c-button--isPrimary">Learn More</a>
                 </span>
              </div>
 
@@ -57,7 +57,7 @@
              <div class="c-homeMenu__flex--imgWrap">
                 <img src="{{section.settings.item_img_three | img_url: 'master' }}" alt="">
                 <span class="hover-background">
-                  <button class="c-button c-button--isDefault c-button--isPrimary">Learn More</button>
+                  <a href="{{section.settings.item_url_three}}" class="c-button c-button--isDefault c-button--isPrimary">Learn More</a>
                 </span>
              </div>
              <h4 class="c-h4 isSmaller">{{section.settings.item_title_three}}</h4>
@@ -71,7 +71,7 @@
            <div class="c-homeMenu__flex--imgWrap">
               <img src="{{section.settings.item_img_four | img_url: 'master' }}" alt="">
               <span class="hover-background">
-                <button class="c-button c-button--isDefault c-button--isPrimary">Learn More</button>
+                <a href="{{section.settings.item_url_four}}" class="c-button c-button--isDefault c-button--isPrimary">Learn More</a>
               </span>
            </div>
            <h4 class="c-h4 isSmaller">{{section.settings.item_title_four}}</h4>           
@@ -84,7 +84,7 @@
              <div class="c-homeMenu__flex--imgWrap">
                 <img src="{{section.settings.item_img_five | img_url: 'master' }}" alt="">
                 <span class="hover-background">
-                  <button class="c-button c-button--isDefault c-button--isPrimary">Learn More</button>
+                  <a href="{{section.settings.item_url_five}}" class="c-button c-button--isDefault c-button--isPrimary">Learn More</a>
                 </span>
              </div>
 
@@ -96,7 +96,7 @@
              <div class="c-homeMenu__flex--imgWrap">
                 <img src="{{section.settings.item_img_six | img_url: 'master' }}" alt="">
                 <span class="hover-background">
-                  <button class="c-button c-button--isDefault c-button--isPrimary">Learn More</button>
+                  <a href="{{section.settings.item_url_six}}" class="c-button c-button--isDefault c-button--isPrimary">Learn More</a>
                 </span>
              </div>
              <h4 class="c-h4 isSmaller">{{section.settings.item_title_six}}</h4>
@@ -110,7 +110,7 @@
            <div class="c-homeMenu__flex--imgWrap">
               <img src="{{section.settings.item_img_seven | img_url: 'master' }}" alt="">
               <span class="hover-background">
-                <button class="c-button c-button--isDefault c-button--isPrimary">Learn More</button>
+                <a href="{{section.settings.item_url_seven}}" class="c-button c-button--isDefault c-button--isPrimary">Learn More</a>
               </span>
            </div>
            <h4 class="c-h4 isSmaller">{{section.settings.item_title_seven}}</h4>           
@@ -123,7 +123,7 @@
              <div class="c-homeMenu__flex--imgWrap">
                 <img src="{{section.settings.item_img_eight | img_url: 'master' }}" alt="">
                 <span class="hover-background">
-                  <button class="c-button c-button--isDefault c-button--isPrimary">Learn More</button>
+                  <a href="{{section.settings.item_url_eight}}" class="c-button c-button--isDefault c-button--isPrimary">Learn More</a>
                 </span>
              </div>
 
@@ -135,7 +135,7 @@
              <div class="c-homeMenu__flex--imgWrap">
                 <img src="{{section.settings.item_img_nine | img_url: 'master' }}" alt="">
                 <span class="hover-background">
-                  <button class="c-button c-button--isDefault c-button--isPrimary">Learn More</button>
+                  <a href="{{section.settings.item_url_nine}}" class="c-button c-button--isDefault c-button--isPrimary">Learn More</a>
                 </span>
              </div>
              <h4 class="c-h4 isSmaller">{{section.settings.item_title_nine}}</h4>
@@ -149,7 +149,7 @@
   </article>
 
   <span class="c-homeMenu__viewFull u-hideTabletUp" style="position: relative; left: 0.5rem;">
-    <a href="">View Full Menu <span class="htmlChevron">&rsaquo;&rsaquo;</span></a>
+    <a href="/collections/all">View Full Menu <span class="htmlChevron">&rsaquo;&rsaquo;</span></a>
   </span>
 </main>
 
@@ -180,12 +180,17 @@
       {
         "id": "item_title_one",
         "type": "text",
-        "label": "Menu Title"
+        "label": "Item Title"
       },
+      {
+        "id": "item_url_one",
+        "type": "url",
+        "label": "Item Link"
+      },      
       {
         "id": "item_copy_one",
         "type": "text",
-        "label": "Menu Body"
+        "label": "Item Copy"
       }, 
 
       {
@@ -196,12 +201,17 @@
       {
         "id": "item_title_two",
         "type": "text",
-        "label": "Menu Title"
+        "label": "Item Title"
       },
+      {
+        "id": "item_url_two",
+        "type": "url",
+        "label": "Item Link"
+      },       
       {
         "id": "item_copy_two",
         "type": "text",
-        "label": "Menu Body"
+        "label": "Item Copy"
       },
 
       {
@@ -212,12 +222,17 @@
       {
         "id": "item_title_three",
         "type": "text",
-        "label": "Menu Title"
+        "label": "Item Title"
       },
+      {
+        "id": "item_url_three",
+        "type": "url",
+        "label": "Item Link"
+      },        
       {
         "id": "item_copy_three",
         "type": "text",
-        "label": "Menu Body"
+        "label": "Item Copy"
       },
 
       {
@@ -232,12 +247,17 @@
       {
         "id": "item_title_four",
         "type": "text",
-        "label": "Menu Title"
+        "label": "Item Title"
       },
+      {
+        "id": "item_url_four",
+        "type": "url",
+        "label": "Item Link"
+      },        
       {
         "id": "item_copy_four",
         "type": "text",
-        "label": "Menu Body"
+        "label": "Item Copy"
       }, 
 
       {
@@ -248,12 +268,17 @@
       {
         "id": "item_title_five",
         "type": "text",
-        "label": "Menu Title"
+        "label": "Item Title"
       },
+      {
+        "id": "item_url_five",
+        "type": "url",
+        "label": "Item Link"
+      },        
       {
         "id": "item_copy_five",
         "type": "text",
-        "label": "Menu Body"
+        "label": "Item Copy"
       },
 
       {
@@ -264,12 +289,17 @@
       {
         "id": "item_title_six",
         "type": "text",
-        "label": "Menu Title"
+        "label": "Item Title"
       },
+      {
+        "id": "item_url_six",
+        "type": "url",
+        "label": "Item Link"
+      },        
       {
         "id": "item_copy_six",
         "type": "text",
-        "label": "Menu Body"
+        "label": "Item Copy"
       },
 
       {
@@ -284,12 +314,17 @@
       {
         "id": "item_title_seven",
         "type": "text",
-        "label": "Menu Title"
+        "label": "Item Title"
       },
+      {
+        "id": "item_url_seven",
+        "type": "url",
+        "label": "Item Link"
+      },        
       {
         "id": "item_copy_seven",
         "type": "text",
-        "label": "Menu Body"
+        "label": "Item Copy"
       }, 
 
       {
@@ -300,12 +335,17 @@
       {
         "id": "item_title_eight",
         "type": "text",
-        "label": "Menu Title"
+        "label": "Item Title"
       },
+      {
+        "id": "item_url_eight",
+        "type": "url",
+        "label": "Item Link"
+      },        
       {
         "id": "item_copy_eight",
         "type": "text",
-        "label": "Menu Body"
+        "label": "Item Copy"
       },
 
       {
@@ -316,12 +356,17 @@
       {
         "id": "item_title_nine",
         "type": "text",
-        "label": "Menu Title"
+        "label": "Item Title"
       },
+      {
+        "id": "item_url_nine",
+        "type": "url",
+        "label": "Item Link"
+      },        
       {
         "id": "item_copy_nine",
         "type": "text",
-        "label": "Menu Body"
+        "label": "Item Copy"
       },
 
       {
@@ -339,12 +384,12 @@
           {
             "id": "menu_title",
             "type": "text",
-            "label": "Menu Title"
+            "label": "Item Title"
           },
           {
             "id": "menu_body",
             "type": "textarea",
-            "label": "Menu Body"
+            "label": "Item Copy"
           }          
         ]
       }
