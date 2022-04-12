@@ -1,6 +1,8 @@
 {% assign customerTags = customer.tags | join:',' %}
 
-{% unless customerTags == 'Active Subscriber' %}
+{% comment %}
+<!-- {% unless customerTags == 'Active Subscriber' %} -->
+{% endcomment %}
   <article class="c-homePlans">
 
     <span class="c-homePlans__floatingBadge">
@@ -50,7 +52,9 @@
       <a href="{{section.settings.onetimes_url}}" class="u-textUnderline">Buy One Time</a>
     </div>
   </article>
-{% endunless %}
+{% comment %}
+<!-- {% endunless %} -->
+{% endcomment %}
 
 {% schema %}
   {
