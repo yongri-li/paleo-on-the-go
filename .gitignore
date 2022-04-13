@@ -32,6 +32,8 @@ src/assets/widget-portal.css
 src/assets/widget-portal.js
 src/assets/widget-article.css
 src/assets/widget-article.js
+src/assets/widget-policiespage.css
+src/assets/widget-policiespage.js
 src/assets/template-login.js
 src/assets/theme-footer-legal.css
 src/assets/theme-footer-legal.js
