@@ -2,6 +2,15 @@ import '@styles/index.scss'
 import { tns } from 'tiny-slider/src/tiny-slider'
 
 const isHomepage = document.querySelector('.o-homepage')
+const getStartedBtns = document.querySelectorAll('[data-get-started]')
+
+// dynamic link and boxsize on getstarted plan btn clicks
+const sendBoxInfo = btn => {
+	sessionStorage.setItem('startBtnClk', true)
+	sessionStorage.setItem('boxSize', btn.dataset.boxsize)
+	window.location.href = '/pages/bundle/#/subscription'
+}
+getStartedBtns.forEach(btn => btn.addEventListener('click', () => sendBoxInfo(btn)))
 
 if (document.querySelector('[data-tile-slider]')) {
 	const copyTiles = tns({
