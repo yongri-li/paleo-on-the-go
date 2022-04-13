@@ -4,9 +4,9 @@
     <section class="c-plp__body">
       <nav class="c-plp__body--nav">
         <div class="trigger-filters" @click="triggerFilters">
-          <c-svg class="asdsad" name="filter" />Filter
+          <c-svg class="trigger-filters__icon" name="filter" />
+          <span class="trigger-filters__copy">Filter</span>
         </div>
-        <br />
         <c-dropdownFull
           :items="filterItems"
           :isOpen="isFilterOpen"
@@ -65,7 +65,12 @@ export default {
     //   return `Starts at ${formatPrice(this.product.price)}`
     // },
     filterItems() {
-      return ['Coconut Free', 'Seafood Free', 'Pork Free', 'Cassava Free']
+      return [
+        { icon: 'noGMO', name: 'Coconut Free' },
+        { icon: 'noGMO', name: 'Seafood Free' },
+        { icon: 'noGMO', name: 'Pork Free' },
+        { icon: 'noGMO', name: 'Cassava Free' }
+      ]
     },
     collections() {
       return this.sub_collection_items
@@ -182,7 +187,7 @@ export default {
 
     &--nav {
       position: sticky;
-      top: 112px;
+      top: 128px;
       flex-shrink: 0;
       z-index: $z-index-top;
 
@@ -194,6 +199,18 @@ export default {
       .trigger-filters {
         cursor: pointer;
         font-weight: 700;
+        display: flex;
+        align-items: center;
+        grid-gap: 0.75rem;
+        margin-bottom: 2rem;
+
+        &__icon {
+          opacity: 0.6;
+        }
+
+        &__copy {
+          text-decoration: underline;
+        }
       }
     }
 
