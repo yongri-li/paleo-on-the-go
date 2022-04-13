@@ -6,7 +6,7 @@
 
 {% if section.settings.show %}
   <div class="c-headerBar" data-header-bar>
-    {% if section.settings.url != blank %}
+    {% if section.settings.link != blank %}
       <a class="c-headerBar__link" href="{{ section.settings.link }}">
     {% endif %}
     <div class="c-headerBar__wrapper o-containerLarge">
@@ -14,7 +14,7 @@
         {{ message }}
       </div>
     </div>
-    {% if section.settings.url != blank %}
+    {% if section.settings.link != blank %}
       </a>
     {% endif %}
   </div>

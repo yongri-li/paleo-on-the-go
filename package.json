@@ -57,6 +57,7 @@
     "watch:dev": "concurrently --kill-others \"webpack --watch\" \"node fileWatch.js\" \"theme watch --env=development -d dist --notify=browserUpdate.js\" \"node browserSync.js\"",
     "start:dev": "yarn setup && theme deploy --env=development -d dist && yarn watch:dev",
     "deploy:dev": "theme deploy --env=development -d dist",
+    "deploy:stage": "theme deploy --env=staging -d dist",
     "watch:prod": "concurrently --kill-others \"webpack --watch\" \"node fileWatch.js\" \"theme watch --env=production -d dist --notify=browserUpdate.js\" \"node browserSync.js\"",
     "start:prod": "yarn setup && theme deploy --env=production -d dist && yarn watch:prod",
     "deploy:prod": "theme deploy --env=production -d dist",

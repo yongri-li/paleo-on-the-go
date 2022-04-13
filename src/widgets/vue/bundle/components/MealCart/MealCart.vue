@@ -88,7 +88,7 @@ export default {
       return customer.email && customer.shopify_id ? true : false
     },
     addOnsUpdates() {
-      return this.cart.addons.map(addOn => {
+      return this.cart?.addons.map(addOn => {
         return {
           addressId: this.addressId,
           next_charge_scheduled_at: this.nextChargeDate,
@@ -105,7 +105,7 @@ export default {
       })
     },
     subscriptionUpdates() {
-      return this.cart.items.map(child => {
+      return this.cart?.items.map(child => {
         return {
           address_id: this.addressId,
           charge_interval_frequency: 1,

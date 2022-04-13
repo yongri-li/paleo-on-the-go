@@ -63,8 +63,7 @@ export default {
       default: 'subscription'
     },
     addressId: {
-      type: [String, Number],
-      required: true
+      type: [String, Number]
     }
   },
   data() {
