@@ -50,20 +50,11 @@
   </div>
 </article>
 
-<script>
-  const getStartedBtns = document.querySelectorAll('[data-get-started]')
-  const sendBoxInfo = btn => {
-    sessionStorage.setItem('startBtnClk', true)
-    sessionStorage.setItem('boxSize', btn.dataset.boxsize)  
-    window.location.href = '/pages/bundle/'  
-  }
-  getStartedBtns.forEach(btn => btn.addEventListener('click', ()=> sendBoxInfo(btn)))
-</script>
-
 
 {% schema %}
   {
     "name": "Plans",
+    "max_blocks": 3,
     "settings": [
       {
         "id": "badge_image",
