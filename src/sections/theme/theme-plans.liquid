@@ -32,11 +32,11 @@
               <span class="c-plansGrid__plan--flag">{{block.settings.flag_text}}</span>
             {% endif %}
             <img src="{{ block.settings.image | img_url: 'master' }}" alt="">
-            <h2 class="c-h2">10 Items</h2>
+            <h2 class="c-h2">{{block.settings.items}} Items</h2>
             <div>
-              <span class="c-plansGrid__plan--savings">10% Savings</span>
+              <span class="c-plansGrid__plan--savings">{{block.settings.items}}% Savings</span>
             </div>
-            <button class="c-button c-button--isDefault c-button--isPrimary" data-get-started>
+            <button class="c-button c-button--isDefault c-button--isPrimary" data-get-started data-boxsize="{{block.settings.items}}">
               {{block.settings.button}}
             </button>
           </section>
@@ -49,6 +49,16 @@
     <a href="{{section.settings.onetimes_url}}" class="u-textUnderline">Buy One Time</a>
   </div>
 </article>
+
+<script>
+  const getStartedBtns = document.querySelectorAll('[data-get-started]')
+  const sendBoxInfo = btn => {
+    sessionStorage.setItem('startBtnClk', true)
+    sessionStorage.setItem('boxSize', btn.dataset.boxsize)  
+    window.location.href = '/pages/bundle/'  
+  }
+  getStartedBtns.forEach(btn => btn.addEventListener('click', ()=> sendBoxInfo(btn)))
+</script>
 
 
 {% schema %}
@@ -97,6 +107,11 @@
             "type": "text",
             "label": "Button Text"
           },
+          {
+            "id": "items",
+            "type": "number",
+            "label": "Number of Box Items"
+          },          
           {
             "type": "header",
             "content": "Custom Product Flag"

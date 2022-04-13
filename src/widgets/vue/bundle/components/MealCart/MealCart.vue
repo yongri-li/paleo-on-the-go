@@ -88,7 +88,7 @@ export default {
       return customer.email && customer.shopify_id ? true : false
     },
     addOnsUpdates() {
-      return this.cart.addons.map(addOn => {
+      return this.cart?.addons.map(addOn => {
         return {
           addressId: this.addressId,
           next_charge_scheduled_at: this.nextChargeDate,
@@ -105,7 +105,7 @@ export default {
       })
     },
     subscriptionUpdates() {
-      return this.cart.items.map(child => {
+      return this.cart?.items.map(child => {
         return {
           address_id: this.addressId,
           charge_interval_frequency: 1,
@@ -140,6 +140,7 @@ export default {
   methods: {
     setSizeSelected() {
       const boxSize = sessionStorage.getItem('boxSize')
+      const fromStartBtn = sessionStorage.getItem('startBtnClk')
       const referrerPage = document.referrer
       const orderType = this.getSizeSelected.order_type
       const box = this.$route.params.box
@@ -151,6 +152,8 @@ export default {
           return
         }
       }
+
+      if (fromStartBtn) this.$store.commit(CHANGE_SIZE_SELECTED, { val: `${boxSize}items` })
 
       // this is for '/'
       if (box === undefined && !referrerPage.includes('/account')) {
