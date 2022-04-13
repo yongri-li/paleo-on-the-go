@@ -311,7 +311,7 @@ marquee span {
     opacity: 1;
   }
 
-  .hover-background button {
+  .hover-background .c-button {
     position: absolute;
     bottom: 2.5rem;
     left: 50%;
@@ -472,6 +472,52 @@ marquee span {
 
     &__quoteIcon {
       margin: 3rem auto;
+    }
+  }
+}
+
+/////////
+// PRESS LOGOS ***
+.c-homePress {
+  background: #efede6;
+  padding: 2rem 0;
+
+  section {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+
+  .c-homePress__item {
+    height: auto;
+    line-height: 0;
+    padding: 0 0.25rem;
+  }
+
+  @include media-desktop-up {
+    section {
+      grid-gap: 5%;
+      width: 92vw;
+      max-width: 1600px;
+      margin: 0 auto;
+    }
+
+    .c-homePress__item {
+      flex: 1;
+      text-align: center;
+
+      img {
+        max-height: 42px;
+      }
+    }
+  }
+
+  @include media-mobile-down {
+    overflow-y: scroll;
+
+    section {
+      grid-gap: 2rem;
+      min-width: 175vw;
     }
   }
 }

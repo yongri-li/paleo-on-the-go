@@ -3,8 +3,10 @@
     <c-page-hero :content="content[0]" class="c-plp__hero" />
     <section class="c-plp__body">
       <nav class="c-plp__body--nav">
-        <div class="trigger-filters" @click="triggerFilters">Filter</div>
-        <br />
+        <div class="trigger-filters" @click="triggerFilters">
+          <c-svg class="trigger-filters__icon" name="filter" />
+          <span class="trigger-filters__copy">Filter</span>
+        </div>
         <c-dropdownFull
           :items="filterItems"
           :isOpen="isFilterOpen"
@@ -41,6 +43,7 @@ import cProductCard from '@shared/components/parts/cProductCard.vue'
 import cPageHero from '@shared/components/parts/cPageHero.vue'
 import cBottomBanner from '@shared/components/core/cBottomBanner.vue'
 import cDropdownFull from '@shared/components/core/cDropdownFull.vue'
+import cSvg from '@shared/components/core/cSvg.vue'
 
 export default {
   name: 'Plp',
@@ -54,14 +57,20 @@ export default {
     cPageHero,
     cProductCard,
     cBottomBanner,
-    cDropdownFull
+    cDropdownFull,
+    cSvg
   },
   computed: {
     // price() {
     //   return `Starts at ${formatPrice(this.product.price)}`
     // },
     filterItems() {
-      return ['Coconut Free', 'Seafood Free', 'Pork Free', 'Cassava Free']
+      return [
+        { icon: 'noGMO', name: 'Coconut Free' },
+        { icon: 'noGMO', name: 'Seafood Free' },
+        { icon: 'noGMO', name: 'Pork Free' },
+        { icon: 'noGMO', name: 'Cassava Free' }
+      ]
     },
     collections() {
       return this.sub_collection_items
@@ -125,16 +134,6 @@ export default {
       if (!this.filterTags.length) return true
       return productTags.some(tag => filterTags.includes(tag))
     },
-    handleAdd() {
-      this.loading = true
-
-      ////// Add Shared Cart function here.
-
-      setTimeout(() => {
-        this.loading = false
-        this.added = true
-      }, 1000)
-    },
     handleGetStarted() {
       this.loading = true
       this.isCustomer
@@ -188,7 +187,7 @@ export default {
 
     &--nav {
       position: sticky;
-      top: 112px;
+      top: 128px;
       flex-shrink: 0;
       z-index: $z-index-top;
 
@@ -200,6 +199,18 @@ export default {
       .trigger-filters {
         cursor: pointer;
         font-weight: 700;
+        display: flex;
+        align-items: center;
+        grid-gap: 0.75rem;
+        margin-bottom: 2rem;
+
+        &__icon {
+          opacity: 0.6;
+        }
+
+        &__copy {
+          text-decoration: underline;
+        }
       }
     }
 
