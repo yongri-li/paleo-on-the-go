@@ -16,7 +16,7 @@
   
   pdp['product']['price_hashes'] = [
     {% for variant in product.variants %}
-        '{{ variant.price | money_without_currency | hmac_sha256: settings.fmp_app_secret }}',
+        '{{ variant.price | money_without_currency | hmac_sha256: settings.custom_app_secret }}',
     {% endfor %}
   ]  
 

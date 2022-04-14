@@ -30,12 +30,17 @@
            <div class="c-homeMenu__flex--imgWrap">
             <!-- style="background-image: url('{{section.settings.item_img_one | img_url: 'master' }}')" -->
               <img src="{{section.settings.highlight_icon | img_url: 'master' }}" alt="" class="highlight-icon u-hideMobileDown">
-              <img src="{{section.settings.item_img_one | img_url: 'master' }}" alt="">
-              <span class="hover-background">
+              <a href="{{section.settings.item_url_one}}">
+                <img src="{{section.settings.item_img_one | img_url: 'master' }}" alt="">
+              </a>
+              <span class="hover-background u-hideMobileDown">
                 <a href="{{section.settings.item_url_one}}" class="c-button c-button--isDefault c-button--isPrimary">Learn More</a>
               </span>
            </div>
-           <h4 class="c-h4 isSmaller">{{section.settings.item_title_one}}</h4>           
+           <h4 class="c-h4 isSmaller u-hideMobileDown">{{section.settings.item_title_one}}</h4>  
+           <h4 class="c-h4 isSmaller u-hideTabletUp">
+              <a href="{{section.settings.item_url_one}}">{{section.settings.item_title_one}}</a>
+            </h4>           
            <p>{{section.settings.item_copy_one}}</p>
          </div>
           
@@ -43,24 +48,33 @@
            <!-- img section 2 -->
            <div data-group="0">
              <div class="c-homeMenu__flex--imgWrap">
-                <img src="{{section.settings.item_img_two | img_url: 'master' }}" alt="">
-                <span class="hover-background">
+                <a href="{{section.settings.item_url_two}}">
+                  <img src="{{section.settings.item_img_two | img_url: 'master' }}" alt="">
+                </a>
+                <span class="hover-background u-hideMobileDown">
                   <a href="{{section.settings.item_url_two}}" class="c-button c-button--isDefault c-button--isPrimary">Learn More</a>
                 </span>
              </div>
-
-             <h4 class="c-h4 isSmaller">{{section.settings.item_title_two}}</h4>
+             <h4 class="c-h4 isSmaller u-hideMobileDown">{{section.settings.item_title_two}}</h4>  
+             <h4 class="c-h4 isSmaller u-hideTabletUp">
+                <a href="{{section.settings.item_url_two}}">{{section.settings.item_title_two}}</a>
+              </h4>           
              <p>{{section.settings.item_copy_two}}</p>
            </div>
             <!-- img section 3 -->
            <div>
              <div class="c-homeMenu__flex--imgWrap">
-                <img src="{{section.settings.item_img_three | img_url: 'master' }}" alt="">
-                <span class="hover-background">
+                <a href="{{section.settings.item_url_three}}">
+                  <img src="{{section.settings.item_img_three | img_url: 'master' }}" alt="">
+                </a>
+                <span class="hover-background u-hideMobileDown">
                   <a href="{{section.settings.item_url_three}}" class="c-button c-button--isDefault c-button--isPrimary">Learn More</a>
                 </span>
              </div>
-             <h4 class="c-h4 isSmaller">{{section.settings.item_title_three}}</h4>
+             <h4 class="c-h4 isSmaller u-hideMobileDown">{{section.settings.item_title_three}}</h4>  
+             <h4 class="c-h4 isSmaller u-hideTabletUp">
+                <a href="{{section.settings.item_url_three}}">{{section.settings.item_title_three}}</a>
+              </h4>           
              <p>{{section.settings.item_copy_three}}</p>
            </div>            
          </div>
@@ -69,12 +83,18 @@
          <!-- img section 1 -->
          <div data-group="1">
            <div class="c-homeMenu__flex--imgWrap">
-              <img src="{{section.settings.item_img_four | img_url: 'master' }}" alt="">
-              <span class="hover-background">
+              <img src="{{section.settings.highlight_icon | img_url: 'master' }}" alt="" class="highlight-icon u-hideMobileDown">
+              <a href="{{section.settings.item_url_four}}">
+                <img src="{{section.settings.item_img_four | img_url: 'master' }}" alt="">
+              </a>
+              <span class="hover-background u-hideMobileDown">
                 <a href="{{section.settings.item_url_four}}" class="c-button c-button--isDefault c-button--isPrimary">Learn More</a>
               </span>
            </div>
-           <h4 class="c-h4 isSmaller">{{section.settings.item_title_four}}</h4>           
+           <h4 class="c-h4 isSmaller u-hideMobileDown">{{section.settings.item_title_four}}</h4>  
+           <h4 class="c-h4 isSmaller u-hideTabletUp">
+              <a href="{{section.settings.item_url_four}}">{{section.settings.item_title_four}}</a>
+            </h4>           
            <p>{{section.settings.item_copy_four}}</p>
          </div>
           
@@ -82,13 +102,17 @@
            <!-- img section 2 -->
            <div>
              <div class="c-homeMenu__flex--imgWrap">
-                <img src="{{section.settings.item_img_five | img_url: 'master' }}" alt="">
-                <span class="hover-background">
+                <a href="{{section.settings.item_url_five}}">
+                  <img src="{{section.settings.item_img_five | img_url: 'master' }}" alt="">
+                </a>
+                <span class="hover-background u-hideMobileDown">
                   <a href="{{section.settings.item_url_five}}" class="c-button c-button--isDefault c-button--isPrimary">Learn More</a>
                 </span>
              </div>
-
-             <h4 class="c-h4 isSmaller">{{section.settings.item_title_five}}</h4>
+             <h4 class="c-h4 isSmaller u-hideMobileDown">{{section.settings.item_title_five}}</h4>  
+             <h4 class="c-h4 isSmaller u-hideTabletUp">
+                <a href="{{section.settings.item_url_five}}">{{section.settings.item_title_five}}</a>
+              </h4>           
              <p>{{section.settings.item_copy_five}}</p>
            </div>
             <!-- img section 3 -->
@@ -108,12 +132,18 @@
          <!-- img section 1 -->
          <div data-group="2">
            <div class="c-homeMenu__flex--imgWrap">
-              <img src="{{section.settings.item_img_seven | img_url: 'master' }}" alt="">
-              <span class="hover-background">
+              <img src="{{section.settings.highlight_icon | img_url: 'master' }}" alt="" class="highlight-icon u-hideMobileDown">
+              <a href="{{section.settings.item_url_seven}}">
+                <img src="{{section.settings.item_img_seven | img_url: 'master' }}" alt="">
+              </a>
+              <span class="hover-background u-hideMobileDown">
                 <a href="{{section.settings.item_url_seven}}" class="c-button c-button--isDefault c-button--isPrimary">Learn More</a>
               </span>
            </div>
-           <h4 class="c-h4 isSmaller">{{section.settings.item_title_seven}}</h4>           
+           <h4 class="c-h4 isSmaller u-hideMobileDown">{{section.settings.item_title_seven}}</h4>  
+           <h4 class="c-h4 isSmaller u-hideTabletUp">
+              <a href="{{section.settings.item_url_seven}}">{{section.settings.item_title_seven}}</a>
+            </h4>           
            <p>{{section.settings.item_copy_seven}}</p>
          </div>
           
@@ -121,24 +151,33 @@
            <!-- img section 2 -->
            <div>
              <div class="c-homeMenu__flex--imgWrap">
-                <img src="{{section.settings.item_img_eight | img_url: 'master' }}" alt="">
-                <span class="hover-background">
+                <a href="{{section.settings.item_url_eight}}">
+                  <img src="{{section.settings.item_img_eight | img_url: 'master' }}" alt="">
+                </a>
+                <span class="hover-background u-hideMobileDown">
                   <a href="{{section.settings.item_url_eight}}" class="c-button c-button--isDefault c-button--isPrimary">Learn More</a>
                 </span>
              </div>
-
-             <h4 class="c-h4 isSmaller">{{section.settings.item_title_eight}}</h4>
+             <h4 class="c-h4 isSmaller u-hideMobileDown">{{section.settings.item_title_eight}}</h4>  
+             <h4 class="c-h4 isSmaller u-hideTabletUp">
+                <a href="{{section.settings.item_url_eight}}">{{section.settings.item_title_eight}}</a>
+              </h4>           
              <p>{{section.settings.item_copy_eight}}</p>
            </div>
             <!-- img section 3 -->
            <div>
              <div class="c-homeMenu__flex--imgWrap">
-                <img src="{{section.settings.item_img_nine | img_url: 'master' }}" alt="">
-                <span class="hover-background">
+                <a href="{{section.settings.item_url_nine}}">
+                  <img src="{{section.settings.item_img_nine | img_url: 'master' }}" alt="">
+                </a>
+                <span class="hover-background u-hideMobileDown">
                   <a href="{{section.settings.item_url_nine}}" class="c-button c-button--isDefault c-button--isPrimary">Learn More</a>
                 </span>
              </div>
-             <h4 class="c-h4 isSmaller">{{section.settings.item_title_nine}}</h4>
+             <h4 class="c-h4 isSmaller u-hideMobileDown">{{section.settings.item_title_nine}}</h4>  
+             <h4 class="c-h4 isSmaller u-hideTabletUp">
+                <a href="{{section.settings.item_url_nine}}">{{section.settings.item_title_nine}}</a>
+              </h4>           
              <p>{{section.settings.item_copy_nine}}</p>
            </div>            
          </div>                  

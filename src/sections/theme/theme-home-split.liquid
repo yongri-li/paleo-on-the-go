@@ -4,7 +4,9 @@
   </section>
   <section class="c-homeSplit__right">
     <div>
-      <img src="{{ section.settings.icon | img_url: 'master' }}" alt="">
+      {% if section.settings.icon and section.settings.show_icon %}
+        <img src="{{ section.settings.icon | img_url: 'master' }}" alt="">
+      {% endif %}
       <h2 class="c-h2 clamp-size__h2">
         {{ section.settings.title }}
       </h2>
@@ -36,7 +38,13 @@
         "id": "icon",
         "type": "image_picker",
         "label": "Icon"
-      },      
+      },   
+      {
+        "id": "show_icon",
+        "type": "checkbox",
+        "label": "Show Icon",
+        "default": true
+      },                                                        
       {
         "id": "title",
         "type": "text",

@@ -15,6 +15,31 @@
         "id": "shop_development_domain",
         "label": "Development Domain",
         "info": "Used to include no index tag for search engines"
+      },
+      {
+        "type": "text",
+        "id": "custom_app_key",
+        "label": "Custom App Key"
+      },
+      {
+        "type": "text",
+        "id": "custom_app_secret",
+        "label": "Custom App Secret"
+      },
+      {
+        "id": "site_favicon",
+        "type": "image_picker",
+        "label": "Site Favicon"
+      }      
+    ]
+  },
+  {
+    "name": "Checkout",
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "test_footer",
+        "label": "Checkout Footer"
       }
     ]
   }
