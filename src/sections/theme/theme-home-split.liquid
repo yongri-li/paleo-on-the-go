@@ -1,71 +1,94 @@
-<article class="c-homeSplit">
-  <section class="c-homeSplit__left">
-    <img src="{{ section.settings.left_image | img_url: 'master' }}" alt="">    
-  </section>
-  <section class="c-homeSplit__right">
-    <div>
-      {% if section.settings.icon and section.settings.show_icon %}
-        <img src="{{ section.settings.icon | img_url: 'master' }}" alt="">
-      {% endif %}
-      <h2 class="c-h2 clamp-size__h2">
-        {{ section.settings.title }}
-      </h2>
-      <p>{{ section.settings.copy }}</p>
-      <a href="{{ section.settings.button_url }}" class="c-button c-button--isDefault c-button--isSecondary">
-        {{ section.settings.button_text }}
-      </a>
-    </div>
-  </section>
-</article>
+<style>
+  .rowReverse--flex {
+    flex-direction: row-reverse;
+  }
+</style>
 
+
+{%- for block in section.blocks -%}
+  {% if block.settings.image_right %}
+    {% assign imageRight = 'rowReverse--flex' %}
+  {% endif %}
+  <article class="c-homeSplit {{imageRight}}">
+      <section class="c-homeSplit__left">
+        <img src="{{ block.settings.main_image | img_url: 'master' }}" alt="">    
+      </section>
+      <section class="c-homeSplit__right">
+        <div>
+          {% if block.settings.icon and block.settings.show_icon %}
+            <img src="{{ block.settings.icon | img_url: 'master' }}" alt="">
+          {% endif %}
+          <h2 class="c-h2 clamp-size__h2">
+            {{ block.settings.title }}
+          </h2>
+          <p>{{ block.settings.copy }}</p>
+          <a href="{{ block.settings.button_url }}" class="c-button c-button--isDefault c-button--isSecondary">
+            {{ block.settings.button_text }}
+          </a>
+        </div>
+      </section>
+  </article>
+{%- endfor -%}
 
 
 {% schema %}
   {
     "name": "Split Section",
-    "settings": [
+    "max_blocks": 4,
+    "blocks": [
       {
-        "id": "left_image_mobile",
-        "type": "image_picker",
-        "label": "Background Image (Mobile)"
-      },
-      {
-        "id": "left_image",
-        "type": "image_picker",
-        "label": "Background Image (Desktop)"
-      },
-      {
-        "id": "icon",
-        "type": "image_picker",
-        "label": "Icon"
-      },   
-      {
-        "id": "show_icon",
-        "type": "checkbox",
-        "label": "Show Icon",
-        "default": true
-      },                                                        
-      {
-        "id": "title",
-        "type": "text",
-        "label": "Title"
-      },
-      {
-        "id": "copy",
-        "type": "text",
-        "label": "Copy"
-      },             
-      {
-        "id": "button_text",
-        "type": "text",
-        "label": "Button Text"
-      },
-      {
-        "id": "button_url",
-        "type": "url",
-        "label": "Button URL"
-      }                                            
-    ],    
+        "type": "section",
+        "name": "Content Section",
+        "settings": [   
+          {
+            "id": "image_right",
+            "type": "checkbox",
+            "label": "Image on Right"
+          },                
+          {
+            "id": "main_image_mobile",
+            "type": "image_picker",
+            "label": "Background Image (Mobile)"
+          },
+          {
+            "id": "main_image",
+            "type": "image_picker",
+            "label": "Background Image (Desktop)"
+          },
+          {
+            "id": "icon",
+            "type": "image_picker",
+            "label": "Icon"
+          },   
+          {
+            "id": "show_icon",
+            "type": "checkbox",
+            "label": "Show Icon",
+            "default": true
+          },                                                        
+          {
+            "id": "title",
+            "type": "text",
+            "label": "Title"
+          },
+          {
+            "id": "copy",
+            "type": "text",
+            "label": "Copy"
+          },             
+          {
+            "id": "button_text",
+            "type": "text",
+            "label": "Button Text"
+          },
+          {
+            "id": "button_url",
+            "type": "url",
+            "label": "Button URL"
+          }         
+        ]
+      }                                           
+    ],        
     "presets": [
       {
         "name": "Split Section",

@@ -10,7 +10,7 @@
 @mixin text-heading {
   font-family: $font-heading;
   line-height: 1.125;
-  font-weight: 700;
+  font-weight: 500;
   @include media-mobile-down {
     line-height: 1.15;
   }
