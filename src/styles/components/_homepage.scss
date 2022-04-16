@@ -630,6 +630,12 @@ marquee span {
   }
 }
 
+section {
+  > button {
+    color: $color-black;
+  }
+}
+
 /////////
 // MEDIA QUERY AREAS ***
 @include media-mobile-down {
@@ -638,6 +644,12 @@ marquee span {
 
     .tns-nav {
       bottom: 1rem !important;
+
+      button {
+        height: 21px;
+        width: 16px;
+        max-width: 16px;
+      }
     }
   }
 

@@ -2,29 +2,29 @@
   <div :class="[`c-product--cta`, { 'c-product--selected': selected }]">
     <!-- c-product--${modifier} -->
     <div class="c-product__inner">
-      <div class="c-product__image-side">
-        <a :href="product.url" class="c-product__image-frame">
+      <a :href="productLink" class="">
+        <div class="c-product__image-side">
           <span v-if="flag" :class="`c-product__flag c-product__flag--${flagHandle}`">
             {{ flag }}
           </span>
           <div class="c-product__image-wrapper">
             <img class="c-product__image" :src="product.images[0]" />
           </div>
-        </a>
-      </div>
-      <div class="c-product__info">
-        <div class="c-product__title-wrapper">
-          <a :href="product.url">
-            <h4 class="c-product__title c-h4">
-              {{ product.title }}
-            </h4>
-          </a>
-          <span class="c-product__subtitle">
-            {{ product.subtitle }}
-          </span>
-          <strong class="c-product__price">Starts at {{ price }}</strong>
         </div>
-      </div>
+        <div class="c-product__info">
+          <div class="c-product__title-wrapper">
+            <a :href="product.url">
+              <h4 class="c-product__title c-h4">
+                {{ product.title }}
+              </h4>
+            </a>
+            <span class="c-product__subtitle">
+              {{ product.subtitle }}
+            </span>
+            <strong class="c-product__price">Starts at {{ price }}</strong>
+          </div>
+        </div>
+      </a>
     </div>
   </div>
 </template>
@@ -45,35 +45,24 @@ export default {
     },
     tag: {
       type: String
+    },
+    relatedMeal: {
+      type: Boolean,
+      default: false
     }
   },
   computed: {
     selected() {
       return this.quantity > 0
     },
-    // title() {
-    //   return this.product.title
-    // },
     // modifier() {
     //   return this.isAddOn ? 'addOn' : this.productTypeHandle
-    // },
-    // productTypeHandle() {
-    //   return handleize(this.product.type)
-    // },
-    // subTitle() {
-    //   return this.product.subtitle
-    // },
-    // downcaseTags() {
-    //   return this.product.tags.map(tag => tag.toLowerCase())
     // },
     // isNew() {
     //   return this.downcaseTags.includes('new')
     // },
     // isBestSeller() {
     //   return this.downcaseTags.includes('best seller')
-    // },
-    // nutritionalInfo() {
-    //   return this.product.nutritional_info
     // },
     // tagText() {
     //   return this.tag ? this.tag : this.product.type
@@ -82,15 +71,18 @@ export default {
       return this.product.flag
     },
     flagHandle() {
-      return handleize(this.flag)
+      return this.flag ? handleize(this.flag) : null
     },
     price() {
       return formatPrice(this.product.price)
+    },
+    productLink() {
+      return `/products/${this.product.handle}`
     }
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .c-product {
   &__flag {
     position: absolute;
@@ -99,6 +91,7 @@ export default {
     font-size: 18px;
     font-weight: 500;
     padding: 0.5rem 2.25rem;
+    z-index: 10;
   }
 
   &__flag--seasonal-item {

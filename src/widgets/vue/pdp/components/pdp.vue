@@ -1,14 +1,23 @@
 <template>
   <div class="c-pdp">
     <div class="pdp__main o-containerFullWidth">
-      <cProductGallery class="main__column" :autoplay="gallery_autoplay" :images="product.images" />
+      <cProductGallery
+        class="main__column"
+        :autoplay="gallery_autoplay"
+        :images="product.images"
+        :flag="flag"
+      />
 
       <section class="pdp__content">
         <div class="pdp__content--wrap">
           <div class="rating__leaf--warp">
-            <span v-html="ratingLeaf" v-for="leaf in 5"></span>
-            <button>{{ ratingsCount }} Reviews</button>
-            <div v-if="ratings">{{ ratings.value }}</div>
+            <span
+              v-html="ratingLeaf"
+              v-for="(leaf, i) in 5"
+              :data="i"
+              :class="i + 1 > ratings ? 'unrated' : null"
+            ></span>
+            <button @click="scrollToReviews">{{ ratingsCount }} Reviews</button>
           </div>
           <h1 class="c-h1 c-heading">{{ product.title }}</h1>
           <h5 v-if="subtitle" class="c-h5 pdp__content--wrap__subheader">{{ subtitle }}</h5>
@@ -30,7 +39,7 @@
         </div>
       </section>
     </div>
-    <!--   <div id="shopify-product-reviews" v-html="reviews"></div>   -->
+
     <c-related-meals :products="related_products" :labels="labels" />
   </div>
 </template>
@@ -86,7 +95,8 @@ export default {
       return this.rating_count ? this.rating_count : 0
     },
     ratings() {
-      return this.rating ? JSON.parse(this.rating) : null
+      const rate = this.rating ? JSON.parse(this.rating) : null
+      return rate ? Math.round(rate.value * 1) : 0
     }
   },
   methods: {
@@ -108,6 +118,10 @@ export default {
       this.isCustomer
         ? (window.location.href = '/account/#/details')
         : (window.location = this.url_getStarted)
+    },
+    scrollToReviews() {
+      const reviews = document.getElementById('shopify-product-reviews')
+      reviews.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
   },
   beforeDestroy() {
@@ -187,6 +201,10 @@ export default {
   .rating__leaf--warp {
     display: inline-flex;
     grid-gap: 0.25rem;
+
+    .unrated {
+      opacity: 0.5;
+    }
 
     button {
       border: none;
