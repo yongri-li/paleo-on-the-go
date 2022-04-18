@@ -26,7 +26,7 @@
           <div class="pdp__content--ctas">
             <c-button
               class="c-cta pdp__main--atcButton"
-              @click="isCustomer ? handleAdd : handleGetStarted"
+              @click="handleGetStarted"
               :loading="loading"
               :text="isCustomer ? (added ? addedTxt : labels.atc) : labels.getStarted"
               :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
@@ -105,9 +105,7 @@ export default {
     },
     handleAdd() {
       this.loading = true
-
-      /// Add Shared Cart function here.
-
+      //// Add Shared Cart function here.
       setTimeout(() => {
         this.loading = false
         this.added = true
@@ -115,14 +113,31 @@ export default {
     },
     handleGetStarted() {
       this.loading = true
-      this.isCustomer
-        ? (window.location.href = '/account/#/details')
-        : (window.location = this.url_getStarted)
+      sessionStorage.setItem('startBtnClk', true)
+      sessionStorage.setItem('boxSize', 12)
+      window.location = '/pages/bundle/#/subscriptions'
     },
     scrollToReviews() {
       const reviews = document.getElementById('shopify-product-reviews')
       reviews.scrollIntoView({ behavior: 'smooth', block: 'center' })
     }
+  },
+  mounted() {
+    window.addEventListener('load', e => {
+      function setLeaves() {
+        const leafIcon = `<svg width='18' height='30' viewBox='0 0 18 30' fill='none' xmlns='http://www.w3.org/2000/svg'>
+        <path d='M9.16859 -3.09007e-05L0.403564 16.3262L8.03129 23.6963L8.03129 29.0255L10.2961 29.0255L10.2961 23.6963L17.9238 16.3262L9.16859 -3.09007e-05ZM3.20759 15.891L8.03129 6.89608L8.03129 20.5626L3.20759 15.891ZM10.2961 6.89608L15.1296 15.891L10.2961 20.5626L10.2961 6.89608Z' fill='#8ECEAB'></path>
+        </svg>`
+        const rateStars = document.querySelectorAll('.spr-icon-star')
+        const unrateStars = document.querySelectorAll('.spr-icon-star-empty')
+        rateStars.forEach(star => (star.innerHTML = leafIcon))
+        unrateStars.forEach(star => {
+          star.innerHTML = leafIcon
+          star.style.opacity = '0.5'
+        })
+      }
+      setTimeout(() => setLeaves(), 301)
+    })
   },
   beforeDestroy() {
     if (typeof window !== 'undefined') {
@@ -137,6 +152,14 @@ export default {
 </script>
 
 <style lang="scss">
+.spr-starrating .spr-icon-star:before {
+  content: '';
+}
+
+.spr-icon {
+  color: green;
+}
+
 .c-pdp {
   position: relative;
 

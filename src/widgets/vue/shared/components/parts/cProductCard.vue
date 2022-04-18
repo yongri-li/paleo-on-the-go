@@ -91,7 +91,7 @@ export default {
     font-size: 18px;
     font-weight: 500;
     padding: 0.5rem 2.25rem;
-    z-index: 10;
+    z-index: 9;
   }
 
   &__flag--seasonal-item {

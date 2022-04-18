@@ -39,13 +39,13 @@ export default {
 	computed: {
 		nutritionImg() {
 			const imgSrc = this.pdpinfo.nutrition_image
-			return `<img src='${imgSrc}' />`
+			return imgSrc && !imgSrc.includes('no-image') ? `<img src='${imgSrc}' /><br/>` : ''
 		},
 		nutritionText() {
 			return this.pdpinfo.nutrition
 		},
 		nutritionHtml() {
-			return `${this.nutritionImg}<br/> ${this.nutritionText}`
+			return `${this.nutritionImg} ${this.nutritionText}`
 		}
 	},
 	methods: {
