@@ -1,11 +1,13 @@
 <template>
   <article class="c-homeFaqs vueComp__portal">
     <h2 class="c-h1"><span class="u-highlightText--secondary">Common</span> Questions</h2>
-    <section v-for="(faq, index) in content" class="c-homeFaqs__item" ref="faqItem">
+    <section v-for="(faq, index) in content" class="c-homeFaqs__item" @click="asdd" ref="faqItem">
       <button>
         {{ faq.box_question }}
-        <span class="icon-opened">Opened</span>
-        <span class="icon-closed">Closed</span>
+        <!-- <span class="icon-opened">Opened</span> -->
+        <c-svg class="icon-opened" name="minusIcon" />
+        <c-svg class="icon-closed" name="plusIcon" />
+        <!--         <span class="icon-closed">Closed</span> -->
       </button>
       <div class="panel-answer">
         <p>{{ faq.box_answer }}</p>
@@ -15,6 +17,8 @@
 </template>
 
 <script>
+import cSvg from '@shared/components/core/cSvg.vue'
+
 export default {
   props: {
     content: {
@@ -22,6 +26,7 @@ export default {
       default: () => []
     }
   },
+  components: { cSvg },
   methods: {
     accordionOpenClose() {
       const faqItems = this.$refs.faqItem
@@ -35,6 +40,10 @@ export default {
             : (panel.style.maxHeight = panel.scrollHeight + 'px')
         })
       })
+    },
+    asdd(e) {
+      console.log(e, this)
+      e.target.classList.add('aasdsad')
     }
   },
   mounted() {
