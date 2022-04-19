@@ -29,7 +29,7 @@
 
   @include media-tablet-down {
     text-align: center;
-    padding: 1.5rem 0;
+    padding: 1.5rem 0.5rem;
 
     p {
       padding: 0 1.25rem;
@@ -131,7 +131,7 @@ marquee span {
   &__floatingBadge {
     position: absolute;
     max-width: 150px;
-    top: -80px;
+    top: -72px;
     left: unset;
     transform: translateX(-50%);
 
@@ -152,7 +152,8 @@ marquee span {
     padding: 0 1rem;
 
     @include media-tablet-down {
-      display: none;
+      // display: none;
+      width: 13rem;
     }
   }
 
@@ -196,15 +197,14 @@ marquee span {
   }
 
   .c-plansGrid {
+    border: 1px solid $color-black;
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     grid-gap: 0.5rem;
-    padding: 0;
-
+    padding: 1rem 3px 3px;
     margin-bottom: 1.5rem;
 
     @include media-desktop-up {
-      border: 1px solid $color-black;
       grid-template-columns: repeat(3, 1fr);
       grid-gap: 2.5rem;
       padding: 1rem;
