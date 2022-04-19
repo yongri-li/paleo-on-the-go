@@ -5,11 +5,27 @@
   var api = {
     "base_url": "{{ section.settings.api_url }}",
     "api_key": "{{ section.settings.api_key }}",
-    "customer_token": "{{ customer.id | hmac_sha256: section.settings.api_secret }}"
+    "customer_token": false,
+    "storefront_token": "{{ section.settings.storefront_token }}",
+    "custom_app_key": "{{ section.settings.custom_app_key }}",
   }
 
+  {% if customer %}
+    api.customer_token = "{{ customer.id | hmac_sha256: section.settings.api_secret }}"
+    api.customer_email_hash = "{{ customer.email | hmac_sha256: settings.custom_app_secret }}"
+  {% endif %}
+  
   window.Scoutside.api = api
+
+  // var api = {
+  //   "base_url": "{{ section.settings.api_url }}",
+  //   "api_key": "{{ section.settings.api_key }}",
+  //   "customer_token": "{{ customer.id | hmac_sha256: section.settings.api_secret }}"
+  // }  
 </script>
+
+
+
 
 <script src="{{ 'theme-api.js' | asset_url }}"></script>
 
@@ -34,6 +50,16 @@
         "id": "api_secret",
         "label": "API Secret",
         "info": "Used to encrypt keys passed to API"
+      },
+      {
+        "type": "text",
+        "id": "custom_app_key",
+        "label": "Custom App Key"
+      },
+      {
+        "type": "text",
+        "id": "storefront_token",
+        "label": "Shopify Storefront Token"
       }
     ]
   }

@@ -154,6 +154,7 @@ export default {
       }
 
       if (fromStartBtn) this.$store.commit(CHANGE_SIZE_SELECTED, { val: `${boxSize}items` })
+      sessionStorage.removeItem('startBtnClk')
 
       // this is for '/'
       if (box === undefined && !referrerPage.includes('/account')) {

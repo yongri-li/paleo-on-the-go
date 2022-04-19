@@ -13,21 +13,8 @@
     </div>
     <div class="c-relatedMeals__slider slider" data-menu-slider>
       <div v-for="(product, index) in products" :key="index" class="c-relatedMeals__product">
-        <c-product-card v-if="product.available" :product="product" />
+        <c-product-card v-if="product.available" :product="product" :related-meal="true" />
       </div>
-      <!--       <div class="c-relatedMeals__slider__grid-item" v-for="product in wildcardz" :key="product.id">
-        <c-product
-          :product="product"
-          :likable="account"
-          :liked="favoritesIds.includes(product.id)"
-          :quantity="getItemQuantity(product.id)"
-          @qtyIncrease="() => handleQtyIncrease(product)"
-          @qtyDecrease="() => handleQtyDecrease(product)"
-          @toggleLiked="() => handleToggleFavorited(product)"
-          @storeBundleState="setBundleItems"
-        />
-      </div> -->
-      <!--  </div>  -->
     </div>
   </div>
 </template>

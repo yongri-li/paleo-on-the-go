@@ -187,7 +187,7 @@ export default {
 
     &--nav {
       position: sticky;
-      top: 128px;
+      top: 140px;
       flex-shrink: 0;
       z-index: $z-index-top;
 

@@ -3,6 +3,7 @@
 		<div class="pdp__tabs--wrap">
 			<div
 				v-for="(val, name, i) in pdpinfo"
+				v-if="i < 4"
 				class="pdp__tabs--tab"
 				:class="active === i && 'isActive'"
 				:key="name"
@@ -14,9 +15,10 @@
 		<div class="pdp__tabs--info">
 			<article
 				v-for="(val, name, i) in pdpinfo"
+				v-if="i < 4"
 				:key="i"
 				:class="active === i && 'isActive'"
-				v-html="val"
+				v-html="name !== 'nutrition' ? val : nutritionHtml"
 			></article>
 		</div>
 	</section>
@@ -32,6 +34,18 @@ export default {
 	data() {
 		return {
 			active: 0
+		}
+	},
+	computed: {
+		nutritionImg() {
+			const imgSrc = this.pdpinfo.nutrition_image
+			return imgSrc && !imgSrc.includes('no-image') ? `<img src='${imgSrc}' /><br/>` : ''
+		},
+		nutritionText() {
+			return this.pdpinfo.nutrition
+		},
+		nutritionHtml() {
+			return `${this.nutritionImg} ${this.nutritionText}`
 		}
 	},
 	methods: {

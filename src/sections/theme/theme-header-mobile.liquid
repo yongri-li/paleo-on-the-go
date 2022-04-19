@@ -88,6 +88,7 @@
 <script>
 
 const navIcon = document.getElementById('nav-burger-icon')
+let scrollLock = false
 let scrollP
 
 navIcon.addEventListener('click', function(e) {
@@ -101,14 +102,25 @@ function openNav() {
   const body = document.querySelector('body');
   document.querySelector('.c-headerMobile').classList.add('open')
   mobileNav.style.left = '0';
-  setTimeout(function(){
-    body.style.position = 'fixed';
-  }, 400);
+  scrollLock = true
+
+  const navv = document.getElementById('mobile-nav')
+
+  navv.addEventListener('touchstart', e => body.style.position = 'fixed')
+
+  // document.addEventListener('scroll', e => {
+  //   if(scrollLock) body.style.position = 'fixed';
+  // })
+
+  // setTimeout(function(){
+  //   body.style.position = 'fixed';
+  // }, 400);
 }
 
 function closeNav() {
   document.getElementById('mobile-nav').style.left = '-100%';
   document.querySelector('.c-headerMobile').classList.remove('open')
+  // scrollLock = false
   document.querySelector('body').style.position = 'initial';
   window.scrollTo(0, scrollP);  
 }

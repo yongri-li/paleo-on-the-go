@@ -1,7 +1,9 @@
 {% assign customerTags = customer.tags | join:',' %}
+{%- capture boxSizes -%}8,12,16{%- endcapture -%}
+{% assign boxSizes = boxSizes | split:',' %}
+
 
 <article class="c-homePlans">
-
   <span class="c-homePlans__floatingBadge">
     <img src="{{ section.settings.badge_image | img_url: 'master' }}" alt="">  
   </span>    
@@ -32,11 +34,11 @@
               <span class="c-plansGrid__plan--flag">{{block.settings.flag_text}}</span>
             {% endif %}
             <img src="{{ block.settings.image | img_url: 'master' }}" alt="">
-            <h2 class="c-h2">{{block.settings.items}} Items</h2>
+            <h2 class="c-h2">{{ boxSizes[forloop.index0] }} Items</h2>
             <div>
-              <span class="c-plansGrid__plan--savings">{{block.settings.items}}% Savings</span>
+              <span class="c-plansGrid__plan--savings">{{boxSizes[forloop.index0]}}% Savings</span>
             </div>
-            <button class="c-button c-button--isDefault c-button--isPrimary" data-get-started data-boxsize="{{block.settings.items}}">
+            <button class="c-button c-button--isDefault c-button--isPrimary" data-get-started data-boxsize="{{boxSizes[forloop.index0]}}">
               {{block.settings.button}}
             </button>
           </section>
@@ -97,12 +99,7 @@
             "id": "button",
             "type": "text",
             "label": "Button Text"
-          },
-          {
-            "id": "items",
-            "type": "number",
-            "label": "Number of Box Items"
-          },          
+          },        
           {
             "type": "header",
             "content": "Custom Product Flag"

@@ -16,7 +16,7 @@
 
 </article>
 
-<marquee class="marquee" scrollamount="15">
+<marquee class="marquee" scrollamount="12">
   {% for block in section.blocks %}
     <span>{{ block.settings.marquee_word }}</span>
     <span class="circle-dot"></span>
@@ -27,12 +27,10 @@
   {% endfor %}
 </marquee>
 
-
-<style>
-  .shopify-section {
-    position: relative;
-  }
-</style>
+<script>
+  const marquee = document.querySelector('.marquee')
+  if(window.innerWidth < 992) marquee.setAttribute('scrollamount', 6, 0)
+</script>
 
 
 {%- schema -%}
@@ -71,6 +69,7 @@
         "label": "Background Image (Desktop)"
       }      
     ],
+    "max_blocks": 4,
     "blocks": [
         {
           "type": "text",

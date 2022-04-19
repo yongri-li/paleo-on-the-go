@@ -5,30 +5,39 @@
 
   pdp['product'] = {{ product | json }}
   pdp['subtitle'] = `{{ product.metafields.my_fields.subtitle }}`
+  pdp['product']['subtitle'] = `{{ product.metafields.my_fields.subtitle }}`
+  pdp['flag'] = `{{ product.metafields.my_fields.flag }}`  
   pdp['info'] = {
     description: `{{ product.description }}`,
     ingredients: `{{ product.metafields.my_fields.ingredient }}`,
     heating: `{{ product.metafields.my_fields.heating }}`,
-    nutrition: `{{ product.metafields.my_fields.nutrition }}`
+    nutrition: `{{ product.metafields.my_fields.nutrition }}`,
+    nutrition_image: `{{ product.metafields.my_fields.nutrition_image | img_url: 'master' }}`
   } 
   pdp['rating_count'] = `{{ product.metafields.reviews.rating_count }}`
   pdp['rating'] = `{{ product.metafields.reviews.rating }}`
   
   pdp['product']['price_hashes'] = [
     {% for variant in product.variants %}
-        '{{ variant.price | money_without_currency | hmac_sha256: settings.fmp_app_secret }}',
+        '{{ variant.price | money_without_currency | hmac_sha256: settings.custom_app_secret }}',
     {% endfor %}
   ]  
 
   const related_products = [];
+  const related_subtitle = [];
   {%- for collection in collections limit:100 -%}
     {%- if collection.id == 286781505735 -%}  
       {%- for _product in collection.products limit:4 -%}
         related_products.push({{ _product | json }});
+        related_subtitle.push(`{{ _product.metafields.my_fields.subtitle }}`);
       {%- endfor -%} 
     {%- endif -%}
   {%- endfor -%}  
-  pdp['related_products'] = related_products;
+  pdp['related_products'] = related_products.map((prd,i) => {
+    let related_product = { ...prd }
+    related_product['subtitle'] = related_subtitle[i]
+    return related_product
+  })
 
   {% for block in section.blocks %}
     pdp['{{ block.type }}'] = pdp['{{ block.type }}'] || []
