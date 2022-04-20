@@ -23,6 +23,12 @@
     {% endfor %}
   ]  
 
+  pdp['product']['inventory'] = [
+    {% for variant in product.variants %}
+        '{{ variant.inventory_quantity }}',
+    {% endfor %}
+  ]   
+
   const related_products = [];
   const related_subtitle = [];
   {%- for collection in collections limit:100 -%}

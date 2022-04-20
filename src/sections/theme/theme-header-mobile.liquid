@@ -43,7 +43,7 @@
   <!--     <div class="c-headerMobile__spacer">&nbsp;</div> -->
     </div>
 
-    <div class="c-headerMobile__menu" id="mobile-nav">
+    <div class="c-headerMobile__menu" id="mobNav-left">
       <div class="c-headerMobile__primary">
           {% if linklists[section.settings.menu_list].links.size > 0 %}
           <ul class="c-headerMobile__menuNav-primaryLinks">
@@ -91,8 +91,13 @@
     </div>
 
 
-    <div class="c-headerMobile__menu portalMenu" id="mobile-nav-acct">
+    <div class="c-headerMobile__menu portalMenu" id="mobNav-right">
       <div class="c-headerMobile__primary">
+        <div id="nav-close-x" class="open" onclick="closeNav('close')">
+          <span></span>
+          <span></span>
+          <span></span>      
+        </div>        
           {% if linklists[section.settings.acct_menu_list].links.size > 0 %}
           <ul class="c-headerMobile__menuNav-primaryLinks">
               {% for link in linklists[section.settings.acct_menu_list].links %}
@@ -118,6 +123,9 @@
 
 const navIcon = document.getElementById('nav-burger-icon')
 const profileIcon = document.getElementById('nav-profile-icon')
+const menuLf = document.getElementById('mobNav-left')
+const menuRt = document.getElementById('mobNav-right')
+const body = document.querySelector('body')
 let scrollP
 
 const menuToggle = icon => {
@@ -130,32 +138,32 @@ const menuToggle = icon => {
 menuToggle(navIcon)
 menuToggle(profileIcon)
 
-// navIcon.addEventListener('click', function(e) {
-//   this.classList.toggle('open')
-//   this.classList.contains('open') ? openNav() : closeNav() 
-// })
-
 function openNav(icon) {
   scrollP = window.pageYOffset;
-  console.log(icon.id, 'adaddadsd')
-  const mobileNav = icon.id.includes('burger')
-    ? document.getElementById('mobile-nav')
-    : document.getElementById('mobile-nav-acct')
-  const body = document.querySelector('body');
-  document.querySelector('.c-headerMobile').classList.add('open')
-  mobileNav.style.left = '0';
 
-  const navv = document.getElementById('mobile-nav')
+  icon.id.includes('profile')
+    ? menuRt.style.right = '0'
+    : menuLf.style.left = '0'
+
+  
+  document.querySelector('.c-headerMobile').classList.add('open')
+  // mobileNav.style.left = '0';
+
+  const navv = document.getElementById('mobNav-left')
   navv.addEventListener('touchstart', e => body.style.position = 'fixed')
 }
 
 function closeNav(icon) {
-  const mobileNav = icon.id.includes('burger')
-    ? document.getElementById('mobile-nav')
-    : document.getElementById('mobile-nav-acct')  
-  mobileNav.style.left = '-100%';
+  icon === 'close' || icon.id?.includes('profile')
+    ? menuRt.style.right = '-100%'
+    : menuLf.style.left = '-100%' 
+  profileIcon.classList.remove('open')
+  // const mobileNav = icon.id.includes('burger')
+  //   ? document.getElementById('mobNav-left')
+  //   : document.getElementById('mobNav-right')  
+  //mobileNav.style.left = '-100%';
   document.querySelector('.c-headerMobile').classList.remove('open')
-  document.querySelector('body').style.position = 'initial';
+  body.style.position = 'initial';
   window.scrollTo(0, scrollP);  
 }
 
