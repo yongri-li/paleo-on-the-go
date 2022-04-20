@@ -29,7 +29,7 @@
               class="c-headerMain__logoImage"
               src="{{ section.settings.logo_image | img_url: 'master' }}"
               alt="{{ section.settings.logo_image.alt }}"
-              style="max-width: 150px">
+              style="max-width: 150px"/>
           {% else %}
             <span class="c-headerMain__logoText">{{ logo_text }}</span>
           {% endif %}
@@ -73,7 +73,10 @@
               Sign Out
             </a>                                
           </section>
-        </nav>        
+        </nav>
+        <div class="c-headerMain__secondary--cart">
+          <a href="/cart">{%- render 'icon-cart' -%}</a>
+        </div>        
       {% else %}
    <!--    <button class="c-button c-button--isHollow c-button--isBlack"> -->
         <a href="/account/login" class="c-button c-button--isHollow c-button--isBlack">

@@ -73,8 +73,8 @@
 .c-headerMain__secondary {
   a,
   button {
-    padding: 0.65rem 1.75rem;
-    margin: 0 0.5rem;
+    padding: 1rem 0;
+    margin-left: 0.5rem;
   }
 
   .c-dropdown {
@@ -85,6 +85,12 @@
       margin-top: 1rem;
       padding-right: 2rem;
     }
+  }
+
+  &--cart {
+    padding: 0 0.75rem;
+    margin: 0 0.75rem;
+    line-height: 0;
   }
 }
 

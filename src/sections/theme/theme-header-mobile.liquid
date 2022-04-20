@@ -33,6 +33,13 @@
               {% endif %}
           </h1>
       </a>
+      <div id="nav-profile-icon" class="c-headerMobile__icon">
+          <img 
+            class="c-headerMain__logoImage"
+            src="{{ section.settings.profile_image | img_url: 'master' }}"
+            alt="{{ section.settings.profile_image.alt }}"
+            style="max-width: 150px"/>      
+      </div>
   <!--     <div class="c-headerMobile__spacer">&nbsp;</div> -->
     </div>
 
@@ -82,45 +89,72 @@
           </a>
       </div>
     </div>
+
+
+    <div class="c-headerMobile__menu portalMenu" id="mobile-nav-acct">
+      <div class="c-headerMobile__primary">
+          {% if linklists[section.settings.acct_menu_list].links.size > 0 %}
+          <ul class="c-headerMobile__menuNav-primaryLinks">
+              {% for link in linklists[section.settings.acct_menu_list].links %}
+              <li class="c-headerMobile__menuNavItem{% if link.active %}--active{% endif %}"><a href="{{ link.url }}" class="c-headerMobile__menuNavLink">{{ link.title }}</a></li>
+              {% endfor %}
+          </ul>
+          {% endif %}
+
+          {% if section.settings.show_promo %}
+            <a href="{{ section.settings.promo_link }}" class="c-headerMobile__promo">
+                <span class="c-headerMobile__promoText">{{ promo_text }}</span>
+            </a>
+          {% endif %}
+      </div>
+      
+      <div class="c-headerMobile__secondary">
+      </div>
+    </div>    
 </div>
 
 
 <script>
 
 const navIcon = document.getElementById('nav-burger-icon')
-let scrollLock = false
+const profileIcon = document.getElementById('nav-profile-icon')
 let scrollP
 
-navIcon.addEventListener('click', function(e) {
-  this.classList.toggle('open')
-  this.classList.contains('open') ? openNav() : closeNav() 
-})
+const menuToggle = icon => {
+  icon.addEventListener('click', function(e) {
+    this.classList.toggle('open')
+    this.classList.contains('open') ? openNav(icon) : closeNav(icon) 
+  })
+}
 
-function openNav() {
+menuToggle(navIcon)
+menuToggle(profileIcon)
+
+// navIcon.addEventListener('click', function(e) {
+//   this.classList.toggle('open')
+//   this.classList.contains('open') ? openNav() : closeNav() 
+// })
+
+function openNav(icon) {
   scrollP = window.pageYOffset;
-  const mobileNav = document.getElementById('mobile-nav')
+  console.log(icon.id, 'adaddadsd')
+  const mobileNav = icon.id.includes('burger')
+    ? document.getElementById('mobile-nav')
+    : document.getElementById('mobile-nav-acct')
   const body = document.querySelector('body');
   document.querySelector('.c-headerMobile').classList.add('open')
   mobileNav.style.left = '0';
-  scrollLock = true
 
   const navv = document.getElementById('mobile-nav')
-
   navv.addEventListener('touchstart', e => body.style.position = 'fixed')
-
-  // document.addEventListener('scroll', e => {
-  //   if(scrollLock) body.style.position = 'fixed';
-  // })
-
-  // setTimeout(function(){
-  //   body.style.position = 'fixed';
-  // }, 400);
 }
 
-function closeNav() {
-  document.getElementById('mobile-nav').style.left = '-100%';
+function closeNav(icon) {
+  const mobileNav = icon.id.includes('burger')
+    ? document.getElementById('mobile-nav')
+    : document.getElementById('mobile-nav-acct')  
+  mobileNav.style.left = '-100%';
   document.querySelector('.c-headerMobile').classList.remove('open')
-  // scrollLock = false
   document.querySelector('body').style.position = 'initial';
   window.scrollTo(0, scrollP);  
 }
@@ -159,6 +193,11 @@ function closeNav() {
         "label": "Logo Text"
       },
       {
+        "id": "profile_image",
+        "type": "image_picker",
+        "label": "Profile Image"
+      },       
+      {
         "type": "header",
         "content": "Menus"
       },
@@ -172,6 +211,11 @@ function closeNav() {
         "id": "secondary_menu_list",
         "label": "Secondary Menu List"
       },
+      {
+        "type": "link_list",
+        "id": "acct_menu_list",
+        "label": "Account Menu List"
+      },      
       {
         "type": "header",
         "content": "Promo"
