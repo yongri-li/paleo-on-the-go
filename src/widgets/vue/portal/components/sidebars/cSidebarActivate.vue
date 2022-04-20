@@ -24,7 +24,7 @@
       :attributes="{ disabled: loading }"
     />
     <c-button
-      class="u-marginTop--sm"
+      class="u-mrgTop--sm"
       text="Nevermind"
       :modifiers="['isUnderline', 'isBlack']"
       @click="$root.$emit('closeAccActivate', [boxNum, boxName])"

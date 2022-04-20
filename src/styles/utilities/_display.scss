@@ -20,6 +20,10 @@
   display: inline-block !important;
 }
 
+.u-opacity5 {
+  opacity: 0.5;
+}
+
 .u-hideMobileDown {
   @include media-mobile-down {
     display: none !important;
@@ -69,16 +73,28 @@
   margin: 0 auto;
 }
 
-.u-marginTop--sm {
+.u-mrgTop--sm {
   margin-top: 0.725rem;
 }
 
-.u-marginTop--md {
+.u-mrgTop--md {
   margin-top: 1rem;
 }
 
-.u-marginTop--lg {
+.u-mrgTop--lg {
   margin-top: 2rem;
+}
+
+.u-mrgBtm--sm {
+  margin-bottom: 0.725rem;
+}
+
+.u-mrgBtm--md {
+  margin-bottom: 1rem;
+}
+
+.u-mrgBtm--lg {
+  margin-bottom: 2rem;
 }
 
 .u-relative {

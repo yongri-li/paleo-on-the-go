@@ -28,7 +28,7 @@
       </div>
     </section>
     <c-h
-      class="c-cancelRadios__delayHeading u-marginTop--lg"
+      class="c-cancelRadios__delayHeading u-mrgTop--lg"
       v-if="content.cancel_heading"
       tag="h5"
       level="5"
@@ -61,7 +61,7 @@
       :attributes="{ disabled: !cancelModel || loading.cancel || loading.delay }"
     />
     <c-button
-      class="u-marginTop--sm"
+      class="u-mrgTop--sm"
       text="Nevermind"
       :modifiers="['isUnderline', 'isBlack']"
       @click="$parent.$emit('closeAccCancel', boxNum)"
