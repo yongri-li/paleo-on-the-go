@@ -98,5 +98,10 @@ export default {
     background-color: $color-primary;
     color: $color-black;
   }
+
+  &__flag--most-popular {
+    background-color: $color-secondary;
+    color: $color-black;
+  }
 }
 </style>
