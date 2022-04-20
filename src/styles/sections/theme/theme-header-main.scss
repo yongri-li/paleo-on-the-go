@@ -25,7 +25,7 @@
 
 .c-headerMain__logoImage {
   display: block;
-  height: 50px;
+  height: 44px;
 }
 
 .c-headerMain__logoText {
@@ -73,8 +73,8 @@
 .c-headerMain__secondary {
   a,
   button {
-    padding: 0.65rem 1.75rem;
-    margin: 0 0.5rem;
+    padding: 1rem 0;
+    margin-left: 0.5rem;
   }
 
   .c-dropdown {
@@ -85,6 +85,12 @@
       margin-top: 1rem;
       padding-right: 2rem;
     }
+  }
+
+  &--cart {
+    padding: 0 0.75rem;
+    margin-right: 0.75rem;
+    line-height: 0;
   }
 }
 
@@ -163,7 +169,8 @@
   }
 
   // mobile hamburger nav icon
-  #nav-burger-icon {
+  #nav-burger-icon,
+  #nav-close-x {
     width: 40px;
     height: 26px;
     position: relative;
@@ -216,6 +223,13 @@
       left: 8px;
     }
   }
+
+  #nav-close-x {
+    left: calc(100% - 2.25rem);
+    span {
+      background-color: $color-white;
+    }
+  }
 }
 
 @include media-desktop-up {
@@ -244,8 +258,9 @@
   align-items: center;
   padding: 0.75rem 0 0;
   padding-top: 0;
-  background-color: $color-white;
+  background-color: transparent;
   transition: background-color 400ms;
+  z-index: 11;
 }
 
 .c-headerMobile.open,
@@ -310,26 +325,40 @@
 
 .c-headerMobile__menu {
   height: 100%;
-  width: 100%; /*  0 width - change this with JavaScript */
+  width: 100%;
   max-width: 415px;
-  position: absolute; /* Stay in place */
-  z-index: 10; /* Stay on top */
+  position: absolute;
+  z-index: 10;
   left: -100%;
-  overflow-x: hidden; /* Disable horizontal scroll */
+  overflow-x: hidden;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
-  transition: 400ms; /* 0.5 second transition effect to slide in the sidenav */
+  transition: 400ms;
   background-color: $color-ecru;
-  // border-top: 1px solid $color-primary;
   @include media-mobile-down {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: calc(100vh - 104px);
+    // height: calc(100vh - 104px);
+    height: 100%;
     position: fixed;
-    top: 105px;
+    // top: 105px;
+    padding-top: 105px;
     bottom: 0;
     overflow: hidden;
+  }
+
+  &.portalMenu {
+    background-color: $color-black;
+    color: $color-white;
+    left: unset;
+    right: -100%;
+    padding-top: 1.65rem;
+    z-index: 12;
+
+    .c-headerMobile__menuNav-primaryLinks a {
+      color: $color-white;
+    }
   }
 }
 

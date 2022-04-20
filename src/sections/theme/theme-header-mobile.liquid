@@ -33,10 +33,17 @@
               {% endif %}
           </h1>
       </a>
+      <div id="nav-profile-icon" class="c-headerMobile__icon">
+          <img 
+            class="c-headerMain__logoImage"
+            src="{{ section.settings.profile_image | img_url: 'master' }}"
+            alt="{{ section.settings.profile_image.alt }}"
+            style="max-width: 150px"/>      
+      </div>
   <!--     <div class="c-headerMobile__spacer">&nbsp;</div> -->
     </div>
 
-    <div class="c-headerMobile__menu" id="mobile-nav">
+    <div class="c-headerMobile__menu" id="mobNav-left">
       <div class="c-headerMobile__primary">
           {% if linklists[section.settings.menu_list].links.size > 0 %}
           <ul class="c-headerMobile__menuNav-primaryLinks">
@@ -82,46 +89,81 @@
           </a>
       </div>
     </div>
+
+
+    <div class="c-headerMobile__menu portalMenu" id="mobNav-right">
+      <div class="c-headerMobile__primary">
+        <div id="nav-close-x" class="open" onclick="closeNav('close')">
+          <span></span>
+          <span></span>
+          <span></span>      
+        </div>        
+          {% if linklists[section.settings.acct_menu_list].links.size > 0 %}
+          <ul class="c-headerMobile__menuNav-primaryLinks">
+              {% for link in linklists[section.settings.acct_menu_list].links %}
+              <li class="c-headerMobile__menuNavItem{% if link.active %}--active{% endif %}"><a href="{{ link.url }}" class="c-headerMobile__menuNavLink">{{ link.title }}</a></li>
+              {% endfor %}
+          </ul>
+          {% endif %}
+
+          {% if section.settings.show_promo %}
+            <a href="{{ section.settings.promo_link }}" class="c-headerMobile__promo">
+                <span class="c-headerMobile__promoText">{{ promo_text }}</span>
+            </a>
+          {% endif %}
+      </div>
+      
+      <div class="c-headerMobile__secondary">
+      </div>
+    </div>    
 </div>
 
 
 <script>
 
 const navIcon = document.getElementById('nav-burger-icon')
-let scrollLock = false
+const profileIcon = document.getElementById('nav-profile-icon')
+const menuLf = document.getElementById('mobNav-left')
+const menuRt = document.getElementById('mobNav-right')
+const body = document.querySelector('body')
 let scrollP
 
-navIcon.addEventListener('click', function(e) {
-  this.classList.toggle('open')
-  this.classList.contains('open') ? openNav() : closeNav() 
-})
-
-function openNav() {
-  scrollP = window.pageYOffset;
-  const mobileNav = document.getElementById('mobile-nav')
-  const body = document.querySelector('body');
-  document.querySelector('.c-headerMobile').classList.add('open')
-  mobileNav.style.left = '0';
-  scrollLock = true
-
-  const navv = document.getElementById('mobile-nav')
-
-  navv.addEventListener('touchstart', e => body.style.position = 'fixed')
-
-  // document.addEventListener('scroll', e => {
-  //   if(scrollLock) body.style.position = 'fixed';
-  // })
-
-  // setTimeout(function(){
-  //   body.style.position = 'fixed';
-  // }, 400);
+const menuToggle = icon => {
+  icon.addEventListener('click', function(e) {
+    this.classList.toggle('open')
+    this.classList.contains('open') ? openNav(icon) : closeNav(icon) 
+  })
 }
 
-function closeNav() {
-  document.getElementById('mobile-nav').style.left = '-100%';
+menuToggle(navIcon)
+menuToggle(profileIcon)
+
+function openNav(icon) {
+  scrollP = window.pageYOffset;
+
+  icon.id.includes('profile')
+    ? menuRt.style.right = '0'
+    : menuLf.style.left = '0'
+
+  
+  document.querySelector('.c-headerMobile').classList.add('open')
+  // mobileNav.style.left = '0';
+
+  const navv = document.getElementById('mobNav-left')
+  navv.addEventListener('touchstart', e => body.style.position = 'fixed')
+}
+
+function closeNav(icon) {
+  icon === 'close' || icon.id?.includes('profile')
+    ? menuRt.style.right = '-100%'
+    : menuLf.style.left = '-100%' 
+  profileIcon.classList.remove('open')
+  // const mobileNav = icon.id.includes('burger')
+  //   ? document.getElementById('mobNav-left')
+  //   : document.getElementById('mobNav-right')  
+  //mobileNav.style.left = '-100%';
   document.querySelector('.c-headerMobile').classList.remove('open')
-  // scrollLock = false
-  document.querySelector('body').style.position = 'initial';
+  body.style.position = 'initial';
   window.scrollTo(0, scrollP);  
 }
 
@@ -159,6 +201,11 @@ function closeNav() {
         "label": "Logo Text"
       },
       {
+        "id": "profile_image",
+        "type": "image_picker",
+        "label": "Profile Image"
+      },       
+      {
         "type": "header",
         "content": "Menus"
       },
@@ -172,6 +219,11 @@ function closeNav() {
         "id": "secondary_menu_list",
         "label": "Secondary Menu List"
       },
+      {
+        "type": "link_list",
+        "id": "acct_menu_list",
+        "label": "Account Menu List"
+      },      
       {
         "type": "header",
         "content": "Promo"
