@@ -1,16 +1,16 @@
 {% assign master_collection_handle = section.settings.master_collection %}
 
 <script>
-  let plp = {{ section.settings | json }}  
+  let plp = {{ section.settings | json }}
 
   const master_collection_items = [];
   {%- for collection in collections limit: 100 -%}
-    {%- if collection.handle == master_collection_handle -%}  
+    {%- if collection.handle == master_collection_handle -%}
       {%- for _product in collection.products limit: 999 -%}
         master_collection_items.push({{ _product | json }});
-      {%- endfor -%} 
+      {%- endfor -%}
     {%- endif -%}
-  {%- endfor -%}  
+  {%- endfor -%}
 
   const collections = [];
   {% for block in section.blocks %}
@@ -21,22 +21,27 @@
       icon: '{{ block.settings.icon | img_url: "master" }}',
       short_description: '{{ block.settings.short_description }}',
       products: [
-        {%- for _product in _collection.products limit:999 -%}      
+        {%- for _product in _collection.products limit:999 -%}
           {
             ...JSON.parse(JSON.stringify({{ _product | json }})),
             subtitle: `{{ _product.metafields.my_fields.subtitle }}`,
             url: '{{ _product.url }}',
-            flag: '{{ _product.metafields.my_fields.flag }}'
+            flag: '{{ _product.metafields.my_fields.flag }}',
+            inventory: [
+              {% for variant in _product.variants %}
+                '{{ variant.inventory_quantity }}',
+              {% endfor %}
+            ]
           },
-        {%- endfor -%} 
-      ]  
+        {%- endfor -%}
+      ]
     });
-  {% endfor %}  
+  {% endfor %}
 
-  plp['master_collection_items'] = master_collection_items;  
-  plp['sub_collection_items'] = collections  
-  
-  window.Scoutside.plp = plp   
+  plp['master_collection_items'] = master_collection_items;
+  plp['sub_collection_items'] = collections
+
+  window.Scoutside.plp = plp
 </script>
 
 {% schema %}
@@ -58,7 +63,7 @@
         "type": "text",
         "label": "Small Heading",
         "default": "PALEO & AIP FRIENDLY MEALS"
-      },   
+      },
       {
         "id": "hero_heading",
         "type": "text",
@@ -68,7 +73,7 @@
         "id": "hero_main_copy",
         "type": "text",
         "label": "Main Copy"
-      }, 
+      },
       {
         "id": "hero_btn_cta",
         "type": "text",
@@ -79,7 +84,7 @@
         "id": "hero_btn_url",
         "type": "url",
         "label": "CTA URL"
-      },            
+      },
       {
         "id": "hero_bg_image",
         "type": "image_picker",
@@ -98,7 +103,7 @@
         "id": "banner_klayvio_link",
         "type": "text",
         "label": "Klayvio Link"
-      }       
+      }
     ],
     "blocks": [
       {
