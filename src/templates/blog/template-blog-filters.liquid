@@ -1,0 +1,42 @@
+{{ 'theme-blog-filters.css' | asset_url | stylesheet_tag }}
+
+<ul class="c-blogFilters_desktop o-containerLarge">
+    {% for link in linklists.blog-menu.links %}
+        <li class="{% if link.active %}active{% endif %}">
+            <a href="{{ link.url }}">{{ link.title }}</a>
+            <div class="spacer {% if link.active %}active{% endif %}"></div>
+        </li>
+    {% endfor %}
+</ul>
+
+<div class="c-blogFilters_mobile o-containerLarge">
+    <label for="blog-filter" class="visually-hidden">Filter Blog Posts</label>
+    <div class="c-blogFilters_select">
+        <select id="blog-filter">
+            {% for link in linklists.blog-menu.links %}
+                {% if link.active %}
+                    <option value="{{ link.url }}" selected>{{ link.title }}</option>
+                {% else %}
+                    <option value="{{ link.url }}">{{ link.title }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        {%- render 'icon-filter-menu' -%}
+    </div>
+</div>
+
+<script>
+const blogFilters = function() {
+    document.getElementById('blog-filter').addEventListener('change', (event) => {
+        let url = event.target.value
+        if (url) {
+            window.location = url
+        }
+        return false
+    })
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    blogFilters()
+});
+</script>

@@ -1,0 +1,78 @@
+{{ 'theme-article.css' | asset_url | stylesheet_tag }}
+
+<article class="c-article">
+<header>
+    <div class="c-article_headerWrapper o-containerLarge">
+    <a href="/blogs/news" class="c-article_backBtn">Back</a>
+    
+    <p class="c-article_tag">Featured Post <span>/ </span> 
+    {%- for tag in article.tags -%}
+        {%- if tag contains 'primary:' -%}
+            {%- capture displayTag -%} {{ tag | slice: 9, 100 }} {%- endcapture -%}
+            <a href="{{ blog.url }}/tagged/{{ displayTag | handle }}">{{ displayTag }}</a>
+        {%- endif -%}
+    {%- endfor -%}
+    </p>
+
+    <h1 class="c-article_title">{{ article.title }}</h1>
+
+    <p class="c-article_author-date"><span>By {{ article.author }}</span><span> &#8212; {{ article.published_at | date: '%B %-d, %Y' }}</span></p>
+
+    {%- render 'template-article-sharing' -%}
+
+    {%- if article.image -%}
+    <div class="c-article_image">
+        <img src="{{ article.image | img_url: 'master' }}" alt="{{ article.title }}">
+
+        <noscript>
+            <p>
+            {{ article | img_url: 'master', scale: 2 | img_tag: article.title }}
+            </p>
+        </noscript>
+    </div>
+    {%- endif -%}
+    </div>
+</header>
+
+<main>
+    <div class="c-article_RTE o-containerLarge">
+        {{ article.content }}
+    </div>
+</main>
+
+{%- if article.tags.size > 0 -%}
+    {%- for tag in article.tags -%}
+        {%- if tag contains 'primary:' -%}
+            {%- capture displayTag -%} {{ tag | slice: 9, 100 }} {%- endcapture -%}
+        {%- endif -%}
+    {%- endfor -%}
+{%- endif -%}
+
+{%- if article.tags.size > 0 -%}
+    <footer>
+    <ul aria-label="Tags" class="c-article_tags o-containerLarge">
+    <span>Tags:</span>
+    {%- unless displayTag == blank -%}
+        <li class="c-article_tags-primary">
+        <a href="{{ blog.url }}/tagged/{{ displayTag | handle }}">
+            {{ displayTag }}
+        </a>
+        </li>
+    {%- endunless -%}
+
+    {%- for tag in article.tags -%}
+    {%- unless displayTag contains tag -%}
+    {%- unless tag contains 'primary:' -%}
+        <li>
+        <a href="{{ blog.url }}/tagged/{{ tag | handle }}">
+            {{ tag }}
+        </a>
+        </li>
+    {%- endunless -%}
+    {%- endunless -%}
+    {%- endfor -%}
+    </ul>
+    <footer>
+{%- endif -%}
+
+</article>
