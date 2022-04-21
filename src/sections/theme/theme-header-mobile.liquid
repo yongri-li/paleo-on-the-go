@@ -5,6 +5,7 @@
 {% assign login_text = "{{ login_text }}" %}
 {% assign account_text = "{{ account_text }}" %}
 {% assign bundle_text = "{{ bundle_text }}" %}
+{% assign name_text = customer.first_name %}
 
 {% if section.settings.logo_text != blank %}{% assign logo_text = section.settings.logo_text %}{% endif %}
 {% if section.settings.promo_text != blank %}{% assign promo_text = section.settings.promo_text %}{% endif %}
@@ -69,48 +70,37 @@
       </div>
       
       <div class="c-headerMobile__secondary">
-      {% if customer %}
-        {% comment %}
-          <a href="/account" class="c-headerMobile__account">
-          <span class="c-headerMobile__accountText">{{ account_text }}</span>
-          </a>
-        {% endcomment %}          
-      {% else %}
-        {% comment %}
-          <a href="/account/login" class="c-headerMobile__account">
-          <span class="c-headerMobile__accountText">{{ login_text }}</span>
-          </a>
-        {% endcomment %}     
-      {% endif %}
-          <h2 class="c-h1">{{ bundle_heading }}</h2>
-          <p>{{ bundle_copy }}</p>
-          <a href="pages/bundle/" class="c-button c-button--isDefault c-button--isPrimary" data-bundle-trigger>
-              <span>{{ bundle_text }}</span>
-          </a>
+        <h2 class="c-h1">{{ bundle_heading }}</h2>
+        <p>{{ bundle_copy }}</p>
+        <a href="pages/bundle/" class="c-button c-button--isDefault c-button--isPrimary" data-bundle-trigger>
+            <span>{{ bundle_text }}</span>
+        </a>
       </div>
     </div>
 
-
     <div class="c-headerMobile__menu portalMenu" id="mobNav-right">
-      <div class="c-headerMobile__primary">
+      <div class="c-headerMobile__secondary">
         <div id="nav-close-x" class="open" onclick="closeNav('close')">
           <span></span>
           <span></span>
           <span></span>      
-        </div>        
-          {% if linklists[section.settings.acct_menu_list].links.size > 0 %}
-          <ul class="c-headerMobile__menuNav-primaryLinks">
-              {% for link in linklists[section.settings.acct_menu_list].links %}
-              <li class="c-headerMobile__menuNavItem{% if link.active %}--active{% endif %}"><a href="{{ link.url }}" class="c-headerMobile__menuNavLink">{{ link.title }}</a></li>
-              {% endfor %}
-          </ul>
-          {% endif %}
-
-          {% if section.settings.show_promo %}
-            <a href="{{ section.settings.promo_link }}" class="c-headerMobile__promo">
-                <span class="c-headerMobile__promoText">{{ promo_text }}</span>
-            </a>
-          {% endif %}
+        </div>  
+        {% if customer %}
+          <h2>Welcome back, {{name_text}}</h2>
+          <p class="u-opacity5 u-mrgBtm--sm">Account Links</p>
+            {% if linklists[section.settings.acct_menu_list].links.size > 0 %}
+              <ul class="c-headerMobile__menuNav-primaryLinks">
+                  {% for link in linklists[section.settings.acct_menu_list].links %}
+                  <li class="c-headerMobile__menuNavItem{% if link.active %}--active{% endif %}"><a href="{{ link.url }}" class="c-headerMobile__menuNavLink">{{ link.title }}</a></li>
+                  {% endfor %}
+              </ul>
+            {% endif %}   
+            <a href="/account/logout">Sign Out</a>    
+        {% else %}
+            <a href="/account/login" class="c-headerMobile__account">
+            <span class="c-headerMobile__accountText">{{ login_text }}</span>
+            </a>     
+        {% endif %}              
       </div>
       
       <div class="c-headerMobile__secondary">
@@ -123,9 +113,11 @@
 
 const navIcon = document.getElementById('nav-burger-icon')
 const profileIcon = document.getElementById('nav-profile-icon')
+const mobileHeader = document.querySelector('.c-headerMobile')
 const menuLf = document.getElementById('mobNav-left')
 const menuRt = document.getElementById('mobNav-right')
 const body = document.querySelector('body')
+document.querySelector('html').style.paddingBottom = '0'
 let scrollP
 
 const menuToggle = icon => {
@@ -139,6 +131,7 @@ menuToggle(navIcon)
 menuToggle(profileIcon)
 
 function openNav(icon) {
+  document.querySelector('html').style.paddingBottom = '0'
   scrollP = window.pageYOffset;
 
   icon.id.includes('profile')
@@ -146,11 +139,11 @@ function openNav(icon) {
     : menuLf.style.left = '0'
 
   
-  document.querySelector('.c-headerMobile').classList.add('open')
-  // mobileNav.style.left = '0';
-
+  mobileHeader.classList.add('open')
   const navv = document.getElementById('mobNav-left')
-  navv.addEventListener('touchstart', e => body.style.position = 'fixed')
+  setTimeout(()=>{
+    document.querySelector('main').style.display = 'none'
+  },400)
 }
 
 function closeNav(icon) {
@@ -158,12 +151,9 @@ function closeNav(icon) {
     ? menuRt.style.right = '-100%'
     : menuLf.style.left = '-100%' 
   profileIcon.classList.remove('open')
-  // const mobileNav = icon.id.includes('burger')
-  //   ? document.getElementById('mobNav-left')
-  //   : document.getElementById('mobNav-right')  
-  //mobileNav.style.left = '-100%';
-  document.querySelector('.c-headerMobile').classList.remove('open')
-  body.style.position = 'initial';
+  mobileHeader.classList.remove('open')
+  document.querySelector('main').style.display = 'block'
+  //body.style.position = 'initial';
   window.scrollTo(0, scrollP);  
 }
 

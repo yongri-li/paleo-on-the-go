@@ -68,6 +68,7 @@
     "download:prod": "theme download --env=production -d dist"
   },
   "dependencies": {
+    "@shopify/theme-sections": "^4.1.1",
     "cookie-universal": "^2.1.5",
     "hex-rgb": "^4.1.0",
     "https": "^1.0.0",
