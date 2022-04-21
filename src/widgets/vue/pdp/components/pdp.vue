@@ -105,7 +105,7 @@ export default {
     },
     handleAdd() {
       this.loading = true
-      //// Add Shared Cart function here.
+      ///// Add Shared Cart function here.
       setTimeout(() => {
         this.loading = false
         this.added = true
@@ -125,7 +125,7 @@ export default {
   mounted() {
     window.addEventListener('load', e => {
       function setLeaves() {
-        const leafIcon = this.ratingLeaf
+        const leafIcon = this?.ratingLeaf ? this.ratingLeaf : null
         const rateStars = document.querySelectorAll('.spr-icon-star')
         const unrateStars = document.querySelectorAll('.spr-icon-star-empty')
         rateStars.forEach(star => (star.innerHTML = leafIcon))

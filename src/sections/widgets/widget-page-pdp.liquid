@@ -1,5 +1,3 @@
-
-
 <script>
   window.Scoutside = window.Scoutside || {}
   window.Scoutside.pdp = window.Scoutside.pdp || {}
@@ -33,17 +31,20 @@
 
   const related_products = [];
   const related_subtitle = [];
+  const related_flags = [];
   {%- for collection in collections limit:100 -%}
     {%- if collection.id == 286781505735 -%}  
       {%- for _product in collection.products limit:4 -%}
         related_products.push({{ _product | json }});
         related_subtitle.push(`{{ _product.metafields.my_fields.subtitle }}`);
+        related_flags.push(`{{ _product.metafields.my_fields.flag}}`);
       {%- endfor -%} 
     {%- endif -%}
   {%- endfor -%}  
   pdp['related_products'] = related_products.map((prd,i) => {
     let related_product = { ...prd }
     related_product['subtitle'] = related_subtitle[i]
+    related_product['flag'] = related_flags[i]
     return related_product
   })
 

@@ -231,9 +231,9 @@ export default {
     }
 
     @include media-mobile-down {
-      &--nav {
+      /*      &--nav {
         display: none;
-      }
+      }*/
 
       article {
         padding: 1rem;
