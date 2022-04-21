@@ -1,0 +1,43 @@
+{{ 'theme-article-related.css' | asset_url | stylesheet_tag }}
+
+<div class="c-relatedPosts">
+    <h2 class="c-relatedPosts_title">Related Posts</h2>
+
+    {%- assign blog = blogs["News"] -%}
+
+    {%- if blog.articles_count > 0 -%}
+    <ul class="c-relatedPosts_wrapper o-containerLarge">
+
+        {%- for article in blog.articles limit: 3 -%}
+
+        <li class="c-blogList_article">
+            <a href="{{ article.url }}" class="c-blogList_image">
+            {%- if article.image -%}
+                <img src="{{ article.image | img_url: '600x600' }}" alt="{{ article.title }}">
+
+                <noscript>
+                    <p>
+                    {{ article | img_url: '455x300', scale: 2 | img_tag: article.title }}
+                    </p>
+                </noscript>
+            {%- endif -%}
+            </a>
+
+            <p class="c-blogList_tag">Post <span>/ </span> 
+            {%- for tag in article.tags -%}
+                {%- if tag contains 'primary:' -%}
+                    {%- capture displayTag -%} {{ tag | slice: 9, 100 }} {%- endcapture -%}
+                    <a href="{{ blog.url }}/tagged/{{ displayTag | handle }}">{{ displayTag }}</a>
+                {%- endif -%}
+            {%- endfor -%}
+            </p>
+
+            <h3 class="c-blogList_title"><a href="{{ article.url }}">{{ article.title }}</a></h3>
+
+            <p class="c-blogList_read-more"><a href="{{ article.url }}" aria-label="Read the Article: {{ article.title }}">Read the Article</a></p>
+        </li>
+        {%- endfor -%}
+
+    </ul>
+    {%- endif -%}
+</div>
