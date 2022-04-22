@@ -1,10 +1,9 @@
-{{ 'theme-blog-featured.css' | asset_url | stylesheet_tag }}
-
 <div class="c-blogFeatured">
-{%- for article in blog.articles -%}
+{%- for article in blog.articles -%} 
     {%- if article.tags.size > 0 -%}
         {%- for tag in article.tags -%}
-            {%- if tag contains 'Featured' -%}
+            {{ tag }}
+            {%- if tag contains 'Featured' -%}                
                 {%- capture featuredTag -%} {{ tag }} {%- endcapture -%}
             {%- endif -%}
         {%- endfor -%}
@@ -42,3 +41,10 @@
     {%- endif -%}
 {%- endfor -%}
 </div>
+
+
+
+<v-blog id="v-blog" class="v-widget" data-vue-blog></v-blog>
+
+{{ 'widget-blog.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'widget-blog.js' | asset_url }}"></script>

@@ -79,6 +79,10 @@
 		opacity: 1;
 		pointer-events: auto;
 		background-color: #efede6;
+
+		.trigger-filters__icon {
+			padding-top: 1px;
+		}
 	}
 
 	&.is-shrink {

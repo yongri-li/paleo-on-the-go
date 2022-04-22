@@ -122,7 +122,8 @@ export default {
 		grid-gap: 1rem;
 	}
 
-	.inner-flexwrap > div section .inner-flexwrap {
+	/*.inner-flexwrap > div section .inner-flexwrap {*/
+	.inner-flexwrap {
 		min-height: 3rem;
 		align-items: center;
 
