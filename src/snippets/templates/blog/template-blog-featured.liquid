@@ -1,4 +1,29 @@
+<script>
+  let blog;
+
+  {% assign bloop = 0 %}
+  {%- for article in blog.articles -%} 
+      {%- if article.tags.size > 0 -%}
+          {%- for tag in article.tags -%}
+              {%- if tag contains 'Featured' -%}                
+                blog = {
+                  image: `{{ article.image | img_url: 'master' }}`,
+                  title: `{{ article.title }}`,
+                  published: `{{ article.published_at | date: '%B %-d, %Y' }}`
+                };
+              {%- endif -%}
+          {%- endfor -%}
+      {%- endif -%}
+
+  {%- endfor -%}
+
+  console.log(blog)
+  window.Scoutside.blog = blog
+</script>
+
+
 <div class="c-blogFeatured">
+     {% comment %}
 {%- for article in blog.articles -%} 
     {%- if article.tags.size > 0 -%}
         {%- for tag in article.tags -%}
@@ -10,7 +35,9 @@
     {%- endif -%}
 
     {%- if featuredTag contains 'Featured' -%}
-        <a href="{{ article.url }}" class="c-blogFeatured_image">
+      
+ 
+<!--         <a href="{{ article.url }}" class="c-blogFeatured_image">
         {%- if article.image -%}
         <img src="{{ article.image | img_url: 'master' }}" alt="{{ article.title }}">
 
@@ -37,14 +64,17 @@
             <p class="c-blogFeatured_author-date"><span>By {{ article.author }}</span><span> &#8212; {{ article.published_at | date: '%B %-d, %Y' }}</span></p>
 
             <p class="c-blogFeatured_read-more"><a href="{{ article.url }}" aria-label="Read the Article: {{ article.title }}">Read the Article</a></p>
-        </div>
+        </div> -->
+        
     {%- endif -%}
 {%- endfor -%}
-</div>
-
-
+{% endcomment %}
 
 <v-blog id="v-blog" class="v-widget" data-vue-blog></v-blog>
+
+
+</div>
+
 
 {{ 'widget-blog.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'widget-blog.js' | asset_url }}"></script>

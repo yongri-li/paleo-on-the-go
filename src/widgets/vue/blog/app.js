@@ -2,7 +2,7 @@ import Vue from 'vue'
 import mixins from '@shared/mixins'
 import plugins from '@shared/plugins'
 import store from './store'
-import Blog from './blog.vue'
+import Blog from './Blog.vue'
 
 /* Register Mixins */
 Vue.mixin(mixins)
