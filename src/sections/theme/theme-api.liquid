@@ -8,6 +8,7 @@
     "customer_token": false,
     "storefront_token": "{{ section.settings.storefront_token }}",
     "custom_app_key": "{{ section.settings.custom_app_key }}",
+    "route_api_key": "{{ section.settings.route_api_key }}"
   }
 
   {% if customer %}
@@ -60,6 +61,12 @@
         "type": "text",
         "id": "storefront_token",
         "label": "Shopify Storefront Token"
+      },
+      {
+        "type": "text",
+        "id": "route_api_key",
+        "label": "Route API Key",
+        "info": "Used to make authenticated request to API"
       }
     ]
   }

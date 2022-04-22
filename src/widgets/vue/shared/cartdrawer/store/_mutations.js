@@ -3,7 +3,10 @@ import { _arrayMergeByKeys } from '@shared/scripts'
 import {
   ADD_BOX_TO_CART,
   SET_SIZE_SELECTED,
-  CLEAR_BOX
+  CLEAR_BOX,
+  CREATE_ROUTE_PROTECTION_PRODUCT,
+  REMOVE_ROUTE_PROTECTION_TO_CART,
+  ADD_ROUTE_PROTECTION_TO_CART
 } from './_mutations-type'
 
 export default {
@@ -45,5 +48,21 @@ export default {
       keys
     })
     state.resources.onetimes = [...filteredOnetimes, ...onetimes]
+  },
+  [CREATE_ROUTE_PROTECTION_PRODUCT] (state, { routeProduct }) {
+    state.routeProduct = {
+      ...routeProduct
+    }
+  },
+  [REMOVE_ROUTE_PROTECTION_TO_CART] (state) {
+    const indexFound = state.cartItems.general.findIndex(item => item.route_protection)
+    if(indexFound > -1) {
+      state.cartItems.general.splice(indexFound, 1)
+    }
+  },
+  [ADD_ROUTE_PROTECTION_TO_CART] (state, { routeProduct }) {
+    state.cartItems.general.push({
+      ...routeProduct
+    })
   }
 }
