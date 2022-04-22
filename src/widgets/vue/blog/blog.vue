@@ -1,8 +1,8 @@
 <template>
-	<article class="c-blogFeatured__main c-topHero c-plp__hero">
+	<article class="c-blogFeatured__main">
 		<section class="c-topHero__ctaWrap">
 			<div class="c-topHero__ctaWrap--inner">
-				<h4>Featured Post</h4>
+				<h3 class="post-title">Featured Post</h3>
 				<h1 class="c-h1">{{ title }}</h1>
 				<p v-html="excerpt"></p>
 				<div class="u-spacer--md u-hideTabletDown"></div>
@@ -34,16 +34,34 @@ export default {
 
 <style lang="scss">
 .c-blogFeatured__main {
+	height: clamp(480px, 50vh, 600px);
+	display: flex;
+	background-color: $color-black;
+	color: $color-white;
+
 	.c-topHero__ctaWrap {
 		padding: 0;
 
 		&--inner {
 			padding: 3rem;
+
+			.post-title {
+				letter-spacing: 1px;
+				text-transform: uppercase;
+			}
+
+			.c-h1 {
+				color: $color-primary;
+			}
 		}
 	}
 
 	.c-topHero__imgWrap {
 		flex: 1;
+	}
+
+	@include media-mobile-down {
+		height: 100%;
 	}
 }
 </style>
