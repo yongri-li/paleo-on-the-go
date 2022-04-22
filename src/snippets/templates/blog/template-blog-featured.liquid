@@ -7,9 +7,13 @@
           {%- for tag in article.tags -%}
               {%- if tag contains 'Featured' -%}                
                 blog = {
+                  author: `{{ article.author }}`,
+                  excerpt: `{{ article.excerpt }}`,
                   image: `{{ article.image | img_url: 'master' }}`,
+                  tags: `{{ article.tags }}`,
                   title: `{{ article.title }}`,
-                  published: `{{ article.published_at | date: '%B %-d, %Y' }}`
+                  published: `{{ article.published_at | date: '%B %-d, %Y' }}`,
+                  article_url: `{{ article.url }}`
                 };
               {%- endif -%}
           {%- endfor -%}
@@ -17,62 +21,12 @@
 
   {%- endfor -%}
 
-  console.log(blog)
   window.Scoutside.blog = blog
 </script>
 
 
 <div class="c-blogFeatured">
-     {% comment %}
-{%- for article in blog.articles -%} 
-    {%- if article.tags.size > 0 -%}
-        {%- for tag in article.tags -%}
-            {{ tag }}
-            {%- if tag contains 'Featured' -%}                
-                {%- capture featuredTag -%} {{ tag }} {%- endcapture -%}
-            {%- endif -%}
-        {%- endfor -%}
-    {%- endif -%}
-
-    {%- if featuredTag contains 'Featured' -%}
-      
- 
-<!--         <a href="{{ article.url }}" class="c-blogFeatured_image">
-        {%- if article.image -%}
-        <img src="{{ article.image | img_url: 'master' }}" alt="{{ article.title }}">
-
-        <noscript>
-            <p>
-            {{ article | img_url: 'master', scale: 2 | img_tag: article.title }}
-            </p>
-        </noscript>
-        {%- endif -%}
-        </a>
-
-        <div class="c-blogFeatured_article">
-            <p class="c-blogFeatured_tag">Featured Post <span>/ </span> 
-            {%- for tag in article.tags -%}
-                {%- if tag contains 'primary:' -%}
-                    {%- capture displayTag -%} {{ tag | slice: 9, 100 }} {%- endcapture -%}
-                    <a href="{{ blog.url }}/tagged/{{ displayTag | handle }}">{{ displayTag }}</a>
-                {%- endif -%}
-            {%- endfor -%}
-            </p>
-
-            <h1 class="c-blogFeatured_title"><a href="{{ article.url }}">{{ article.title }}</a></h1>
-
-            <p class="c-blogFeatured_author-date"><span>By {{ article.author }}</span><span> &#8212; {{ article.published_at | date: '%B %-d, %Y' }}</span></p>
-
-            <p class="c-blogFeatured_read-more"><a href="{{ article.url }}" aria-label="Read the Article: {{ article.title }}">Read the Article</a></p>
-        </div> -->
-        
-    {%- endif -%}
-{%- endfor -%}
-{% endcomment %}
-
-<v-blog id="v-blog" class="v-widget" data-vue-blog></v-blog>
-
-
+  <v-blog id="v-blog" class="v-widget" data-vue-blog></v-blog>
 </div>
 
 

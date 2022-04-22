@@ -2,11 +2,13 @@
 	<article class="c-blogFeatured__main c-topHero c-plp__hero">
 		<section class="c-topHero__ctaWrap">
 			<div class="c-topHero__ctaWrap--inner">
-				<h4>small heading</h4>
+				<h4>Featured Post</h4>
 				<h1 class="c-h1">{{ title }}</h1>
-				<p>{{ published }}</p>
+				<p v-html="excerpt"></p>
 				<div class="u-spacer--md u-hideTabletDown"></div>
-				<a href="/" class="c-button c-button--isDefault c-button--isPrimary c-button--lrg"> button </a>
+				<a :href="article_url" class="c-button c-button--isDefault c-button--isPrimary c-button--lrg"
+					>Read More</a
+				>
 			</div>
 		</section>
 		<section class="c-topHero__imgWrap" :style="bgImage"></section>
