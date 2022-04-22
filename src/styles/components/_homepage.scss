@@ -98,7 +98,7 @@ marquee span {
   display: flex;
   /*height: 100vh;*/
   height: calc(100vh - 106px);
-  min-height: 500px;
+  min-height: 480px;
   background-color: #efede6;
 
   @include media-tablet-down {

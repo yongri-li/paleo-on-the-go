@@ -1,0 +1,34 @@
+<script>
+  let blog;
+
+  {% assign bloop = 0 %}
+  {%- for article in blog.articles -%} 
+      {%- if article.tags.size > 0 -%}
+          {%- for tag in article.tags -%}
+              {%- if tag contains 'Featured' -%}                
+                blog = {
+                  author: `{{ article.author }}`,
+                  excerpt: `{{ article.excerpt }}`,
+                  image: `{{ article.image | img_url: 'master' }}`,
+                  tags: `{{ article.tags }}`,
+                  title: `{{ article.title }}`,
+                  published: `{{ article.published_at | date: '%B %-d, %Y' }}`,
+                  article_url: `{{ article.url }}`
+                };
+              {%- endif -%}
+          {%- endfor -%}
+      {%- endif -%}
+
+  {%- endfor -%}
+
+  window.Scoutside.blog = blog
+</script>
+
+
+<div class="c-blogFeatured">
+  <v-blog id="v-blog" class="v-widget" data-vue-blog></v-blog>
+</div>
+
+
+{{ 'widget-blog.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'widget-blog.js' | asset_url }}"></script>

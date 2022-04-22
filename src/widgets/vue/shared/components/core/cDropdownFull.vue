@@ -1,17 +1,18 @@
 <template>
-	<nav :class="['c-dropdownFull', { 'is-open': isOpen }]">
+	<nav :class="['c-dropdownFull', { 'is-open': isOpen, 'is-shrink': isShrink }]">
 		<section class="c-dropdownFull__wrap">
 			<section class="inner-flexwrap trigger-filters">
-				<div @click="closeDropdown">
+				<div @click="handleDropdown">
 					<c-svg class="trigger-filters__icon" name="filter" />
-					<span class="trigger-filters__copy">Close</span>
+					<span class="trigger-filters__copy">{{ isShrink ? 'Filters' : 'Close' }}</span>
 				</div>
 				<div>
-					<div class="item-tabs" v-for="tab in filters" :data-val="tab">
-						{{ tab }} <span @click="handleFilter('cut', $event)"> &#10005;</span>
-						<!-- {{ tab }} <span @click="handleFilter('cut', $event)"> &#10005;</span> -->
-					</div>
-					<strong v-if="filters.length > 0" @click="clearFilters">Clear Filters</strong>
+					<section>
+						<div class="item-tabs" v-for="tab in filters" :data-val="tab">
+							{{ tab }} <span @click="handleFilter('cut', $event)"> &#10005;</span>
+						</div>
+						<strong v-if="filters.length > 0" @click="clearFilters">Clear Filters</strong>
+					</section>
 				</div>
 			</section>
 			<hr />
@@ -52,7 +53,8 @@ export default {
 	},
 	data() {
 		return {
-			filters: []
+			filters: [],
+			isShrink: false
 		}
 	},
 	components: {
@@ -85,8 +87,16 @@ export default {
 			const checkboxes = document.querySelectorAll('.select-items input')
 			checkboxes.forEach(box => (box.checked = false))
 		},
-		closeDropdown() {
-			this.$emit('closeDropdown')
+		handleDropdown() {
+			this.filters.length ? (this.isShrink = !this.isShrink) : this.$emit('closeDropdown')
+		}
+	},
+	watch: {
+		filters() {
+			if (!this.filters.length && this.isShrink) {
+				this.$emit('closeDropdown')
+				setTimeout(() => (this.isShrink = false), 250)
+			}
 		}
 	}
 }
@@ -102,6 +112,17 @@ export default {
 		grid-gap: 1.125rem;
 	}
 
+	.inner-flexwrap > div {
+		overflow-y: scroll;
+	}
+
+	.inner-flexwrap > div section {
+		display: flex;
+		align-items: center;
+		grid-gap: 1rem;
+	}
+
+	/*.inner-flexwrap > div section .inner-flexwrap {*/
 	.inner-flexwrap {
 		min-height: 3rem;
 		align-items: center;
@@ -126,10 +147,34 @@ export default {
 		.inner-flexwrap {
 			width: 100%;
 		}
+
+		@include media-mobile-down {
+			& > .inner-flexwrap {
+				flex-direction: column;
+				align-items: flex-start;
+			}
+		}
 	}
 
-	.inner-flexwrap.trigger-filters div {
-		grid-gap: 0.75rem;
+	.inner-flexwrap.trigger-filters {
+		div {
+			grid-gap: 0.75rem;
+		}
+	}
+
+	@include media-mobile-down {
+		.inner-flexwrap.trigger-filters {
+			margin-bottom: 0;
+
+			div:nth-child(2) {
+				flex: 10;
+			}
+		}
+
+		hr + .inner-flexwrap > div:first-child {
+			flex: 0;
+			width: 0;
+		}
 	}
 
 	.inner-flexwrap > div:last-child {
@@ -202,6 +247,7 @@ export default {
 		font-weight: 500;
 		letter-spacing: 0.25px;
 		padding: 0.5rem 1rem;
+		white-space: nowrap;
 
 		animation-duration: 225ms;
 		animation-name: scalePop;
@@ -211,6 +257,10 @@ export default {
 			margin-right: -0.5rem;
 			font-weight: 900;
 		}
+	}
+
+	strong {
+		white-space: nowrap;
 	}
 
 	@keyframes scalePop {

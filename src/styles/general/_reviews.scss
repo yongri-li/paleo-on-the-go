@@ -50,4 +50,16 @@
       width: 1rem;
     }
   }
+
+  .spr-summary-caption {
+    line-height: 2;
+    margin-left: 0.25rem;
+    text-decoration: underline;
+    vertical-align: top;
+  }
+
+  .spr-summary-actions-newreview,
+  .spr-review-reportreview {
+    text-decoration: underline;
+  }
 }
