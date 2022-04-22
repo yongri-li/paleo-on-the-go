@@ -1,6 +1,9 @@
 <template>
   <div class="meal-cart">
-    <div :class="{ show: showCartMobile }" class="meal-cart__info">
+    <div
+      :class="{ show: showCartMobile }"
+      class="meal-cart__info"
+    >
       <meal-cart-header
         :type-class="typeClass"
         :have-products-class="haveProductsClass"
@@ -15,6 +18,7 @@
       />
     </div>
     <meal-cart-footer
+      :cart="cart"
       :subtotal="cartSubTotal"
       :size-selected="getSizeSelected"
       :cart-length="cartLength"
@@ -35,9 +39,10 @@ import MealCartBody from './MealCartBody.vue'
 import MealCartFooter from './MealCartFooter.vue'
 
 import { mapState, mapGetters } from 'vuex'
-import { CHANGE_SIZE_SELECTED, CLEAN_ALL_CART } from '@shared/cartdrawer/store/_mutations-type'
+import { CHANGE_SIZE_SELECTED, CLEAN_ALL_CART } from '../../store/modules/mealcart/_mutations-type'
 
 import { changeRouter } from '../../utils'
+
 
 export default {
   components: {
@@ -54,8 +59,12 @@ export default {
     }
   },
   computed: {
-    ...mapState(['cart']),
-    ...mapGetters(['getSizeSelected']),
+    ...mapState('mealcart', [
+      'cart'
+    ]),
+    ...mapGetters('mealcart', [
+      'getSizeSelected'
+    ]),
     haveProductsClass() {
       return this.cart.items.length ? 'with-products' : 'without-products'
     },
@@ -148,12 +157,12 @@ export default {
       if (referrerPage.includes('/account')) {
         this.fromPortal = true
         if (box) {
-          this.$store.commit(CHANGE_SIZE_SELECTED, { val: `${boxSize}items` })
+          this.$store.commit(`mealcart/${CHANGE_SIZE_SELECTED}`, { val: `${boxSize}items` })
           return
         }
       }
 
-      if (fromStartBtn) this.$store.commit(CHANGE_SIZE_SELECTED, { val: `${boxSize}items` })
+      if (fromStartBtn) this.$store.commit(`mealcart/${CHANGE_SIZE_SELECTED}`, { val: `${boxSize}items` })
       sessionStorage.removeItem('startBtnClk')
 
       // this is for '/'
@@ -167,16 +176,16 @@ export default {
       // this is for '/onetime'
       if (box === 'onetime' && orderType !== 'onetime') {
         console.log('entro al if del /onetime')
-        this.$store.commit(CHANGE_SIZE_SELECTED, { val: 'onetime' })
-        this.$store.commit(CLEAN_ALL_CART)
+        this.$store.commit(`mealcart/${CHANGE_SIZE_SELECTED}`, { val: 'onetime' })
+        this.$store.commit(`mealcart/${CLEAN_ALL_CART}`)
         return
       }
 
       // this is for '/subscription'
       if (box === 'subscription' && orderType !== 'subscription') {
         console.log('entro al if del /subscription')
-        this.$store.commit(CHANGE_SIZE_SELECTED, { val: '12items' })
-        this.$store.commit(CLEAN_ALL_CART)
+        this.$store.commit(`mealcart/${CHANGE_SIZE_SELECTED}`, { val: '12items' })
+        this.$store.commit(`mealcart/${CLEAN_ALL_CART}`)
         return
       }
     },
@@ -188,11 +197,13 @@ export default {
 </script>
 
 <style lang="scss">
+
 $height-footer: 115px;
 $height-header-title: 59px;
 $translateY: calc(100% - $height-header-title);
 
 .meal-cart {
+
   @include media-tablet-up {
     width: 27%;
     height: 90vh;
@@ -210,7 +221,7 @@ $translateY: calc(100% - $height-header-title);
     filter: drop-shadow(0px -4px 34px rgba(0, 0, 0, 0.1));
     border-radius: 20px 20px 0px 0px;
     transform: translateY($translateY);
-    transition: all 0.3s ease-out;
+    transition: all .3s ease-out;
 
     @include media-tablet-up {
       position: relative;
@@ -239,5 +250,7 @@ $translateY: calc(100% - $height-header-title);
       z-index: 1;
     }
   }
+
 }
+
 </style>
