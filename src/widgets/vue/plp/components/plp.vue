@@ -1,22 +1,25 @@
 <template>
   <div class="c-plp o-containerFullWidth">
+    <c-FilterNav
+      v-if="isMobile"
+      :items="filterItems"
+      :isOpen="isFilterOpen"
+      :collections="collections"
+      @getFilters="addFilterTag"
+      @trigger="triggerFilters"
+      @collection="updateCollection"
+    />
     <c-page-hero :content="content[0]" class="c-plp__hero" />
     <section class="c-plp__body">
-      <nav class="c-plp__body--nav">
-        <div class="trigger-filters" @click="triggerFilters">
-          <c-svg class="trigger-filters__icon" name="filter" />
-          <span class="trigger-filters__copy">Filter</span>
-        </div>
-        <c-dropdownFull
-          :items="filterItems"
-          :isOpen="isFilterOpen"
-          @getFilters="addFilterTag"
-          @closeDropdown="triggerFilters"
-        />
-        <ul>
-          <li v-for="(collection, i) in collections" @click="activeNum = i">{{ collection.title }}</li>
-        </ul>
-      </nav>
+      <c-FilterNav
+        v-if="!isMobile"
+        :items="filterItems"
+        :isOpen="isFilterOpen"
+        :collections="collections"
+        @getFilters="addFilterTag"
+        @trigger="triggerFilters"
+        @collection="updateCollection"
+      />
       <article>
         <h2 class="c-h2">{{ collections[activeNum].title }}</h2>
         <span v-html="collections[activeNum].short_description"></span>
@@ -28,7 +31,6 @@
             v-if="product.available"
           >
             <c-product-card :product="product" title="Filter" />
-            <!-- v-if="filterByTag(product.tags, filterTags)" -->
           </div>
         </div>
       </article>
@@ -42,13 +44,14 @@ import { formatPrice } from '../utils'
 import cProductCard from '@shared/components/parts/cProductCard.vue'
 import cPageHero from '@shared/components/parts/cPageHero.vue'
 import cBottomBanner from '@shared/components/core/cBottomBanner.vue'
-import cDropdownFull from '@shared/components/core/cDropdownFull.vue'
+import cFilterNav from '@shared/components/core/cFilterNav.vue'
 import cSvg from '@shared/components/core/cSvg.vue'
 
 export default {
   name: 'Plp',
   data: () => ({
     ...window.Scoutside.plp,
+    isMobile: false,
     activeNum: 0,
     filterTags: [],
     isFilterOpen: false
@@ -57,13 +60,10 @@ export default {
     cPageHero,
     cProductCard,
     cBottomBanner,
-    cDropdownFull,
+    cFilterNav,
     cSvg
   },
   computed: {
-    // price() {
-    //   return `Starts at ${formatPrice(this.product.price)}`
-    // },
     filterItems() {
       return [
         { icon: 'noGMO', name: 'Coconut Free' },
@@ -107,24 +107,15 @@ export default {
     filteredCollection() {
       return !this.filterTags.length ? this.collections[this.activeNum].products : this.filteredProducts
     }
-
-    // ratingsCount() {
-    //   return this.rating_count ? this.rating_count : 0
-    // },
-    // ratings() {
-    //   return this.rating ? JSON.parse(this.rating) : null
-    // }
   },
   methods: {
-    triggerFilters() {
-      this.isFilterOpen = !this.isFilterOpen
+    triggerFilters(trigger) {
+      this.isFilterOpen = trigger
     },
-    // onResize() {
-    //   this.isMobile = window.innerWidth < 768
-    // },
+    updateCollection(num) {
+      this.activeNum = num
+    },
     addFilterTag(filters) {
-      // this.filterTags.length ? (this.filterTags = []) : this.filterTags.push(tag)
-      // this.filterTags.push(tag)
       this.filterTags = filters
     },
     clearFilters() {
@@ -139,17 +130,20 @@ export default {
       this.isCustomer
         ? (window.location.href = '/account/#/details')
         : (window.location = this.url_getStarted)
+    },
+    onResize() {
+      this.isMobile = window.innerWidth < 768 ? true : false
+    }
+  },
+  created() {
+    if (window.innerWidth < 768) this.isMobile = true
+    window.addEventListener('resize', this.onResize)
+  },
+  beforeDestroy() {
+    if (typeof window !== 'undefined') {
+      window.removeEventListener('resize', this.onResize, { passive: true })
     }
   }
-  // beforeDestroy() {
-  //   if (typeof window !== 'undefined') {
-  //     window.removeEventListener('resize', this.onResize, { passive: true })
-  //   }
-  // },
-  // beforeMount() {
-  //   this.onResize()
-  //   window.addEventListener('resize', this.onResize, { passive: true })
-  // }
 }
 </script>
 
@@ -231,9 +225,29 @@ export default {
     }
 
     @include media-mobile-down {
-      /*      &--nav {
-        display: none;
-      }*/
+      &--nav {
+        flex-direction: column-reverse;
+        overflow: hidden;
+        top: 105px;
+
+        .c-plp__collectionList {
+          overflow-y: scroll;
+          background-color: $color-black;
+          color: $color-white;
+
+          ul {
+            display: flex;
+            width: fit-content;
+            min-width: 100vw;
+
+            li {
+              width: 100%;
+              white-space: nowrap;
+              margin: 1rem;
+            }
+          }
+        }
+      }
 
       article {
         padding: 1rem;
