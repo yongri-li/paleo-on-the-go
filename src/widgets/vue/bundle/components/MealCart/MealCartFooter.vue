@@ -1,9 +1,12 @@
 <template>
   <div class="meal-cart__footer">
     <div class="meal-cart__box-total">
-      <div class="meal-cart__box-total--title">BOX TOTAL</div>
+      <div class="meal-cart__box-total--title">
+        BOX TOTAL
+      </div>
       <div class="meal-cart__box-total--amounts">
-        <div v-if="subtotal > 0" class="meal-cart__box-total--sub">
+        <div v-if="subtotal > 0"
+          class="meal-cart__box-total--sub">
           {{ subtotalFormat }}
         </div>
         <div class="meal-cart__box-total--final">
@@ -25,14 +28,18 @@
 </template>
 
 <script>
-import { formatPrice } from '../../utils'
-import { mapActions } from 'vuex'
+import { formatPrice } from '@shared/utils'
+import { mapActions, mapState } from 'vuex'
 import cButton from '@shared/components/core/cButton.vue'
 import { apiService } from '@shared/services'
 import { stillProcessingWarningPopup, removeReloadWarning } from '@shared/utils'
 
 export default {
   props: {
+    cart: {
+      type: Object,
+      required: true
+    },
     subtotal: {
       type: Number,
       required: true
@@ -79,6 +86,9 @@ export default {
     cButton
   },
   computed: {
+    ...mapState('cartdrawer', [
+      'cartItems'
+    ]),
     final() {
       const discount = this.sizeSelected.discount / 100
       const total = this.subtotal * (1 - discount) + this.cartAddOns
@@ -125,7 +135,8 @@ export default {
     }
   },
   methods: {
-    ...mapActions([
+    ...mapActions('cartdrawer',[
+      'setDataFromBox',
       'customerCreateSubscriptions',
       'customerDeleteSubscriptions',
       'customerDeleteOnetimes',
@@ -158,13 +169,21 @@ export default {
       removeReloadWarning()
       if (subscriptions) window.location = '/account#/shipments'
     },
-    nextStep() {
+    async nextStep() {
       const param = this.$route.params.box
-      if (param === 'subscription') {
+      if(param === 'subscription') {
         this.$router.push('/addons')
-      } else if (this.fromPortal && this.isCustomer) {
+      }
+      else if (this.fromPortal && this.isCustomer) {
         this.updateAddonsAndSubs()
-      } else {
+      }
+      else {
+        await this.setDataFromBox({
+          items: this.cart.items,
+          addons: this.cart.addons,
+          sizeSelected: this.sizeSelected
+        })
+        // console.log('finish and need to go to /cart')
         window.location = '/cart'
       }
     },
@@ -189,10 +208,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+
 .meal-cart {
+
   &__footer {
     box-shadow: 0px 4px 34px rgba(0, 0, 0, 0.1);
-    padding: 0.8rem 1rem;
+    padding: .8rem 1rem;
 
     @include media-tablet-up {
       padding: 0;
@@ -203,7 +224,7 @@ export default {
     @include flex($align: flex-end, $justify: space-between);
 
     @include media-tablet-up {
-      padding: 0.6rem 0.6rem 0;
+      padding: .6rem .6rem 0;
     }
 
     &--title {
@@ -222,7 +243,7 @@ export default {
     }
 
     &--sub {
-      color: #a7a5a6;
+      color: #A7A5A6;
       font-size: 1.1rem;
       margin-right: 0.3rem;
       text-decoration: line-through;
@@ -258,7 +279,9 @@ export default {
 
   .disable {
     pointer-events: none;
-    opacity: 0.6;
+    opacity: .6;
   }
+
 }
+
 </style>
