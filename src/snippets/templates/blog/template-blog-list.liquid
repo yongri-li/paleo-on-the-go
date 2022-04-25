@@ -26,7 +26,7 @@
             {%- endif -%}
             </a>
 
-            <p class="c-blogList_tag">Post <span>/ </span> 
+            <p class="c-blogList_tag">
             {%- for tag in article.tags -%}
                 {%- if tag contains 'primary:' -%}
                     {%- capture displayTag -%} {{ tag | slice: 9, 100 }} {%- endcapture -%}
