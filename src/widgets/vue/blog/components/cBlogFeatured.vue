@@ -1,0 +1,85 @@
+<template>
+	<article class="c-blogFeatured">
+		<section class="c-topHero__ctaWrap">
+			<div class="c-topHero__ctaWrap--inner">
+				<h3 class="post-title">Featured Post</h3>
+				<h1 class="c-h1">{{ !isAll && hasFeatured ? title : all_title }}</h1>
+				<p v-html="excerpt"></p>
+				<div class="u-spacer--md u-hideTabletDown"></div>
+				<a
+					:href="!isAll && hasFeatured ? article_url : all_article_url"
+					class="c-button c-button--isDefault c-button--isPrimary c-button--lrg"
+					>Read More</a
+				>
+			</div>
+		</section>
+		<section class="c-topHero__imgWrap" :style="bgImage"></section>
+	</article>
+</template>
+
+<script>
+export default {
+	name: 'Featured',
+	props: {
+		activeCategory: {
+			type: String
+		}
+	},
+	components: {},
+	data() {
+		return {
+			...window.Scoutside.blog.featured,
+			...window.Scoutside.blog.allFeatured
+		}
+	},
+	computed: {
+		isAll() {
+			return this.activeCategory === 'All' ? true : false
+		},
+		hasFeatured() {
+			return !!this.title
+		},
+		bgImage() {
+			const bgImg =
+				this.isAll || !this.hasFeatured
+					? `background-image: url(${this.all_image})`
+					: `background-image: url(${this.image})`
+			return bgImg
+		}
+	}
+}
+</script>
+
+<style lang="scss">
+.c-blogFeatured {
+	height: clamp(480px, 50vh, 600px);
+	display: flex;
+	background-color: $color-black;
+	color: $color-white;
+
+	.c-topHero__ctaWrap {
+		padding: 0;
+
+		&--inner {
+			padding: 3rem;
+
+			.post-title {
+				letter-spacing: 1px;
+				text-transform: uppercase;
+			}
+
+			.c-h1 {
+				color: $color-primary;
+			}
+		}
+	}
+
+	.c-topHero__imgWrap {
+		flex: 1;
+	}
+
+	@include media-mobile-down {
+		height: 100%;
+	}
+}
+</style>

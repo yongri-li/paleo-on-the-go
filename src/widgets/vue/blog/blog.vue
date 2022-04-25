@@ -1,67 +1,36 @@
 <template>
-	<article class="c-blogFeatured__main">
-		<section class="c-topHero__ctaWrap">
-			<div class="c-topHero__ctaWrap--inner">
-				<h3 class="post-title">Featured Post</h3>
-				<h1 class="c-h1">{{ title }}</h1>
-				<p v-html="excerpt"></p>
-				<div class="u-spacer--md u-hideTabletDown"></div>
-				<a :href="article_url" class="c-button c-button--isDefault c-button--isPrimary c-button--lrg"
-					>Read More</a
-				>
-			</div>
-		</section>
-		<section class="c-topHero__imgWrap" :style="bgImage"></section>
+	<article class="c-blogMain">
+		<cBlogFeatured :activeCategory="activeCategory" />
+		<cBlogCategories @setActiveCategory="activate" :activeCategory="activeCategory" />
 	</article>
 </template>
 
 <script>
+import cBlogFeatured from './components/cBlogFeatured.vue'
+import cBlogCategories from './components/cBlogCategories.vue'
+
 export default {
 	name: 'Blog',
-	components: {},
+	components: { cBlogFeatured, cBlogCategories },
 	data() {
 		return {
-			...window.Scoutside.blog
+			activeCategory: 'All',
+			currentUrl: window.location.pathname,
+			isCategory: window.location.pathname.includes('tagged')
 		}
 	},
-	computed: {
-		bgImage() {
-			return `background-image: url(${this.image})`
+	methods: {
+		activate(val) {
+			const newUrl = this.isCategory
+				? (this.currentUrl.split('/tagged')[0] += `/tagged/${val}`)
+				: `${this.currentUrl}/tagged/${val}`
+			window.location.pathname = newUrl
 		}
+	},
+	mounted() {
+		if (this.isCategory) this.activeCategory = this.currentUrl.split('/tagged/')[1]
 	}
 }
 </script>
 
-<style lang="scss">
-.c-blogFeatured__main {
-	height: clamp(480px, 50vh, 600px);
-	display: flex;
-	background-color: $color-black;
-	color: $color-white;
-
-	.c-topHero__ctaWrap {
-		padding: 0;
-
-		&--inner {
-			padding: 3rem;
-
-			.post-title {
-				letter-spacing: 1px;
-				text-transform: uppercase;
-			}
-
-			.c-h1 {
-				color: $color-primary;
-			}
-		}
-	}
-
-	.c-topHero__imgWrap {
-		flex: 1;
-	}
-
-	@include media-mobile-down {
-		height: 100%;
-	}
-}
-</style>
+<style lang="scss"></style>

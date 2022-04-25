@@ -1,4 +1,88 @@
+<script>
+  let allFeatured;
+  let categories = {};
+  let blogSettings = {{ section.settings | json }};
+  window.Scoutside.blog = {};
+
+  {% assign bloop = 0 %}
+  {% for block in section.blocks %}
+    categories['{{ block.type }}'] = categories['{{ block.type }}'] || []
+    categories['{{ block.type }}'].push({{ block.settings | json }})
+  {% endfor %}
+
+  {% if section.settings.all_featured != blank %}
+    {% assign all_featured = section.settings.all_featured %}
+  {% endif %}
+
+  {%- for blog in blogs -%}
+    {%- for article in blog.articles -%} 
+      {%- if article.url contains all_featured -%}             
+        allFeatured = {
+          all_author: `{{ article.author }}`,
+          all_excerpt: `{{ article.excerpt }}`,
+          all_image: `{{ article.image | img_url: 'master' }}`,
+          all_tags: `{{ article.tags }}`,
+          all_title: `{{ article.title }}`,
+          all_published: `{{ article.published_at | date: '%B %-d, %Y' }}`,
+          all_article_url: `{{ article.url }}`
+        };
+      {%- endif -%}
+    {%- endfor -%}  
+  {%- endfor -%} 
+
+  window.Scoutside.blog = categories
+  window.Scoutside.blog.heading = blogSettings.blog_heading
+  window.Scoutside.blog.allFeatured = allFeatured
+</script>
+
 <div class="c-blog">
   {%- render 'template-blog-featured' -%}
+  <v-blog id="v-blog" class="v-widget" data-vue-blog></v-blog>
   {%- render 'template-blog-list' -%}
 </div>
+
+<div>{{blog.title}}
+{%- for article in blog.articles -%} 
+  <div>{{article.title}}</div>
+{%- endfor -%} 
+</div>
+
+
+{{ 'widget-blog.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'widget-blog.js' | asset_url }}"></script>
+
+{% schema %}
+  {
+    "name": "Main Blog & Categories",
+    "max_blocks": 8,
+    "settings": [
+      {
+        "type": "header",
+        "content": "Main Blog"
+      },
+      {
+        "id": "blog_heading",
+        "type": "text",
+        "label": "Blog Page Heading"
+      },
+      {
+        "id": "all_featured",
+        "type": "article",
+        "label": "Main/All Featured"
+      }      
+    ],
+    "blocks": [
+      {
+        "type": "categories",
+        "name": "Category Tag Link",
+        "settings": [           
+          {
+            "id": "tag_link",
+            "type": "text",
+            "label": "Tags"
+          }        
+        ]
+      }
+    ]    
+  }
+{% endschema %}

@@ -181,7 +181,7 @@ export default {
 
     &--nav {
       position: sticky;
-      top: 140px;
+      top: 136px;
       flex-shrink: 0;
       z-index: $z-index-top;
 
@@ -196,7 +196,7 @@ export default {
         display: flex;
         align-items: center;
         grid-gap: 0.75rem;
-        margin-bottom: 2rem;
+        margin-bottom: 1.75rem;
 
         &__icon {
           opacity: 0.6;
