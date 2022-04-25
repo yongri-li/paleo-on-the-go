@@ -14,37 +14,30 @@
     {% assign all_featured = section.settings.all_featured %}
   {% endif %}
 
-  {%- for blog in blogs -%}
-    {%- for article in blog.articles -%} 
-      {%- if article.url contains all_featured -%}             
-        allFeatured = {
-          all_author: `{{ article.author }}`,
-          all_excerpt: `{{ article.excerpt }}`,
-          all_image: `{{ article.image | img_url: 'master' }}`,
-          all_tags: `{{ article.tags }}`,
-          all_title: `{{ article.title }}`,
-          all_published: `{{ article.published_at | date: '%B %-d, %Y' }}`,
-          all_article_url: `{{ article.url }}`
-        };
-      {%- endif -%}
-    {%- endfor -%}  
-  {%- endfor -%} 
+  {% assign mainBlog = blogs.news %}
+  {%- for article in mainBlog.articles -%} 
+    {%- if article.url contains all_featured -%}             
+      allFeatured = {
+        author: `{{ article.author }}`,
+        excerpt: `{{ article.excerpt }}`,
+        image: `{{ article.image | img_url: 'master' }}`,
+        tags: `{{ article.tags }}`,
+        title: `{{ article.title }}`,
+        published: `{{ article.published_at | date: '%B %-d, %Y' }}`,
+        article_url: `{{ article.url }}`
+      };
+    {%- endif -%}
+  {%- endfor -%}  
 
   window.Scoutside.blog = categories
   window.Scoutside.blog.heading = blogSettings.blog_heading
-  window.Scoutside.blog.allFeatured = allFeatured
+  window.Scoutside.blog.all_featured = allFeatured
 </script>
 
 <div class="c-blog">
   {%- render 'template-blog-featured' -%}
   <v-blog id="v-blog" class="v-widget" data-vue-blog></v-blog>
   {%- render 'template-blog-list' -%}
-</div>
-
-<div>{{blog.title}}
-{%- for article in blog.articles -%} 
-  <div>{{article.title}}</div>
-{%- endfor -%} 
 </div>
 
 

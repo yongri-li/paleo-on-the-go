@@ -3,11 +3,11 @@
 		<section class="c-topHero__ctaWrap">
 			<div class="c-topHero__ctaWrap--inner">
 				<h3 class="post-title">Featured Post</h3>
-				<h1 class="c-h1">{{ !isAll && hasFeatured ? title : all_title }}</h1>
-				<p v-html="excerpt"></p>
+				<h1 class="c-h1">{{ !isAll && hasFeatured ? featured.title : all_featured.title }}</h1>
+				<p v-html="!isAll && hasFeatured ? featured.excerpt : all_featured.excerpt"></p>
 				<div class="u-spacer--md u-hideTabletDown"></div>
 				<a
-					:href="!isAll && hasFeatured ? article_url : all_article_url"
+					:href="!isAll && hasFeatured ? featured.article_url : all_featured.article_url"
 					class="c-button c-button--isDefault c-button--isPrimary c-button--lrg"
 					>Read More</a
 				>
@@ -28,8 +28,7 @@ export default {
 	components: {},
 	data() {
 		return {
-			...window.Scoutside.blog.featured,
-			...window.Scoutside.blog.allFeatured
+			...window.Scoutside.blog
 		}
 	},
 	computed: {
@@ -37,13 +36,13 @@ export default {
 			return this.activeCategory === 'All' ? true : false
 		},
 		hasFeatured() {
-			return !!this.title
+			return !!this.featured
 		},
 		bgImage() {
 			const bgImg =
 				this.isAll || !this.hasFeatured
-					? `background-image: url(${this.all_image})`
-					: `background-image: url(${this.image})`
+					? `background-image: url(${this.all_featured.image})`
+					: `background-image: url(${this.featured.image})`
 			return bgImg
 		}
 	}
