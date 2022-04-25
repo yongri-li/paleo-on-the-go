@@ -255,6 +255,7 @@ export default {
   &__checkout.agree {
     opacity: 1;
     pointer-events: initial;
+    cursor: pointer;
   }
 
   &__msg {

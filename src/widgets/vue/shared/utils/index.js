@@ -3,6 +3,11 @@ export const formatPrice = cents => {
   return '$' + price
 }
 
+export const formatPriceToNumber = cents => {
+  const price = (cents / 100).toFixed(2)
+  return price
+}
+
 export const handleize = string => {
   return string.replace(/\W+/g, '-').toLowerCase()
 }
