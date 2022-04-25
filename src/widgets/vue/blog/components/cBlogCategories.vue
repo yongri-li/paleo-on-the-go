@@ -11,7 +11,7 @@
 			</span>
 		</div>
 		<h2 class="c-h2 c-blogCategories__subHead">{{ heading }}</h2>
-		<hr />
+		<hr class="o-containerLarge" />
 	</header>
 </template>
 
@@ -59,6 +59,10 @@ export default {
 	&__subHead {
 		max-width: 998px;
 		margin: 2rem auto;
+	}
+
+	hr {
+		margin-bottom: 2rem;
 	}
 }
 </style>

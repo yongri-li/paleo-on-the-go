@@ -1,4 +1,4 @@
-<!-- {{ 'theme-blog-list.css' | asset_url | stylesheet_tag }} -->
+{{ 'theme-blog-list.css' | asset_url | stylesheet_tag }}
 
 <ul class="c-blogList o-containerLarge">
 {%- paginate blog.articles by 9 -%}
@@ -16,7 +16,7 @@
         <li class="c-blogList_article">
             <a href="{{ article.url }}" class="c-blogList_image">
             {%- if article.image -%}
-                <img src="{{ article.image | img_url: '600x600' }}" alt="{{ article.title }}">
+                <img src="{{ article.image | img_url: '480x600' }}" alt="{{ article.title }}">
 
                 <noscript>
                     <p>

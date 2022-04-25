@@ -75,6 +75,7 @@ export default {
 
 	.c-topHero__imgWrap {
 		flex: 1;
+		background-position: center;
 	}
 
 	@include media-mobile-down {
