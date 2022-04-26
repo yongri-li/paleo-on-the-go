@@ -35,7 +35,7 @@ export default {
 	},
 	computed: {
 		openedCss() {
-			const height = this.categories.length * 64
+			const height = this.categories.length * 65
 			return [`height: ${height}px; padding-top: 84px`, 'transform: rotateZ(180deg)']
 		}
 	},

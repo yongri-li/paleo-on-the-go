@@ -152,31 +152,4 @@ export default {
     }
   }
 }
-
-/*
-.c-relatedMeals .c-relatedMeals__container .c-relatedMeals__control:hover {
-  background: #1f5940;
-}
-
-.c-relatedMeals .c-relatedMeals__container .c-relatedMeals__control svg path {
-  stroke: #fffefa;
-  fill: #fffefa;
-}*/
-
-/*@media only screen and (max-width: 767px) {
-  .tns-controls [data-controls='prev'] {
-    left: 10px;
-  }
-
-  .tns-controls [data-controls='next'] {
-    right: 10px;
-  }
-
-  .c-basketPage.c-mealsStep > .o-containerLarge {
-    overflow-y: auto;
-    height: 100vh;
-    padding-bottom: 300px;
-    margin-top: 41px;
-  }
-}*/
 </style>

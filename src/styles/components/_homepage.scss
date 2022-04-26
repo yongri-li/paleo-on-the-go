@@ -378,10 +378,10 @@ marquee span {
       padding: 1.25rem 0;
       font: 400 1.375rem 'Roboto', sans-serif;
       transition: 300ms;
+    }
 
-      &:hover {
-        background-color: $color-ecru;
-      }
+    .icon-chevron svg {
+      transition: transform 175ms;
     }
 
     .active .icon-closed,
@@ -391,6 +391,10 @@ marquee span {
 
     .active .icon-opened {
       display: block;
+    }
+
+    .active .icon-chevron svg {
+      transform: rotateZ(180deg);
     }
 
     .panel-answer {
