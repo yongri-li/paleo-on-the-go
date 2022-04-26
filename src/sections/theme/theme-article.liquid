@@ -1,0 +1,13 @@
+<script>
+
+  const articleContent = {
+    ...JSON.parse(JSON.stringify({{ article | json }}))
+  }
+
+  {% if article.id > 0 %}
+    articleContent['next_article'] = '{{ blog.next_article }}'
+    articleContent['previous_article'] = '{{blog.previous_article}}'
+  {% endif %}
+
+  window.Scoutside.article = articleContent
+</script>
