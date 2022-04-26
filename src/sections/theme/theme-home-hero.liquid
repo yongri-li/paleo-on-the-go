@@ -1,3 +1,11 @@
+{% assign itemz = section.blocks.size %}
+<style>
+  .marquee-wrapper .marquee-block {
+    --total-marquee-items: {{itemz}};
+    width: calc(300px * (var(--total-marquee-items)));
+  }
+</style>
+
 <article class="c-topHero js-homepage">
 
   <section class="c-topHero__ctaWrap">
@@ -16,22 +24,36 @@
 
 </article>
 
-<marquee class="marquee" scrollamount="12">
-  {% for block in section.blocks %}
-    <span>{{ block.settings.marquee_word }}</span>
-    <span class="circle-dot"></span>
-  {% endfor %}
-  {% for block in section.blocks %}
-    <span>{{ block.settings.marquee_word }}</span>
-    <span class="circle-dot"></span>
-  {% endfor %}
-</marquee>
-
-<script>
+<div class="marquee-wrapper marquee">
+  <div class="container">
+    <div class="marquee__block">
+      <div class="marquee__inner to-left">
+        <span>
+          {% for block in section.blocks %}
+            <div class="marquee__item">{{ block.settings.marquee_word }}
+            <span class="circle-dot"></span></div>            
+          {% endfor %}        
+        </span>
+        <span>
+          {% for block in section.blocks %}
+            <div class="marquee__item">{{ block.settings.marquee_word }}
+            <span class="circle-dot"></span></div>            
+          {% endfor %}
+        </span>   
+        <span>
+          {% for block in section.blocks %}
+            <div class="marquee__item">{{ block.settings.marquee_word }}
+            <span class="circle-dot"></span></div>            
+          {% endfor %}
+        </span>                 
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <script>
   const marquee = document.querySelector('.marquee')
   if(window.innerWidth < 992) marquee.setAttribute('scrollamount', 6, 0)
-</script>
-
+</script> -->
 
 {%- schema -%}
   {

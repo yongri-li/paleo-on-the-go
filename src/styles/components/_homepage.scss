@@ -46,18 +46,67 @@
   background-size: cover;
 }
 
-marquee {
+// HOMEPAGE MARQUEE SECTION ***
+.marquee {
   position: absolute;
+  width: 100%;
   bottom: 0;
   background-color: #8eceab;
+  text-align: center;
   padding: 0.75rem 0;
+
+  .container {
+    overflow: hidden;
+  }
+
+  &__item {
+    display: inline-block;
+    width: fit-content;
+    height: auto;
+    margin: 0;
+    font: 700 17px 'Sumo', serif;
+    text-transform: uppercase;
+    transition: all 0.2s ease-out;
+  }
+
+  &__inner {
+    display: block;
+    width: 300%;
+    position: absolute;
+
+    & > span {
+      float: left;
+      width: fit-content;
+    }
+  }
+
+  &__block {
+    height: 1rem;
+    width: 1200px;
+    box-sizing: border-box;
+    position: relative;
+  }
+}
+.marquee__inner.to-left {
+  animation: marqueeLeft 25s linear infinite;
 }
 
-marquee span {
-  font: 700 17px 'Sumo', serif;
-  text-transform: uppercase;
+@keyframes marqueeLeft {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: -100%;
+  }
 }
-
+@keyframes marqueeRight {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 0;
+  }
+}
 .circle-dot {
   display: inline-block;
   width: 0.5rem;
@@ -65,7 +114,7 @@ marquee span {
   vertical-align: middle;
   background: #231f20;
   border-radius: 50%;
-  margin: 0px 2rem;
+  margin: -3px 2rem 0;
 }
 
 // HERO SECTION ***
