@@ -1,0 +1,14 @@
+<script>
+  window.Scoutside = window.Scoutside || {};
+  window.Scoutside.article = window.Scoutside.article || {};
+</script>
+
+{% section 'theme-article' %}
+
+<v-article
+  id="v-article"
+  class="v-widget"
+> </v-article>
+
+{{ 'widget-article.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'widget-article.js' | asset_url }}"></script>
