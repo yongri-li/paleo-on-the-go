@@ -1,6 +1,9 @@
 <template>
 	<header class="c-blogCategories">
-		<div class="c-blogCategories__inner">
+		<button class="c-blogCategories__filter u-hideTabletUp" @click="toggleFilters">
+			Filter by Category <span>&#9662;</span>
+		</button>
+		<div class="c-blogCategories__inner" :style="filterOpen && openedCss">
 			<span
 				v-for="category in categories"
 				:category="category.tag_link"
@@ -11,7 +14,7 @@
 			</span>
 		</div>
 		<h2 class="c-h2 c-blogCategories__subHead">{{ heading }}</h2>
-		<hr class="o-containerLarge" />
+		<hr class="o-containerLarge u-hideMobileDown" />
 	</header>
 </template>
 
@@ -26,13 +29,23 @@ export default {
 	components: {},
 	data() {
 		return {
-			...window.Scoutside.blog
+			...window.Scoutside.blog,
+			filterOpen: false
+		}
+	},
+	computed: {
+		openedCss() {
+			const height = this.categories.length * 64
+			return `height: ${height}px; padding-top: 58px`
 		}
 	},
 	methods: {
 		categorySelect(e) {
 			const category = e.target.getAttribute('category')
 			this.$emit('setActiveCategory', category)
+		},
+		toggleFilters() {
+			this.filterOpen = !this.filterOpen
 		}
 	}
 }
@@ -48,21 +61,64 @@ export default {
 		align-items: center;
 		justify-content: center;
 		grid-gap: clamp(1rem, 4vw, 4rem);
-		padding: 1.5rem 4vw;
+		padding: 1.5rem 4vw 0;
+		overflow-y: scroll;
 
 		span {
-			font-size: 1rem;
+			border-bottom: 2px solid $color-ecru;
 			cursor: pointer;
+			font-size: 1rem;
+			padding-bottom: 1.25rem;
+		}
+
+		span.active {
+			border-bottom: 3px solid $color-black;
 		}
 	}
 
 	&__subHead {
 		max-width: 998px;
-		margin: 2rem auto;
+		margin: 2.5rem auto;
 	}
 
 	hr {
 		margin-bottom: 2rem;
+	}
+
+	@include media-mobile-down {
+		&__inner {
+			flex-direction: column;
+			height: 66px;
+			transition: all 200ms;
+
+			span {
+				padding-bottom: 0.5rem;
+				margin-bottom: 0.75rem;
+			}
+		}
+
+		&__filter {
+			position: absolute;
+			left: 0;
+			width: 100%;
+			height: 66px;
+			border: none;
+			background-color: $color-ecru;
+			font-family: $font-body;
+			font-size: 1rem;
+
+			span {
+				position: absolute;
+				right: 1.25rem;
+				font-size: 1.5rem;
+				line-height: 0.85;
+				opacity: 0.6;
+			}
+		}
+
+		&__subHead {
+			padding: 0 1rem;
+		}
 	}
 }
 </style>

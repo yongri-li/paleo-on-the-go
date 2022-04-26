@@ -21,6 +21,11 @@ export default {
 	},
 	methods: {
 		activate(val) {
+			console.log(val)
+			if (val === 'All') {
+				window.location.pathname = '/blogs/news'
+				return
+			}
 			const newUrl = this.isCategory
 				? (this.currentUrl.split('/tagged')[0] += `/tagged/${val}`)
 				: `${this.currentUrl}/tagged/${val}`

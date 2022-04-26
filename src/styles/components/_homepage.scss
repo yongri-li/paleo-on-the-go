@@ -84,12 +84,8 @@ marquee span {
 
     h2 {
       margin: 0 1rem;
-      overflow: hidden;
       max-width: clamp(100px, 20ch, 51vw);
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      -webkit-line-clamp: 1;
-      -webkit-box-orient: vertical;
+      @include text-line-clamp($lines: 1);
     }
   }
 }

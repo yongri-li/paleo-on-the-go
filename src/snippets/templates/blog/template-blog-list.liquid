@@ -1,99 +1,100 @@
 {{ 'theme-blog-list.css' | asset_url | stylesheet_tag }} 
 
-<ul class="c-blogList o-containerLarge">
+<ul class="c-blogList">
 {%- paginate blog.articles by 9 -%}
 
 {%- for article in blog.articles -%}
-    {%- if article.tags.size > 0 -%}
-        {%- for tag in article.tags -%}
-            {%- if tag contains 'Featured' -%}
-                {%- capture featuredTag -%} {{ tag }} {%- endcapture -%}
-            {%- endif -%}
-        {%- endfor -%}
-    {%- endif -%}
+  {%- if article.tags.size > 0 -%}
+    {%- for tag in article.tags -%}
+      {%- if tag contains 'Featured' -%}
+        {%- capture featuredTag -%} {{ tag }} {%- endcapture -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
 
-    {%- unless featuredTag contains 'AllFeatured' -%}
-        <li class="c-blogList_article">
-            <a href="{{ article.url }}" class="c-blogList_image">
-            {%- if article.image -%}
-                <img src="{{ article.image | img_url: '480x600' }}" alt="{{ article.title }}">
-
-                <noscript>
-                    <p>
-                    {{ article | img_url: '455x300', scale: 2 | img_tag: article.title }}
-                    </p>
-                </noscript>
-            {%- endif -%}
-            </a>
-
-            <p class="c-blogList_tag">
-            {%- for tag in article.tags -%}
-                {%- if tag contains 'primary:' -%}
-                    {%- capture displayTag -%} {{ tag | slice: 9, 100 }} {%- endcapture -%}
-                    <a href="{{ blog.url }}/tagged/{{ displayTag | handle }}">{{ displayTag }}</a>
-                {%- endif -%}
-            {%- endfor -%}
+  {%- unless featuredTag contains 'AllFeatured' -%}
+      <li class="c-blogList_article">
+        <a href="{{ article.url }}" class="c-blogList_image">
+        {%- if article.image -%}
+          <img src="{{ article.image | img_url: '480x600' }}" alt="{{ article.title }}">
+          <noscript>
+            <p>
+            {{ article | img_url: '455x300', scale: 2 | img_tag: article.title }}
             </p>
+          </noscript>
+        {%- endif -%}
+        </a>
 
-            <h2 class="c-blogList_title"><a href="{{ article.url }}">{{ article.title }}</a></h2>
+        <p class="c-blogList_tag">
+        {%- for tag in article.tags -%}
+          {%- if tag contains 'primary:' -%}
+            {%- capture displayTag -%} {{ tag | slice: 9, 100 }} {%- endcapture -%}
+            <a href="{{ blog.url }}/tagged/{{ displayTag | handle }}">{{ displayTag }}</a>
+          {%- endif -%}
+        {%- endfor -%}
+        </p>
 
-            <p class="c-blogList_read-more"><a href="{{ article.url }}" aria-label="Read the Article: {{ article.title }}">Read the Article</a></p>
-        </li>
-    {%- endunless -%}
+        <a href="{{ article.url }}">
+          <h2 class="c-blogList_title">{{ article.title }}</h2> 
+          <p class="c-blogList_text">{{ article.excerpt }}</p> 
+          <span>{%- render 'icon-blog' -%}</span>  
+        </a>         
+      </li>
+  {%- endunless -%}
 {%- endfor -%}
 </ul>
 
 {%- if paginate.pages > 1 -%}
-    <nav role="navigation">
-    <ol class="c-blogList_pagination o-containerLarge">
-        {%- if paginate.previous-%}
-        <li class="c-blogList_pagination-arrow">
-            <a href="{{ paginate.previous.url }}">
-            <span aria-hidden="true">{%- render 'icon-left-arrow' -%}</span>
-            <span class="visually-hidden">Previous page</span>
-            </a>
-        </li>
-        {%- else -%}
-        <li class="disabled c-blogList_pagination-arrow">
-            <span aria-hidden="true">{%- render 'icon-left-arrow' -%}</span>
-            <span class="visually-hidden">Previous page</span>
-        </li>
-        {%- endif -%}
+  <nav role="navigation">
+  <ol class="c-blogList_pagination o-containerLarge">
+    {%- if paginate.previous-%}
+    <li class="c-blogList_pagination-arrow">
+        <a href="{{ paginate.previous.url }}">
+        <span aria-hidden="true">{%- render 'icon-left-arrow' -%}</span>
+        <span class="visually-hidden">Previous page</span>
+        </a>
+    </li>
+    {%- else -%}
+    <li class="disabled c-blogList_pagination-arrow">
+        <span aria-hidden="true">{%- render 'icon-left-arrow' -%}</span>
+        <span class="visually-hidden">Previous page</span>
+    </li>
+    {%- endif -%}
 
-        {%- for part in paginate.parts -%}
-        {%- if part.is_link -%}
-            <li class="c-blogList_pagination-page">
-            <a href="{{ part.url }}">
-                <span class="visually-hidden">page</span> {{ part.title }}
-            </a>
-            </li>
+    {%- for part in paginate.parts -%}
+    {%- if part.is_link -%}
+        <li class="c-blogList_pagination-page">
+        <a href="{{ part.url }}">
+            <span class="visually-hidden">page</span> {{ part.title }}
+        </a>
+        </li>
+    {%- else -%}
+        {%- if part.title == paginate.current_page -%}
+        <li class="active c-blogList_pagination-page" aria-current="page">
+            <span class="visually-hidden">page</span> {{ part.title }}
+        </li>
         {%- else -%}
-            {%- if part.title == paginate.current_page -%}
-            <li class="active c-blogList_pagination-page" aria-current="page">
-                <span class="visually-hidden">page</span> {{ part.title }}
-            </li>
-            {%- else -%}
-            <li class="c-blogList_pagination-page">
-                <span class="visually-hidden">page</span> {{ part.title }}
-            </li>
-            {%- endif -%}
+        <li class="c-blogList_pagination-page">
+            <span class="visually-hidden">page</span> {{ part.title }}
+        </li>
         {%- endif -%}
-        {%- endfor -%}
+    {%- endif -%}
+    {%- endfor -%}
 
-        {%- if paginate.next -%}
-        <li class="c-blogList_pagination-arrow">
-            <a href="{{ paginate.next.url }}">
-            <span class="visually-hidden">Next page</span>
-            <span aria-hidden="true">{%- render 'icon-right-arrow' -%}</span>
-            </a>
-        </li>
-        {%- else -%}
-        <li class="disabled c-blogList_pagination-arrow">
-            <span class="visually-hidden">Next page</span>
-            <span aria-hidden="true">{%- render 'icon-right-arrow' -%}</span>
-        </li>
-        {%- endif -%}
-    </ol>
-    </nav>
+    {%- if paginate.next -%}
+    <li class="c-blogList_pagination-arrow">
+        <a href="{{ paginate.next.url }}">
+        <span class="visually-hidden">Next page</span>
+        <span aria-hidden="true">{%- render 'icon-right-arrow' -%}</span>
+        </a>
+    </li>
+    {%- else -%}
+    <li class="disabled c-blogList_pagination-arrow">
+        <span class="visually-hidden">Next page</span>
+        <span aria-hidden="true">{%- render 'icon-right-arrow' -%}</span>
+    </li>
+    {%- endif -%}
+  </ol>
+  </nav>
 {%- endif -%}
 {%- endpaginate -%}

@@ -79,7 +79,26 @@ export default {
 	}
 
 	@include media-mobile-down {
-		height: 100%;
+		height: auto;
+		min-height: 100%;
+		flex-direction: column-reverse;
+
+		.c-topHero__ctaWrap {
+			justify-content: flex-start;
+
+			&--inner {
+				padding: 2rem 1rem 3rem;
+				text-align: left;
+
+				p {
+					padding: 0;
+				}
+			}
+		}
+
+		.c-topHero__imgWrap {
+			min-height: 40vh;
+		}
 	}
 }
 </style>
