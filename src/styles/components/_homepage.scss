@@ -46,18 +46,67 @@
   background-size: cover;
 }
 
-marquee {
+// HOMEPAGE MARQUEE SECTION ***
+.marquee {
   position: absolute;
+  width: 100%;
   bottom: 0;
   background-color: #8eceab;
+  text-align: center;
   padding: 0.75rem 0;
+
+  .container {
+    overflow: hidden;
+  }
+
+  &__item {
+    display: inline-block;
+    width: fit-content;
+    height: auto;
+    margin: 0;
+    font: 700 17px 'Sumo', serif;
+    text-transform: uppercase;
+    transition: all 0.2s ease-out;
+  }
+
+  &__inner {
+    display: block;
+    width: 300%;
+    position: absolute;
+
+    & > span {
+      float: left;
+      width: fit-content;
+    }
+  }
+
+  &__block {
+    height: 1rem;
+    width: 1200px;
+    box-sizing: border-box;
+    position: relative;
+  }
+}
+.marquee__inner.to-left {
+  animation: marqueeLeft 25s linear infinite;
 }
 
-marquee span {
-  font: 700 17px 'Sumo', serif;
-  text-transform: uppercase;
+@keyframes marqueeLeft {
+  0% {
+    left: 0;
+  }
+  100% {
+    left: -100%;
+  }
 }
-
+@keyframes marqueeRight {
+  0% {
+    left: -100%;
+  }
+  100% {
+    left: 0;
+  }
+}
 .circle-dot {
   display: inline-block;
   width: 0.5rem;
@@ -65,7 +114,7 @@ marquee span {
   vertical-align: middle;
   background: #231f20;
   border-radius: 50%;
-  margin: 0px 2rem;
+  margin: -3px 2rem 0;
 }
 
 // HERO SECTION ***
@@ -84,12 +133,8 @@ marquee span {
 
     h2 {
       margin: 0 1rem;
-      overflow: hidden;
       max-width: clamp(100px, 20ch, 51vw);
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      -webkit-line-clamp: 1;
-      -webkit-box-orient: vertical;
+      @include text-line-clamp($lines: 1);
     }
   }
 }
@@ -109,6 +154,10 @@ marquee span {
 
     .c-topHero__imgWrap {
       min-height: 260px;
+    }
+
+    &.c-plp__hero {
+      margin-bottom: 0;
     }
   }
 }
@@ -169,7 +218,7 @@ marquee span {
       width: 100vw;
 
       .c-plansGrid__plan {
-        padding-bottom: 1rem;
+        padding-bottom: 1.5rem;
 
         button {
           display: none;
@@ -224,6 +273,12 @@ marquee span {
         font-weight: 600;
       }
 
+      &--savings.u-hideTabletUp {
+        font-weight: 500;
+        font-size: clamp(12px, 3.5vw, 16px);
+        padding: 0.575rem 1.1rem;
+      }
+
       &--flag {
         position: absolute;
         background: $color-black;
@@ -254,11 +309,22 @@ marquee span {
     right: 0;
     font-family: 'Sumo', serif;
     font-size: 1.5rem;
+
+    @include media-mobile-down {
+      margin-top: 1rem;
+      display: block;
+    }
   }
 
   .htmlChevron {
     font-family: system-ui;
     font-size: 1.75rem;
+  }
+
+  .highlight-icon.u-hideTabletUp {
+    position: absolute;
+    top: -3rem;
+    right: -0.5rem;
   }
 }
 
@@ -382,10 +448,14 @@ marquee span {
       padding: 1.25rem 0;
       font: 400 1.375rem 'Roboto', sans-serif;
       transition: 300ms;
+    }
 
-      &:hover {
-        background-color: $color-ecru;
-      }
+    button[data-index='0'] {
+      border-top: 1px solid $color-black;
+    }
+
+    .icon-chevron svg {
+      transition: transform 175ms;
     }
 
     .active .icon-closed,
@@ -395,6 +465,10 @@ marquee span {
 
     .active .icon-opened {
       display: block;
+    }
+
+    .active .icon-chevron svg {
+      transform: rotateZ(180deg);
     }
 
     .panel-answer {

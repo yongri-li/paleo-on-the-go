@@ -7,7 +7,13 @@
 		<c-dropdownFull :items="items" :isOpen="isOpen" @getFilters="addFilter" @closeDropdown="trigCloseDrop" />
 		<section class="c-plp__collectionList">
 			<ul>
-				<li v-for="(collection, i) in collections" @click="$emit('collection', i)">{{ collection.title }}</li>
+				<li
+					v-for="(collection, i) in collections"
+					@click="collectionSelect(i)"
+					:class="selectedCollection === i && 'selected'"
+				>
+					{{ collection.title }}
+				</li>
 			</ul>
 		</section>
 	</nav>
@@ -37,7 +43,8 @@ export default {
 	data() {
 		return {
 			filters: [],
-			isFilterOpen: false
+			isFilterOpen: false,
+			selectedCollection: -1
 		}
 	},
 	components: {
@@ -48,6 +55,10 @@ export default {
 		addFilter(filters) {
 			console.log('asad', filters)
 			this.$emit('getFilters', filters)
+		},
+		collectionSelect(index) {
+			this.$emit('collection', index)
+			this.selectedCollection = index
 		},
 		trigCloseDrop() {
 			this.isFilterOpen = false

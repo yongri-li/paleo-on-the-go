@@ -2,14 +2,14 @@
   <div class="pdp__faq--wrap">
     <c-faqAccordion v-if="product_faq" :content="product_faq" />
     <c-bottomHero :content="content[0]" />
-    <c-BottomBanner :content="content[1]" />
+    <!--     <c-BottomBanner :content="content[1]" /> -->
   </div>
 </template>
 
 <script>
 import cFaqAccordion from '@shared/components/core/cFaqAccordion.vue'
 import cBottomHero from '@shared/components/core/cBottomHero.vue'
-import cBottomBanner from '@shared/components/core/cBottomBanner.vue'
+// import cBottomBanner from '@shared/components/core/cBottomBanner.vue'
 
 export default {
   data: () => ({
@@ -17,8 +17,8 @@ export default {
   }),
   components: {
     cFaqAccordion,
-    cBottomHero,
-    cBottomBanner
+    cBottomHero
+    // cBottomBanner
   },
   computed: {
     content() {

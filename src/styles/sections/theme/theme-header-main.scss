@@ -72,9 +72,10 @@
 
 .c-headerMain__secondary {
   .c-headerMain__account,
-  button {
+  button,
+  .c-button--isHollow {
     // padding: 1rem 0;
-    padding: 0.5rem;
+    padding: 0.85rem;
     margin-left: 0.5rem;
   }
 

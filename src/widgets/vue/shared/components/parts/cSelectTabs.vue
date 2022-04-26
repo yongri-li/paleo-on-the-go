@@ -93,12 +93,9 @@ export default {
 		padding: 1.5rem 0;
 
 		article {
-			display: -webkit-box;
-			-webkit-line-clamp: 8;
-			-webkit-box-orient: vertical;
+			@include text-line-clamp($lines: 8);
 			line-height: 1.5;
 			opacity: 0;
-			overflow: hidden;
 			transition: opacity 175ms;
 		}
 

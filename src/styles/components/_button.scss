@@ -27,14 +27,20 @@
   @include media-tablet-up {
     max-width: 270px;
   }
+  @include media-mobile-down {
+    &--fixWidthMd {
+      float: left;
+      max-width: 240px;
+    }
+  }
 }
 
 .c-button--isDefault,
 .c-button--isHollow {
-  padding: 18px 40px;
+  padding: 1rem 40px;
   text-transform: capitalize;
   border-radius: none;
-  min-width: 200px;
+  min-width: 224px;
   .c-form--isNarrow & {
     width: 100%;
     max-width: 400px;

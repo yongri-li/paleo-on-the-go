@@ -35,7 +35,6 @@
         </div>
       </article>
     </section>
-    <c-BottomBanner :content="content[1]" />
   </div>
 </template>
 
@@ -43,7 +42,6 @@
 import { formatPrice } from '../utils'
 import cProductCard from '@shared/components/parts/cProductCard.vue'
 import cPageHero from '@shared/components/parts/cPageHero.vue'
-import cBottomBanner from '@shared/components/core/cBottomBanner.vue'
 import cFilterNav from '@shared/components/core/cFilterNav.vue'
 import cSvg from '@shared/components/core/cSvg.vue'
 
@@ -59,7 +57,6 @@ export default {
   components: {
     cPageHero,
     cProductCard,
-    cBottomBanner,
     cFilterNav,
     cSvg
   },
@@ -181,13 +178,19 @@ export default {
 
     &--nav {
       position: sticky;
-      top: 140px;
+      top: 136px;
       flex-shrink: 0;
       z-index: $z-index-top;
 
       li {
         cursor: pointer;
         margin: 1rem 0;
+        transition: all 115ms;
+
+        &.selected {
+          font-weight: 600;
+          text-decoration: underline;
+        }
       }
 
       .trigger-filters {
@@ -196,7 +199,7 @@ export default {
         display: flex;
         align-items: center;
         grid-gap: 0.75rem;
-        margin-bottom: 2rem;
+        margin-bottom: 1.75rem;
 
         &__icon {
           opacity: 0.6;

@@ -1,5 +1,8 @@
 <template>
-  <div class="pitem">
+  <div
+    class="pitem"
+    :class="{ 'u-hide': product.hide }"
+  >
     <div class="pitem__colum product">
       <div class="pitem__figure">
         <img

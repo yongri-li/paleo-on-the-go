@@ -2,7 +2,10 @@ import { apiService } from '@shared/services'
 
 import {
   ADD_BOX_TO_CART,
-  SET_SIZE_SELECTED
+  SET_SIZE_SELECTED,
+  CREATE_ROUTE_PROTECTION_PRODUCT,
+  REMOVE_ROUTE_PROTECTION_TO_CART,
+  ADD_ROUTE_PROTECTION_TO_CART
 } from './_mutations-type'
 
 export default {
@@ -78,5 +81,33 @@ export default {
     })
     const { charges, onetimes, error } = data
     return { onetimes, error }
+  },
+  async setRouteProduct({ commit }) {
+    const response = await fetch('/products/routeins.js')
+    const routeProduct = await response.json()
+    commit(CREATE_ROUTE_PROTECTION_PRODUCT, { routeProduct })
+    return routeProduct
+  },
+  async addRouteProduct({ commit }, { routeProduct, variant }) {
+    // Remove some product we have before
+    commit(REMOVE_ROUTE_PROTECTION_TO_CART)
+
+    // create routeProduct to add
+    routeProduct = {
+      ...routeProduct,
+      variants: [variant],
+      hide: true,
+      order_type: 'general',
+      quantity: 1,
+      price: variant.price,
+      route_protection: true
+    }
+
+    // add product
+    commit(ADD_ROUTE_PROTECTION_TO_CART, { routeProduct })
+
+  },
+  removeRouteProductToCart({ commit }) {
+    commit(REMOVE_ROUTE_PROTECTION_TO_CART)
   }
 }

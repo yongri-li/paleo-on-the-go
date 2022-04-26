@@ -1,0 +1,285 @@
+@import "_main.scss";
+
+.pw-route-protection {
+  padding: 24px 0px;
+  text-align: left;
+  user-select: none;
+  display: flex;
+
+  &.desktop-align-left {
+    justify-content: flex-start;
+  }
+
+  &.desktop-align-center {
+    justify-content: center;
+  }
+
+  &.desktop-align-right {
+    justify-content: flex-end;
+  }
+
+  @media only screen and (max-width: 768px) {
+    justify-content: center;
+  }
+
+  .pw-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    @media screen and (min-width: 600px) {
+      max-width: 380px;
+      overflow-x: hidden;
+    }
+
+    @media screen and (min-width: 768px) {
+      max-width: 380px;
+      overflow-x: hidden;
+    }
+  }
+
+  .pw-content-wrapper {
+    display: flex;
+    align-items: center;
+  }
+
+  .pw-logo {
+    display: flex;
+    cursor: pointer;
+  }
+
+  .pw-widget {
+    display: flex;
+    justify-content: space-between;
+    background: transparent;
+    align-items: center;
+    letter-spacing: normal;
+    text-transform: none;
+
+    @media screen and (min-width: 0px) and (max-width: 279px) {
+      display: block;
+      margin-right: 10px;
+    }
+  }
+
+  .pw-learn-more {
+    font-family: $font-family-primary;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 11px;
+    line-height: 11px;
+    text-decoration-line: underline;
+    color: $color-gray2;
+    cursor: pointer;
+  }
+
+  .pw-content {
+    margin: 0 10px 0 10px;
+    display: flex;
+    flex-direction: column;
+
+    @media screen and (min-width: 0px) and (max-width: 279px) {
+      max-width: 135px;
+    }
+
+    .pw-title {
+      font-family: $font-family-primary;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 14px;
+      line-height: 21px;
+      color: $color-black1;
+      display: inline-flex;
+    }
+
+    .pw-subtitle {
+      font-family: $font-family-primary;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 16px;
+      color: $color-black1;
+
+      .pw-learn-more {
+        @media screen and (min-width: 280px) {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .pw-toggle-wrapper {
+    text-align: right;
+    @media screen and (min-width: 0px) and (max-width: 279px) {
+      display: flex;
+      place-content: space-between;
+      margin-top: 7px;
+      margin-left: 45px;
+    }
+
+    .pw-price {
+      font-family: $font-family-primary;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 18px;
+      color: $color-gray2;
+      padding: 2px;
+      margin: 0px !important;
+    }
+
+    .pw-switch {
+      display: flex;
+      position: relative;
+      cursor: pointer;
+      height: 24px;
+    }
+
+    .pw-free-toggle {
+      background: -webkit-linear-gradient(
+        311.53deg,
+        #2bffff 0%,
+        #28b8e3 47.33%,
+        #265f7b 94.66%
+      );
+      background-clip: text;
+      background-size: 100%;
+      background-repeat: repeat;
+
+      /* Use the text as a mask for the background. */
+      /* This will show the gradient as a text color rather than element bg. */
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      -moz-background-clip: text;
+      -moz-text-fill-color: transparent;
+
+      font-family: $font-family-primary;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 13px;
+      line-height: 20px;
+      height: 21px;
+      width: 30px;
+      border-radius: 50px;
+      text-align: center;
+
+      display: table-cell;
+      vertical-align: middle;
+    }
+
+    .pw-merchant-paid-price {
+      font-family: $font-family-primary;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 18px;
+      color: $color-red1;
+      text-decoration: line-through;
+    }
+
+    .pw-toggle {
+      font-family: $font-family-primary;
+      font-style: normal;
+      font-weight: 600;
+      font-size: 13px;
+      line-height: 20px;
+      color: $color-blue1;
+      display: inline-flex;
+      align-items: center;
+
+      svg {
+        width: 10px;
+      }
+    }
+  }
+  .pw-route-logo {
+    height: 17px !important;
+    width: 17px !important;
+  }
+
+  .pw-border {
+    @media screen and (min-width: 0px) and (max-width: 279px) {
+      border-top: 1px solid $color-gray6;
+      margin-top: 8px;
+      margin-right: 10px;
+    }
+
+    @media screen and (min-width: 380px) and (max-width: 679px) {
+      border-top: 1px solid $color-gray6;
+      margin-top: 8px;
+    }
+  }
+
+  .pw-trademark {
+    margin-top: 15px;
+    display: flex;
+    height: 24px;
+    align-items: center;
+
+    .pw-learn-more {
+      margin-right: auto;
+
+      @media screen and (min-width: 0px) and (max-width: 279px) {
+        display: none;
+      }
+    }
+
+    .infobox {
+      background: $color-white1;
+      border-radius: 60px;
+      padding: 3px 12px 3px 14px;
+      cursor: pointer;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      letter-spacing: normal;
+
+      span {
+        letter-spacing: normal;
+        text-transform: none;
+      }
+
+      b {
+        font-weight: bold;
+      }
+
+      @media screen and (min-width: 0px) and (max-width: 279px) {
+        margin-right: 10px;
+      }
+
+      color: $color-black1;
+      font-family: $font-family-primary;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 12px;
+      line-height: 16px;
+
+      img {
+        margin-left: 6px;
+      }
+    }
+  }
+}
+
+.dark-ui {
+  .pw-title {
+    color: $color-white !important;
+  }
+
+  .pw-subtitle {
+    color: $color-gray4 !important;
+  }
+
+  .pw-price {
+    color: $color-gray6 !important;
+  }
+
+  .pw-trademark {
+    .infobox {
+      background: $color-black1;
+      color: $color-white !important;
+      font-family: $font-family-primary;
+    }
+  }
+}

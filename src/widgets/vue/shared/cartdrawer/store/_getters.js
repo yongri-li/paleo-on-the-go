@@ -31,5 +31,14 @@ export default {
       final += price * quantity
     })
     return final
+  },
+  routeProductInCart: (state) => {
+    return state.cartItems.general.find(item => item.route_protection)
+  },
+  getSubTotalPricesWithoutRoute: (state, getters) => {
+    const boxPrice = getters.getBoxPrices.final
+    const generalPrice = getters.getGeneralPrices
+    const routePrice = getters.routeProductInCart ? getters.routeProductInCart.price : 0
+    return boxPrice + generalPrice - routePrice
   }
 }

@@ -1,15 +1,18 @@
 <template>
   <div class="summary">
     <summary-subtotal />
+    <summary-route />
   </div>
 </template>
 
 <script>
 import SummarySubtotal from './SummarySubtotal.vue'
+import SummaryRoute from './SummaryRoute.vue'
 
 export default {
   components: {
-    SummarySubtotal
+    SummarySubtotal,
+    SummaryRoute
   }
 }
 </script>

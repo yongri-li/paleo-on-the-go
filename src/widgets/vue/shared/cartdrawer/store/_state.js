@@ -3,7 +3,8 @@ const state = {
     box: [],
     general: []
   },
-  sizeSelected: {}
+  sizeSelected: {},
+  routeProduct: {}
 }
 
 export default () => ({ ...state })

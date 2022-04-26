@@ -36,7 +36,12 @@
             <img src="{{ block.settings.image | img_url: 'master' }}" alt="">
             <h2 class="c-h2">{{ boxSizes[forloop.index0] }} Items</h2>
             <div>
-              <span class="c-plansGrid__plan--savings">{{boxSizes[forloop.index0]}}% Savings</span>
+              <span class="c-plansGrid__plan--savings u-hideMobileDown">
+                {{boxSizes[forloop.index0]}}% Savings
+              </span>
+              <span class="c-plansGrid__plan--savings u-hideTabletUp">
+                Subscribe & Save {{boxSizes[forloop.index0]}}%
+              </span>
             </div>
             <button class="c-button c-button--isDefault c-button--isPrimary" data-get-started data-boxsize="{{boxSizes[forloop.index0]}}">
               {{block.settings.button}}
