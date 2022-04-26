@@ -16,7 +16,7 @@
           <section class="c-homeFaqs__item">
             <button data-index="{{ forloop.index0 }}">
               <h2 class="c-h2">{{block.settings.menu_title}}</h2>
-              <span class="icon-chevron">{% render 'icon-chevron-circle' %}</span>
+              <span class="icon-chevron ">{% render 'icon-chevron-circle' %}</span>
             </button>
             <div class="panel-answer">
               <p>{{block.settings.menu_body}}</p>
@@ -362,6 +362,12 @@
     <a href="/collections/all">View Full Menu <span class="htmlChevron">&rsaquo;&rsaquo;</span></a>
   </span>
 </main>
+
+
+<script>
+  const firstMenu = document.querySelector("button[data-index='0']")
+  setTimeout(()=> firstMenu.click(), 101)
+</script>
 
 
 {% schema %}
