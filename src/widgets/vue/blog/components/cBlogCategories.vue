@@ -1,9 +1,9 @@
 <template>
 	<header class="c-blogCategories">
 		<button class="c-blogCategories__filter u-hideTabletUp" @click="toggleFilters">
-			Filter by Category <span>&#9662;</span>
+			Filter by Category <span :style="filterOpen && openedCss[1]">&#9662;</span>
 		</button>
-		<div class="c-blogCategories__inner" :style="filterOpen && openedCss">
+		<div class="c-blogCategories__inner" :style="filterOpen && openedCss[0]">
 			<span
 				v-for="category in categories"
 				:category="category.tag_link"
@@ -36,7 +36,7 @@ export default {
 	computed: {
 		openedCss() {
 			const height = this.categories.length * 64
-			return `height: ${height}px; padding-top: 58px`
+			return [`height: ${height}px; padding-top: 84px`, 'transform: rotateZ(180deg)']
 		}
 	},
 	methods: {
@@ -104,6 +104,7 @@ export default {
 			height: 66px;
 			border: none;
 			background-color: $color-ecru;
+			box-shadow: 0px 2px 5px rgb(0 0 0 / 10%);
 			font-family: $font-body;
 			font-size: 1rem;
 
@@ -113,6 +114,7 @@ export default {
 				font-size: 1.5rem;
 				line-height: 0.85;
 				opacity: 0.6;
+				transition: transform 200ms;
 			}
 		}
 

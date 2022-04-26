@@ -8,7 +8,7 @@
 				<div class="u-spacer--md u-hideTabletDown"></div>
 				<a
 					:href="!isAll && hasFeatured ? featured.article_url : all_featured.article_url"
-					class="c-button c-button--isDefault c-button--isPrimary c-button--lrg"
+					class="c-button c-button--isDefault c-button--isPrimary c-button--lrg c-button--fixWidthMd"
 					>Read More</a
 				>
 			</div>
