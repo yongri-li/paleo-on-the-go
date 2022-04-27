@@ -360,7 +360,21 @@
     flex: 2;
 
     @include media-mobile-down {
+      display: grid;
       grid-gap: 1rem;
+
+      .u-displayFlex {
+        grid-gap: 0.5rem;
+
+        & > div {
+          flex: 1;
+        }
+
+        p {
+          font-size: 14px !important;
+          padding: 0.25rem 0 0.75rem;
+        }
+      }
     }
 
     > div {
@@ -450,6 +464,10 @@
       padding: 1.25rem 0;
       font: 400 1.375rem 'Roboto', sans-serif;
       transition: 300ms;
+
+      @include media-mobile-down {
+        padding: 1rem 0;
+      }
     }
 
     button[data-index='0'] {
@@ -458,6 +476,11 @@
 
     .icon-chevron svg {
       transition: transform 175ms;
+    }
+
+    .icon-closed,
+    .icon-opened {
+      width: 30px;
     }
 
     .active .icon-closed,
@@ -481,6 +504,12 @@
 
       p {
         padding: 1rem 0;
+      }
+    }
+
+    @include media-mobile-down {
+      .panel-answer p {
+        padding: 0.25rem 0 0.75rem;
       }
     }
   }

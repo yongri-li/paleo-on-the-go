@@ -59,9 +59,12 @@
     font-size: 25px;
     font-weight: 400;
   }
-
   @include media-mobile-down {
     font-size: 16px;
+
+    &.isSmaller {
+      font-size: 20px;
+    }
   }
 }
 
