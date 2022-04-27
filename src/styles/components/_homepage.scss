@@ -732,6 +732,14 @@
     &.tns-nav-active {
       background-color: $color-primary;
     }
+
+    @include media-mobile-down {
+      height: 22px;
+      width: 14px;
+      min-height: 14px;
+      min-width: 14px;
+      max-width: 14px;
+    }
   }
 }
 
@@ -751,9 +759,9 @@ section {
       bottom: 1rem !important;
 
       button {
-        height: 21px;
-        width: 16px;
-        max-width: 16px;
+        height: 22px;
+        width: 15px;
+        max-width: 15px;
       }
     }
   }
@@ -785,6 +793,10 @@ section {
     svg {
       max-width: 75vw;
       margin-left: -35vw;
+    }
+
+    @include media-mobile-down {
+      max-width: 50vw;
     }
   }
 }

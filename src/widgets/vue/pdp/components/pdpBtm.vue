@@ -1,6 +1,6 @@
 <template>
   <div class="pdp__faq--wrap">
-    <c-faqAccordion v-if="product_faq" :content="product_faq" />
+    <c-faqAccordion v-if="product_faq" :faqs="product_faq" :title="faqTitle" />
     <c-bottomHero :content="content[0]" />
     <!--     <c-BottomBanner :content="content[1]" /> -->
   </div>
@@ -35,6 +35,12 @@ export default {
       const hero = getContent('btm_')
       const banner = getContent('banner_')
       return [hero, banner]
+    },
+    faqTitle() {
+      const titleArr = this.content[0].faq_title.split(' ')
+      const firstWord = titleArr.shift()
+      const rest = titleArr.join(' ')
+      return [firstWord, rest]
     }
   }
 }

@@ -147,6 +147,7 @@ export default {
         height: 2rem;
         border: 1px solid $color-black;
         border-radius: 100%;
+        color: $color-black;
         padding: 0;
 
         svg {
@@ -154,6 +155,11 @@ export default {
           width: 1rem;
           margin-top: 0.25rem;
         }
+      }
+
+      button[data-controls='next'] svg {
+        margin-left: -1px;
+        margin-top: -0.01rem;
       }
 
       button:last-child {

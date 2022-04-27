@@ -67,6 +67,7 @@ export default {
 
 		@include media-mobile-down {
 			grid-gap: 0.75rem;
+			padding-bottom: 1rem;
 			overflow-x: scroll;
 			width: calc(100vw - 2rem);
 		}
@@ -94,6 +95,7 @@ export default {
 
 		article {
 			@include text-line-clamp($lines: 8);
+			height: fit-content;
 			line-height: 1.5;
 			opacity: 0;
 			transition: opacity 175ms;
@@ -109,7 +111,7 @@ export default {
 		}
 
 		@include media-mobile-down {
-			padding-right: 1rem;
+			padding: 1rem 1rem 1rem 0;
 		}
 	}
 }

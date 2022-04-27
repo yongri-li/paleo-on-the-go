@@ -1,9 +1,6 @@
 <template>
   <div class="meal-cart">
-    <div
-      :class="{ show: showCartMobile }"
-      class="meal-cart__info"
-    >
+    <div :class="{ show: showCartMobile }" class="meal-cart__info">
       <meal-cart-header
         :type-class="typeClass"
         :have-products-class="haveProductsClass"
@@ -43,7 +40,6 @@ import { CHANGE_SIZE_SELECTED, CLEAN_ALL_CART } from '../../store/modules/mealca
 
 import { changeRouter } from '../../utils'
 
-
 export default {
   components: {
     MealCartHeader,
@@ -59,12 +55,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('mealcart', [
-      'cart'
-    ]),
-    ...mapGetters('mealcart', [
-      'getSizeSelected'
-    ]),
+    ...mapState('mealcart', ['cart']),
+    ...mapGetters('mealcart', ['getSizeSelected']),
     haveProductsClass() {
       return this.cart.items.length ? 'with-products' : 'without-products'
     },
@@ -97,7 +89,7 @@ export default {
       return customer.email && customer.shopify_id ? true : false
     },
     addOnsUpdates() {
-      return this.cart?.addons.map(addOn => {
+      return this.cart?.addons?.map(addOn => {
         return {
           addressId: this.addressId,
           next_charge_scheduled_at: this.nextChargeDate,
@@ -106,7 +98,7 @@ export default {
           product_type: addOn.type,
           quantity: addOn.quantity,
           shopify_product_id: addOn.id,
-          shopify_variant_id: addOn.variants[0].id,
+          shopify_variant_id: addOn.variants[0]?.id,
           properties: {
             _addOn: true
           }
@@ -197,13 +189,11 @@ export default {
 </script>
 
 <style lang="scss">
-
 $height-footer: 115px;
 $height-header-title: 59px;
 $translateY: calc(100% - $height-header-title);
 
 .meal-cart {
-
   @include media-tablet-up {
     width: 27%;
     height: 90vh;
@@ -221,7 +211,7 @@ $translateY: calc(100% - $height-header-title);
     filter: drop-shadow(0px -4px 34px rgba(0, 0, 0, 0.1));
     border-radius: 20px 20px 0px 0px;
     transform: translateY($translateY);
-    transition: all .3s ease-out;
+    transition: all 0.3s ease-out;
 
     @include media-tablet-up {
       position: relative;
@@ -250,7 +240,5 @@ $translateY: calc(100% - $height-header-title);
       z-index: 1;
     }
   }
-
 }
-
 </style>

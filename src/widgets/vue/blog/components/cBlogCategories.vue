@@ -105,6 +105,7 @@ export default {
 			border: none;
 			background-color: $color-ecru;
 			box-shadow: 0px 2px 5px rgb(0 0 0 / 10%);
+			color: $color-black;
 			font-family: $font-body;
 			font-size: 1rem;
 

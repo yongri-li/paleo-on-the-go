@@ -1,10 +1,8 @@
 <article class="c-homeTestimonial__slider u-relative">
-  <span class="c-homeTestimonial__slider--bgIcon u-hideMobileDown">
-    {% render 'testimonial-slider__bg' %}
+  <span class="c-homeTestimonial__slider--bgIcon">
+    {%- comment -%}{% render 'testimonial-slider__bg' %}{%- endcomment -%}
+    <img src="{{ section.settings.bg_image | img_url: 'master' }}" alt="">
   </span>
-  <span class="c-homeTestimonial__slider--bgIcon u-hideTabletUp">
-    {% render 'testimonial__slider-lrg' %}
-  </span>  
   <div data-testimony-slider>    
     {% for block in section.blocks %}
       <section>
@@ -20,6 +18,13 @@
 {% schema %}
   {
     "name": "Sliders",
+    "settings": [
+      {
+        "id": "bg_image",
+        "type": "image_picker",
+        "label": "Background Image"
+      }       
+    ],
     "blocks":[
       {
         "type": "tile",
@@ -39,7 +44,7 @@
             "id": "user_name",
             "type": "text",
             "label": "User Name"
-          }
+          }       
         ]
       }
     ],

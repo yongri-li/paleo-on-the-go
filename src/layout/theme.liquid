@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="{{ shop.locale }}">
+<html lang="{{ shop.locale }}" class="{% if template == 'index' %} o-html-home{% endif %}">
 <head>
   {% render 'theme-meta' %}
   {% render 'theme-styles' %}
@@ -17,7 +17,7 @@
   {% if template != 'page.bundle' %}
     {% render 'theme-header' %}
   {% endif %}
-  <main class="o-main {% if template == 'index' %}o-homepage{% endif %}" data-main>
+  <main class="o-main{% if template == 'index' %} o-homepage{% endif %}{% if template == 'blog' %} o-blog{% endif %}" data-main>
     {{ content_for_layout }}
   </main>
   {% if template != 'page.bundle' %}

@@ -1,7 +1,9 @@
 <template>
   <article class="c-homeFaqs vueComp__portal">
-    <h2 class="c-h1"><span class="u-highlightText--secondary">Common</span> Questions</h2>
-    <section v-for="(faq, index) in content" class="c-homeFaqs__item" ref="faqItem">
+    <h2 class="c-h1">
+      <span class="u-highlightText--secondary">{{ title[0] }}</span> {{ title[1] }}
+    </h2>
+    <section v-for="(faq, index) in faqs" class="c-homeFaqs__item" ref="faqItem">
       <button>
         {{ faq.box_question }}
         <c-svg class="icon-opened" name="minusIcon" />
@@ -19,9 +21,12 @@ import cSvg from '@shared/components/core/cSvg.vue'
 
 export default {
   props: {
-    content: {
+    faqs: {
       type: Array,
       default: () => []
+    },
+    title: {
+      type: String
     }
   },
   components: { cSvg },
