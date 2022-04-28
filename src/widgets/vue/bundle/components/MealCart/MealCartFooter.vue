@@ -114,7 +114,7 @@ export default {
       if (param === 'addons' && this.fromPortal && this.isCustomer) return 'Save Changes'
 
       const diff = this.cartLength - this.sizeSelected.number_size
-      if (diff > 0) {
+      if (diff > 0 && this.typeClass === 'subscription') {
         this.notContinue = true
         return `Remove ${diff} items to Continue`
       }
