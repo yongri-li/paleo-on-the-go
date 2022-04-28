@@ -77,11 +77,14 @@ export default {
     listProduct.forEach(product => {
       const [id, qt] = product.split('x')
       const productFound = rootGetters['products/getFirstProductFromCollectionsByID'](id)
-      commit( ADD_PRODUCT_TO_CART, {
-        product: productFound,
-        where: 'items',
-        quantity: parseInt(qt)
-      })
+      console.log('productFound',productFound)
+      if(productFound) {
+        commit( ADD_PRODUCT_TO_CART, {
+          product: productFound,
+          where: 'items',
+          quantity: parseInt(qt)
+        })
+      }
     })
 
     store.commit( `modals/${MODAL_CLOSE}` )

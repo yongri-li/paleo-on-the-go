@@ -70,6 +70,7 @@ export default {
           bundlename: val.label,
           size: val.size
         })
+        console.log('products',products)
         this.validateSetPrebuilt(products)
       }
       else {
