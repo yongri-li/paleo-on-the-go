@@ -15,19 +15,20 @@ import {
 
 export default {
   [ADD_PRODUCTS_TO_CART](state, { productsArr, where }) {
+    console.log('asdsad', state.cartItems, state.cartItems.box)
     state.cartItems[where] = productsArr
   },
-  [ADD_PRODUCT_TO_CART](state, { product, where }) {
-    const indexFound = state.cart[where].findIndex(item => item.id === product.id)
-    if (indexFound > -1) {
-      state.cart[where][indexFound].quantity++
-    } else {
-      state.cart[where].push({
-        quantity: 1,
-        ...product
-      })
-    }
-  },
+  // [ADD_PRODUCT_TO_CART](state, { product, where }) {
+  //   const indexFound = state.cart[where].findIndex(item => item.id === product.id)
+  //   if (indexFound > -1) {
+  //     state.cart[where][indexFound].quantity++
+  //   } else {
+  //     state.cart[where].push({
+  //       quantity: 1,
+  //       ...product
+  //     })
+  //   }
+  // },
   [ADD_BOX_TO_CART](state, { items }) {
     state.cartItems.box = [...items]
   },

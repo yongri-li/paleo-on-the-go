@@ -20,7 +20,8 @@ import {
 
 export default {
   addToCartFromPortal({ commit, getters }, { productsArr, where }) {
-    commit(ADD_PRODUCTS_TO_CART, { productsArr, where })
+    console.log('q3eqdawdawxx', productsArr, where)
+    //commit(ADD_PRODUCTS_TO_CART, { productsArr, where })
   },
   newCleanCart({ commit, getters }) {
     commit(CLEAN_ALL_CART)
