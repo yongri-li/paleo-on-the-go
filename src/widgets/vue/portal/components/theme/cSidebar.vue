@@ -25,6 +25,7 @@
           :is="sidebarComponent"
           :content="sidebar.content"
           :settings="sidebar.settings"
+          :addressId="sidebar.addressId"
           :addressNum="sidebar.addressNum"
           :charge="sidebar.charge"
         />

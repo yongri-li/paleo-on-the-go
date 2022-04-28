@@ -2,7 +2,6 @@ import { _arrayMergeByKeys } from '@shared/scripts'
 
 export default {
   CUSTOMER_UPDATE_ADDRESSES(state, payload) {
-    console.log('payloaddxxxxd', payload)
     const prevAddresses = [...state.resources.addresses]
     const { addresses, keys } = payload
     const filteredAddresses = _arrayMergeByKeys({

@@ -236,11 +236,11 @@ export default {
       sessionStorage.setItem('boxSize', this.totalSubItems)
       sessionStorage.setItem('addressId', this.addressId)
       sessionStorage.setItem('nextChargeDate', this.charge.scheduledAt)
-      this.addToCartFromPortal({
-        productsArr: this.portalProducts,
-        //where: 'box'
-        where: 'items'
-      })
+      // this.addToCartFromPortal({
+      //   productsArr: this.portalProducts,
+      //   //where: 'box'
+      //   where: 'items'
+      // })
       //window.location.href = '/pages/bundle/#/subscription'
     },
     handleEditSchedule() {
@@ -248,7 +248,7 @@ export default {
       this.CUSTOMER_SET_NEXT_CHARGEDATE(this.charge.scheduledAt)
       this.UI_SET_SIDEBAR({
         component: 'cSidebarEditSchedule',
-        addressNum: this.boxNumber,
+        addressId: this.addressId,
         content: this.sidebarEditSchedule.content
       })
     }

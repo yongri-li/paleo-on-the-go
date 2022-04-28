@@ -79,8 +79,8 @@ export default {
     content: {
       type: Object
     },
-    addressNum: {
-      type: Number
+    addressId: {
+      type: [Number, String]
     },
     modifiers: {
       type: Array,
@@ -90,9 +90,6 @@ export default {
   components: { Datepicker, cButton },
   computed: {
     ...mapState('customer', ['addressIds', 'thisChargeId', 'nextChargeDate']),
-    addressId() {
-      return this.addressIds[this.addressNum]
-    },
     chargeId() {
       return this.thisChargeId
     },
@@ -139,27 +136,6 @@ export default {
         content: { one: 'wanna delay??' }
       })
     },
-    // setMonthChrgDelay(nextChargeDate, 1)
-
-    // async changeNextChargeDate() {
-    //   this.loading = true
-    //   await this.setMonthChrgDelay(this.nextChargeDate)
-    //   // const { charges, onetimes, subscriptions, error, success } = await this.customerUpdateChargesDate({
-    //   const { success } = await this.customerUpdateChargesDate({
-    //     addressId: this.addressId,
-    //     updates: [
-    //       {
-    //         id: this.chargeId,
-    //         next_charge_date: format(this.newChargeDate, 'YYYY-MM-DD')
-    //       }
-    //     ]
-    //   })
-    //   if (success) {
-    //     this.loading = false
-    //     this.status = 'success'
-    //     setTimeout(() => this.UI_CLOSE_SIDEBAR(), 525)
-    //   }
-    // },
     async handleSave() {
       this.loading = true
       let data

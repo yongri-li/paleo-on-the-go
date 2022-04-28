@@ -1,6 +1,6 @@
 <template>
   <div :class="_buildModifiers('c-portal', modifiers)">
-    <c-portalHero class="c-portal__hero" v-if="customerReady" />
+    <c-portalHero class="c-portal__hero" v-if="customerReady && heroReady" />
     <c-portalHeader class="c-portal__header" v-if="customerReady" data-portal-header />
     <c-loading
       class="c-portal__loading"
@@ -9,7 +9,6 @@
     />
     <transition name="t-content-fade" v-if="customerReady" mode="out-in">
       <router-view class="c-portal__content" :key="$route.name" :allProducts="allProducts" />
-      <!-- :addressId="addressId" -->
     </transition>
     <c-sidebar class="c-portal__sidebar" v-if="customerReady" data-portal-header />
     <c-modal class="c-portal__modal" v-if="customerReady" data-portal-modal />
@@ -17,7 +16,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapMutations } from 'vuex'
+import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import setup from '../_setup'
 import cPortalHeader from './theme/cPortalHeader.vue'
 import cPortalHero from './theme/cPortalHero.vue'
@@ -35,7 +34,9 @@ export default {
   },
   data() {
     return {
-      allProducts: window.Scoutside.portal.products.allproducts
+      allProducts: window.Scoutside.portal.products.allproducts,
+      shopifyReady: false,
+      heroReady: false
     }
   },
   components: {
@@ -46,7 +47,7 @@ export default {
     cLoading
   },
   computed: {
-    ...mapGetters('customer', ['customerReady']),
+    ...mapGetters('customer', ['customerReady', 'customerRecharge']),
     state() {
       //  Testing Onlyyy
       return this.$store.state
@@ -67,49 +68,43 @@ export default {
   },
   methods: {
     ...mapMutations('customer', ['CUSTOMER_SET_ADDRESS_IDS']),
+    ...mapActions('customer', ['customerSetResources']),
     setReady() {
       const shopifyInterval = setInterval(() => {
         this.shopifyReady = window.Scoutside.api.ready
         if (this.shopifyReady) clearInterval(shopifyInterval)
       }, 100)
-    },
-    async getRCdata() {
-      const apiClient = new apiService()
-      const { data } = await this.apiTest.get(
-        '/v1/customer/resources?resources=addresses,charges,orders,subscriptions,onetimes'
-      )
-      const accounts = await this.apiTest.get('/v1/customer/account')
-      const { rechargeCustomer, resources } = data
-      console.log('dataa', data)
-      this.state.customer.resources = { ...resources }
-      this.state.customer.recharge = accounts.data.rechargeCustomer
-      this.state.rechargeCustomer = accounts.data.rechargeCustomer
-      this.state.customer.ready = true
-      const { portal, shop, bundle, customer } = await window.Scoutside
-      this.state.customer.shopifyCustomer = customer
-      this.state.shopify = customer
-      this.state.customize.shop = { ...shop }
-      this.state.customize.content = { ...portal }
-      this.state.products = { ...portal.products.catalog }
     }
+    // async getRCdata() {
+    //   const apiClient = new apiService()
+    //   const { data } = await this.apiTest.get(
+    //     '/v1/customer/resources?resources=addresses,charges,orders,subscriptions,onetimes'
+    //   )
+    //   const accounts = await this.apiTest.get('/v1/customer/account')
+    //   const { rechargeCustomer, resources } = data
+    //   console.log('dataa', data)
+    //   this.state.customer.resources = { ...resources }
+    //   this.state.customer.recharge = accounts.data.rechargeCustomer
+    //   this.state.rechargeCustomer = accounts.data.rechargeCustomer
+    //   this.state.customer.ready = true
+    //   const { portal, shop, bundle, customer } = await window.Scoutside
+    //   this.state.customer.shopifyCustomer = customer
+    //   this.state.shopify = customer
+    //   this.state.customize.shop = { ...shop }
+    //   this.state.customize.content = { ...portal }
+    //   this.state.products = { ...portal.products.catalog }
+    // }
   },
-  created() {
-    // const ccAct = document.cookie.split('; ').find(row => row.includes('ss_access_token'))
-    // const ccApiAccessToken = ccAct?.split('=')[1]
-    // const lsApiAccessToken = localStorage.getItem('api_access_token')
-    // lsApiAccessToken ? null : localStorage.setItem('api_access_token', ccApiAccessToken)
-    //this.getRCdata()
+  async created() {
+    const { success, error } = await this.customerSetResources({
+      resources: ['addresses', 'charges', 'subscriptions', 'orders', 'onetimes']
+    })
+    const { portal, shop, bundle, customer } = await window.Scoutside
+    this.state.products = { ...portal.products.catalog }
+    this.heroReady = !!portal
   },
   async mounted() {
-    //await setup(this)
     this.setReady()
-    //this.getRCdata()
-    // setTimeout(() => {
-    //   this.updateAPIheader()
-    // }, 300)
-    setTimeout(() => {
-      this.getRCdata()
-    }, 1011)
   },
   watch: {
     preventScroll: {
@@ -123,6 +118,12 @@ export default {
       this.$nextTick(() => {
         this.CUSTOMER_SET_ADDRESS_IDS(this.addressIds)
       })
+    },
+    shopifyReady: {
+      immediate: true,
+      handler(val) {
+        if (val) setup(this)
+      }
     }
   }
 }

@@ -13,6 +13,7 @@
             :addons="null"
             :content="content"
             :boxNumber="i"
+            :addressId="charge.addressId"
             :allProducts="allProducts"
             :shipDate="formatDayDateIOS(charge.scheduledAt)"
           />

@@ -2,20 +2,12 @@ import { setIntervalAsync } from 'set-interval-async/dynamic'
 import Cookies from 'universal-cookie'
 const cookies = new Cookies()
 
-console.log('newnewnw')
-const delay = async ms => {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}
-
 export default async app => {
-  await delay(250)
-  console.log('third')
-
   const { dispatch, commit } = app.$store
   const { portal, shop, bundle } = window.Scoutside
   const { products } = portal
+  // console.log(products, portal, shop)
 
-  console.log(products, portal, shop)
   // SET BASE DATA
   await Promise.all([
     commit('customize/CUSTOMIZE_SET_STATE', { shop, content: portal }),
