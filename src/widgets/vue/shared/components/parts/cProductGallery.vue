@@ -187,11 +187,13 @@ export default {
 
 .pdp__thumbnails {
   position: relative;
-  /*top: 6rem;*/
+  cursor: grab;
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-top: 1.5rem;
+  padding: 2rem 0 1.5rem;
+  margin: 0;
+  overflow-x: scroll;
   z-index: 2;
 }
 
