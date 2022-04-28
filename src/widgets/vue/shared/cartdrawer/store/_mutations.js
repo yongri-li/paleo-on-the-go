@@ -15,7 +15,7 @@ import {
 
 export default {
   [ADD_PRODUCTS_TO_CART](state, { productsArr, where }) {
-    console.log('asdsad', state.cartItems, state.cartItems.box)
+    console.log('asdsad', state.cart)
     //state.cartItems[where] = productsArr
     //state.cart[where] = productsArr
   },

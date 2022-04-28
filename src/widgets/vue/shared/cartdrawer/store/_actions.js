@@ -19,10 +19,14 @@ import {
 } from './_mutations-type'
 
 export default {
-  addToCartFromPortal({ commit }, { productsArr, where }) {
-    console.log('q3eqdawdawxx', productsArr, where)
+  addToCartFromPortal() {
+    console.log('q3eqdawdawxx', 'asdasdhi')
     //commit(ADD_PRODUCTS_TO_CART, { productsArr, where })
   },
+  // addToCartFromPortal({ commit }, { productsArr, where }) {
+  //   console.log('q3eqdawdawxx', productsArr, where)
+  //   //commit(ADD_PRODUCTS_TO_CART, { productsArr, where })
+  // },
   newCleanCart({ commit, getters }) {
     commit(CLEAN_ALL_CART)
   },

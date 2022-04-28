@@ -12,8 +12,6 @@ fullStore._actions.newAddToCart = newAddToCart
 fullStore._actions.newCleanCart = newCleanCart
 fullStore._actions.addToCartFromPortal = addToCartFromPortal
 
-console.log(fullStore)
-
 /* Register Mixins */
 Vue.mixin(mixins)
 

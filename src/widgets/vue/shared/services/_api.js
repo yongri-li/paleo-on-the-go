@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { cookieService } from '@shared/services'
+import { setIntervalAsync } from 'set-interval-async/dynamic'
 
 const allCookies = document.cookie
 const getApiData = (cookie, ssdata) => {
