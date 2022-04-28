@@ -232,15 +232,16 @@ export default {
       this.setBoxHeight = !this.setBoxHeight
     },
     handleChangeMeals() {
+      console.log('23rwef', this.portalProducts)
       sessionStorage.setItem('boxSize', this.totalSubItems)
       sessionStorage.setItem('addressId', this.addressId)
       sessionStorage.setItem('nextChargeDate', this.charge.scheduledAt)
-      this.addToCartFromPortal({
-        productsArr: this.portalProducts,
-        where: 'box'
-        // where: 'items'
-      })
-      window.location.href = '/pages/bundle/#/subscription'
+      // this.addToCartFromPortal({
+      //   productsArr: this.portalProducts,
+      //   where: 'box'
+      //   // where: 'items'
+      // })
+      //window.location.href = '/pages/bundle/#/subscription'
     },
     handleEditSchedule() {
       this.CUSTOMER_SET_THIS_CHARGEID(this.charge.id)

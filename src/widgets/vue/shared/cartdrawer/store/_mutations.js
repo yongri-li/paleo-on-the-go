@@ -16,7 +16,8 @@ import {
 export default {
   [ADD_PRODUCTS_TO_CART](state, { productsArr, where }) {
     console.log('asdsad', state.cartItems, state.cartItems.box)
-    state.cartItems[where] = productsArr
+    //state.cartItems[where] = productsArr
+    //state.cart[where] = productsArr
   },
   // [ADD_PRODUCT_TO_CART](state, { product, where }) {
   //   const indexFound = state.cart[where].findIndex(item => item.id === product.id)

@@ -19,7 +19,7 @@ import {
 } from './_mutations-type'
 
 export default {
-  addToCartFromPortal({ commit, getters }, { productsArr, where }) {
+  addToCartFromPortal({ commit }, { productsArr, where }) {
     console.log('q3eqdawdawxx', productsArr, where)
     //commit(ADD_PRODUCTS_TO_CART, { productsArr, where })
   },
