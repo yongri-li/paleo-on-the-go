@@ -8,7 +8,6 @@ export default {
     state.ready = true
   },
   CUSTOMER_SET_RECHARGE(state, payload) {
-    console.log('CUSTOMER_SET_RECHARGECUSTOMER_SET_RECHARGE', payload)
     if (payload) state.recharge = { ...payload }
   },
   CUSTOMER_SET_SHOPIFY(state, payload) {

@@ -7,7 +7,6 @@
         :open="true"
         :setBoxHeight="setBoxHeight"
       >
-        <!-- :open="boxNumber < 1 ? true : false" -->
         <div class="c-shipmentsSummary__trigger" slot="trigger">
           <div class="c-shipmentsSummary__triggerLabel">
             Shipping To

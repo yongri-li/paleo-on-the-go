@@ -7,7 +7,4 @@ export default {
     const { inventory } = payload
     if (inventory) state.inventory = { ...inventory }
   }
-  // SET_DEFAULT_MENU_ITEMS(state, payload) {
-  //   state.defaultMenuItems = payload;
-  // }
 }
