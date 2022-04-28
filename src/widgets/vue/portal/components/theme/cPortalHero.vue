@@ -37,12 +37,12 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('customer', ['customerUpcomingCharge']),
+    ...mapGetters('customer', ['customerUpcomingCharges']),
     content() {
       return this.$store.getters['customize/customizeContentByKey']('shipments')
     },
     nextCharge() {
-      return this.customerUpcomingCharge[0]
+      return this.customerUpcomingCharges[0]
     }
   },
   methods: {
