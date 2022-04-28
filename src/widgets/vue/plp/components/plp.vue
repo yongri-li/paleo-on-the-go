@@ -9,7 +9,7 @@
       @trigger="triggerFilters"
       @collection="updateCollection"
     />
-    <c-page-hero :content="content[0]" class="c-plp__hero" />
+    <c-page-hero :content="content" class="c-plp__hero" />
     <section class="c-plp__body">
       <c-FilterNav
         v-if="!isMobile"
@@ -69,10 +69,6 @@ export default {
     cSvg
   },
   computed: {
-    // totalItems() {
-    //   const arrs = this.$refs.cols.map(el => el.children[2].children.length)
-    //   return arrs.reduce((acc, cur) => acc + cur)
-    // },
     filterItems() {
       return [
         { icon: 'noGMO', name: 'Coconut Free' },
@@ -94,19 +90,14 @@ export default {
       `
     },
     content() {
-      const getContent = label => {
-        let obj = {}
-        Object.entries(this.$data).map(([key, val]) => {
-          if (key.startsWith(label)) {
-            const name = key.replace(label, '')
-            obj[name] = val
-          }
-        })
-        return obj
-      }
-      const hero = getContent('hero_')
-      const banner = getContent('banner_')
-      return [hero, banner]
+      let obj = {}
+      Object.entries(this.$data).map(([key, val]) => {
+        if (key.startsWith('hero_')) {
+          const name = key.replace('hero_', '')
+          obj[name] = val
+        }
+      })
+      return obj
     }
     // filteredProducts() {
     //   return this.collections[this.activeNum].products.filter(prd => {
@@ -124,7 +115,6 @@ export default {
     updateCollection(num) {
       const selectedCollection = this.$refs.cols[num]
       selectedCollection.scrollIntoView({ behavior: 'smooth', block: 'start' })
-      // this.totalItems()
     },
     addFilterTag(filters) {
       this.filterTags = filters
@@ -162,9 +152,6 @@ export default {
   created() {
     if (window.innerWidth < 768) this.isMobile = true
     window.addEventListener('resize', this.onResize)
-    // this.$nextTick(() => {
-    //   setTimeout(() => this.totalItems(), 300)
-    // })
   },
   beforeDestroy() {
     if (typeof window !== 'undefined') {

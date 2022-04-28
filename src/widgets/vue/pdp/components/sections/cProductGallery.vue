@@ -141,6 +141,8 @@ export default {
   display: block;
   height: fit-content;
   z-index: 1;
+
+  min-width: 4.5rem;
 }
 
 .pdp__thumbnail {

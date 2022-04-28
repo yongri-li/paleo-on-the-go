@@ -26,7 +26,7 @@ export default {
       default: () => []
     },
     title: {
-      type: String
+      type: [Array, String]
     }
   },
   components: { cSvg },

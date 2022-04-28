@@ -2,7 +2,7 @@
   <div class="pdp__galleryContainer" :class="isModal && 'isModal'">
     <div v-if="loading" class="pdp__loader"></div>
     <div v-show="!loading" class="pdp__thumbnails u-hideMobileDown">
-      <div v-for="(image, i) in mainImages" :key="i" class="pdp__thumbnailWrapper">
+      <div v-for="(image, i) in images" :key="i" class="pdp__thumbnailWrapper">
         <button class="pdp__thumbnailButton" type="button" @click="() => handleThumbnailClick(i)">
           <img :src="image" :class="{ 'pdp__thumbnail--active': i == activeIndex }" class="pdp__thumbnail" />
         </button>
@@ -13,8 +13,8 @@
         {{ flag }}
       </span>
       <div v-show="!loading" class="pdp__gallery">
-        <div v-for="(image, i) in mainImages" :key="i">
-          <div v-if="i < 5" class="pdp__galleryImageWrapper" :data-index="i">
+        <div v-for="(image, i) in images" :key="i">
+          <div class="pdp__galleryImageWrapper" :data-index="i">
             <img :src="image" class="pdp__galleryImage" />
           </div>
         </div>
@@ -52,9 +52,9 @@ export default {
     slider: false
   }),
   computed: {
-    mainImages() {
-      return this.images.slice(1, 6)
-    },
+    // mainImages() {
+    //   return this.images.slice(1, 6)
+    // },
     flagHandle() {
       return handleize(this.flag)
     }
@@ -213,6 +213,8 @@ export default {
   box-sizing: border-box;
   cursor: pointer;
   height: 4.5rem;
+  width: 100%;
+  min-width: 4.5rem;
   opacity: 0.3;
 
   &.pdp__thumbnail--active {

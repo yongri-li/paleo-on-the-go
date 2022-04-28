@@ -62,7 +62,6 @@ export default {
 	},
 	methods: {
 		addFilter(filters) {
-			console.log('asad', filters)
 			this.$emit('getFilters', filters)
 		},
 		collectionSelect(index) {

@@ -190,6 +190,11 @@ export default {
       flex: 1.5;
       justify-self: flex-end;
       height: 100%;
+      overflow-x: auto;
+
+      .pdp__thumbnails {
+        overflow-x: scroll;
+      }
     }
 
     .pdp__content {
