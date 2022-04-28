@@ -17,6 +17,7 @@
 
     <c-button
       class="c-cta meal-cart__btn-next"
+      :class="{ disable: notContinue }"
       @click="nextStep"
       :loading="loading"
       :text="ctabtn"
