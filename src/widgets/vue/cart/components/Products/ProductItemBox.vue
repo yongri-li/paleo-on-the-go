@@ -31,6 +31,7 @@
 
 <script>
 import { formatPrice } from '@shared/utils'
+import { mapState } from 'vuex'
 
 export default {
   props: {
@@ -44,15 +45,17 @@ export default {
     }
   },
   computed: {
+    ...mapState('cartdrawer', [
+      'sizeSelected'
+    ]),
     imageUrl() {
       const imgFound = this.product.media.find(item => item.position === 1)
       const urlFinal = imgFound.src.replace('.jpg','_150x150.jpg').replace('.png','_150x150.png')
       return urlFinal
     },
     finalPrice() {
-      // const discount = this.getSizeSelected.discount / 100
-      // const price = this.where === 'addons' ? this.product.price : this.product.price * (1 - discount)
-      const price = this.product.price
+      const discount = this.sizeSelected.discount / 100
+      const price = this.product.price * (1 - discount)
       return formatPrice(price)
     }
   },

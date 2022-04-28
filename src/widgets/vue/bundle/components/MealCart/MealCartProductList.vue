@@ -25,6 +25,7 @@
           :key="item.id"
           :product="item"
           :type-class="typeClass"
+          where="items"
         />
       </div>
     </div>
@@ -51,6 +52,7 @@
           v-for="item in cart.addons"
           :key="item.id"
           :product="item"
+          where="addons"
         />
       </div>
     </div>

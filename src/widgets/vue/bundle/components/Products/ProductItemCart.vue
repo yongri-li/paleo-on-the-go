@@ -50,6 +50,10 @@ export default {
     typeClass: {
       type: String,
       default: 'subscription'
+    },
+    where: {
+      type: String,
+      required: true
     }
   },
   computed: {
@@ -60,10 +64,6 @@ export default {
       const imgFound = this.product.media.find(item => item.position === 1)
       const urlFinal = imgFound.src.replace('.jpg','_150x150.jpg').replace('.png','_150x150.png')
       return urlFinal
-    },
-    where() {
-      const param = this.$route.params.box
-      return param === 'addons' ? 'addons' : 'items'
     },
     finalPrice() {
       const discount = this.getSizeSelected.discount / 100
