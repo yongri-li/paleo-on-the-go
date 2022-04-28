@@ -4,7 +4,13 @@
 			<c-svg class="trigger-filters__icon" name="filter" />
 			<span class="trigger-filters__copy">Filters</span>
 		</div>
-		<c-dropdownFull :items="items" :isOpen="isOpen" @getFilters="addFilter" @closeDropdown="trigCloseDrop" />
+		<c-dropdownFull
+			:items="items"
+			:isOpen="isOpen"
+			:totalItems="totalItems"
+			@getFilters="addFilter"
+			@closeDropdown="trigCloseDrop"
+		/>
 		<section class="c-plp__collectionList">
 			<ul>
 				<li
@@ -30,6 +36,9 @@ export default {
 		items: {
 			type: Array,
 			required: true
+		},
+		totalItems: {
+			type: Number
 		},
 		collections: {
 			type: Array,

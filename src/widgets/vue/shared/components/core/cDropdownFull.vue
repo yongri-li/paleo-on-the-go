@@ -11,7 +11,8 @@
 						<div class="item-tabs" v-for="tab in filters" :data-val="tab">
 							{{ tab }} <span @click="handleFilter('cut', $event)"> &#10005;</span>
 						</div>
-						<strong v-if="filters.length > 0" @click="clearFilters">Clear Filters</strong>
+						<strong v-if="filters.length" @click="clearFilters">Clear Filters</strong>
+						<span v-if="totalItems && filters.length" class="u-colorGrey">{{ totalItems }} Items</span>
 					</section>
 				</div>
 			</section>
@@ -45,6 +46,9 @@ export default {
 		items: {
 			type: Array,
 			required: true
+		},
+		totalItems: {
+			type: Number
 		},
 		isOpen: {
 			type: Boolean,
@@ -130,6 +134,11 @@ export default {
 		strong {
 			font-size: 1rem;
 			text-decoration: underline;
+		}
+
+		span.u-colorGrey {
+			font-size: 1rem;
+			font-weight: 400;
 		}
 
 		&__title {

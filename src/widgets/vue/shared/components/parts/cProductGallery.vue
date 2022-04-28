@@ -224,6 +224,16 @@ export default {
   -webkit-appearance: none;
   border: none;
   background-color: $color-ecru;
+
+  img {
+    transition: box-shadow 175ms;
+  }
+
+  &:hover {
+    img {
+      box-shadow: 0px 3px 0px 0px rgb(0 0 0 / 80%);
+    }
+  }
 }
 
 .pdp__galleryImage {

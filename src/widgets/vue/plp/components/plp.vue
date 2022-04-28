@@ -14,6 +14,7 @@
       <c-FilterNav
         v-if="!isMobile"
         :items="filterItems"
+        :totalItems="asd"
         :isOpen="isFilterOpen"
         :collections="collections"
         @getFilters="addFilterTag"
@@ -21,18 +22,25 @@
         @collection="updateCollection"
       />
       <article>
-        <h2 class="c-h2">{{ collections[activeNum].title }}</h2>
-        <span v-html="collections[activeNum].short_description"></span>
-        <div class="c-plp__body--grid">
-          <div
-            v-for="(product, index) in filteredCollection"
-            :key="index"
-            class="c-plpGrid__item"
-            v-if="product.available"
-          >
-            <c-product-card :product="product" title="Filter" />
+        <section
+          class="c-plp__body--collection"
+          v-for="(collection, index) in collections"
+          :data-anchor="collection.title"
+          ref="cols"
+        >
+          <h2 class="c-h2">{{ collection.title }}</h2>
+          <span v-html="collection.short_description"></span>
+          <div class="c-plp__body--grid">
+            <div
+              v-for="(product, index) in filterProducts(index)"
+              :key="index"
+              class="c-plpGrid__item"
+              v-if="product.available"
+            >
+              <c-product-card :product="product" title="Filter" />
+            </div>
           </div>
-        </div>
+        </section>
       </article>
     </section>
   </div>
@@ -50,9 +58,9 @@ export default {
   data: () => ({
     ...window.Scoutside.plp,
     isMobile: false,
-    activeNum: 0,
     filterTags: [],
-    isFilterOpen: false
+    isFilterOpen: false,
+    asd: 0
   }),
   components: {
     cPageHero,
@@ -61,6 +69,10 @@ export default {
     cSvg
   },
   computed: {
+    // totalItems() {
+    //   const arrs = this.$refs.cols.map(el => el.children[2].children.length)
+    //   return arrs.reduce((acc, cur) => acc + cur)
+    // },
     filterItems() {
       return [
         { icon: 'noGMO', name: 'Coconut Free' },
@@ -95,32 +107,39 @@ export default {
       const hero = getContent('hero_')
       const banner = getContent('banner_')
       return [hero, banner]
-    },
-    filteredProducts() {
-      return this.collections[this.activeNum].products.filter(prd => {
-        if (prd.tags.some(tag => this.filterTags.includes(tag))) return prd
-      })
-    },
-    filteredCollection() {
-      return !this.filterTags.length ? this.collections[this.activeNum].products : this.filteredProducts
     }
+    // filteredProducts() {
+    //   return this.collections[this.activeNum].products.filter(prd => {
+    //     if (prd.tags.some(tag => this.filterTags.includes(tag))) return prd
+    //   })
+    // },
+    // filteredCollection() {
+    //   return !this.filterTags.length ? this.collections[this.activeNum].products : this.filteredProducts
+    // }
   },
   methods: {
     triggerFilters(trigger) {
       this.isFilterOpen = trigger
     },
     updateCollection(num) {
-      this.activeNum = num
+      const selectedCollection = this.$refs.cols[num]
+      selectedCollection.scrollIntoView({ behavior: 'smooth', block: 'start' })
+      // this.totalItems()
     },
     addFilterTag(filters) {
       this.filterTags = filters
+      this.totalItems()
     },
     clearFilters() {
       this.filterTags = []
     },
-    filterByTag(productTags, filterTags) {
-      if (!this.filterTags.length) return true
-      return productTags.some(tag => filterTags.includes(tag))
+    filterProducts(index) {
+      let results = []
+      if (!this.filterTags.length) return this.collections[index].products
+      this.collections[index].products.filter(prd => {
+        if (prd.tags.some(tag => this.filterTags.includes(tag))) results.push(prd)
+      })
+      return results
     },
     handleGetStarted() {
       this.loading = true
@@ -130,11 +149,22 @@ export default {
     },
     onResize() {
       this.isMobile = window.innerWidth < 768 ? true : false
+    },
+    totalItems() {
+      this.$nextTick(() => {
+        setTimeout(() => {
+          const arrs = this.$refs.cols.map(el => el.children[2].children.length)
+          this.asd = arrs.reduce((acc, cur) => acc + cur)
+        }, 25)
+      })
     }
   },
   created() {
     if (window.innerWidth < 768) this.isMobile = true
     window.addEventListener('resize', this.onResize)
+    // this.$nextTick(() => {
+    //   setTimeout(() => this.totalItems(), 300)
+    // })
   },
   beforeDestroy() {
     if (typeof window !== 'undefined') {
@@ -159,6 +189,12 @@ export default {
     display: flex;
     box-sizing: border-box;
     padding: 3.5rem 0;
+
+    &--collection:not(:first-child) {
+      /*margin-bottom: 2.5rem;*/
+      margin-top: -1rem;
+      padding-top: 6rem;
+    }
 
     &--nav,
     article {
