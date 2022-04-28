@@ -109,7 +109,7 @@ export default {
     // }, 300)
     setTimeout(() => {
       this.getRCdata()
-    }, 1131)
+    }, 1031)
   },
   watch: {
     preventScroll: {

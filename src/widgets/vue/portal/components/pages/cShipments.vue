@@ -21,7 +21,7 @@
       </div>
     </article>
 
-    <c-faqAccordion v-if="content" :content="content.portal_faq" />
+    <c-faqAccordion v-if="content" :faqs="content.portal_faq" :title="faqTitle" />
   </div>
 </template>
 
@@ -59,6 +59,12 @@ export default {
     },
     charges() {
       return this.customerUpcomingCharges
+    },
+    faqTitle() {
+      const titleArr = this.content.faqs_title.split(' ')
+      const firstWord = titleArr.shift()
+      const rest = titleArr.join(' ')
+      return [firstWord, rest]
     }
   },
   methods: {
