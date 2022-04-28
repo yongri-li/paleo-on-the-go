@@ -15,7 +15,7 @@ import {
 
 export default {
   [ADD_PRODUCTS_TO_CART](state, { productsArr, where }) {
-    state.cart[where] = productsArr
+    state.cartItems[where] = productsArr
   },
   [ADD_PRODUCT_TO_CART](state, { product, where }) {
     const indexFound = state.cart[where].findIndex(item => item.id === product.id)
@@ -35,10 +35,10 @@ export default {
     state.sizeSelected = sizeSelected
   },
   [CLEAN_CART_ITEMS](state) {
-    state.cart.items = []
+    state.cartItems.items = []
   },
   [CLEAN_ALL_CART](state) {
-    state.cart = {
+    state.cartItems = {
       items: [],
       addons: []
     }
