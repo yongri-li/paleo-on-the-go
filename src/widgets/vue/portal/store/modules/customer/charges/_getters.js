@@ -12,17 +12,12 @@ export default {
   customerUpcomingCharges: state => {
     const { charges } = state.resources
     const today = new Date()
-    // const todayUTC = today.getUTCHours()
-    // today.setUTCHours(todayUTC)
-
-    console.log('asdsad', charges)
+    today.setHours(0, 0, 0, 0)
 
     if (charges) {
       return charges
         .filter(charge => {
           const chargeDay = new Date(charge.scheduled_at)
-          // chargeDay.setUTCHours(10, 10, 0, 0) //5:10am EST
-          // return charge.status !== 'SUCCESS' && chargeDay > today //old: addDaysToDate(today,-1)
           return charge.status !== 'SUCCESS' && chargeDay >= today
         })
         .sort((firstEl, secondEl) => {

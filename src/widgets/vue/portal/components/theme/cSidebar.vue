@@ -90,7 +90,7 @@ export default {
 
 <style lang="scss">
 .c-sidebar__drawer {
-  background-color: #fafafb;
+  background-color: $color-ecru;
   width: 100vw;
 
   &.c-drawer {

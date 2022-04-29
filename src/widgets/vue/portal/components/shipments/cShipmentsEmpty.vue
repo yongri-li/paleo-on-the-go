@@ -9,7 +9,7 @@
         <p>{{ content.no_subs_text }}</p>
         <c-button
           class="c-button c-button--isDefault c-button--isPrimary"
-          @click=""
+          @click="$router.push({ path: '/details' })"
           :text="content.no_subs_cta_text"
           :modifiers="['isDefault', 'isPrimary']"
         />
