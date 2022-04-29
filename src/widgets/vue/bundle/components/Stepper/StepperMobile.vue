@@ -30,7 +30,7 @@ export default {
       }
       if(param === 'onetime') {
         return {
-          name: '8 Item Minimu',
+          name: '8 Item Minimum',
           url: '/'
         }
       }
