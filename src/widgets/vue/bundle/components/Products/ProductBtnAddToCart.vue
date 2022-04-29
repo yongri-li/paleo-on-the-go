@@ -2,7 +2,7 @@
   <div class="pbtn__add-to-cart">
     <span class="pbtn__add-to-cart--opc"
       @click="reduceToCart({
-        idProduct,
+        idProduct: product.id,
         where
       })"
     >
@@ -13,8 +13,7 @@
     </span>
     <span class="pbtn__add-to-cart--opc"
       @click="addToCart({
-        idCollection,
-        idProduct,
+        product,
         where
       })"
     >
@@ -28,12 +27,8 @@ import { mapActions } from 'vuex'
 
 export default {
   props: {
-    idCollection: {
-      type: Number,
-      required: true
-    },
-    idProduct: {
-      type: Number,
+    product: {
+      type: Object,
       required: true
     },
     qtProduct: {
@@ -46,7 +41,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('mealcart', [
+    ...mapActions('babcart', [
       'addToCart',
       'reduceToCart'
     ]),

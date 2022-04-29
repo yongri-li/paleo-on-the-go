@@ -6,8 +6,10 @@ export const persist = new VuexPersistence({
       cartItems: state.cartdrawer.cartItems,
       sizeSelected: state.cartdrawer.sizeSelected
     },
+    babcart: {
+      cart: state.babcart.cart
+    },
     mealcart: {
-      cart: state.mealcart.cart,
       sizes: state.mealcart.sizes
     }
   })

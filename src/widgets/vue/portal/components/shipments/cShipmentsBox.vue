@@ -212,19 +212,25 @@ export default {
       return { content }
     },
     portalProducts() {
-      const products = this.subProductIds.map((id, i) => {
-        let item = { ...this.allProducts.find(prod => prod.id === id) }
-        item.quantity = this.subProductQtys[i]
-        return item
-      })
-      return products
+      return {
+        items: this.subProductIds.map((id, i) => {
+          let productFound = this.allProducts.find(prod => prod.id === id)
+          let item = productFound
+          ? {
+            ...productFound,
+            quantity: this.subProductQtys[i]
+          }
+          : null
+          return item
+        }).filter(product => product),
+        addons: []
+      }
     }
   },
   methods: {
     ...mapMutations('ui', ['UI_SET_SIDEBAR', 'UI_SET_MODAL']),
     ...mapMutations('customer', ['CUSTOMER_SET_THIS_CHARGEID', 'CUSTOMER_SET_NEXT_CHARGEDATE']),
-    // ...mapActions('cartdrawer', ['addToCartFromPortal']),
-    // ...mapActions(['addToCartFromPortal']),
+    ...mapActions('babcart', ['addToCartFromPortal']),
     setBoxMaxHeight() {
       this.setBoxHeight = !this.setBoxHeight
     },
@@ -233,11 +239,17 @@ export default {
       sessionStorage.setItem('boxSize', this.totalSubItems)
       sessionStorage.setItem('addressId', this.addressId)
       sessionStorage.setItem('nextChargeDate', this.charge.scheduledAt)
-      // this.addToCartFromPortal({
-      //   productsArr: this.portalProducts,
-      //   where: 'items'
-      // })
-      // window.location.href = '/pages/bundle/#/subscription'
+      this.addToCartFromPortal({
+        items: {
+          productsArr: this.portalProducts.items,
+          where: 'items'
+        },
+        addons: {
+          productsArr: this.portalProducts.addons,
+          where: 'addons'
+        }
+      })
+      window.location.href = '/pages/bundle/#/subscription'
     },
     handleEditSchedule() {
       this.CUSTOMER_SET_THIS_CHARGEID(this.charge.id)

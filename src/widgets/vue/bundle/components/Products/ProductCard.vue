@@ -21,8 +21,7 @@
         <div class="pcard__add-to-cart">
           <product-btn-add-to-cart
             v-if="isProductInCart"
-            :id-collection="product.collection.id"
-            :id-product="product.id"
+            :product="product"
             :qt-product="qtProduct"
             :where="where"
             class="pcard__add-to-cart--open"
@@ -30,8 +29,7 @@
           <div v-else
             class="pcard__add-to-cart--first"
             @click="addToCart({
-              idCollection: product.collection.id,
-              idProduct: product.id,
+              product,
               where,
             })"
           >
@@ -99,8 +97,10 @@ export default {
       'sizes'
     ]),
     ...mapGetters('mealcart',[
-      'getProductFromCartByID',
       'getSizeSelected'
+    ]),
+    ...mapGetters('babcart',[
+      'getProductFromCartByID'
     ]),
     imageUrl() {
       const imgFound = this.product.media.find(item => item.position === 1)
@@ -142,7 +142,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('mealcart',[
+    ...mapActions('babcart',[
       'addToCart',
     ]),
     openModal() {

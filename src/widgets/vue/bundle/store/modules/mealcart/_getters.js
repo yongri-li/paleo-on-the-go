@@ -1,14 +1,10 @@
 export default {
-  getProductFromCartByID: (state) => ({id, where}) => {
-    const productFound = state.cart[where].find(item => item.id === id)
-    return productFound
-  },
   getSizeSelected: (state) => {
     const sizeFound = state.sizes.find(size => size.selected)
     return sizeFound
   },
-  getLengthAndTypeCart: (state) => {
-    const cartLength = state.cart.items.length
+  getLengthAndTypeCart: (state, getters, rootState) => {
+    const cartLength = rootState.babcart.cart.items.length
     const sizeFound = state.sizes.find(size => size.selected)
     return {
       length: cartLength,

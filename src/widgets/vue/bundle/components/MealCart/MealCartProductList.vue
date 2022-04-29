@@ -88,7 +88,7 @@ export default {
     }
   },
   computed: {
-    ...mapState('mealcart', [
+    ...mapState('babcart', [
       'cart'
     ]),
     cartAddOnsLength() {

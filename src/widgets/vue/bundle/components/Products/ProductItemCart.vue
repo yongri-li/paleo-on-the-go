@@ -24,8 +24,7 @@
     </div>
     <product-btn-add-to-cart
       class="pitemcart__add-to-cart"
-      :id-collection="product.collection.id"
-      :id-product="product.id"
+      :product="product"
       :qt-product="product.quantity"
       :where="where"
     />
@@ -36,7 +35,7 @@
 import ProductBtnAddToCart from './ProductBtnAddToCart.vue'
 import { mapGetters } from 'vuex'
 import { formatPrice } from '@shared/utils'
-import { REMOVE_PRODUCT_TO_CART } from '../../store/modules/mealcart/_mutations-type'
+import { REMOVE_PRODUCT_TO_CART } from '@shared/store/modules/babcart/_mutations-type'
 
 export default {
   components: {
@@ -73,7 +72,7 @@ export default {
   },
   methods: {
     removeProductToCart() {
-      this.$store.commit(`mealcart/${REMOVE_PRODUCT_TO_CART}`, {
+      this.$store.commit(`babcart/${REMOVE_PRODUCT_TO_CART}`, {
         idProduct: this.product.id,
         where: this.where,
       })

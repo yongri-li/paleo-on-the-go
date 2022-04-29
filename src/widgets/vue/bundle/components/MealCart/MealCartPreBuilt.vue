@@ -28,7 +28,7 @@
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex'
-import { CLEAN_ALL_CART } from '../../store/modules/mealcart/_mutations-type'
+import { CLEAN_ALL_CART } from '@shared/store/modules/babcart/_mutations-type'
 
 export default {
   data() {
@@ -76,7 +76,7 @@ export default {
       else {
         this.selected = false
 
-        this.$store.commit(`mealcart/${CLEAN_ALL_CART}`)
+        this.$store.commit(`babcart/${CLEAN_ALL_CART}`)
       }
     }
   }
