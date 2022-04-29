@@ -4,7 +4,7 @@
     v-if="content && !isMobile"
     :style="{ backgroundImage: `url('${content.bg_image_lg}')` }"
   >
-    <section class="c-shipments__hero--wrap">
+    <section class="c-shipments__hero--wrap" v-if="nextCharge">
       <h1 class="c-h1">
         {{ content.main_heading }}<span> {{ formatDayDateIOS(nextCharge.scheduledAt) }}</span>
       </h1>
@@ -13,6 +13,9 @@
         <button class="c-button c-button--isDefault c-button--isPrimary">Earn Points</button>
         <button class="c-button c-button--isDefault c-button--isPrimary">Redeem Rewards</button>
       </div>
+    </section>
+    <section class="c-shipments__hero--wrap" v-else>
+      <h1 class="c-h1">{{ content.no_subs_hero_heading }}, {{ firstName }}</span></h1>
     </section>
   </div>
 </template>
@@ -41,7 +44,10 @@ export default {
       return this.$store.getters['customize/customizeContentByKey']('shipments')
     },
     nextCharge() {
-      return this.customerUpcomingCharges[0]
+      return this.customerUpcomingCharges.length ? this.customerUpcomingCharges[0] : null
+    },
+    firstName() {
+      return customer.first_name
     }
   },
   methods: {

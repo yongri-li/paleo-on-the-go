@@ -17,12 +17,12 @@
             :allProducts="allProducts"
             :shipDate="formatDayDateIOS(charge.scheduledAt)"
           />
-          <!-- :addressId="addressIds[i]" -->
         </section>
+        <c-shipmentsEmpty v-if="!charges.length" :content="content" />
       </div>
     </article>
 
-    <c-faqAccordion v-if="content" :faqs="content.portal_faq" :title="faqTitle" />
+    <c-faqAccordion v-if="content && charges.length" :faqs="content.portal_faq" :title="faqTitle" />
   </div>
 </template>
 
