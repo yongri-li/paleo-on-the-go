@@ -6,7 +6,7 @@
   >
     <div class="product-list__items">
       <div class="product-list__title" @click="toggleHiddens('items')">
-        {{ cart.items.length }} ITEM BOX
+        {{ cartBoxLength }} ITEM BOX
         <div
           :class="{ show: productsHidden.items}"
           class="product-list__title--drop-down"
@@ -25,6 +25,7 @@
           :key="item.id"
           :product="item"
           :type-class="typeClass"
+          where="items"
         />
       </div>
     </div>
@@ -32,7 +33,7 @@
       <div class="product-list__title" @click="toggleHiddens('addons')">
         ONE TIME ADD-ONS
         <div class="product-list__title--qt">
-          {{cartAddOnsLenght}} ITEM
+          {{cartAddOnsLength}} ITEM
           <div
             :class="{ show: productsHidden.addons}"
             class="product-list__title--drop-down"
@@ -51,6 +52,7 @@
           v-for="item in cart.addons"
           :key="item.id"
           :product="item"
+          where="addons"
         />
       </div>
     </div>
@@ -86,13 +88,20 @@ export default {
     }
   },
   computed: {
-    ...mapState('mealcart', [
+    ...mapState('babcart', [
       'cart'
     ]),
-    cartAddOnsLenght() {
+    cartAddOnsLength() {
       let length = 0
       this.cart.addons.forEach(addon => {
         length += addon.quantity
+      })
+      return length
+    },
+    cartBoxLength() {
+      let length = 0
+      this.cart.items.forEach(item => {
+        length += item.quantity
       })
       return length
     }
@@ -133,9 +142,14 @@ export default {
   }
 
   &__products {
-    height: 43vh;
+    height: calc(96vh - 430px);
     overflow-y: scroll;
     transition: all .7s ease-out;
+
+    @include media-tablet-up {
+      height: 43vh;
+      max-height: 410px;
+    }
   }
 }
 

@@ -6,5 +6,3 @@ export const ADD_ROUTE_PROTECTION_TO_CART = 'addRouteProtectionToCart'
 export const REMOVE_ROUTE_PROTECTION_TO_CART = 'removeRouteProtectionToCart'
 
 export const SET_SIZE_SELECTED = 'setSizeSelected'
-
-export const ADD_PRODUCTS_TO_CART = 'addProductsToCart'

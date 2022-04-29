@@ -66,7 +66,7 @@ export default {
     },
     warning() {
       const diff = this.cartLength - this.sizeSelected.number_size
-      return diff > 0
+      return (diff > 0) && !(this.sizeSelected.order_type === 'onetime')
     }
   },
   methods: {

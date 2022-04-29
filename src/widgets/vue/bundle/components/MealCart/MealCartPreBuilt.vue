@@ -28,7 +28,7 @@
 
 <script>
 import { mapGetters, mapState, mapActions } from 'vuex'
-import { CLEAN_ALL_CART } from '../../store/modules/mealcart/_mutations-type'
+import { CLEAN_ALL_CART } from '@shared/store/modules/babcart/_mutations-type'
 
 export default {
   data() {
@@ -70,12 +70,13 @@ export default {
           bundlename: val.label,
           size: val.size
         })
+        console.log('products',products)
         this.validateSetPrebuilt(products)
       }
       else {
         this.selected = false
 
-        this.$store.commit(`mealcart/${CLEAN_ALL_CART}`)
+        this.$store.commit(`babcart/${CLEAN_ALL_CART}`)
       }
     }
   }
@@ -90,6 +91,7 @@ export default {
   border-bottom: 1px solid $color-ecru;
   padding: 1rem 0.5rem;
   margin-top: .5rem;
+  height: 77px;
 
   &__info {
     width: 40%;

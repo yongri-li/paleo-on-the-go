@@ -97,6 +97,11 @@ export default {
   flex-wrap: wrap;
   justify-content: space-between;
   align-items: center;
+  height: 145px;
+
+  @include media-tablet-up {
+    height: auto;
+  }
 
   &__option {
     width: 48%;

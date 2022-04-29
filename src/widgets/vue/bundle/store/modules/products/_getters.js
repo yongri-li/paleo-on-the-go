@@ -31,7 +31,7 @@ export default {
   },
   getFirstProductFromCollectionsByID: (state) => (idProduct) => {
     const collectionFound = state.collections.find(collection => collection.products.find(product => product.id == idProduct))
-    let productFound = {}
+    let productFound = null
     if(!!collectionFound) {
       productFound = collectionFound.products.find(product => product.id == idProduct)
     }

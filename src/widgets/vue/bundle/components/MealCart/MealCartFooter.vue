@@ -17,6 +17,7 @@
 
     <c-button
       class="c-cta meal-cart__btn-next"
+      :class="{ disable: notContinue }"
       @click="nextStep"
       :loading="loading"
       :text="ctabtn"
@@ -89,16 +90,19 @@ export default {
     ...mapState('cartdrawer', [
       'cartItems'
     ]),
+    priceAddOns() {
+      return this.typeClass === 'addons' ? this.cartAddOns : 0
+    },
     final() {
       const discount = this.sizeSelected.discount / 100
-      const total = this.subtotal * (1 - discount) + this.cartAddOns
+      const total = this.subtotal * (1 - discount) + this.priceAddOns
       return total === 0 ? '$0.00' : formatPrice(total)
     },
     isCustomer() {
       return customer.email && customer.shopify_id ? true : false
     },
     subtotalFormat() {
-      return formatPrice(this.subtotal + this.cartAddOns)
+      return formatPrice(this.subtotal + this.priceAddOns)
     },
     ctabtn() {
       if (this.cartLength === 0) {
@@ -110,7 +114,7 @@ export default {
       if (param === 'addons' && this.fromPortal && this.isCustomer) return 'Save Changes'
 
       const diff = this.cartLength - this.sizeSelected.number_size
-      if (diff > 0) {
+      if (diff > 0 && this.typeClass === 'subscription') {
         this.notContinue = true
         return `Remove ${diff} items to Continue`
       }
@@ -122,7 +126,8 @@ export default {
 
       if (this.cartAddOns === 0 && this.typeClass === 'addons') {
         this.notContinue = false
-        return `No Thanks Continue to Checkout`
+        const ctaAddonsButton = window.Scoutside.bundle.mealcart.content.cta_addons_button || `No Thanks Continue to Checkout`
+        return ctaAddonsButton
       }
 
       if (this.typeClass === 'subscription') {

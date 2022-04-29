@@ -61,6 +61,9 @@ export default {
     ...mapState('modals',[
       'modal'
     ]),
+    ...mapState('babcart',[
+      'cart'
+    ]),
     ...mapGetters('products',[
       'getProductsFromRoute'
     ]),

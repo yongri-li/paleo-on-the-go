@@ -36,7 +36,8 @@ import MealCartBody from './MealCartBody.vue'
 import MealCartFooter from './MealCartFooter.vue'
 
 import { mapState, mapGetters } from 'vuex'
-import { CHANGE_SIZE_SELECTED, CLEAN_ALL_CART } from '../../store/modules/mealcart/_mutations-type'
+import { CHANGE_SIZE_SELECTED } from '../../store/modules/mealcart/_mutations-type'
+import { CLEAN_ALL_CART } from '@shared/store/modules/babcart/_mutations-type'
 
 import { changeRouter } from '../../utils'
 
@@ -55,8 +56,12 @@ export default {
     }
   },
   computed: {
-    ...mapState('mealcart', ['cart']),
-    ...mapGetters('mealcart', ['getSizeSelected']),
+    ...mapState('babcart', [
+      'cart'
+    ]),
+    ...mapGetters('mealcart', [
+      'getSizeSelected'
+    ]),
     haveProductsClass() {
       return this.cart.items.length ? 'with-products' : 'without-products'
     },
@@ -169,7 +174,7 @@ export default {
       if (box === 'onetime' && orderType !== 'onetime') {
         console.log('entro al if del /onetime')
         this.$store.commit(`mealcart/${CHANGE_SIZE_SELECTED}`, { val: 'onetime' })
-        this.$store.commit(`mealcart/${CLEAN_ALL_CART}`)
+        this.$store.commit(`babcart/${CLEAN_ALL_CART}`)
         return
       }
 
@@ -177,7 +182,7 @@ export default {
       if (box === 'subscription' && orderType !== 'subscription') {
         console.log('entro al if del /subscription')
         this.$store.commit(`mealcart/${CHANGE_SIZE_SELECTED}`, { val: '12items' })
-        this.$store.commit(`mealcart/${CLEAN_ALL_CART}`)
+        this.$store.commit(`babcart/${CLEAN_ALL_CART}`)
         return
       }
     },
@@ -206,7 +211,7 @@ $translateY: calc(100% - $height-header-title);
     left: 0;
     width: 100%;
     background-color: $color-white;
-    height: calc(89vh - $height-footer);
+    height: calc(96vh - $height-footer);
     z-index: 100;
     filter: drop-shadow(0px -4px 34px rgba(0, 0, 0, 0.1));
     border-radius: 20px 20px 0px 0px;

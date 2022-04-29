@@ -3,17 +3,18 @@
 
   {% for block in section.blocks %}
     {% assign _collection = collections[block.settings.collection] %}
+    var collectionJSON = JSON.parse( JSON.stringify({{ _collection | json }}) )
     collections.push({
-      ...JSON.parse('{{ _collection | json }}'),
+      ...collectionJSON,
       short_description: '{{ block.settings.short_description }}',
       url: '{{ block.settings.url }}',
       products: [
         {% paginate _collection.products by 50 %}
           {% for _product in _collection.products %}
             {
-              ...JSON.parse(JSON.stringify({{ _product | json }})),
+              ...JSON.parse( JSON.stringify({{ _product | json }}) ),
               url: '{{ _product.url }}',
-              collection: JSON.parse('{{ _collection | json }}'),
+              collection: collectionJSON,
               subtitle: '{{ _product.metafields.my_fields.subtitle }}',
               info: {
                 description: `{{ _product.description }}`,
@@ -23,7 +24,7 @@
               },
               {% for variant in _product.variants %}
                 price_hashes: '{{ variant.price | money_without_currency | hmac_sha256: settings.custom_app_secret }}',
-              {% endfor %}                
+              {% endfor %}
             },
           {% endfor %}
         {% endpaginate %}
