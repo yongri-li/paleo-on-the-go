@@ -126,10 +126,10 @@ export default {
       date.setMonth(date.getMonth() + num)
       this.newChargeDate = date
     },
-    setDisabledFrom(datee, num) {
-      const date = new Date(datee)
-      date.setMonth(date.getMonth() + num)
-      return date
+    setDisabledFrom(date, days) {
+      const result = new Date(date)
+      result.setDate(result.getDate() + days)
+      return result
     },
     showDelayModal() {
       this.UI_SET_MODAL({
@@ -179,7 +179,7 @@ export default {
     }
   },
   async mounted() {
-    const calEnd = this.setDisabledFrom(this.nextChargeDate, 3)
+    const calEnd = this.setDisabledFrom(new Date(), 90)
     this.disabledDates.from = calEnd
 
     document.addEventListener(
@@ -294,6 +294,10 @@ export default {
       font-size: 1.875rem;
       text-transform: uppercase;
       pointer-events: none;
+    }
+
+    span.cell:nth-child(36) {
+      display: none;
     }
   }
 }

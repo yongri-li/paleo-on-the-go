@@ -6,8 +6,7 @@
   >
     <section class="c-shipments__hero--wrap">
       <h1 class="c-h1">
-        Your Next Box is<br />
-        Set for <span> {{ formatDayDateIOS(nextCharge.scheduledAt) }}</span>
+        {{ content.main_heading }}<span> {{ formatDayDateIOS(nextCharge.scheduledAt) }}</span>
       </h1>
       <h5 class="c-h5">Rewards Balance: {{ '1,200 Points' }}</h5>
       <div class="c-shipments__hero--btns">
@@ -81,6 +80,12 @@ export default {
     .c-shipments__hero--btns {
       display: flex;
       grid-gap: 1.5rem;
+    }
+
+    @include media-desktop-up {
+      h1 {
+        max-width: 33vw;
+      }
     }
   }
 }
