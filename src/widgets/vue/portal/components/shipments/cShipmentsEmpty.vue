@@ -45,7 +45,7 @@ export default {
 
   &__wrap {
     display: flex;
-    grid-gap: 4rem;
+    grid-gap: 5rem;
     min-height: 50vh;
     align-items: center;
     justify-content: space-evenly;

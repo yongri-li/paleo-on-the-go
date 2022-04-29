@@ -60,7 +60,7 @@ export default {
 		padding: 0;
 
 		&--inner {
-			padding: 3rem;
+			padding: 3rem 33% 3rem 3rem;
 
 			.post-title {
 				letter-spacing: 1px;
@@ -69,6 +69,11 @@ export default {
 
 			.c-h1 {
 				color: $color-primary;
+			}
+
+			p {
+				letter-spacing: 0.5px;
+				line-height: 1.7;
 			}
 		}
 	}

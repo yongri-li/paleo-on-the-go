@@ -1,11 +1,12 @@
 .c-blogList {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(358px, 1fr));
+  grid-template-columns: repeat(3, 1fr);
   grid-gap: 3.75rem;
   padding: 1rem clamp(0.75rem, 2vw, 3rem) 3rem;
 
   @include media-mobile-down {
     grid-gap: 2rem;
+    grid-template-columns: repeat(1, 1fr);
   }
 
   @include media-tablet-up {
