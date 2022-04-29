@@ -1,0 +1,19 @@
+<script>
+  window.Scoutside = window.Scoutside || {};
+  window.Scoutside.realfood = window.Scoutside.realfood || {};
+</script>
+
+{% section 'widget-ancillary-hero' %}
+{% section 'widget-realfood-feature' %}
+{% section 'widget-realfood-blocks' %}
+{% section 'widget-ancillary-accordions' %}
+{% section 'widget-realfood-bottombanner' %}
+{% section 'widget-ancillary-bottombanner' %}
+
+<v-realfood
+  id="v-realfood"
+  class="v-widget"
+> </v-realfood>
+
+{{ 'widget-realfood.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'widget-realfood.js' | asset_url }}"></script>
