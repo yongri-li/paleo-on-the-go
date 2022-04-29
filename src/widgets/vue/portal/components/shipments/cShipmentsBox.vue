@@ -224,7 +224,7 @@ export default {
     ...mapMutations('ui', ['UI_SET_SIDEBAR', 'UI_SET_MODAL']),
     ...mapMutations('customer', ['CUSTOMER_SET_THIS_CHARGEID', 'CUSTOMER_SET_NEXT_CHARGEDATE']),
     // ...mapActions('cartdrawer', ['addToCartFromPortal']),
-    ...mapActions(['addToCartFromPortal']),
+    // ...mapActions(['addToCartFromPortal']),
     setBoxMaxHeight() {
       this.setBoxHeight = !this.setBoxHeight
     },
@@ -233,11 +233,11 @@ export default {
       sessionStorage.setItem('boxSize', this.totalSubItems)
       sessionStorage.setItem('addressId', this.addressId)
       sessionStorage.setItem('nextChargeDate', this.charge.scheduledAt)
-      this.addToCartFromPortal({
-        productsArr: this.portalProducts,
-        where: 'items'
-      })
-      window.location.href = '/pages/bundle/#/subscription'
+      // this.addToCartFromPortal({
+      //   productsArr: this.portalProducts,
+      //   where: 'items'
+      // })
+      // window.location.href = '/pages/bundle/#/subscription'
     },
     handleEditSchedule() {
       this.CUSTOMER_SET_THIS_CHARGEID(this.charge.id)
