@@ -1,18 +1,10 @@
 <template>
   <article class="c-homeFaqs vueComp__portal">
     <h2 class="c-h1">
-      <span class="u-highlightText--secondary">
-        {{ title.first }}
-      </span>
-      {{ title.second }}
+      <span class="u-highlightText--secondary">{{ title[0] }}</span> {{ title[1] }}
     </h2>
-    <section
-      v-for="(faq, index) in content"
-      :key="index"
-      class="c-homeFaqs__item"
-      ref="faqItem"
-    >
-      <button class="c-homeFaqs__item-question">
+    <section v-for="(faq, index) in faqs" class="c-homeFaqs__item" ref="faqItem">
+      <button>
         {{ faq.box_question }}
         <c-svg class="icon-opened" name="minusIcon" />
         <c-svg class="icon-closed" name="plusIcon" />
@@ -34,13 +26,7 @@ export default {
       default: () => []
     },
     title: {
-      type: Object,
-      default: () => {
-        return {
-          first: 'Common',
-          second: 'Questions'
-        }
-      }
+      type: [Array, String]
     }
   },
   components: { cSvg },
