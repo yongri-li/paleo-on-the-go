@@ -1,0 +1,61 @@
+<script>
+  const gridAccordions = {}
+  gridAccordions.blocks = []
+  {% for block in section.blocks %}
+    gridAccordions.blocks.push({
+      ...JSON.parse('{{ block.settings | json }}')
+    })
+  {% endfor %}
+
+  window.Scoutside.foodsourcing.grid = gridAccordions
+</script>
+
+
+{% schema %}
+  {
+    "name": "Grid Accordions Section",
+    "blocks": [
+      {
+        "name": "CONTENT",
+        "type": "content",
+        "settings": [
+          {
+            "label": "Title",
+            "type": "text",
+            "id": "title"
+          },
+          {
+            "label": "Image 1",
+            "type": "image_picker",
+            "id": "img_1"
+          },
+          {
+            "label": "Text 1",
+            "type": "text",
+            "id": "text_1"
+          },
+          {
+            "label": "Link 1",
+            "type": "text",
+            "id": "link_1"
+          },
+          {
+            "label": "Image 2",
+            "type": "image_picker",
+            "id": "img_2"
+          },
+          {
+            "label": "Text 2",
+            "type": "text",
+            "id": "text_2"
+          },
+          {
+            "label": "Link 2",
+            "type": "text",
+            "id": "link_2"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

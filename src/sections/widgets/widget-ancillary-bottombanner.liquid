@@ -1,0 +1,22 @@
+<script>
+  window.Scoutside = window.Scoutside || {};
+  window.Scoutside.ancillary = window.Scoutside.ancillary || {};
+
+  const ancillaryBottomBanner = {}
+  ancillaryBottomBanner.content = {{ section.settings | json }}
+
+  window.Scoutside.ancillary.bottomBanner = ancillaryBottomBanner
+</script>
+
+{% schema %}
+  {
+    "name": "Subscribe Bottom",
+    "settings": [
+      {
+        "label": "Title",
+        "type": "text",
+        "id": "tagline"
+      }
+    ]
+  }
+{% endschema %}

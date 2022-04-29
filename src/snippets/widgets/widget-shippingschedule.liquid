@@ -1,0 +1,18 @@
+<script>
+  window.Scoutside = window.Scoutside || {};
+  window.Scoutside.shippingschedule = window.Scoutside.shippingschedule || {};
+</script>
+
+{% section 'widget-shippingschedule-hero' %}
+{% section 'widget-shippingschedule-desc' %}
+{% section 'widget-shippingschedule-map' %}
+{% section 'widget-shippingschedule-icons' %}
+{% section 'widget-shippingschedule-info' %}
+
+<v-shipping-schedule
+  id="v-shipping-schedule"
+  class="v-widget"
+> </v-shipping-schedule>
+
+{{ 'widget-shippingschedule.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'widget-shippingschedule.js' | asset_url }}"></script>

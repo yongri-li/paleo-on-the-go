@@ -1,0 +1,40 @@
+<script>
+  const blocksRealFood = {}
+  blocksRealFood.blocks = []
+  {% for block in section.blocks %}
+    blocksRealFood.blocks.push({
+      ...JSON.parse('{{ block.settings | json }}')
+    })
+  {% endfor %}
+
+  window.Scoutside.realfood.alternating = blocksRealFood
+</script>
+
+{% schema %}
+  {
+    "name": "Feature Block",
+    "blocks": [
+      {
+        "type": "block",
+        "name": "BLOCK",
+        "settings": [
+          {
+            "label": "Image",
+            "type": "image_picker",
+            "id": "image"
+          },
+          {
+            "label": "Header",
+            "type": "text",
+            "id": "header"
+          },
+          {
+            "label": "Body",
+            "type": "richtext",
+            "id": "body"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,25 @@
+<script>
+  const policies = {}
+  policies.content = {{ section.settings | json }}
+
+  window.Scoutside.policies = policies
+</script>
+
+{% schema %}
+  {
+    "name": "Policies",
+    "settings": [
+      {
+        "label": "Header",
+        "type": "text",
+        "id": "header",
+        "default": "TERMS OF SERVICE"
+      },
+      {
+        "label": "Body",
+        "type": "richtext",
+        "id": "body"
+      }
+    ]
+  }
+{% endschema %}

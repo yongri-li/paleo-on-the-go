@@ -1,0 +1,32 @@
+<script>
+  window.Scoutside = window.Scoutside || {};
+  window.Scoutside.ancillary = window.Scoutside.ancillary || {};
+
+  const heroAncillary = {}
+  heroAncillary.content = {{ section.settings | json }}
+
+  window.Scoutside.ancillary.hero = heroAncillary
+</script>
+
+{% schema %}
+  {
+    "name": "Hero Ancillary",
+    "settings": [
+      {
+        "label": "Desk Background",
+        "type": "image_picker",
+        "id": "desk_bg"
+      },
+      {
+        "label": "Mobile Background",
+        "type": "image_picker",
+        "id": "mobile_bg"
+      },
+      {
+        "label": "Text",
+        "type": "text",
+        "id": "text"
+      }
+    ]
+  }
+{% endschema %}

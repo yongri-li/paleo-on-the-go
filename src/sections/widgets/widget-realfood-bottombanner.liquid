@@ -1,0 +1,34 @@
+<script>
+  const bottomBanner = {}
+  bottomBanner.content = {{ section.settings | json }}
+
+  window.Scoutside.realfood.bottomBanner = bottomBanner
+</script>
+
+{% schema %}
+  {
+    "name": "Bottom Banner",
+    "settings": [
+      {
+        "label": "Background Image",
+        "type": "image_picker",
+        "id": "bg_image"
+      },
+      {
+        "label": "Title",
+        "type": "text",
+        "id": "title"
+      },
+      {
+        "label": "Button Text",
+        "type": "text",
+        "id": "button_text"
+      },
+      {
+        "label": "Button URL",
+        "type": "text",
+        "id": "button_url"
+      }
+    ]
+  }
+{% endschema %}

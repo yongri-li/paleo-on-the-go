@@ -1,0 +1,39 @@
+<script>
+  const featureRealFood = {}
+  featureRealFood.content = {{ section.settings | json }}
+
+  window.Scoutside.realfood.feature = featureRealFood
+</script>
+
+{% schema %}
+  {
+    "name": "Feature Block",
+    "settings": [
+      {
+        "label": "Subtext",
+        "type": "text",
+        "id": "subtext"
+      },
+      {
+        "label": "Header",
+        "type": "text",
+        "id": "header"
+      },
+      {
+        "label": "Image Card",
+        "type": "image_picker",
+        "id": "image_card"
+      },
+      {
+        "label": "Header Card",
+        "type": "text",
+        "id": "header_card"
+      },
+      {
+        "label": "Body Card",
+        "type": "richtext",
+        "id": "body_card"
+      }
+    ]
+  }
+{% endschema %}

@@ -1,0 +1,45 @@
+<script>
+  const tilesFoodSourcing = {}
+  tilesFoodSourcing.blocks = []
+  {% for block in section.blocks %}
+    tilesFoodSourcing.blocks.push({
+      ...JSON.parse('{{ block.settings | json }}')
+    })
+  {% endfor %}
+
+  window.Scoutside.foodsourcing.tiles = tilesFoodSourcing
+</script>
+
+{% schema %}
+  {
+    "name": "Tiles Section",
+    "blocks": [
+      {
+        "type": "tile",
+        "name": "TILES",
+        "settings": [
+          {
+            "label": "Image",
+            "type": "image_picker",
+            "id": "img"
+          },
+          {
+            "label": "Title",
+            "type": "text",
+            "id": "title"
+          },
+          {
+            "label": "Subtitle",
+            "type": "text",
+            "id": "subtitle"
+          },
+          {
+            "label": "Text",
+            "type": "richtext",
+            "id": "text"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
