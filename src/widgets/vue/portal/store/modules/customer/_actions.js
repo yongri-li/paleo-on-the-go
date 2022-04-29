@@ -6,7 +6,6 @@ import subscriptionsActions from './subscriptions/_actions'
 
 export default {
   async customerSetState({ commit }) {
-    console.log('testing here')
     try {
       const apiClient = new apiService()
       const { data } = await apiClient.get('/v1/customer/account')
@@ -40,7 +39,6 @@ export default {
   },
   async customerUpdateBilling({ commit }, payload) {
     try {
-      console.log(payload)
       const { updates, address } = payload
       const apiClient = new apiService()
       const { data } = await apiClient.put('/v1/customer/billing', { data: { address } })

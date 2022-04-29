@@ -3,11 +3,6 @@ const state = {
     box: [],
     general: []
   },
-  cart: {
-    items: [],
-    addons: [],
-    pdp: []
-  },
   sizeSelected: {},
   routeProduct: {}
 }

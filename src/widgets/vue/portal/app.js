@@ -6,13 +6,11 @@ import store from './store'
 import cartDrawerStore from '@shared/cartdrawer/store'
 import Portal from './components/Portal.vue'
 
-const { newAddToCart, newCleanCart, addToCartFromPortal } = cartDrawerStore._actions
+//const { newAddToCart, newCleanCart, addToCartFromPortal } = cartDrawerStore._actions
 const fullStore = store
-fullStore._actions.newAddToCart = newAddToCart
-fullStore._actions.newCleanCart = newCleanCart
-fullStore._actions.addToCartFromPortal = addToCartFromPortal
-
-console.log(fullStore, cartDrawerStore)
+// fullStore._actions.newAddToCart = newAddToCart
+// fullStore._actions.newCleanCart = newCleanCart
+// fullStore._actions.addToCartFromPortal = addToCartFromPortal
 // wrappedActionHandler(payload)
 
 /* Register Mixins */

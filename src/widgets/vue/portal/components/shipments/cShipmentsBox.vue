@@ -223,10 +223,8 @@ export default {
   methods: {
     ...mapMutations('ui', ['UI_SET_SIDEBAR', 'UI_SET_MODAL']),
     ...mapMutations('customer', ['CUSTOMER_SET_THIS_CHARGEID', 'CUSTOMER_SET_NEXT_CHARGEDATE']),
-    ...mapActions(['newAddToCart', 'newCleanCart', 'addToCartFromPortal']),
-    clearcart() {
-      this.newCleanCart()
-    },
+    // ...mapActions('cartdrawer', ['addToCartFromPortal']),
+    ...mapActions(['addToCartFromPortal']),
     setBoxMaxHeight() {
       this.setBoxHeight = !this.setBoxHeight
     },

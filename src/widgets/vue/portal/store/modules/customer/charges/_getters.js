@@ -15,6 +15,8 @@ export default {
     // const todayUTC = today.getUTCHours()
     // today.setUTCHours(todayUTC)
 
+    console.log('asdsad', charges)
+
     if (charges) {
       return charges
         .filter(charge => {

@@ -1,6 +1,9 @@
 import '@styles/index.scss'
 import { tns } from 'tiny-slider/src/tiny-slider'
 
+// const windowPath = window.location.pathname
+// if (windowPath === '/account') window.location.href = '/account#/shipments/'
+
 const isHomepage = document.querySelector('.o-homepage')
 const getStartedBtns = document.querySelectorAll('[data-get-started]')
 

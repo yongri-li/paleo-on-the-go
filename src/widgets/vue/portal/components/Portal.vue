@@ -18,6 +18,7 @@
 <script>
 import { mapState, mapGetters, mapMutations, mapActions } from 'vuex'
 import setup from '../_setup'
+import redirect from '../_redirect'
 import cPortalHeader from './theme/cPortalHeader.vue'
 import cPortalHero from './theme/cPortalHero.vue'
 import cModal from './theme/cModal.vue'
@@ -123,6 +124,18 @@ export default {
       immediate: true,
       handler(val) {
         if (val) setup(this)
+      }
+    },
+    customerReady: {
+      handler(val) {
+        if (val) redirect(this)
+      }
+    },
+    $route: {
+      handler(val) {
+        if (val.name) {
+          redirect(this)
+        }
       }
     }
   }

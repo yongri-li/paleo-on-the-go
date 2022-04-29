@@ -1,12 +1,12 @@
 <template>
   <div class="c-sidebarEditSchedule">
-    <h5 class="c-h5">Need a Break?</h5>
+    <h5 class="c-h5">{{ edit_break }}</h5>
     <button class="c-button c-button--isDefault c-button--isPrimary" @click="showDelayModal">
       Delay 1 Month
     </button>
     <hr />
 
-    <h5 class="c-h5">Edit Frequency</h5>
+    <h5 class="c-h5">{{ edit_frequency }}</h5>
     <section v-if="chrgFreq" class="c-sidebar__pills">
       <div
         v-for="(pill, i) in 4"
@@ -19,7 +19,7 @@
     </section>
     <hr />
 
-    <h5 class="c-h5">Edit Charge Date</h5>
+    <h5 class="c-h5">{{ edit_charge_date }}</h5>
     <!-- <span>{{ chargeDate ? formatDayDateMMIOS(chargeDate) : selectDateText }}</span> -->
     <div class="placeholder-wrap" data-placeholder="Delivery Date: ">
       <datepicker
@@ -58,6 +58,7 @@ import { _buildUpdates } from '@vue/portal/utils'
 export default {
   data() {
     return {
+      ...window.Scoutside.portal.sidebars,
       chrgFreq: null,
       availableForDelivery: {
         days: []
