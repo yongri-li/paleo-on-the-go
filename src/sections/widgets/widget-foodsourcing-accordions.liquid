@@ -1,0 +1,40 @@
+<script>
+  window.Scoutside = window.Scoutside || {};
+  window.Scoutside.ancillary = window.Scoutside.ancillary || {};
+
+  const AncillaryAccordions = {}
+  AncillaryAccordions.blocks = []
+  {% for block in section.blocks %}
+    AncillaryAccordions.blocks.push({
+      ...JSON.parse('{{ block.settings | json }}')
+    })
+  {% endfor %}
+
+  window.Scoutside.ancillary.accordions = AncillaryAccordions
+</script>
+
+
+{% schema %}
+  {
+    "name": "Accordions Section",
+    "max_blocks": 6,
+    "blocks": [
+      {
+        "name": "FAQs",
+        "type": "faq",
+        "settings": [
+          {
+            "label": "Question",
+            "type": "text",
+            "id": "box_question"
+          },
+          {
+            "label": "Answer",
+            "type": "textarea",
+            "id": "box_answer"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

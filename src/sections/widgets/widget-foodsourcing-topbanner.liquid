@@ -1,0 +1,29 @@
+<script>
+  const topBanner = {}
+  topBanner.content = {{ section.settings | json }}
+
+  window.Scoutside.foodsourcing.topBanner = topBanner
+</script>
+
+{% schema %}
+  {
+    "name": "Top Banner",
+    "settings": [
+      {
+        "label": "Desk Background",
+        "type": "image_picker",
+        "id": "desk_bg"
+      },
+      {
+        "label": "Mobile Background",
+        "type": "image_picker",
+        "id": "mobile_bg"
+      },
+      {
+        "label": "Text",
+        "type": "text",
+        "id": "text"
+      }
+    ]
+  }
+{% endschema %}

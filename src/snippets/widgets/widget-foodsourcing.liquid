@@ -1,0 +1,17 @@
+<script>
+  window.Scoutside = window.Scoutside || {};
+  window.Scoutside.foodsourcing = window.Scoutside.foodsourcing || {};
+</script>
+
+{% section 'widget-foodsourcing-topbanner' %}
+{% section 'widget-foodsourcing-tiles' %}
+{% section 'widget-foodsourcing-accordions' %}
+{% section 'widget-foodsourcing-grid' %}
+
+<v-foodsourcing
+  id="v-foodsourcing"
+  class="v-widget"
+> </v-foodsourcing>
+
+{{ 'widget-foodsourcing.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'widget-foodsourcing.js' | asset_url }}"></script>
