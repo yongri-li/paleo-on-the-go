@@ -34,8 +34,7 @@
       <c-faq-accordion :content="faqBlocks" />
     </section>
     <section class="bottom-container">
-      <c-bottom-hero :content="pageBottomBannerContent"/>
-      <c-bottom-banner :content="ancillaryBottomContent" />
+      <c-bottom-hero :content="pageBottomBannerContent" />
     </section>
   </div>
 </template>
@@ -45,20 +44,18 @@ import cHeroAncillary from '@shared/components/core/cHeroAncillary.vue'
 import cCardBlock from '@shared/components/parts/cCardBlock.vue'
 import cFaqAccordion from '@shared/components/core/cFaqAccordion.vue'
 import cBottomHero from '@shared/components/core/cBottomHero.vue'
-import cBottomBanner from '@shared/components/core/cBottomBanner.vue'
 
 export default {
   components: {
     cHeroAncillary,
     cCardBlock,
     cFaqAccordion,
-    cBottomHero,
-    cBottomBanner
+    cBottomHero
   },
   data() {
     return {
       dataAncillary: window.Scoutside.ancillary,
-      dataPage: window.Scoutside.realfood,
+      dataPage: window.Scoutside.realfood
     }
   },
   computed: {
@@ -76,16 +73,12 @@ export default {
     },
     pageBottomBannerContent() {
       return this.dataPage.bottomBanner.content
-    },
-    ancillaryBottomContent() {
-      return this.dataAncillary.bottomBanner.content
     }
   }
 }
 </script>
 
 <style lang="scss">
-
 .feature-container {
   margin: 1rem 0;
 
@@ -130,5 +123,4 @@ export default {
     }
   }
 }
-
 </style>
