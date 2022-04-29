@@ -2,7 +2,7 @@
   window.Scoutside = window.Scoutside || {};
   window.Scoutside.ancillary = window.Scoutside.ancillary || {};
 
-  const AncillaryAccordions = {}
+  let AncillaryAccordions = {}
   AncillaryAccordions.blocks = []
   {% for block in section.blocks %}
     AncillaryAccordions.blocks.push({
@@ -10,18 +10,30 @@
     })
   {% endfor %}
 
+  const titles = {{ section.settings | json }}
+  AncillaryAccordions = { ...AncillaryAccordions, ...titles }
+
   window.Scoutside.ancillary.accordions = AncillaryAccordions
+  
 </script>
 
 
 {% schema %}
   {
     "name": "Accordions Section",
+    "settings": [
+      {
+        "id": "faqs_title",
+        "type": "text",
+        "label": "FAQ Title",
+        "default": "Common Questions"
+      }
+    ],
     "blocks": [
       {
         "name": "FAQs",
         "type": "faq",
-        "settings": [
+        "settings": [            
           {
             "label": "Question",
             "type": "text",
