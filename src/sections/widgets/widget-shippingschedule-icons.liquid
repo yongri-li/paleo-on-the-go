@@ -1,0 +1,48 @@
+<script>
+  const iconSchedule = {}
+  iconSchedule.content = {{ section.settings | json }}
+  iconSchedule.blocks = []
+  {% for block in section.blocks %}
+    iconSchedule.blocks.push({
+      ...JSON.parse('{{ block.settings | json }}')
+    })
+  {% endfor %}
+
+  window.Scoutside.shippingschedule.icons = iconSchedule
+</script>
+
+{% schema %}
+  {
+    "name": "Icons Section",
+    "settings": [
+      {
+        "label": "Header",
+        "type": "text",
+        "id": "header"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "icon",
+        "name": "ICON",
+        "settings": [
+          {
+            "label": "Link",
+            "type": "text",
+            "id": "link"
+          },
+          {
+            "label": "Image Icon",
+            "type": "image_picker",
+            "id": "image_icon"
+          },
+          {
+            "label": "Text",
+            "type": "richtext",
+            "id": "text"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

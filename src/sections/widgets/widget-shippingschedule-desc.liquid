@@ -1,0 +1,24 @@
+<script>
+  const descriptionAncillary = {}
+  descriptionAncillary.content = {{ section.settings | json }}
+
+  window.Scoutside.shippingschedule.description = descriptionAncillary
+</script>
+
+{% schema %}
+  {
+    "name": "Description Section",
+    "settings": [
+      {
+        "label": "Header",
+        "type": "text",
+        "id": "header"
+      },
+      {
+        "label": "Body",
+        "type": "richtext",
+        "id": "body"
+      }
+    ]
+  }
+{% endschema %}
