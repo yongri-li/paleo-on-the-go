@@ -126,7 +126,8 @@ export default {
 
       if (this.cartAddOns === 0 && this.typeClass === 'addons') {
         this.notContinue = false
-        return `No Thanks Continue to Checkout`
+        const ctaAddonsButton = window.Scoutside.bundle.mealcart.content.cta_addons_button || `No Thanks Continue to Checkout`
+        return ctaAddonsButton
       }
 
       if (this.typeClass === 'subscription') {

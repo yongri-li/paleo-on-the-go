@@ -1,0 +1,20 @@
+<script>
+  const mealCartInfo = {}
+  mealCartInfo.content = {{ section.settings | json }}
+
+  window.Scoutside.bundle.mealcart = mealCartInfo
+</script>
+
+{% schema %}
+  {
+    "name": "Mealcart",
+    "settings": [
+      {
+        "label": "CTA Addons Checkout Button",
+        "type": "text",
+        "id": "cta_addons_button",
+        "default": "No Thanks Continue to Checkout"
+      }
+    ]
+  }
+{% endschema %}
