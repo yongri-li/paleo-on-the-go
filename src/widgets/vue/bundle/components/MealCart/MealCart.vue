@@ -206,7 +206,7 @@ $translateY: calc(100% - $height-header-title);
     left: 0;
     width: 100%;
     background-color: $color-white;
-    height: calc(89vh - $height-footer);
+    height: calc(96vh - $height-footer);
     z-index: 100;
     filter: drop-shadow(0px -4px 34px rgba(0, 0, 0, 0.1));
     border-radius: 20px 20px 0px 0px;

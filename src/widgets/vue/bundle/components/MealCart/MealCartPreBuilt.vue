@@ -91,6 +91,7 @@ export default {
   border-bottom: 1px solid $color-ecru;
   padding: 1rem 0.5rem;
   margin-top: .5rem;
+  height: 77px;
 
   &__info {
     width: 40%;

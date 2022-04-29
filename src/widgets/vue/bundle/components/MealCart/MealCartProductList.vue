@@ -142,9 +142,14 @@ export default {
   }
 
   &__products {
-    height: 43vh;
+    height: calc(96vh - 430px);
     overflow-y: scroll;
     transition: all .7s ease-out;
+
+    @include media-tablet-up {
+      height: 43vh;
+      max-height: 410px;
+    }
   }
 }
 
