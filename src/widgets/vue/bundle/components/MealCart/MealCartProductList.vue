@@ -6,7 +6,7 @@
   >
     <div class="product-list__items">
       <div class="product-list__title" @click="toggleHiddens('items')">
-        {{ cart.items.length }} ITEM BOX
+        {{ cartBoxLength }} ITEM BOX
         <div
           :class="{ show: productsHidden.items}"
           class="product-list__title--drop-down"
@@ -33,7 +33,7 @@
       <div class="product-list__title" @click="toggleHiddens('addons')">
         ONE TIME ADD-ONS
         <div class="product-list__title--qt">
-          {{cartAddOnsLenght}} ITEM
+          {{cartAddOnsLength}} ITEM
           <div
             :class="{ show: productsHidden.addons}"
             class="product-list__title--drop-down"
@@ -91,10 +91,17 @@ export default {
     ...mapState('mealcart', [
       'cart'
     ]),
-    cartAddOnsLenght() {
+    cartAddOnsLength() {
       let length = 0
       this.cart.addons.forEach(addon => {
         length += addon.quantity
+      })
+      return length
+    },
+    cartBoxLength() {
+      let length = 0
+      this.cart.items.forEach(item => {
+        length += item.quantity
       })
       return length
     }
