@@ -1,9 +1,12 @@
 <template>
   <div class="page o-containerLarge">
     <summary-component class="content-summary" />
-    <div class="content-box-cart">
+    <div v-if="hasVisibleCartItems" class="content-box-cart">
       <your-box v-if="cartItems.box.length"/>
-      <your-cart v-if="cartItems.general.length"/>
+      <your-cart v-if="visibleCartItems.length"/>
+    </div>
+    <div v-else>
+      Cart is Empty
     </div>
   </div>
 </template>
@@ -28,7 +31,13 @@ export default {
     ]),
     ...mapState('ui',[
       'test'
-    ])
+    ]),
+    visibleCartItems() {
+      return this.cartItems.general.filter(item => item.hide !== true)
+    },
+    hasVisibleCartItems() {
+      return this.visibleCartItems.length || this.cartItems.box.length
+    }
   }
 }
 </script>
