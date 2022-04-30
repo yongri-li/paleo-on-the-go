@@ -1,7 +1,7 @@
 <template>
   <div class="yc-body">
     <product-item-cart
-      v-for="item in cartItems.general"
+      v-for="item in filteredItems"
       :key="item.id"
       :product="item"
       class="yc-body__item"
@@ -20,7 +20,10 @@ export default {
   computed: {
     ...mapState('cartdrawer', [
       'cartItems'
-    ])
+    ]),
+    filteredItems() {
+      return this.cartItems.general.filter(item => item.hide !== true)
+    }
   }
 }
 </script>

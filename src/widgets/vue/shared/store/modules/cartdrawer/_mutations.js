@@ -64,5 +64,11 @@ export default {
     state.cartItems.general.push({
       ...routeProduct
     })
+  },
+  REMOVE_ITEM_FROM_CART (state, id) {
+    const indexFound = state.cartItems.general.findIndex(item => item.id === id)
+    if(indexFound > -1) {
+      state.cartItems.general.splice(indexFound, 1)
+    }
   }
 }
