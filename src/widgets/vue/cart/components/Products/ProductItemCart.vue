@@ -37,13 +37,14 @@
     <div class="pitem__price u-hideMobileDown">
       {{ finalPrice }}
     </div>
-    <div class="pitem__remove u-hideMobileDown">
+    <div @click="removeItem(product.id)" class="pitem__remove u-hideMobileDown">
       Remove
     </div>
   </div>
 </template>
 
 <script>
+import { mapMutations } from 'vuex'
 import { formatPrice } from '@shared/utils'
 
 export default {
@@ -62,7 +63,13 @@ export default {
     finalPrice() {
       return formatPrice(this.product.price * this.product.quantity)
     }
-  }
+  },
+  methods: {
+    ...mapMutations('cartdrawer', ['REMOVE_ITEM_FROM_CART']),
+    removeItem(id) {
+      this.REMOVE_ITEM_FROM_CART(id)
+    }
+  },
 }
 </script>
 
