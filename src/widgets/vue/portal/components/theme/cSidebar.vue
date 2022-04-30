@@ -59,14 +59,24 @@ export default {
       return this.$store.getters['ui/uiByKey']('sidebar')
     },
     backText() {
-      const { content } = this.sidebar
-      const backKey = Object.keys(content).find(key => key.endsWith('_back'))
-      return backKey ? content[backKey] : 'Back'
+      const { content, component } = this.sidebar
+      const compName = component ? component.split('Sidebar')[1].toLowerCase() : null
+      const filterContent = content ? Object.keys(content).filter(itm => itm.includes(compName)) : null
+      if (filterContent) {
+        const backKey = filterContent.find(key => key.endsWith('_back'))
+        return backKey ? content[backKey] : 'Back'
+      }
+      return
     },
     heading() {
-      const { content } = this.sidebar
-      const headingKey = Object.keys(content).find(key => key.endsWith('_heading'))
-      return headingKey ? content[headingKey] : false
+      const { content, component } = this.sidebar
+      const compName = component ? component.split('Sidebar')[1].toLowerCase() : null
+      const filterContent = content ? Object.keys(content).filter(itm => itm.includes(compName)) : null
+      if (filterContent) {
+        const headingKey = filterContent.find(key => key.endsWith('_heading'))
+        return headingKey ? content[headingKey] : false
+      }
+      return
     }
   },
   methods: {

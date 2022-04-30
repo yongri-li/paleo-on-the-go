@@ -17,7 +17,7 @@
                   component: 'cSidebarShipping',
                   addressNum: boxNumber,
                   charge: charge,
-                  content: sidebarContent.billing
+                  content: sidebarContent
                 })
               "
               >{{ charge.shipping_address.address1 }}</span
@@ -205,7 +205,8 @@ export default {
     },
     sidebarContent() {
       const billing = this.$store.getters['customize/customizeSidebarByPrefix']('billing_')
-      return { billing }
+      const shipping = this.$store.getters['customize/customizeSidebarByPrefix']('shipping_')
+      return { ...billing, ...shipping }
     },
     sidebarEditSchedule() {
       const content = this.$store.getters['customize/customizeSidebarByPrefix']('edit_schedule')
@@ -213,16 +214,18 @@ export default {
     },
     portalProducts() {
       return {
-        items: this.subProductIds.map((id, i) => {
-          let productFound = this.allProducts.find(prod => prod.id === id)
-          let item = productFound
-          ? {
-            ...productFound,
-            quantity: this.subProductQtys[i]
-          }
-          : null
-          return item
-        }).filter(product => product),
+        items: this.subProductIds
+          .map((id, i) => {
+            let productFound = this.allProducts.find(prod => prod.id === id)
+            let item = productFound
+              ? {
+                  ...productFound,
+                  quantity: this.subProductQtys[i]
+                }
+              : null
+            return item
+          })
+          .filter(product => product),
         addons: []
       }
     }
