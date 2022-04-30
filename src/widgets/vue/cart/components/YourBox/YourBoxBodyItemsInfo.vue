@@ -111,7 +111,7 @@
 import { mapState, mapGetters } from 'vuex'
 import { formatPrice } from '@shared/utils'
 import { CHANGE_FREQUENCY_SELECTED } from '../../store/modules/frequency/_mutations-type'
-import { CLEAR_BOX } from '@shared/cartdrawer/store/_mutations-type'
+import { CLEAR_BOX } from '@shared/store/modules/cartdrawer/_mutations-type'
 
 export default {
   data() {
