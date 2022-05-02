@@ -16,7 +16,7 @@
           {{ product.title }}
         </div>
         <div class="pcard__info--subtitle">
-          this is for metafields subtitles
+          {{ product.subtitle }}
         </div>
         <div class="pcard__add-to-cart">
           <product-btn-add-to-cart
