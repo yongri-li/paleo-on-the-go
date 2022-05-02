@@ -133,11 +133,10 @@
         </div>
       </div>
 
-      <hr />
-
+      <hr v-if="hasSubs" />
       <c-h
         class="c-details__heading"
-        v-if="content.plans_heading"
+        v-if="hasSubs && content.plans_heading"
         tag="h2"
         level="2"
         :text="content.plans_heading"
@@ -266,6 +265,9 @@ export default {
     ...mapGetters('customer', ['customerShopify', 'customerRecharge']),
     content() {
       return this.$store.getters['customize/customizeContentByKey']('details')
+    },
+    hasSubs() {
+      return this.customerRecharge.subscriptionsActive ? true : false
     },
     sidebarContent() {
       const billing = this.$store.getters['customize/customizeSidebarByPrefix']('billing_')

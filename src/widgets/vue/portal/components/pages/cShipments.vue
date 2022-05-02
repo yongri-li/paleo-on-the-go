@@ -18,7 +18,7 @@
             :shipDate="formatDayDateIOS(charge.scheduledAt)"
           />
         </section>
-        <c-shipmentsEmpty v-if="charges" :content="content" />
+        <c-shipmentsEmpty v-if="!charges.length" :content="content" />
       </div>
     </article>
 
