@@ -141,7 +141,7 @@
         level="2"
         :text="content.plans_heading"
       />
-      <div class="c-details__box c-box__isEditSubs editCancel" v-if="showAddresses">
+      <div class="c-details__box c-box__isEditSubs editCancel" v-if="hasSubs && showAddresses">
         <div class="c-details__boxSingle" v-for="(address, i) in addressList.active" :key="address.id">
           <c-detailsBlock class="c-details__boxItem withAccordion" v-if="customerRecharge">
             <c-accordion>
@@ -168,13 +168,14 @@
       </div>
 
       <div class="c-details__box c-box__isEditSubs editActivate" v-if="showAddresses">
-        <div class="c-details__boxSingle" v-for="(address, i) in addressList.inactive" :key="address.id">
+        <div class="c-details__boxSingle" v-for="(address, i) in activateItems" :key="address.id">
           <c-detailsBlock class="c-details__boxItem withAccordion" v-if="customerRecharge">
             <c-accordion>
               <c-accordionItem :boxNum="i + 100">
                 <div class="c-details__boxButton" slot="trigger">
                   <section>
                     <address class="c-details__boxAddress" v-html="address.address1" style="margin: 0" />
+                    <span class="c-details__boxStatus">SUBSCRIPTION CANCELLED</span>
                   </section>
                   <span class="c-details__editTrigger c-button--isUnderline c-button--isBlack"></span>
                 </div>
@@ -289,6 +290,9 @@ export default {
     },
     sidebar() {
       return this.$store.getters['ui/uiByKey']('sidebar')
+    },
+    activateItems() {
+      return !this.hasSubs && this.addressList.active ? this.addressList.active : this.addressList.inactive
     }
   },
   methods: {
@@ -367,6 +371,24 @@ export default {
 .c-details__boxAddress {
   margin-bottom: 0.5rem;
   font-size: 1.125rem;
+}
+.c-details__boxButton {
+  section {
+    display: flex;
+    grid-gap: 2.5rem;
+  }
+}
+.c-details__boxStatus {
+  visibility: hidden;
+  /*  transition: visibility 175ms;*/
+}
+.c-accordionItem__trigger--isOpen {
+  .c-details__boxStatus {
+    font-weight: 500;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    visibility: visible;
+  }
 }
 .c-details__boxShips {
   font-size: 16px;

@@ -29,6 +29,10 @@
       :modifiers="['isUnderline', 'isBlack']"
       @click="$root.$emit('closeAccActivate', [boxNum, boxName])"
     />
+    <span class="activate-disclaimer"
+      >Your subscription will charge 2 days after you reactivate it – this gives you time to edit your
+      subscription, adjust your charge date, or update your frequency if needed.</span
+    >
   </div>
 </template>
 
@@ -103,4 +107,18 @@ export default {
 }
 </script>
 
-<style lang="scss"></style>
+<style lang="scss">
+.c-sidebarActivate {
+  position: relative;
+
+  .activate-disclaimer {
+    width: clamp(300px, 33vw, 600px);
+    position: absolute;
+    float: right;
+    right: 0;
+    bottom: 30px;
+    font-size: 1rem;
+    line-height: 1.5;
+  }
+}
+</style>

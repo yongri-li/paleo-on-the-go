@@ -274,10 +274,6 @@ export default {
         content: this.sidebarEditSchedule.content
       })
     }
-  },
-  mounted() {
-    console.log(this.allProducts.map(prd => prd.id))
-    //1615891333175
   }
 }
 </script>

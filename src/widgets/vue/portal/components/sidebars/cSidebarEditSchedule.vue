@@ -10,11 +10,12 @@
     <section v-if="chrgFreq" class="c-sidebar__pills">
       <div
         v-for="(pill, i) in 4"
-        :class="i + 1 == chrgFreq ? 'selected' : null"
-        :data-freq="i + 1"
+        :class="(i + 1) * 2 == chrgFreq ? 'selected' : null"
+        :data-freq="(i + 1) * 2"
         @click="freqSelect(pill)"
       >
-        {{ i + 1 }} {{ i > 0 ? 'Weeks' : 'Week' }}
+        {{ (i + 1) * 2 }} Weeks
+        <!-- {{ i + 1 }} {{ i > 0 ? 'Weeks' : 'Week' }} -->
       </div>
     </section>
     <hr />
@@ -117,7 +118,7 @@ export default {
       return dateStr != null ? format(new Date(dateStr), 'ddd, MMM D') : null
     },
     freqSelect(freq) {
-      this.chrgFreq = freq
+      this.chrgFreq = freq * 2
       const subFreq = this.subscriptions[0].charge_interval_frequency
       freq != subFreq ? (this.freqChanged = true) : (this.freqChanged = false)
     },
