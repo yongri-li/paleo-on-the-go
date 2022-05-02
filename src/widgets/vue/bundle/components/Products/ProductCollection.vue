@@ -1,7 +1,7 @@
 <template>
   <div class="product-collection">
     <product-card
-      v-for="product in products"
+      v-for="product in productsAvailable"
       :key="product.id"
       :product="product"
       class="item"
@@ -21,6 +21,11 @@ export default {
     products: {
       type: Array,
       required: true
+    }
+  },
+  computed: {
+    productsAvailable() {
+      return this.products.filter(product => product.available)
     }
   }
 }
