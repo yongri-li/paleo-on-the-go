@@ -7,10 +7,10 @@
       </div>
       <c-button
         class="c-cta subtotal__checkout"
+        :class="{ agree: agree }"
         @click="checkout"
         :loading="loading"
         text="Checkout"
-        :attributes="{ disabled: !agree || loading }"
         :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
       />
       <div class="subtotal__msg">
@@ -37,6 +37,9 @@ import { formatPrice } from '@shared/utils'
 import cButton from '@shared/components/core/cButton.vue'
 
 export default {
+  components: {
+    cButton
+  },
   data() {
     return {
       agree: false,
@@ -131,6 +134,7 @@ export default {
       console.log(addRequest)
       if (addRequest.status !== 200) {
         // throw error
+        // show error msj
         return
       }
 
@@ -189,7 +193,8 @@ export default {
   &__checkout {
     width: 100%;
     max-width: 100%;
-    font-size: 1.33rem;
+    font-size: 1.3rem;
+    font-weight: 500;
     margin-bottom: 1.5rem;
   }
 
