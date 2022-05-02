@@ -193,6 +193,7 @@ export default {
       if (update) window.location = '/account#/shipments'
     },
     async nextStep() {
+      this.loading = true
       const param = this.$route.params.box
       if (param === 'subscription') {
         this.$router.push('/addons')
