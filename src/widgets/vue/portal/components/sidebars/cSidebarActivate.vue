@@ -39,6 +39,7 @@
 <script>
 import { mapMutations, mapActions } from 'vuex'
 import { _sortItemsByCharge, _buildUpdates } from '@vue/portal/utils'
+import { stillProcessingWarningPopup, removeReloadWarning } from '@shared/utils'
 import cP from '@shared/components/core/cP.vue'
 import cButton from '@shared/components/core/cButton.vue'
 import cOrdersItem from '../orders/cOrdersItem.vue'
@@ -94,6 +95,7 @@ export default {
     ...mapActions('customer', ['customerUpdateAddressItems']),
     async handleActivate() {
       this.loading = true
+      stillProcessingWarningPopup()
       await this.customerUpdateAddressItems({
         addressId: this.address.id,
         updatesSubscriptions: _buildUpdates({
@@ -101,6 +103,7 @@ export default {
           actions: ['activate']
         })
       })
+      removeReloadWarning()
       this.loading = false
     }
   }

@@ -174,7 +174,7 @@
               <c-accordionItem :boxNum="i + 100">
                 <div class="c-details__boxButton" slot="trigger">
                   <section>
-                    <address class="c-details__boxAddress" v-html="address.address1" style="margin: 0" />
+                    <address class="c-details__boxAddress" v-html="address.address1" />
                     <span class="c-details__boxStatus">SUBSCRIPTION CANCELLED</span>
                   </section>
                   <span class="c-details__editTrigger c-button--isUnderline c-button--isBlack"></span>
@@ -372,12 +372,6 @@ export default {
   margin-bottom: 0.5rem;
   font-size: 1.125rem;
 }
-.c-details__boxButton {
-  section {
-    display: flex;
-    grid-gap: 2.5rem;
-  }
-}
 .c-details__boxStatus {
   visibility: hidden;
   /*  transition: visibility 175ms;*/
@@ -491,16 +485,23 @@ export default {
 }
 
 .editActivate {
+  .c-details__boxButton {
+    section {
+      display: flex;
+      grid-gap: 2.5rem;
+    }
+    address {
+      margin: 0;
+    }
+  }
   .c-details__editTrigger::after {
     content: 'Reactivate';
   }
-
   .c-accordionItem__trigger--isOpen {
     .c-details__editTrigger::after {
       content: 'Close';
     }
   }
-
   .withAccordion {
     .c-accordionItem__trigger--isOpen + .c-accordionItem__content {
       margin-top: 0 !important;

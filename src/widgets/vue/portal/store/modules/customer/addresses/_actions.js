@@ -19,17 +19,7 @@ export default {
     }
   },
   async customerUpdateAddressItems({ commit }, payload) {
-    // for testing only
-    let apiClient = new apiService()
-    const allCookiez = await document.cookie
-    const apiAccessToken = await allCookiez
-      .split('; ')
-      .find(row => row.includes('ss_access_token'))
-      ?.split('=')[1]
-    apiClient.headers['X-Api-Access-Token'] = apiAccessToken
-    console.log('apiClientapiClient', apiAccessToken)
-    // for testing only end
-
+    const apiClient = new apiService()
     const { addressId, updatesOnetimes, updatesSubscriptions } = payload
     console.log('payload', payload)
     const { data } = await apiClient.put('/v1/customer/items', {
@@ -44,19 +34,8 @@ export default {
   },
   async customerUpdateAddressDiscount({ commit }, payload) {
     try {
+      const apiClient = new apiService()
       const { addressId, discountCode } = payload
-      let apiClient = new apiService()
-
-      // for testing only
-      const allCookiez = await document.cookie
-      const apiAccessToken = await allCookiez
-        .split('; ')
-        .find(row => row.includes('ss_access_token'))
-        ?.split('=')[1]
-      apiClient.headers['X-Api-Access-Token'] = apiAccessToken
-      console.log('apiClientapiClient', apiClient, apiAccessToken)
-      // for testing only end
-
       const { data } = await apiClient.put('/v1/customer/address/discount', {
         data: { addressId, discountCode }
       })
@@ -70,6 +49,25 @@ export default {
     } catch {
       return { error: 'ACTION_ERROR' }
     }
+  },
+  async customerDeleteAddressDiscount({ commit }, payload) {
+    try {
+      console.log('teed to discount! remove', payload)
+      const apiClient = new apiService()
+      const { addressId } = payload
+      const { data } = await apiClient.delete('/v1/customer/address/discount', {
+        data: { addressId }
+      })
+      console.log(data, 'asdsadsdd data')
+      const { address, charges, error } = data
+      if (charges) await commit('CUSTOMER_UPDATE_CHARGES', { charges, keys: ['id', 'addressId'] })
+      if (address) {
+        commit('CUSTOMER_UPDATE_ADDRESSES', { addresses: [address] })
+        return { success: 'ACTION_SUCCESS' }
+      }
+      return { address, charges, error }
+    } catch {
+      return { error: 'ACTION_ERROR' }
+    }
   }
 }
-///
