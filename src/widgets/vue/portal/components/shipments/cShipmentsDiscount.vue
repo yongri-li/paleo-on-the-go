@@ -4,6 +4,7 @@
     v-if="address && shipment && content"
     @submit.prevent="handleApply"
   >
+    <button @click="removeDiscount">Remove discount</button>
     <input
       class="c-shipmentsDiscount__input"
       v-if="content.placeholder"
@@ -12,12 +13,15 @@
     />
     <c-button
       class="c-shipmentsDiscount__button"
+      :class="status === 'error' && 'code-error'"
       v-if="content.button_text"
       :loading="loading.apply"
       :success="status === 'success'"
+      :status="status"
       :text="{
         default: content.button_text,
-        success: content.button_success
+        success: content.button_success,
+        error: 'Incorrect Code'
       }"
       :attributes="{ disabled }"
       :modifiers="['isSecondary']"
@@ -74,7 +78,12 @@ export default {
   },
   methods: {
     ...mapMutations('ui', ['UI_SET_MODAL']),
-    ...mapActions('customer', ['customerUpdateAddressDiscount']),
+    ...mapActions('customer', ['customerUpdateAddressDiscount', 'customerDeleteAddressDiscount']),
+    async removeDiscount() {
+      const { address, charges, error } = await this.customerDeleteAddressDiscount({
+        addressId: this.shipment.addressId
+      })
+    },
     async handleApply() {
       this.loading.apply = true
       const { address, charges, error } = await this.customerUpdateAddressDiscount({
@@ -85,11 +94,13 @@ export default {
         this.status = 'success'
         this.discountCode = this.discountModel
       } else {
-        this.UI_SET_MODAL({
-          component: 'cModalDiscount',
-          content: this.modalContent.discount,
-          settings: { discountCode: this.discountModel }
-        })
+        this.status = 'error'
+        // return false
+        // this.UI_SET_MODAL({
+        //   component: 'cModalDiscount',
+        //   content: this.modalContent.discount,
+        //   settings: { discountCode: this.discountModel }
+        // })
       }
       this.loading.apply = false
     }
@@ -102,17 +113,37 @@ export default {
     }
   },
   async created() {
-    const { discountId } = this.address
-    if (discountId) {
-      const apiClient = new apiService()
-      const { data } = await apiClient.get('/v1/shop/discount/id', { params: { id: discountId } })
-      const { discount, error } = data
-      if (discount) {
-        this.discountCode = discount.code
-        this.discountModel = discount.code
-        this.status = 'success'
-      }
-    }
+    // const { discountId } = this.address
+    // if (discountId) {
+    //   const apiClient = new apiService()
+    //   // const { data } = await apiClient.get('/v1/shop/discount/id', { params: { id: discountId } })
+    //   const { data } = await apiClient.get('/v1/customer/resources?resources=charges')
+    //   const { resources } = data
+    //   const num = resources.length
+    //   const discount = resources[num - 1].discount_codes[0].code
+    //   // const { discount, error } = data
+
+    //   // const apiClient = new apiService()
+    //   // const { data } = await this.apiClient.get('/v1/customer/resources?resources=charges')
+    //   console.log(data, discount)
+    //   // if (discount) {
+    //   //   this.discountCode = discount.code
+    //   //   this.discountModel = discount.code
+    //   //   this.status = 'success'
+    //   // }
+    // }
+
+    const apiClient = new apiService()
+    const { data } = await apiClient.get('/v1/customer/resources?resources=charges')
+    const { resources } = data
+    const num = resources.charges.length
+    const discount = resources.charges[num - 2].discount_codes[0]?.code
+    console.log(data, resources, num, discount)
+    //   const { resources } = data
+    //   const num = resources.charges.length
+    //   const discount = resources.charges[num - 1].discount_codes[0].code
+    //   console.log(data, discount)
+    // }
   }
 }
 </script>
@@ -169,5 +200,9 @@ export default {
   border-bottom: 0;
   text-transform: capitalize;
   margin-left: 0.5rem;
+
+  &.code-error {
+    color: red;
+  }
 }
 </style>

@@ -34,6 +34,9 @@ export default {
       type: Boolean,
       default: false
     },
+    status: {
+      type: [Boolean, String]
+    },
     attributes: {
       type: Object,
       default: () => ({})
@@ -55,8 +58,9 @@ export default {
       return modifiers
     },
     buttonText() {
-      const { loading, success, text } = this
+      const { loading, success, text, status } = this
       const textDefault = text.default ? text.default : text
+      if (status === 'error') return text.error
       if (loading) return text.loading ? text.loading : textDefault
       if (success) return text.success ? text.success : textDefault
       return textDefault

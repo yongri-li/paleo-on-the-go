@@ -72,6 +72,7 @@
 <script>
 import { mapMutations, mapActions } from 'vuex'
 import { _sortItemsByCharge, _buildUpdates } from '@vue/portal/utils'
+import { stillProcessingWarningPopup, removeReloadWarning } from '@shared/utils'
 import cP from '@shared/components/core/cP.vue'
 import cH from '@shared/components/core/cH.vue'
 import cButton from '@shared/components/core/cButton.vue'
@@ -138,9 +139,10 @@ export default {
     ...mapActions('customer', ['customerUpdateAddressItems']),
     async handleDelay() {
       this.loading.delay = true
+      stillProcessingWarningPopup()
       await this.customerUpdateAddressItems({
         addressId: this.address.id,
-        updatesaddOns: _buildUpdates({
+        updatesOnetimes: _buildUpdates({
           items: this.addOns,
           actions: ['delay'],
           values: { frequency: 1, unit: 'month' }
@@ -152,12 +154,15 @@ export default {
         })
       })
       this.loading.delay = false
+      removeReloadWarning()
+      this.$router.push('/shipments')
     },
     async handleCancel() {
       this.loading.cancel = true
+      stillProcessingWarningPopup()
       await this.customerUpdateAddressItems({
         addressId: this.address.id,
-        updatesaddOns: _buildUpdates({
+        updatesOnetimes: _buildUpdates({
           items: this.addOns,
           actions: ['cancel'],
           values: { reason: this.cancelModel }
@@ -168,6 +173,7 @@ export default {
           values: { reason: this.cancelModel }
         })
       })
+      removeReloadWarning()
       this.loading.cancel = false
     }
   }
