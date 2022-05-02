@@ -63,6 +63,9 @@ export default {
   margin-bottom: 20px;
   &.c-alert--isSuccess {
     background-color: $color-success;
+    /*hiding styles...*/
+    height: 0;
+    padding: 0;
   }
   &.c-alert--isInfo {
     background-color: $color-info;

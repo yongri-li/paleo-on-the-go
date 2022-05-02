@@ -175,7 +175,10 @@ export default {
       return this.$store.getters['customer/customerOnetimesByAddressId'](this.addressId)
     },
     addOnItemsIds() {
-      return this.addOnItems.map(item => item.productId)
+      return this.addOnItems.map(addon => addon.productId)
+    },
+    addOnItemsQtys() {
+      return this.addOnItems.map(addon => addon.quantity)
     },
     subscriptions() {
       return this.$store.getters['customer/customerSubscriptionsByAddressId'](this.addressId)
@@ -226,7 +229,16 @@ export default {
             return item
           })
           .filter(product => product),
-        addons: []
+        addons: this.addOnItemsIds.map((id, i) => {
+          let addonFound = this.allProducts.find(prod => prod.id === +id)
+          let addon = addonFound
+            ? {
+                ...addonFound,
+                quantity: this.addOnItemsQtys[i]
+              }
+            : null
+          return addon
+        })
       }
     }
   },
@@ -238,7 +250,6 @@ export default {
       this.setBoxHeight = !this.setBoxHeight
     },
     handleChangeMeals() {
-      console.log('himarc', this.portalProducts)
       sessionStorage.setItem('boxSize', this.totalSubItems)
       sessionStorage.setItem('addressId', this.addressId)
       sessionStorage.setItem('nextChargeDate', this.charge.scheduledAt)
@@ -263,6 +274,10 @@ export default {
         content: this.sidebarEditSchedule.content
       })
     }
+  },
+  mounted() {
+    console.log(this.allProducts.map(prd => prd.id))
+    //1615891333175
   }
 }
 </script>

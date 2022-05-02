@@ -97,7 +97,7 @@ export default {
   watch: {
     discountModel: {
       handler(val) {
-        this.status = false
+        //this.status = false
       }
     }
   },
@@ -110,6 +110,7 @@ export default {
       if (discount) {
         this.discountCode = discount.code
         this.discountModel = discount.code
+        this.status = 'success'
       }
     }
   }
@@ -144,8 +145,9 @@ export default {
   flex-grow: 1;
   @include input-unset;
   font-family: $font-body;
-  font-weight: 600;
-  font-size: 16px;
+  font-weight: 500;
+  font-size: 1rem;
+  text-transform: uppercase;
   @include media-mobile-down {
     max-width: calc(100% - 80px);
   }
@@ -153,14 +155,19 @@ export default {
     color: rgba($color-black, 0.5);
     font-weight: 400;
   }
+  div {
+    color: red;
+  }
 }
 .c-shipmentsDiscount__button {
   height: 100%;
+  color: $color-secondary;
   font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 0.25px;
   line-height: 1;
   border-bottom: 0;
   text-transform: capitalize;
-  text-decoration: underline;
-  margin-left: 10px;
+  margin-left: 0.5rem;
 }
 </style>

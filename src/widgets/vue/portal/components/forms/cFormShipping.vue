@@ -256,7 +256,7 @@ export default {
           this.charge.shipping_address = { ...this.activeAddrs, ...this.shippingModel }
 
           if (!this.hideAlert && this.content.success_text) {
-            this.messages.push(this.content.success_text)
+            //this.messages.push(this.content.success_text)
           }
         } else {
           this.status = 'error'

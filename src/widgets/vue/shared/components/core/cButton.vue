@@ -1,9 +1,9 @@
 <template>
   <button :class="_buildModifiers(baseClass, extendedModifiers)" v-bind="attributes" @click="$emit('click')">
     <slot name="before" />
-    <span :class="`${baseClass}__text`" v-if="buttonText" v-html="buttonText" />
     <c-loading :class="`${baseClass}__loading`" v-if="loading" :modifiers="modifiers" />
     <c-svg :class="`${baseClass}__success`" v-if="success" name="success" />
+    <span :class="`${baseClass}__text`" v-if="buttonText" v-html="buttonText" />
     <slot />
   </button>
 </template>
@@ -85,7 +85,7 @@ export default {
 }
 .c-button__success {
   width: 16px;
-  margin-left: 10px;
+  margin: 0 0.25rem;
 }
 
 /*//asd*/
