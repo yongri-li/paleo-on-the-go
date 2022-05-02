@@ -1,0 +1,29 @@
+h2.section__title {
+  color: #231F20;
+  font-weight: 500;
+}
+
+.section__header a{
+  color: #8ECEAB;
+}
+
+.input-checkbox:checked, .input-radio:checked,
+.input-checkbox:checked:hover, .input-radio:checked:hover {
+  border-color: #FCD32B;
+}
+
+.js .sidebar .btn--disabled {
+  background-color: #231F20;
+  color: #fefefe;
+}
+
+.total-line-table .total-line__name {
+  color: #231F20;
+  font-weight: 500;
+}
+
+.field__input,
+.btn,
+.sp-modal-toggle {
+  border-radius: 0;
+}
