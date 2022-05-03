@@ -2,7 +2,7 @@
   <div :class="_buildModifiers('c-shipmentsBox', modifiers)" ref="shipmentBox">
     <c-accordion>
       <c-accordionItem
-        class="c-shipments__box--wrap"
+        class="c-shipmentsBox__wrap"
         v-if="sidebarHeadings"
         :open="true"
         :setBoxHeight="setBoxHeight"
@@ -53,14 +53,24 @@
           <div v-if="isUpcoming" class="c-shipmentsBox__lineItems">
             <div class="c-shipmentsBox__grid">
               <c-orders-item v-for="item in subscriptionItems" :item="item" :content="content" />
-              <!-- :item="item" :key="item.id" -->
             </div>
 
             <header class="c-shipmentsBox__header">
-              <h6 class="c-h6">
-                {{ totalAddOns }} Add-Ons &nbsp;<span class="c-basicTxt--md"> One-Time Purchase</span>
-              </h6>
+              <div class="c-shipmentsBox__header--inner">
+                <h6 class="c-h6">{{ totalAddOns }} Add-Ons &nbsp;</h6>
+                <span class="c-basicTxt--md"> One-Time Purchase</span>
+                <span class="c-shipmentsBox__header--addons" @click="editAddOns">Edit Add-Ons</span>
+              </div>
             </header>
+
+            <div v-if="!isMobile && totalAddOns < 1" class="c-shipmentsBox__emptyAddon">
+              <img :src="content.addons_promo_image" alt="addon promo" />
+              <section>
+                <h6 class="c-h6">{{ content.addons_promo_text }}</h6>
+                <span @click="editAddOns">{{ content.addons_promo_trigger_text }}</span>
+              </section>
+            </div>
+
             <div class="c-shipmentsBox__grid item__addOn">
               <c-orders-item v-for="item in addOnItems" :item="item" :content="content" />
             </div>
@@ -108,7 +118,6 @@ import cOrdersItem from '../orders/cOrdersItem.vue'
 import cAccordion from '@shared/components/core/cAccordion.vue'
 import cAccordionItem from '@shared/components/core/cAccordionItem.vue'
 import cShipmentsDiscount from './cShipmentsDiscount.vue'
-// import cShipmentsAddOnsPromo from './cShipmentsAddOnsPromo.vue'
 import cShipmentsSummary from './cShipmentsSummary.vue'
 import Datepicker from 'vuejs-datepicker'
 import { _filterItemsByAddOns, _filterItemsBySubscription, _filterTest } from '../../utils'
@@ -156,11 +165,13 @@ export default {
     cAccordion,
     cAccordionItem,
     cShipmentsDiscount,
-    // cShipmentsAddOnsPromo,
     cShipmentsSummary,
     Datepicker
   },
   computed: {
+    isMobile() {
+      return window.innerWidth < 768 ? true : false
+    },
     addressId() {
       return this.charge.addressId
     },
@@ -249,7 +260,7 @@ export default {
     setBoxMaxHeight() {
       this.setBoxHeight = !this.setBoxHeight
     },
-    handleChangeMeals() {
+    setMealBox() {
       sessionStorage.setItem('boxSize', this.totalSubItems)
       sessionStorage.setItem('addressId', this.addressId)
       sessionStorage.setItem('nextChargeDate', this.charge.scheduledAt)
@@ -263,6 +274,9 @@ export default {
           where: 'addons'
         }
       })
+    },
+    handleChangeMeals() {
+      this.setMealBox()
       window.location.href = '/pages/bundle/#/subscription'
     },
     handleEditSchedule() {
@@ -273,6 +287,11 @@ export default {
         addressId: this.addressId,
         content: this.sidebarEditSchedule.content
       })
+    },
+    editAddOns() {
+      this.setMealBox()
+      this.handleChangeMeals()
+      window.location.href = '/pages/bundle/#/addons'
     }
   }
 }
@@ -287,15 +306,33 @@ export default {
     margin-bottom: 40px;
   }
 
-  .c-shipmentsSummary__trigger {
-    /*height: auto;*/
+  &__emptyAddon {
+    display: flex;
+    width: clamp(300px, 33%, 600px);
 
+    section {
+      background-color: $color-black;
+      padding: 1rem 1.25rem;
+    }
+
+    .c-h6 {
+      color: $color-white;
+    }
+
+    span {
+      color: $color-primary;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+  }
+
+  .c-shipmentsSummary__trigger {
     @include media-mobile-down {
       padding: 0;
     }
   }
 
-  .c-shipments__box--wrap > .c-accordionItem__trigger {
+  &__wrap > .c-accordionItem__trigger {
     background-color: $color-secondary;
     color: $color-black;
     padding: 2.25rem 1rem;
@@ -368,6 +405,36 @@ export default {
 
 .c-shipmentsBox__header {
   margin-bottom: 2rem;
+
+  &--inner {
+    position: relative;
+  }
+
+  @include media-mobile-down {
+    &--inner {
+      display: grid;
+
+      .c-h6 {
+        grid-row: 1/2;
+      }
+    }
+
+    &--addons {
+      grid-row: 1/2;
+      line-height: 2;
+    }
+  }
+
+  &--addons {
+    cursor: pointer;
+    position: absolute;
+    top: 0;
+    right: 0;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1.125rem;
+    text-decoration: underline;
+    text-transform: capitalize;
+  }
 }
 
 .c-shipmentsBox__headings {

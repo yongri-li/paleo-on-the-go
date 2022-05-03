@@ -52,6 +52,9 @@ export default {
     cH
   },
   computed: {
+    isMobile() {
+      return window.innerWidth < 768 ? true : false
+    },
     show() {
       return this.sidebarComponent ? true : false
     },
@@ -60,17 +63,17 @@ export default {
     },
     backText() {
       const { content, component } = this.sidebar
-      const compName = component ? component.split('Sidebar')[1].toLowerCase() : null
+      const compName = component ? component.split('Sidebar')[1].toLowerCase().slice(0, 4) : null
       const filterContent = content ? Object.keys(content).filter(itm => itm.includes(compName)) : null
       if (filterContent) {
         const backKey = filterContent.find(key => key.endsWith('_back'))
-        return backKey ? content[backKey] : 'Back'
+        return backKey && !this.isMobile ? content[backKey] : 'Back'
       }
       return
     },
     heading() {
       const { content, component } = this.sidebar
-      const compName = component ? component.split('Sidebar')[1].toLowerCase() : null
+      const compName = component ? component.split('Sidebar')[1].toLowerCase().slice(0, 4) : null
       const filterContent = content ? Object.keys(content).filter(itm => itm.includes(compName)) : null
       if (filterContent) {
         const headingKey = filterContent.find(key => key.endsWith('_heading'))
