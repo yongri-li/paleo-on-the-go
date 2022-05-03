@@ -61,6 +61,8 @@ export default {
       const { loading, success, text, status } = this
       const textDefault = text.default ? text.default : text
       if (status === 'error') return text.error
+      if (status === 'applied') return text.remove
+      if (status === 'removed') return text.removed
       if (loading) return text.loading ? text.loading : textDefault
       if (success) return text.success ? text.success : textDefault
       return textDefault

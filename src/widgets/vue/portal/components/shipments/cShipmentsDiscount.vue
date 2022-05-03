@@ -4,7 +4,6 @@
     v-if="address && shipment && content"
     @submit.prevent="handleApply"
   >
-    <button @click="removeDiscount">Remove discount</button>
     <input
       class="c-shipmentsDiscount__input"
       v-if="content.placeholder"
@@ -13,7 +12,7 @@
     />
     <c-button
       class="c-shipmentsDiscount__button"
-      :class="status === 'error' && 'code-error'"
+      :class="{ 'code-error': status === 'error', 'code-applied': status === 'applied' }"
       v-if="content.button_text"
       :loading="loading.apply"
       :success="status === 'success'"
@@ -21,7 +20,9 @@
       :text="{
         default: content.button_text,
         success: content.button_success,
-        error: 'Incorrect Code'
+        error: 'Incorrect Code',
+        remove: 'Remove',
+        removed: 'Removed'
       }"
       :attributes="{ disabled }"
       :modifiers="['isSecondary']"
@@ -66,9 +67,8 @@ export default {
   computed: {
     disabled() {
       return (
-        this.status == 'success' ||
-        this._stringEmpty(this.discountModel) ||
-        this.discountCode.toLowerCase().trim() == this.discountModel.toLowerCase().trim()
+        this.status == 'success' || this._stringEmpty(this.discountModel)
+        //this.discountCode.toLowerCase().trim() == this.discountModel.toLowerCase().trim()
       )
     },
     modalContent() {
@@ -79,13 +79,18 @@ export default {
   methods: {
     ...mapMutations('ui', ['UI_SET_MODAL']),
     ...mapActions('customer', ['customerUpdateAddressDiscount', 'customerDeleteAddressDiscount']),
-    async removeDiscount() {
-      const { address, charges, error } = await this.customerDeleteAddressDiscount({
-        addressId: this.shipment.addressId
-      })
-    },
     async handleApply() {
       this.loading.apply = true
+      if (this.status === 'applied') {
+        await this.customerDeleteAddressDiscount({
+          addressId: this.shipment.addressId
+        })
+        this.discountCode = ''
+        this.discountModel = ''
+        this.status = 'removed'
+        this.loading.apply = false
+        return
+      }
       const { address, charges, error } = await this.customerUpdateAddressDiscount({
         addressId: this.shipment.addressId,
         discountCode: this.discountModel
@@ -93,14 +98,9 @@ export default {
       if (!error) {
         this.status = 'success'
         this.discountCode = this.discountModel
+        setTimeout(() => (this.status = 'applied'), 2250)
       } else {
         this.status = 'error'
-        // return false
-        // this.UI_SET_MODAL({
-        //   component: 'cModalDiscount',
-        //   content: this.modalContent.discount,
-        //   settings: { discountCode: this.discountModel }
-        // })
       }
       this.loading.apply = false
     }
@@ -108,42 +108,23 @@ export default {
   watch: {
     discountModel: {
       handler(val) {
-        //this.status = false
+        if (this._stringEmpty(val) && !this.discountCode) this.status = false
+        if ((this.status = 'error')) this.status = false
       }
     }
   },
   async created() {
-    // const { discountId } = this.address
-    // if (discountId) {
-    //   const apiClient = new apiService()
-    //   // const { data } = await apiClient.get('/v1/shop/discount/id', { params: { id: discountId } })
-    //   const { data } = await apiClient.get('/v1/customer/resources?resources=charges')
-    //   const { resources } = data
-    //   const num = resources.length
-    //   const discount = resources[num - 1].discount_codes[0].code
-    //   // const { discount, error } = data
-
-    //   // const apiClient = new apiService()
-    //   // const { data } = await this.apiClient.get('/v1/customer/resources?resources=charges')
-    //   console.log(data, discount)
-    //   // if (discount) {
-    //   //   this.discountCode = discount.code
-    //   //   this.discountModel = discount.code
-    //   //   this.status = 'success'
-    //   // }
-    // }
-
     const apiClient = new apiService()
     const { data } = await apiClient.get('/v1/customer/resources?resources=charges')
     const { resources } = data
     const num = resources.charges.length
-    const discount = resources.charges[num - 2].discount_codes[0]?.code
-    console.log(data, resources, num, discount)
-    //   const { resources } = data
-    //   const num = resources.charges.length
-    //   const discount = resources.charges[num - 1].discount_codes[0].code
-    //   console.log(data, discount)
-    // }
+    const discount = await resources.charges[num - 1].discount_codes[0]?.code
+
+    if (discount) {
+      this.discountCode = discount
+      this.discountModel = discount
+      this.status = 'applied'
+    }
   }
 }
 </script>
@@ -198,11 +179,14 @@ export default {
   letter-spacing: 0.25px;
   line-height: 1;
   border-bottom: 0;
-  text-transform: capitalize;
   margin-left: 0.5rem;
-
+  text-transform: uppercase;
   &.code-error {
     color: red;
+  }
+  &.code-applied {
+    color: $color-black;
+    text-decoration: underline;
   }
 }
 </style>

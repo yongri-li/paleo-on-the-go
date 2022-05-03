@@ -1,35 +1,23 @@
 <template>
-  <div :class="_buildModifiers('c-modalDeliverychange', modifiers)" v-if="content">
-    <section class="c-modalZipChange">
+  <div :class="_buildModifiers('c-modalDelay', modifiers)" v-if="content">
+    <section class="c-modalDelay__inner">
       <c-h
-        class="c-modalDeliverychange__heading c-modal__heading"
-        tag="h2"
-        level="2"
-        text="H2 test here"
+        class="c-modalDelay__heading c-modal__heading"
+        tag="h3"
+        level="3"
+        :text="content.heading"
         :modifiers="['isBolder']"
       />
-      <c-p
-        class="c-modalDeliverychange__text"
-        tag="p"
-        level="2"
-        :text="content.one"
-        :modifiers="['isBolder']"
-      />
-      <c-p
-        class="c-modalLink"
-        tag="a"
-        level="2"
-        :text="content.one"
-        href="testUrl"
-        :modifiers="['isBolder']"
-      />
+      <c-p class="c-modalDelay__text" tag="p" level="2" v-html="content.text" />
+      <hr />
       <c-button
-        class="c-modalDeliverychange__cancel"
-        :text="content.one"
-        :modifiers="['isUnderline', 'isPrimary']"
+        class="c-modalDelay__cta"
+        :text="content.button"
+        :loading="loading"
+        :modifiers="['isDefault', 'isPrimary', 'hideTextLoading', 'isSubmit']"
         @click="confirmDelay"
       />
-      <span @click="closeModalandSidebar">Nevermind</span>
+      <span @click="closeModalandSidebar" class="c-modalDelay__cancel">{{ content.cancel }}</span>
     </section>
   </div>
 </template>
@@ -61,9 +49,7 @@ export default {
     cButton
   },
   data: () => ({
-    loading: {
-      delay: false
-    }
+    loading: false
   }),
   computed: {
     //
@@ -71,6 +57,7 @@ export default {
   methods: {
     ...mapMutations('ui', ['UI_CLOSE_MODAL', 'UI_CLOSE_SIDEBAR']),
     confirmDelay() {
+      this.loading = true
       const evt = new CustomEvent(
         'delayConfirmed',
         {
@@ -83,6 +70,7 @@ export default {
       document.dispatchEvent(evt)
     },
     closeModalandSidebar() {
+      this.loading = false
       this.UI_CLOSE_MODAL()
       this.UI_CLOSE_SIDEBAR()
     }
@@ -91,42 +79,31 @@ export default {
 </script>
 
 <style lang="scss">
-.c-modalDeliverychange {
+.c-modalDelay {
   @include flex($direction: column);
   text-align: center;
-}
-.c-modalDeliverychange__confirm {
-  margin-top: 20px;
-}
-.c-modalDeliverychange__text {
-  margin-bottom: 32px;
-}
-.c-modalDeliverychange__cta {
-  width: 100%;
-  max-width: 340px;
-  margin: 0 auto;
-}
-.c-modalDeliverychange__cancel {
-  margin-top: 22px;
-  padding: 0 0 1px;
-  border-bottom: 2px solid $color-primary;
-  color: $color-primary;
-  font-size: 14px;
-  font-weight: 700;
-  text-transform: uppercase;
-  &:hover {
-    border-color: transparent;
+
+  &__inner {
+    padding: 2rem 3rem;
+  }
+
+  &__confirm {
+    margin-top: 1.25rem;
+  }
+  &__text {
+    margin-bottom: 2rem;
+
+    span {
+      color: $color-secondary;
+      font-weight: 500;
+    }
+  }
+  &__cta {
+    margin: 1.5rem auto;
+  }
+  &__cancel {
     cursor: pointer;
-  }
-}
-
-.c-modalZipChange {
-  .c-modalLink {
-    color: $color-secondary;
-  }
-
-  .c-button__text {
-    font-size: 1rem;
+    text-decoration: underline;
   }
 }
 </style>

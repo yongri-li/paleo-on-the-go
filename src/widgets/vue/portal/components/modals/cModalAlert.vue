@@ -106,20 +106,6 @@ export default {
   max-width: 340px;
   margin: 0 auto;
 }
-.c-modalDeliverychange__cancel {
-  margin-top: 22px;
-  padding: 0 0 1px;
-  border-bottom: 2px solid $color-primary;
-  color: $color-primary;
-  font-size: 14px;
-  font-weight: 700;
-  text-transform: uppercase;
-  &:hover {
-    border-color: transparent;
-    cursor: pointer;
-  }
-}
-
 .c-modalZipChange {
   .c-modalLink {
     color: $color-secondary;
