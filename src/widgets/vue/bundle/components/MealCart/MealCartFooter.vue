@@ -193,13 +193,14 @@ export default {
       if (update) window.location = '/account#/shipments'
     },
     async nextStep() {
-      this.loading = true
       const param = this.$route.params.box
       if (param === 'subscription') {
         this.$router.push('/addons')
       } else if (this.fromPortal && this.isCustomer) {
         this.updateAddonsAndSubs()
-      } else {
+      }
+      else {
+        this.loading = true
         await this.setDataFromBox({
           items: this.cart.items,
           addons: this.cart.addons,
