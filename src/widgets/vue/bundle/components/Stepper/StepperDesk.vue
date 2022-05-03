@@ -83,7 +83,7 @@ export default {
   methods: {
     backRouter(step) {
       if (step.active && step.param) {
-        changeRouter(step.param)
+        this.$router.go(-1)
       }
     }
   }

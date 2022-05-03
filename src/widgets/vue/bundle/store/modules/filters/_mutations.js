@@ -1,5 +1,6 @@
 import {
-  FILTER_TOGGLE_ACTIVE
+  FILTER_TOGGLE_ACTIVE,
+  CLEAN_ALL_FILTERS
 } from './_mutations-type'
 
 export default {
@@ -8,5 +9,10 @@ export default {
     if(indexFound > -1) {
       state.filters[indexFound].active = active
     }
+  },
+  [CLEAN_ALL_FILTERS] (state) {
+    state.filters.forEach(filter => {
+      filter.active = false
+    })
   }
 }

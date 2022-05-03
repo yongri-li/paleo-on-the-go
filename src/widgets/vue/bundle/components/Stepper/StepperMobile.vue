@@ -49,7 +49,7 @@ export default {
         window.location = '/'
       }
       if(step.param) {
-        changeRouter(step.param)
+        this.$router.go(-1)
       }
     }
   }

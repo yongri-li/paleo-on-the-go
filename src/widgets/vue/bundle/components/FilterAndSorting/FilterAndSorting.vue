@@ -100,7 +100,7 @@
 
 <script>
 import { mapState } from 'vuex'
-import { FILTER_TOGGLE_ACTIVE } from '../../store/modules/filters/_mutations-type'
+import { FILTER_TOGGLE_ACTIVE, CLEAN_ALL_FILTERS } from '../../store/modules/filters/_mutations-type'
 
 export default {
   props: {
@@ -140,8 +140,17 @@ export default {
       return sortRouter ? { label: sortRouter } : { label: 'Best Selling' }
     }
   },
-  mounted() {
-    this.setFiltersRouter()
+  created() {
+    // watch the params of the route to fetch the data again
+    this.$watch(
+      () => this.$route.params,
+      () => {
+        this.setFiltersRouter()
+      },
+      // fetch the data when the view is created and the data is
+      // already being observed
+      { immediate: true }
+    )
   },
   methods: {
     toggleContent(content) {
@@ -204,15 +213,19 @@ export default {
       const queryRouter = this.$route.query
       const keys = Object.keys(queryRouter)
 
+      this.$store.commit(`filters/${CLEAN_ALL_FILTERS}`)
+
       keys.forEach(key => {
         if(key === 'preference' || key === 'product_type') {
-          const valSplit = queryRouter[key].split(',')
-          valSplit.forEach(val => {
-            this.$store.commit(`filters/${FILTER_TOGGLE_ACTIVE}`, {
-              tag: val,
-              active: true
+          if(queryRouter[key]) {
+            const valSplit = queryRouter[key].split(',')
+            valSplit.forEach(val => {
+              this.$store.commit(`filters/${FILTER_TOGGLE_ACTIVE}`, {
+                tag: val,
+                active: true
+              })
             })
-          })
+          }
         }
       })
     },
