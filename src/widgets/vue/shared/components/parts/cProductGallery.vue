@@ -115,6 +115,8 @@ export default {
     justify-content: center;
     position: absolute;
     width: 100%;
+    max-width: 100vw;
+    overflow: hidden;
     bottom: 1.125rem;
 
     @include media-tablet-up {
@@ -128,6 +130,7 @@ export default {
 
   .tns-outer {
     height: fit-content;
+    max-height: 680px;
     position: relative;
     /*    position: sticky;
     top: 1.25rem;*/
@@ -181,6 +184,12 @@ export default {
         border-radius: 50%;
         border: 5px solid $color-white;
       }
+    }
+  }
+
+  @include media-mobile-down {
+    .tns-outer {
+      max-height: 45vh;
     }
   }
 }

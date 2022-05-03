@@ -41,6 +41,16 @@
     </div>
 
     <c-related-meals :products="related_products" :labels="labels" />
+
+    <c-button
+      ref="fixedCTA"
+      class="c-cta pdp__main--atcButton mobileBottom__cta"
+      @click="handleGetStarted"
+      :loading="loading"
+      :text="isCustomer ? (added ? addedTxt : labels.atc) : labels.getStarted"
+      :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
+      :class="added ? 'item--added' : null"
+    />
   </div>
 </template>
 
@@ -163,6 +173,13 @@ export default {
 
       // Attach the handler
       ele.addEventListener('mousedown', mouseDownHandler)
+    },
+    showCTAonScrollPast() {
+      document.addEventListener('scroll', e => {
+        let scrollY = window.scrollY
+        const cta = this.$refs.fixedCTA.$el
+        scrollY > 768 ? cta.classList.add('scrolledPast') : cta.classList.remove('scrolledPast')
+      })
     }
   },
   mounted() {
@@ -183,6 +200,7 @@ export default {
     })
 
     this.dragToScroll()
+    this.showCTAonScrollPast()
   },
   beforeDestroy() {
     if (typeof window !== 'undefined') {

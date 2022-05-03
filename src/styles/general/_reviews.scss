@@ -62,4 +62,8 @@
   .spr-review-reportreview {
     text-decoration: underline;
   }
+
+  @include media-mobile-down {
+    padding: 1rem 0 0;
+  }
 }
