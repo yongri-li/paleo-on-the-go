@@ -181,6 +181,9 @@ export default {
     allItems() {
       return this.charge.lineItems
     },
+    itemsNoRoute() {
+      return this.allItems.filter(itm => !itm.productTitle.includes('route'))
+    },
     routeItems() {
       return this.allItems.filter(itm => itm.productTitle.includes('route'))
     },
@@ -200,18 +203,21 @@ export default {
     subscriptionItems() {
       return this.allItems.filter(item => !this.addOnItemsIds.includes(item.productId))
     },
+    subItemsNoRoute() {
+      return this.itemsNoRoute.filter(item => !this.addOnItemsIds.includes(item.productId))
+    },
     subProductIds() {
-      return this.subscriptionItems.map(prd => prd.productId * 1)
+      return this.subItemsNoRoute.map(prd => prd.productId * 1)
     },
     subProductQtys() {
-      return this.subscriptionItems.map(prd => prd.quantity)
+      return this.subItemsNoRoute.map(prd => prd.quantity)
     },
     frequency() {
       const freqObj = this.subscriptionItems?.find(sub => sub.frequency)
       return !!freqObj ? freqObj.frequency : 1
     },
     totalSubItems() {
-      return this.subscriptionItems?.reduce((sum, sub) => sum + sub.quantity, 0) - this.routeItems.length
+      return this.subItemsNoRoute?.reduce((sum, sub) => sum + sub.quantity, 0)
     },
     totalAddOns() {
       return this.addOnItems?.reduce((sum, sub) => sum + sub.quantity, 0)

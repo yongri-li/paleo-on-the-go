@@ -61,7 +61,7 @@ export default {
       return this.product ? this.product.images[0] : false
     },
     route() {
-      return productTitle[0].includes('route') ? true : false
+      return this.productTitle[0].includes('route') ? true : false
     },
     price() {
       // const currencySymbol = this.customizeShop.currency_symbol
