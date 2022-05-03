@@ -204,7 +204,7 @@ export default {
       font-size: 1rem;
       font-weight: 500;
       padding: 0.5rem 0;
-      z-index: 9;
+      // z-index: 9;
       min-width: 120px;
       @include flex($justify: center);
     }

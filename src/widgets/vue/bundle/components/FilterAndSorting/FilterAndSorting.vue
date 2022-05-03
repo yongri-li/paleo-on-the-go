@@ -156,12 +156,22 @@ export default {
     toggleContent(content) {
       if(content === 'showPreference') {
         this.contents.showProductType = false
+        this.showFiltersContent(content)
       }
       if(content === 'showProductType') {
         this.contents.showPreference = false
+        this.showFiltersContent(content)
       }
 
       this.contents[content] = !this.contents[content]
+    },
+    showFiltersContent(content) {
+      if(this.contents.showFilters && this.contents[content]) {
+        this.contents.showFilters = false
+      }
+      else {
+        this.contents.showFilters = true
+      }
     },
     addFilter(item) {
       const queryRouter = this.$route.query
@@ -264,7 +274,7 @@ export default {
     width: 10%;
 
     @include media-tablet-up {
-      width: 80%;
+      width: 75%;
       @include flex();
 
       &--icon {
@@ -275,6 +285,10 @@ export default {
     &--types {
       display: none;
 
+      &-item {
+        pointer-events: none;
+      }
+
       @include media-tablet-up {
         width: 80%;
         @include flex();
@@ -284,6 +298,7 @@ export default {
           margin: 0 2rem;
           font-weight: 500;
           cursor: pointer;
+          pointer-events: all;
         }
 
         &-number {
@@ -310,10 +325,11 @@ export default {
         position: relative;
         top: 8px;
         left: -1.5rem;
-        z-index: auto;
+        // z-index: auto;
         padding: 0;
         border-top: 0;
         transform: initial;
+        overflow: hidden;
       }
 
       .fas__filter {
@@ -321,20 +337,22 @@ export default {
           padding: 1rem 0;
 
           @include media-tablet-up {
-            padding: .5rem 0;
+            padding: .5rem 0 0;
             position: absolute;
             background-color: $color-white;
             border-bottom-right-radius: 15px;
             border-bottom-left-radius: 15px;
-            z-index: -1;
             width: auto;
-            transform: translateY(-100%);
-            transition: all .3s;
+            display: none;
+            // z-index: -1;
+            // transform: translateY(-100%);
+            // transition: all .3s;
           }
         }
         &--options.show {
-          z-index: auto;
-          transform: translateY(0);
+          // z-index: auto;
+          // transform: translateY(0);
+          display: block;
         }
 
         &--title {
@@ -367,7 +385,7 @@ export default {
 
           @include media-tablet-up {
             background-color: #f3f0e9;
-            margin: 0 1rem;
+            margin: 0 1rem .5rem;
             padding: 0.5rem 1rem;
             font-weight: 500;
             font-size: 1rem;
@@ -413,7 +431,7 @@ export default {
 
     &--content.show {
       transform: translateX(0);
-
+      overflow: unset;
     }
   }
 
@@ -423,7 +441,7 @@ export default {
     font-size: 1rem;
 
     @include media-tablet-up {
-      width: 5%;
+      width: 10%;
       text-align: right;
     }
   }
