@@ -740,6 +740,8 @@
       min-height: 14px;
       min-width: 14px;
       max-width: 14px;
+      margin: 0 0 0.5rem;
+      transform: scale(0.5);
     }
   }
 }
@@ -798,6 +800,28 @@ section {
 
     @include media-mobile-down {
       max-width: 50vw;
+    }
+  }
+}
+
+.o-product {
+  @include media-mobile-down {
+    padding-bottom: 52px;
+
+    .mobileBottom__cta {
+      position: fixed;
+      bottom: 0;
+      width: 100%;
+      padding: 1.125rem;
+      z-index: $z-index-top;
+
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 200ms;
+    }
+    .mobileBottom__cta.scrolledPast {
+      opacity: 1;
+      pointer-events: auto;
     }
   }
 }

@@ -1,5 +1,8 @@
 <!doctype html>
-<html lang="{{ shop.locale }}" class="{% if template == 'index' %} o-html-home{% endif %}">
+<html
+  lang="{{ shop.locale }}" 
+  class="{% if template == 'index' %} o-html-home{% endif %}{% if template == 'product' %} o-product{% endif %}"
+>
 <head>
   {% render 'theme-meta' %}
   {% render 'theme-styles' %}

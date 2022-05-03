@@ -36,10 +36,10 @@
             <img src="{{ block.settings.image | img_url: 'master' }}" alt="">
             <h2 class="c-h2">{{ boxSizes[forloop.index0] }} Items</h2>
             <div>
-              <span class="c-plansGrid__plan--savings u-hideMobileDown">
+              <span class="c-plansGrid__plan--savings u-hideMobileDown" >
                 {{boxSizes[forloop.index0]}}% Savings
               </span>
-              <span class="c-plansGrid__plan--savings u-hideTabletUp">
+              <span class="c-plansGrid__plan--savings js--planClk u-hideTabletUp" data-boxsize="{{boxSizes[forloop.index0]}}">
                 Subscribe & Save {{boxSizes[forloop.index0]}}%
               </span>
             </div>

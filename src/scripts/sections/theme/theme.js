@@ -43,6 +43,7 @@ if (isHomepage) {
 	const menuWrappers = document.querySelectorAll('.c-homeMenu__flex .c-homeFaqs__item button')
 	const menuNodes = document.querySelectorAll('[data-group]')
 	const panelNodes = document.querySelectorAll('.c-homeMenu__flex .panel-answer')
+	const boxTabs = document.querySelectorAll('.js--planClk')
 
 	faqsWrappers.forEach(item => {
 		item.addEventListener('click', function(e) {
@@ -81,6 +82,15 @@ if (isHomepage) {
 				const ind = grp.dataset.group * 1
 				ind !== groupNum ? (grp.style.display = 'none') : (grp.style.display = 'block')
 			})
+		})
+	})
+
+	boxTabs.forEach(box => {
+		box.addEventListener('click', e => {
+			let boxSize = box.dataset.boxsize
+			sessionStorage.setItem('startBtnClk', true)
+			sessionStorage.setItem('boxSize', boxSize)
+			window.location.href = '/pages/bundle/#/subscription'
 		})
 	})
 }
