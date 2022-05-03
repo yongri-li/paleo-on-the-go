@@ -229,10 +229,15 @@ export default {
     width: 55%;
     position: relative;
 
+    @media screen and (min-width: 769px){
+      height: 78px;
+      margin-bottom: 1rem;
+    }
+
     &--title {
       color: #231F20;
-      font-family: 'Knockout', sans-serif;
-      font-size: 1.5rem;
+      font-family: $font-product-title;
+      font-size: 1.4rem;
       line-height: 110%;
       letter-spacing: -0.02em;
       text-transform: capitalize;
@@ -241,15 +246,18 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
+      margin-bottom: .2rem;
 
       @media screen and (min-width: 769px){
-        height: 53px;
+        height: 28px;
+        -webkit-line-clamp: 1;
       }
     }
 
     &--subtitle {
       color: #7B7979;
-      font-size: .8rem;
+      font-size: 1rem;
+      line-height: 135%;
     }
 
     @media screen and (min-width: 769px){
@@ -305,7 +313,7 @@ export default {
       margin: 0;
       position: absolute;
       left: 0;
-      top: -85%;
+      top: -95%;
       width: 100%;
       display: flex;
       justify-content: center;
