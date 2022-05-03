@@ -1,21 +1,9 @@
 <template>
   <div :class="_buildModifiers('c-ordersItem', modifiers)" v-if="item && content">
-    <span class="c-lineItem__qty">{{ item.quantity }}</span>
+    <span v-if="!route" class="c-lineItem__qty">{{ item.quantity }}</span>
     <c-img class="c-ordersItem__image" :src="image" :alt="alt" />
     <div class="c-ordersItem__details">
       <c-h class="c-ordersItem__title" v-if="item.productTitle" tag="h4" level="4" :text="productTitle[0]" />
-
-      <!-- Has second have of title, after the word "with" -->
-      <!-- <c-p tag="p" v-if="productTitle[1]" :text="productTitle[1]" /> -->
-
-      <!-- <c-p class="c-ordersItem__interval" v-if="interval" tag="p" level="4" :text="interval" /> -->
-      <!--       <c-p
-        class="c-ordersItem__variant"
-        v-if="item.variantTitle"
-        tag="p"
-        level="4"
-        :text="item.variantTitle.replace(/\//g, '•')"
-      /> -->
     </div>
   </div>
 </template>
@@ -72,18 +60,8 @@ export default {
     image() {
       return this.product ? this.product.images[0] : false
     },
-    interval() {
-      // const { item, customizeShop } = this
-      // const frequency = item.properties.find(prop => prop.name === 'shipping_interval_frequency')
-      // const unit = item.properties.find(prop => prop.name === 'shipping_interval_unit')
-      // const activeInterval = customizeShop.intervals.find(interval => {
-      //   if(!frequency || !unit) return interval.frequency == 0
-      //   else return interval.frequency == frequency
-      // })
-      // let text = activeInterval.text
-      // if(frequency && unit && content.ships) text = `${content.ships} ${text}`
-      // return text
-      return 'test text'
+    route() {
+      return productTitle[0].includes('route') ? true : false
     },
     price() {
       // const currencySymbol = this.customizeShop.currency_symbol
@@ -95,11 +73,6 @@ export default {
       //return `${this.item.quantity} x ${this.price}`
       return 'test qty price'
     }
-  },
-  methods: {
-    // getProductObject(id) {
-    //   return this.allProducts.find(product => product.id === id)
-    // },
   }
 }
 </script>

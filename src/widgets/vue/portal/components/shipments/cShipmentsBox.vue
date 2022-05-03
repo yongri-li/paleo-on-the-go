@@ -181,6 +181,9 @@ export default {
     allItems() {
       return this.charge.lineItems
     },
+    routeItems() {
+      return this.allItems.filter(itm => itm.productTitle.includes('route'))
+    },
     addOnItems() {
       // return this.$store.state.customer.resources.onetimes
       return this.$store.getters['customer/customerOnetimesByAddressId'](this.addressId)
@@ -191,9 +194,9 @@ export default {
     addOnItemsQtys() {
       return this.addOnItems.map(addon => addon.quantity)
     },
-    subscriptions() {
-      return this.$store.getters['customer/customerSubscriptionsByAddressId'](this.addressId)
-    },
+    // subscriptions() {
+    //   return this.$store.getters['customer/customerSubscriptionsByAddressId'](this.addressId)
+    // },
     subscriptionItems() {
       return this.allItems.filter(item => !this.addOnItemsIds.includes(item.productId))
     },
@@ -208,7 +211,7 @@ export default {
       return !!freqObj ? freqObj.frequency : 1
     },
     totalSubItems() {
-      return this.subscriptionItems?.reduce((sum, sub) => sum + sub.quantity, 0)
+      return this.subscriptionItems?.reduce((sum, sub) => sum + sub.quantity, 0) - this.routeItems.length
     },
     totalAddOns() {
       return this.addOnItems?.reduce((sum, sub) => sum + sub.quantity, 0)

@@ -52,109 +52,6 @@ export const convertNumberToDay = num => {
   return dayToNumTable[num]
 }
 
-export const beforeOrAfterCutoffTime = () => {
-  // if before cutoffday or on cutoffday but before cutoff time: before
-  // otherwise, after cuttoff
-  // set and use these global valirables
-}
-
-export const getDeliveryDaysByZip = (userZip, zipTable) => {
-  const zipToJson = JSON.parse(zipTable)
-  const zipData = Object.entries(zipToJson)
-  var deliveryDay1, deliveryDay2
-
-  let userInfoByZip = Object.entries(zipData).filter(function(o) {
-    return userZip <= o[1][1]['zip_1'] && userZip >= o[1][1]['zip_0']
-  })
-
-  if (userInfoByZip.length > 0) {
-    deliveryDay1 = userInfoByZip[0][1][1]['delivery_day1']
-    deliveryDay2 = userInfoByZip[0][1][1]['delivery_day2']
-  }
-
-  let shipDays1 = deliveryDay1.includes(',') ? deliveryDay1.split(',') : deliveryDay1
-  let shipDays2 = deliveryDay2.includes(',') ? deliveryDay2.split(',') : deliveryDay2
-  let shipDays1t = Array.isArray(shipDays1) ? shipDays1.map(trm => trm.trim()) : shipDays1
-  let shipDays2t = Array.isArray(shipDays2) ? shipDays2.map(trm => trm.trim()) : shipDays2
-
-  const allShipDays = Array.isArray(shipDays1t)
-    ? shipDays1t.concat(shipDays2t)
-    : shipDays1t.split(',').concat(shipDays2t)
-
-  const shipNums = allShipDays.map(day => cnvtDayToNum0(day))
-
-  return shipNums
-}
-
-export const getChargeDaysByUserZip = (userZip, ziptable, delivdate) => {
-  // const userZip = sessionStorage.getItem(localstoragezip)
-  const zipToJson = JSON.parse(ziptable)
-  const zipData = Object.entries(zipToJson)
-  var deliveryDay1, deliveryDay2, chargeDay1, chargeDay2
-  delivdate = delivdate.toLowerCase()
-
-  let userInfoByZip = Object.entries(zipData).filter(function(o) {
-    return userZip <= o[1][1]['zip_1'] && userZip >= o[1][1]['zip_0']
-  })
-
-  if (userInfoByZip.length > 0) {
-    deliveryDay1 = userInfoByZip[0][1][1]['delivery_day1']
-    deliveryDay2 = userInfoByZip[0][1][1]['delivery_day2']
-    chargeDay1 = userInfoByZip[0][1][1]['charge_day1']
-    chargeDay2 = userInfoByZip[0][1][1]['charge_day2']
-  }
-
-  let shipDays1 = deliveryDay1.includes(',') ? deliveryDay1.split(',') : deliveryDay1
-  let shipDays2 = deliveryDay2.includes(',') ? deliveryDay2.split(',') : deliveryDay2
-  let shipDays1t = Array.isArray(shipDays1) ? shipDays1.map(trm => trm.trim()) : shipDays1
-  let shipDays2t = Array.isArray(shipDays2) ? shipDays2.map(trm => trm.trim()) : shipDays2
-
-  if (shipDays1t.includes(delivdate)) {
-    return chargeDay1
-  }
-  if (shipDays2t.includes(delivdate)) {
-    return chargeDay2
-  }
-}
-
-export const zipAllowsCustomNote = (jsonnotes, storedzip) => {
-  const zipObjs = JSON.parse(jsonnotes)
-  const zipList = Object.entries(zipObjs)
-  let checkByZip
-
-  const checkIfZipAllowsNotes = (data, userzip) => {
-    checkByZip = Object.entries(data).filter(function(o) {
-      if (userzip <= o[1][1]['zip_1'] && userzip >= o[1][1]['zip_0']) {
-        return o[0]
-      } else {
-        return false
-      }
-    })
-  }
-
-  checkIfZipAllowsNotes(zipList, storedzip)
-  return checkByZip.length ? true : false
-}
-
-// checks if it is cutofd day and if past 6pm est. if so, greys out upcoming pending charge
-// export const isPastCutoffDayTime = (cutoffdate, pastcuttrue) => {
-export const isPastCutoffDayTime = cutoffdate => {
-  const date = new Date()
-  const today = date.getDay()
-  const cutoffday = new Date(cutoffdate).getDay()
-  const nowEST = date.getUTCHours() - 4
-
-  if (today === cutoffday && (nowEST > 14 || nowEST <= 3)) {
-    setTimeout(function checkTime() {
-      if (nowEST >= 15 || nowEST <= 3) {
-        alert('asdasd')
-        return true
-      }
-      setTimeout(checkTime, 3000)
-    }, 500)
-  }
-}
-
 export const areSortedArraysEqual = (a, b) => {
   const aa = [...a].sort()
   const bb = [...b].sort()
@@ -229,10 +126,7 @@ export const convertDateToDDMMYYYY = datee => {
   const date = new Date(datee)
   let year = date.getFullYear()
   let month = (1 + date.getMonth()).toString().padStart(2, '0')
-  let day = date
-    .getDate()
-    .toString()
-    .padStart(2, '0')
+  let day = date.getDate().toString().padStart(2, '0')
   return month + '-' + day + '-' + year
 }
 
@@ -294,78 +188,8 @@ export const addDaysToDate = (date, days) => {
   return new Date(res)
 }
 
-export const shipDateBasedOnCharge = (chargeDate, shipDay) => {
-  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-
-  const shipDayNumber = days.indexOf(shipDay)
-  const newDate = new Date(chargeDate)
-  const diff = newDate.getDate() - newDate.getDay()
-  const weekStart = new Date(newDate.setDate(diff))
-  const addNum = shipDayNumber < 3 ? 7 : 0
-  const newDelvDate = new Date(weekStart.setDate(weekStart.getDate() + (shipDayNumber + addNum)))
-
-  return newDelvDate
-}
-
-export const nextDelvBasedOnCharge = (chargeDate, shipDay) => {
-  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-
-  const today = new Date()
-  const todayNum = today.getDay()
-  const shipDayNumber = days.indexOf(shipDay)
-  const newDate = new Date(chargeDate)
-  const diff = newDate.getDate() - newDate.getDay()
-  const weekStart = new Date(newDate.setDate(diff))
-  const num = shipDayNumber < 3 ? 7 : 0
-  const addNum = todayNum > 3 || todayNum === 0 ? num + 7 : num
-  const newDelvDate = new Date(weekStart.setDate(weekStart.getDate() + (shipDayNumber + addNum)))
-
-  return newDelvDate
-}
-
-export const nextChrgAndDelvDateBasedOnDelvDay = shipDay => {
-  const days = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday']
-  const shipA = [0, 1, 2]
-  const monTue = [1, 2]
-
-  const today = new Date()
-  const todayNum = today.getDay()
-  const nowUTC = today.getUTCHours()
-  const nowEST = nowUTC < 5 ? nowUTC + 24 - 5 : nowUTC - 5
-
-  const shipDayNum = days.indexOf(shipDay)
-  const chrgDayNum = shipA.includes(shipDayNum) ? 4 : 1
-
-  const diff = today.getDate() - today.getDay()
-  const weekStart = new Date(today.setDate(diff))
-  const weekStart2 = new Date(today.setDate(diff))
-  const num = shipDayNum < 3 || (shipDayNum >= 3 && monTue.includes(todayNum)) ? 7 : 0
-  const addNum = todayNum > 3 || todayNum === 0 ? num + 7 : num
-  const addCnum = (chrgDayNum === 4 && todayNum < 3) || (chrgDayNum === 1 && todayNum < chrgDayNum) ? 0 : 7
-
-  // (chrgDayNum === 4 && todayNum < 3) ||
-  // (chrgDayNum === 4 && todayNum === 4 && nowEST < 10) ||
-  // (chrgDayNum === 1 && todayNum < chrgDayNum) ||
-  // (chrgDayNum === 1 && todayNum === 1 && nowEST < 10)
-  //   ? 0
-  //   : 7
-
-  // add one more OR above for when wed (3 day) after 6pm est
-
-  console.log(shipDayNum, chrgDayNum, addNum, diff, addCnum, weekStart)
-  const newDelvDate = new Date(weekStart.setDate(weekStart.getDate() + (shipDayNum + addNum)))
-  const newChrgDate = new Date(weekStart2.setDate(weekStart2.getDate() + (chrgDayNum + addCnum)))
-
-  return [newChrgDate, newDelvDate]
-}
-
 export const delay = async ms => {
   return new Promise(resolve => setTimeout(resolve, ms))
-}
-
-export function warningPop(e) {
-  e.preventDefault()
-  e.returnValue = 'Unsaved Changes are still Processing. Please wait'
 }
 
 export function stillProcessingWarningPopup() {
@@ -376,19 +200,19 @@ export function removeReloadWarning() {
   window.removeEventListener('beforeunload', warningPop)
 }
 
-export const sortProducts = ({products, sortType}) => {
-  if(sortType) {
-    sortType = sortType.toLowerCase().replace(/ /g,'-')
+export const sortProducts = ({ products, sortType }) => {
+  if (sortType) {
+    sortType = sortType.toLowerCase().replace(/ /g, '-')
 
-    if(sortType === 'newest') {
-      products.sort((a,b) => new Date(b.created_at) - new Date(a.created_at))
+    if (sortType === 'newest') {
+      products.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
     }
   }
 
   return products
 }
 
-export const getPriceWithDiscount = ({price, discount}) => {
+export const getPriceWithDiscount = ({ price, discount }) => {
   discount = discount / 100
   return price * (1 - discount)
 }
