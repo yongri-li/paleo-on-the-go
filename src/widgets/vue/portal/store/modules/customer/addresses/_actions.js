@@ -52,13 +52,12 @@ export default {
   },
   async customerDeleteAddressDiscount({ commit }, payload) {
     try {
-      console.log('teed to discount! remove', payload)
       const apiClient = new apiService()
       const { addressId } = payload
       const { data } = await apiClient.delete('/v1/customer/address/discount', {
         data: { addressId }
       })
-      console.log(data, 'asdsadsdd data')
+      console.log(addressId, data, 'asdsadsdd data')
       const { address, charges, error } = data
       if (charges) await commit('CUSTOMER_UPDATE_CHARGES', { charges, keys: ['id', 'addressId'] })
       if (address) {

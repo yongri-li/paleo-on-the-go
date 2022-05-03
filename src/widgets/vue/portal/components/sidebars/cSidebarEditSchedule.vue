@@ -60,6 +60,7 @@ export default {
   data() {
     return {
       ...window.Scoutside.portal.sidebars,
+      ...window.Scoutside.portal.modals,
       chrgFreq: null,
       availableForDelivery: {
         days: []
@@ -135,7 +136,12 @@ export default {
     showDelayModal() {
       this.UI_SET_MODAL({
         component: 'cModalDelay',
-        content: { one: 'wanna delay??' }
+        content: {
+          heading: this.delay_heading,
+          text: this.delay_text,
+          button: this.delay_button_confirm,
+          cancel: this.delay_button_cancel
+        }
       })
     },
     async handleSave() {
