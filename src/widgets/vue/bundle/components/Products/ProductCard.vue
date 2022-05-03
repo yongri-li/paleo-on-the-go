@@ -5,6 +5,12 @@
   >
     <div class="pcard__header">
       <div class="pcard__header--figure" @click="openModal">
+        <span
+          v-if="flag"
+          :class="`pcard__header--flag pcard__header--flag--${flagHandle}`"
+        >
+          {{ flag }}
+        </span>
         <img
           class="pcard__header--img"
           :src="imageUrl"
@@ -73,7 +79,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
 import { MODAL_SETUP } from '../../store/modules/modals/_mutations-type'
-import { formatPrice } from '../../utils'
+import { formatPrice, handleize, getOutOfStock } from '@shared/utils'
 import ProductBtnAddToCart from './ProductBtnAddToCart.vue'
 
 export default {
@@ -139,6 +145,18 @@ export default {
     },
     typeOrder() {
       return this.$route.params.box
+    },
+    outOfStock() {
+      const inventoryData = this.product.inventory[0]
+      const tags = this.product.tags
+
+      return getOutOfStock({tags, inventoryData})
+    },
+    flag() {
+      return this.outOfStock ? 'Out Of Stock' : this.product.flag
+    },
+    flagHandle() {
+      return this.flag ? handleize(this.flag) : null
     }
   },
   methods: {
@@ -172,10 +190,33 @@ export default {
 
     &--figure {
       width: 40%;
+      position: relative;
 
       @media screen and (min-width: 769px){
         width: 100%;
       }
+    }
+
+    &--flag {
+      position: absolute;
+      background-color: $color-black;
+      color: $color-primary;
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 0.5rem 0;
+      z-index: 9;
+      min-width: 120px;
+      @include flex($justify: center);
+    }
+
+    &--flag--seasonal-item {
+      background-color: $color-primary;
+      color: $color-black;
+    }
+
+    &--flag--most-popular {
+      background-color: $color-secondary;
+      color: $color-black;
     }
 
     @media screen and (min-width: 769px){

@@ -16,12 +16,18 @@
               url: '{{ _product.url }}',
               collection: collectionJSON,
               subtitle: '{{ _product.metafields.my_fields.subtitle }}',
+              flag: `{{ _product.metafields.my_fields.flag }}`,
               info: {
                 description: `{{ _product.description }}`,
                 ingredients: `{{ _product.metafields.my_fields.ingredient }}`,
                 heating: `{{ _product.metafields.my_fields.heating }}`,
                 nutrition: `{{ _product.metafields.my_fields.nutrition }}`
               },
+              inventory: [
+                {% for variant in _product.variants %}
+                  '{{ variant.inventory_quantity }}',
+                {% endfor %}
+              ],
               {% for variant in _product.variants %}
                 price_hashes: '{{ variant.price | money_without_currency | hmac_sha256: settings.custom_app_secret }}',
               {% endfor %}

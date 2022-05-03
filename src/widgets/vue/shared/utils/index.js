@@ -221,3 +221,14 @@ export const getPriceWithDiscount = ({ price, discount }) => {
   discount = discount / 100
   return price * (1 - discount)
 }
+
+export const getOutOfStock = ({tags, inventoryData}) => {
+  let inventoryTag = 0
+  const indexFound = tags.findIndex(tag => tag.includes('inventory_'))
+  if(indexFound > -1) {
+    inventoryTag = tags[indexFound].replace('inventory_','')
+  }
+
+  const diff = parseInt(inventoryData) - parseInt(inventoryTag)
+  return diff < 0
+}
