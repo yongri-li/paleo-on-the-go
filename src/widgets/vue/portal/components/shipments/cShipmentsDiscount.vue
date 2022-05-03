@@ -109,7 +109,7 @@ export default {
     discountModel: {
       handler(val) {
         if (this._stringEmpty(val) && !this.discountCode) this.status = false
-        if ((this.status = 'error')) this.status = false
+        if (this.status === 'error') this.status = false
       }
     }
   },

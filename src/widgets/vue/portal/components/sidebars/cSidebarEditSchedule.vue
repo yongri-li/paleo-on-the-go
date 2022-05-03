@@ -15,7 +15,6 @@
         @click="freqSelect(pill)"
       >
         {{ (i + 1) * 2 }} Weeks
-        <!-- {{ i + 1 }} {{ i > 0 ? 'Weeks' : 'Week' }} -->
       </div>
     </section>
     <hr />
@@ -37,13 +36,13 @@
     </div>
 
     <c-button
-      class="c-button c-button--isDefault c-button--isPrimary"
+      class="c-button"
       @click="handleSave"
       text="Save Changes"
       :success="status === 'success'"
       :loading="loading"
       :attributes="{ disabled: unchanged }"
-      :modifiers="['isDefault', 'isPrimary', 'hideTextLoading', 'isSubmit']"
+      :modifiers="['isDefault', 'isBlack', 'hideTextLoading', 'isSubmit']"
     />
   </div>
 </template>
@@ -226,6 +225,10 @@ export default {
   background-color: $color-white;
   padding: 2rem 1.5rem;
 
+  @include media-mobile-down {
+    padding: 2rem 1rem;
+  }
+
   .c-h5 {
     font-size: 1.125rem;
     font-weight: 600;
@@ -259,12 +262,23 @@ export default {
     div.selected {
       background-color: $color-secondary;
     }
+
+    @include media-mobile-down {
+      div {
+        font-size: 12px;
+        padding: 0.7rem 1rem;
+      }
+    }
   }
 
   .vdp-datepicker__calendar {
     width: 100%;
     height: 450px;
     padding: 1.5rem;
+
+    @include media-mobile-down {
+      padding: 1rem 0.75rem;
+    }
 
     header {
       height: 40px;
@@ -277,6 +291,10 @@ export default {
       font-weight: 600;
       letter-spacing: 1px;
       text-transform: uppercase;
+
+      @include media-mobile-down {
+        font-size: 1rem;
+      }
     }
 
     span:not(.day-header, .next, .prev, .up) {
@@ -289,6 +307,10 @@ export default {
       padding: 0;
       background: #f7f7f7;
       border: 1px solid #fff;
+
+      @include media-mobile-down {
+        height: 48px;
+      }
     }
 
     span.cell.selected {

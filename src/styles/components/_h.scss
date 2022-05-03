@@ -101,6 +101,34 @@
   font-weight: 700;
 }
 
+.isUnderline {
+  text-decoration: underline;
+}
+
+.isCapitalize {
+  text-transform: capitalize;
+}
+
+.isUppercase {
+  text-transform: uppercase;
+}
+
+.isFontWt400 {
+  font-weight: 400;
+}
+
+.isFontWt500 {
+  font-weight: 500;
+}
+
+.isFontWt600 {
+  font-weight: 600;
+}
+
+.isBodyTxt {
+  @include text-body;
+}
+
 .c-basicTxt--md {
   font-family: Roboto, sans-serif;
   line-height: 1.4;
