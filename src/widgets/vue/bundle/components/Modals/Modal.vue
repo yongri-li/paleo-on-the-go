@@ -10,6 +10,7 @@
       class="modal__content"
       :is="modal.component"
       :params="modal.settings.params"
+      :content="modal.content"
       @close="closeModal"
     />
   </div>

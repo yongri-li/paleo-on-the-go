@@ -4,10 +4,10 @@
       x
     </div>
     <div class="modal__title">
-      ARE YOU SURE?
+      {{ content.title }}
     </div>
     <div class="modal__description">
-      Your Box Will Be Cleared
+      {{ content.description }}
     </div>
     <div class="modal__options">
       <div
@@ -31,6 +31,9 @@
 export default {
   props: {
     params: {
+      type: Object
+    },
+    content: {
       type: Object
     }
   },
