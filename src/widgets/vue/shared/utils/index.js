@@ -232,3 +232,13 @@ export const getOutOfStock = ({tags, inventoryData}) => {
   const diff = parseInt(inventoryData) - parseInt(inventoryTag)
   return diff < 0
 }
+
+export const notScrollBody = (state = true) => {
+  const body = document.querySelector('body')
+  if(state) {
+    body.style.overflow = 'hidden'
+  }
+  else {
+    body.style.overflow = 'initial'
+  }
+}

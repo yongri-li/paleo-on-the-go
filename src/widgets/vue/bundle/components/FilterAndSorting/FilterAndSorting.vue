@@ -45,8 +45,8 @@
             PREFERENCE
           </div>
           <ul class="fas__filter--list">
-            <li v-for="item in preferences"
-              :key="item.tag"
+            <li v-for="(item, index) in preferences"
+              :key="index"
               class="fas__filter--opt"
               :class="{ active: item.active }"
               @click="addFilter(item)"
@@ -78,7 +78,17 @@
     <div class="fas__items">
       {{ lengthProducts }} items
     </div>
-    <div class="fas__sort">
+    <div
+      v-if="contents.showFilters"
+      class="fas__close"
+      @click="toggleContent('showFilters')"
+    >
+      x
+    </div>
+    <div
+      :class="{hide: contents.showFilters}"
+      class="fas__sort"
+    >
       <!-- Sort By -->
       <v-select
         placeholder="Sort By"
@@ -95,14 +105,25 @@
         </template>
       </v-select>
     </div>
+    <c-overlay
+      class="fas__overlay"
+      :show="contents.showFilters"
+      slot="overlay"
+      @close="toggleContent('showFilters')"
+    />
   </div>
 </template>
 
 <script>
+import cOverlay from '@shared/components/core/cOverlay.vue'
 import { mapState } from 'vuex'
 import { FILTER_TOGGLE_ACTIVE, CLEAN_ALL_FILTERS } from '../../store/modules/filters/_mutations-type'
+import { notScrollBody } from '../../../shared/utils'
 
 export default {
+  components: {
+    cOverlay
+  },
   props: {
     lengthProducts: {
       type: Number
@@ -253,6 +274,12 @@ export default {
         this.$router.push({ query })
       }
     }
+  },
+  watch: {
+    'contents.showFilters'(current) {
+      const isMobile = window.innerWidth < 768
+      if(isMobile) notScrollBody(current)
+    }
   }
 }
 </script>
@@ -312,10 +339,10 @@ export default {
     &--content {
       position: absolute;
       top: 100%;
-      left: 0;
+      left: -10px;
       background-color: #f3f0e9;
-      width: 100%;
-      z-index: 1;
+      width: 105%;
+      z-index: 105;
       border-top: 1px solid #D3D2D2;
       padding: 1rem;
       transition: all .4s;
@@ -491,6 +518,29 @@ export default {
       }
     }
 
+  }
+  @include media-tablet-down {
+    &__sort.hide {
+      display: none;
+    }
+  }
+
+  &__overlay {
+    top: 120px;
+    z-index: 104;
+    @include media-tablet-up {
+      display: none;
+    }
+  }
+
+  &__close {
+    width: 35%;
+    text-align: right;
+    font-size: 1.4rem;
+    cursor: pointer;
+    @include media-tablet-up {
+      display: none;
+    }
   }
 }
 
