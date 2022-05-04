@@ -180,7 +180,19 @@ export default {
     &--collection:not(:first-child) {
       /*margin-bottom: 2.5rem;*/
       margin-top: -1rem;
-      padding-top: 6rem;
+      padding-top: 6.5rem;
+    }
+
+    @include media-mobile-down {
+      &--collection:not(:first-child) {
+        margin-top: -7rem;
+        padding-top: 14rem;
+      }
+
+      /*      &--collection {
+        margin-top: -5rem;
+        padding-top: 12rem;
+      }*/
     }
 
     &--nav,
@@ -312,6 +324,10 @@ export default {
           display: none;
         }
       }
+    }
+
+    @include media-mobile-down {
+      padding: 1rem 0;
     }
   }
 

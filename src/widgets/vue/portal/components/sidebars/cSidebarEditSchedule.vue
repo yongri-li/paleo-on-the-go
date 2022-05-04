@@ -119,8 +119,8 @@ export default {
     },
     freqSelect(freq) {
       this.chrgFreq = freq * 2
-      const subFreq = this.subscriptions[0].charge_interval_frequency
-      freq != subFreq ? (this.freqChanged = true) : (this.freqChanged = false)
+      const subFreq = +this.subscriptions[0].charge_interval_frequency
+      freq * 2 !== subFreq ? (this.freqChanged = true) : (this.freqChanged = false)
     },
     setMonthChrgDelay(currentChrg, num) {
       const date = new Date(currentChrg)
@@ -205,7 +205,7 @@ export default {
       immediate: true,
       handler(val) {
         this.newChargeDate = val
-        this.chrgFreq = this.subscriptions[0]?.charge_interval_frequency
+        this.chrgFreq = +this.subscriptions[0]?.charge_interval_frequency
       }
     },
     newChargeDate: {
@@ -243,7 +243,7 @@ export default {
 
   .c-button {
     width: 100%;
-    margin-bottom: 2.5rem;
+    margin-bottom: 2.125rem;
   }
 
   .c-sidebar__pills {
@@ -327,6 +327,10 @@ export default {
 
     span.cell:nth-child(36) {
       display: none;
+    }
+
+    @include media-mobile-down {
+      height: 368px;
     }
   }
 }

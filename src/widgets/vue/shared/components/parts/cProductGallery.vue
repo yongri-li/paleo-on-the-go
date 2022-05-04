@@ -161,8 +161,8 @@ export default {
       }
 
       button[data-controls='next'] svg {
-        margin-left: -1px;
-        margin-top: -0.01rem;
+        margin-left: -3px;
+        margin-top: 2px;
       }
 
       button:last-child {

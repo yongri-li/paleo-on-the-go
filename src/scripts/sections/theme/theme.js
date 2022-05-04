@@ -6,6 +6,7 @@ import { tns } from 'tiny-slider/src/tiny-slider'
 
 const isHomepage = document.querySelector('.o-homepage')
 const getStartedBtns = document.querySelectorAll('[data-get-started]')
+const boxTabs = document.querySelectorAll('.js--planClk')
 
 // dynamic link and boxsize on getstarted plan btn clicks
 const sendBoxInfo = btn => {
@@ -14,6 +15,7 @@ const sendBoxInfo = btn => {
 	window.location.href = '/pages/bundle/#/subscription'
 }
 getStartedBtns.forEach(btn => btn.addEventListener('click', () => sendBoxInfo(btn)))
+if (isHomepage) boxTabs.forEach(box => box.addEventListener('click', () => sendBoxInfo(box)))
 
 if (document.querySelector('[data-tile-slider]')) {
 	const copyTiles = tns({
@@ -43,7 +45,6 @@ if (isHomepage) {
 	const menuWrappers = document.querySelectorAll('.c-homeMenu__flex .c-homeFaqs__item button')
 	const menuNodes = document.querySelectorAll('[data-group]')
 	const panelNodes = document.querySelectorAll('.c-homeMenu__flex .panel-answer')
-	const boxTabs = document.querySelectorAll('.js--planClk')
 
 	faqsWrappers.forEach(item => {
 		item.addEventListener('click', function(e) {
@@ -82,15 +83,6 @@ if (isHomepage) {
 				const ind = grp.dataset.group * 1
 				ind !== groupNum ? (grp.style.display = 'none') : (grp.style.display = 'block')
 			})
-		})
-	})
-
-	boxTabs.forEach(box => {
-		box.addEventListener('click', e => {
-			let boxSize = box.dataset.boxsize
-			sessionStorage.setItem('startBtnClk', true)
-			sessionStorage.setItem('boxSize', boxSize)
-			window.location.href = '/pages/bundle/#/subscription'
 		})
 	})
 }
