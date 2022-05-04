@@ -374,7 +374,7 @@
     color: $color-white;
     left: unset;
     right: -100%;
-    padding-top: 1.65rem;
+    padding-top: 1.5rem;
     z-index: 12;
 
     .c-headerMobile__menuNav-primaryLinks a {
@@ -415,15 +415,18 @@
 }
 
 .c-headerMobile__menuNav-primaryLinks {
-  li:last-child a,
-  li:nth-last-child(2) a {
-    font-size: 18px;
-    font-weight: 400;
+  li {
+    margin-bottom: 1rem;
   }
+  // li:last-child a,
+  // li:last-child a {
+  //   font-size: 18px;
+  //   font-weight: 400;
+  // }
 
-  li:nth-last-child(2) {
-    margin-top: 1.25rem;
-  }
+  // li:last-child {
+  //   margin-top: 1.25rem;
+  // }
 }
 
 .c-headerMobile__menuNav-secondaryLinks a,

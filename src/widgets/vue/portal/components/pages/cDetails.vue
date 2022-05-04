@@ -12,7 +12,7 @@
       <div class="c-details__box">
         <!-- email -->
         <div class="c-details__boxSingle">
-          <c-detailsBlock class="c-details__boxItem withAccordion">
+          <c-detailsBlock class="c-details__boxItem withAccordion" :heading="content.email_label">
             <c-accordion>
               <c-accordionItem>
                 <div class="c-details__boxButton" slot="trigger">

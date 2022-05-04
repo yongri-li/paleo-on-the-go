@@ -44,7 +44,7 @@
 
     <c-button
       ref="fixedCTA"
-      class="c-cta pdp__main--atcButton mobileBottom__cta"
+      class="c-cta pdp__main--atcButton mobileBottom__cta u-hideTabletUp"
       @click="handleGetStarted"
       :loading="loading"
       :text="isCustomer ? (added ? addedTxt : labels.atc) : labels.getStarted"
@@ -231,6 +231,7 @@ export default {
     display: flex;
     flex-flow: column;
     background-color: $color-ecru;
+    overflow: hidden;
 
     @include media-tablet-up {
       display: flex;

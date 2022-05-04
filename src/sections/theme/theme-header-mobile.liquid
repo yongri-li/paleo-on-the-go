@@ -91,11 +91,14 @@
             {% if linklists[section.settings.acct_menu_list].links.size > 0 %}
               <ul class="c-headerMobile__menuNav-primaryLinks">
                   {% for link in linklists[section.settings.acct_menu_list].links %}
-                  <li class="c-headerMobile__menuNavItem{% if link.active %}--active{% endif %}"><a href="{{ link.url }}" class="c-headerMobile__menuNavLink">{{ link.title }}</a></li>
+                  <li class="c-headerMobile__menuNavItem{% if link.active %}--active{% endif %}" onclick="closeNav('close')"><a href="{{ link.url }}" class="c-headerMobile__menuNavLink">{{ link.title }}</a></li>
                   {% endfor %}
               </ul>
             {% endif %}   
-            <a href="/account/logout">Sign Out</a>    
+            <a href="/account/logout">Sign Out</a>   
+            <br> 
+            <br>
+            <hr>
         {% else %}
             <a href="/account/login" class="c-headerMobile__account">
             <span class="c-headerMobile__accountText">{{ login_text }}</span>
