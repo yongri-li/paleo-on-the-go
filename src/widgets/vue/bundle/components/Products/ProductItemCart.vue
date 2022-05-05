@@ -1,23 +1,16 @@
 <template>
-  <div
-    :class="[typeClass]"
-    class="pitemcart"
-  >
+  <div :class="[typeClass]" class="pitemcart">
     <div class="pitemcart__body">
       <div class="pitemcart__figure">
-        <div class="pitemcart__figure--remove" @click="removeProductToCart">
-          x
-        </div>
+        <div class="pitemcart__figure--remove" @click="removeProductToCart">x</div>
         <img class="pitemcart__figure--img" :src="imageUrl" :alt="product.title" />
       </div>
       <div class="pitemcart__info">
         <div class="pitemcart__info--title">
           {{ product.title }}
         </div>
-        <div class="pitemcart__info--description">
-          with dasljdal adsajdla
-        </div>
-        <div class="pitemcart__info--price">
+        <div class="pitemcart__info--description">with dasljdal adsajdla</div>
+        <div class="pitemcart__info--price" v-if="!fromPortal">
           {{ finalPrice }}
         </div>
       </div>
@@ -53,15 +46,16 @@ export default {
     where: {
       type: String,
       required: true
+    },
+    fromPortal: {
+      type: Boolean
     }
   },
   computed: {
-    ...mapGetters('mealcart', [
-      'getSizeSelected'
-    ]),
+    ...mapGetters('mealcart', ['getSizeSelected']),
     imageUrl() {
       const imgFound = this.product.media.find(item => item.position === 1)
-      const urlFinal = imgFound.src.replace('.jpg','_150x150.jpg').replace('.png','_150x150.png')
+      const urlFinal = imgFound.src.replace('.jpg', '_150x150.jpg').replace('.png', '_150x150.png')
       return urlFinal
     },
     finalPrice() {
@@ -74,7 +68,7 @@ export default {
     removeProductToCart() {
       this.$store.commit(`babcart/${REMOVE_PRODUCT_TO_CART}`, {
         idProduct: this.product.id,
-        where: this.where,
+        where: this.where
       })
     }
   }
@@ -82,7 +76,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .pitemcart {
   @include flex($justify: space-between);
   margin-top: 1.2rem;
@@ -132,8 +125,8 @@ export default {
     }
 
     &--description {
-      color: #7B7979;
-      font-size: .9rem;
+      color: #7b7979;
+      font-size: 0.9rem;
     }
 
     &--price {
@@ -152,28 +145,20 @@ export default {
 }
 
 .addons.pitemcart {
-
   .pitemcart {
-
     &__body {
       width: 100%;
     }
 
     &__figure {
-
       &--remove {
         display: none;
       }
-
     }
 
     &__add-to-cart {
       display: none;
     }
-
   }
-
 }
-
-
 </style>

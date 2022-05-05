@@ -192,6 +192,11 @@ export const delay = async ms => {
   return new Promise(resolve => setTimeout(resolve, ms))
 }
 
+export function warningPop(e) {
+  e.preventDefault()
+  e.returnValue = 'Unsaved Changes are still Processing. Please wait'
+}
+
 export function stillProcessingWarningPopup() {
   window.addEventListener('beforeunload', warningPop)
 }

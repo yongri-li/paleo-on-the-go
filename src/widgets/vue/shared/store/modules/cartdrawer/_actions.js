@@ -24,17 +24,30 @@ export default {
     commit(ADD_BOX_TO_CART, { items: products })
     commit(SET_SIZE_SELECTED, { sizeSelected })
   },
-  // SUBSCRIPTIONS
+  // UPDATES to Existing PORTAL Customers
+  async customerUpdatePlan({ state }, payload) {
+    const { addressId, updates, deletes } = payload
+    const appRequest = await fetch('https://paleo-custom-app.herokuapp.com/plan/update', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-fmp-key': 'sk_1x1_3ca18d3355b439e6c191d41754de54af8709dbf92aa1a0ef92fc2024b0db2f2e'
+        // 'x-fmp-key': window.Scoutside.api.fmp_app_key
+      },
+      body: JSON.stringify({
+        addressId,
+        updates,
+        deletes
+      })
+    })
+  },
   async customerCreateSubscriptions({ commit }, payload) {
     const apiClient = new apiService()
     const { addressId, creates } = payload
     const { data } = await apiClient.post('/v1/customer/subscriptions', {
       data: { addressId, creates }
     })
-    // const { charges, onetimes, error } = data
     const { charges, subscriptions, error } = data
-    // if (charges) await commit('CUSTOMER_UPDATE_CHARGES', { charges, keys: ['id', 'addressId'] })
-    // if (subscriptions) await commit('CUSTOMER_UPDATE_SUBSCRIPTIONS', { subscriptions })
     return { subscriptions, error }
   },
   async customerDeleteSubscriptions({ commit }, payload) {
@@ -44,8 +57,6 @@ export default {
       data: { addressId, ids }
     })
     const { charges, subscriptions, error } = data
-    // if (charges) await commit('CUSTOMER_UPDATE_CHARGES', { charges, keys: ['id', 'addressId'] })
-    // if (subscriptions) await commit('CUSTOMER_UPDATE_SUBSCRIPTIONS', { subscriptions })
     return { subscriptions, error }
   },
   // ONETIME ADDONS

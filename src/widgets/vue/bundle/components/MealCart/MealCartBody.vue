@@ -1,8 +1,5 @@
 <template>
-  <div
-    :class="[typeClass]"
-    class="meal-cart__body"
-  >
+  <div :class="[typeClass]" class="meal-cart__body">
     <meal-cart-box-sizes
       :size-selected="sizeSelected"
       @change="changeSizeSelected"
@@ -10,18 +7,13 @@
       :class="[haveProductsClass]"
       class="meal-cart__body--boxsize"
     />
-    <div
-      :class="[haveProductsClass]"
-      class="meal-cart__body--changeboxsize"
-      @click="openModal"
-    >
+    <div :class="[haveProductsClass]" class="meal-cart__body--changeboxsize" @click="openModal">
       Change box size
     </div>
-    <meal-cart-pre-built class="meal-cart__body--prebuilt"/>
-    <meal-cart-product-list :type-class="typeClass" />
+    <meal-cart-pre-built class="meal-cart__body--prebuilt" />
+    <meal-cart-product-list :type-class="typeClass" :from-portal="fromPortal" />
   </div>
 </template>
-
 
 <script>
 import MealCartBoxSizes from './MealCartBoxSizes.vue'
@@ -50,12 +42,13 @@ export default {
     sizeSelected: {
       type: Object,
       required: true
+    },
+    fromPortal: {
+      type: Boolean
     }
   },
   methods: {
-    ...mapActions('mealcart',[
-      'validateChangeSizeSelected'
-    ]),
+    ...mapActions('mealcart', ['validateChangeSizeSelected']),
     changeSizeSelected(newVal) {
       this.validateChangeSizeSelected(newVal)
     },
@@ -67,11 +60,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .meal-cart__body {
-  padding: .8rem;
+  padding: 0.8rem;
   @include media-tablet-up {
-    padding: 0 .8rem .8rem;
+    padding: 0 0.8rem 0.8rem;
   }
 
   &--boxsize.with-products {
@@ -82,7 +74,6 @@ export default {
 
   &--changeboxsize {
     display: none;
-
   }
 
   &--changeboxsize.with-products {
@@ -95,25 +86,20 @@ export default {
       cursor: pointer;
     }
   }
-
 }
 
 .addons {
-
   .meal-cart__body {
-
     &--changeboxsize.with-products {
       @include media-tablet-up {
         display: none;
       }
     }
 
-    &--prebuilt, &--boxsize {
+    &--prebuilt,
+    &--boxsize {
       display: none;
     }
-
   }
-
 }
-
 </style>
