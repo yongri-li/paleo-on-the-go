@@ -712,14 +712,14 @@
             hashJson.note = cartData.note
             hashJson.email = cartData.email
 
-            const appRequest = await fetch('https://fmp-app-staging.herokuapp.com/plan/checkout', {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json',
-                'x-fmp-key': window.Scoutside.api.fmp_app_key
-              },
-              body: JSON.stringify(hashJson)
-            })
+            // const appRequest = await fetch('https://fmp-app-staging.herokuapp.com/plan/checkout', {
+            //   method: 'POST',
+            //   headers: {
+            //     'Content-Type': 'application/json',
+            //     'x-fmp-key': window.Scoutside.api.fmp_app_key
+            //   },
+            //   body: JSON.stringify(hashJson)
+            // })
 
             console.log('hashjson:', hashJson)
 

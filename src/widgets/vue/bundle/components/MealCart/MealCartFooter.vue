@@ -1,12 +1,9 @@
 <template>
   <div class="meal-cart__footer">
     <div class="meal-cart__box-total">
-      <div class="meal-cart__box-total--title">
-        BOX TOTAL
-      </div>
+      <div class="meal-cart__box-total--title">BOX TOTAL</div>
       <div class="meal-cart__box-total--amounts">
-        <div v-if="subtotal > 0"
-          class="meal-cart__box-total--sub">
+        <div v-if="subtotal > 0" class="meal-cart__box-total--sub">
           {{ subtotalFormat }}
         </div>
         <div class="meal-cart__box-total--final">
@@ -78,8 +75,11 @@ export default {
     return {
       notContinue: false,
       loading: false,
+      rechargeSubs: [],
+      rechargeAddons: [],
       rechargeSubIds: [],
-      rechargeAddonIds: []
+      rechargeAddonIds: [],
+      rechargeAddonVarIds: []
       // newSubItems: []
     }
   },
@@ -87,9 +87,7 @@ export default {
     cButton
   },
   computed: {
-    ...mapState('cartdrawer', [
-      'cartItems'
-    ]),
+    ...mapState('cartdrawer', ['cartItems']),
     priceAddOns() {
       return this.typeClass === 'addons' ? this.cartAddOns : 0
     },
@@ -126,7 +124,8 @@ export default {
 
       if (this.cartAddOns === 0 && this.typeClass === 'addons') {
         this.notContinue = false
-        const ctaAddonsButton = window.Scoutside.bundle.mealcart.content.cta_addons_button || `No Thanks Continue to Checkout`
+        const ctaAddonsButton =
+          window.Scoutside.bundle.mealcart.content.cta_addons_button || `No Thanks Continue to Checkout`
         return ctaAddonsButton
       }
 
@@ -137,21 +136,38 @@ export default {
 
       this.notContinue = false
       return 'Checkout'
+    },
+    hasNewAddons() {
+      if (!this.addons.length) return false
+      if (this.addons.length !== this.rechargeAddons.length) return true
+
+      const rcVarIdsSrt = this.rechargeAddonVarIds.sort()
+      const curVarIdsSrt = this.addons.map(ad => ad.shopify_variant_id).sort()
+      const rcQtysSrt = this.rechargeAddons.map(ad => ad.quantity).sort()
+      const curQtysSrt = this.addons.map(ad => ad.quantity).sort()
+
+      for (let i = 0; i < curVarIdsSrt?.length; i++) {
+        if (curVarIdsSrt[i] !== rcVarIdsSrt[i]) return true
+      }
+      for (let i = 0; i < curQtysSrt?.length; i++) {
+        if (curQtysSrt[i] !== rcQtysSrt[i]) return true
+      }
+      return false
     }
   },
   methods: {
-    ...mapActions('cartdrawer',[
+    ...mapActions('cartdrawer', [
       'setDataFromBox',
-      'customerCreateSubscriptions',
       'customerDeleteSubscriptions',
       'customerDeleteOnetimes',
-      'customerCreateOnetimes'
+      'customerCreateOnetimes',
+      'customerUpdatePlan'
     ]),
     async updateAddonsAndSubs() {
       this.loading = true
       stillProcessingWarningPopup()
 
-      if (this.addons.length) {
+      if (this.hasNewAddons) {
         await this.customerDeleteOnetimes({
           addressId: this.addressId,
           addOnsIds: this.rechargeAddonIds
@@ -162,27 +178,28 @@ export default {
           creates: this.addons
         })
       }
-      await this.customerDeleteSubscriptions({
+
+      await this.customerUpdatePlan({
+        addressId: this.addressId,
+        updates: [...this.subs],
+        deletes: this.rechargeSubs
+      })
+
+      const update = await this.customerDeleteSubscriptions({
         addressId: this.addressId,
         ids: this.rechargeSubIds
       })
 
-      const subscriptions = await this.customerCreateSubscriptions({
-        addressId: this.addressId,
-        creates: this.subs
-      })
       removeReloadWarning()
-      if (subscriptions) window.location = '/account#/shipments'
+      if (update) window.location = '/account#/shipments'
     },
     async nextStep() {
       const param = this.$route.params.box
-      if(param === 'subscription') {
+      if (param === 'subscription') {
         this.$router.push('/addons')
-      }
-      else if (this.fromPortal && this.isCustomer) {
+      } else if (this.fromPortal && this.isCustomer) {
         this.updateAddonsAndSubs()
-      }
-      else {
+      } else {
         await this.setDataFromBox({
           items: this.cart.items,
           addons: this.cart.addons,
@@ -201,8 +218,12 @@ export default {
       const subIds = curSubs.map(sub => sub.id)
       const curAddons = onetimes.filter(addon => addon.addressId === this.addressId)
       const addonIds = curAddons.map(addon => addon.id)
+      const addonVarIds = curAddons.map(addon => addon.shopify_variant_id)
+      this.rechargeAddons = curAddons
+      this.rechargeSubs = curSubs
       this.rechargeSubIds = subIds
       this.rechargeAddonIds = addonIds
+      this.rechargeAddonVarIds = addonVarIds
     }
   },
   mounted() {
@@ -213,12 +234,10 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-
 .meal-cart {
-
   &__footer {
     box-shadow: 0px 4px 34px rgba(0, 0, 0, 0.1);
-    padding: .8rem 1rem;
+    padding: 0.8rem 1rem;
 
     @include media-tablet-up {
       padding: 0;
@@ -229,7 +248,7 @@ export default {
     @include flex($align: flex-end, $justify: space-between);
 
     @include media-tablet-up {
-      padding: .6rem .6rem 0;
+      padding: 0.6rem 0.6rem 0;
     }
 
     &--title {
@@ -248,7 +267,7 @@ export default {
     }
 
     &--sub {
-      color: #A7A5A6;
+      color: #a7a5a6;
       font-size: 1.1rem;
       margin-right: 0.3rem;
       text-decoration: line-through;
@@ -284,9 +303,7 @@ export default {
 
   .disable {
     pointer-events: none;
-    opacity: .6;
+    opacity: 0.6;
   }
-
 }
-
 </style>

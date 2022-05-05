@@ -40,7 +40,6 @@ export default {
   props: {
     address: {
       type: Object
-      // required: true
     },
     shipment: {
       type: Object,
@@ -66,10 +65,7 @@ export default {
   }),
   computed: {
     disabled() {
-      return (
-        this.status == 'success' || this._stringEmpty(this.discountModel)
-        //this.discountCode.toLowerCase().trim() == this.discountModel.toLowerCase().trim()
-      )
+      return this.status == 'success' || this._stringEmpty(this.discountModel)
     },
     modalContent() {
       const discount = this.$store.getters['customize/customizeModalByPrefix']('discount_')

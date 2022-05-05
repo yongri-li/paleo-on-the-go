@@ -12,6 +12,7 @@
         :type-class="typeClass"
         :have-products-class="haveProductsClass"
         :size-selected="getSizeSelected"
+        :from-portal="fromPortal"
       />
     </div>
     <meal-cart-footer
@@ -56,12 +57,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('babcart', [
-      'cart'
-    ]),
-    ...mapGetters('mealcart', [
-      'getSizeSelected'
-    ]),
+    ...mapState('babcart', ['cart']),
+    ...mapGetters('mealcart', ['getSizeSelected']),
     haveProductsClass() {
       return this.cart.items.length ? 'with-products' : 'without-products'
     },
