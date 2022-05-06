@@ -38,22 +38,12 @@
             </div>
           </div>
           <div v-if="loading" class="pw-toggle-wrapper">
-            <div
-              class="pw-price quote"
-              data-widget-label="true"
-              tabindex="0"
-              data-testid="quote"
-            >
+            <div class="pw-price quote" data-widget-label="true" tabindex="0" data-testid="quote">
               ..loading
             </div>
           </div>
           <div v-else class="pw-toggle-wrapper">
-            <div
-              class="pw-price quote"
-              data-widget-label="true"
-              tabindex="0"
-              data-testid="quote"
-            >
+            <div class="pw-price quote" data-widget-label="true" tabindex="0" data-testid="quote">
               {{ insurance_price }}
             </div>
             <div
@@ -110,10 +100,10 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions } from "vuex";
+import { mapGetters, mapState, mapActions } from 'vuex'
 
-import { formatPriceToNumber } from "@shared/utils";
-import { routeapp } from "../../utils";
+import { formatPriceToNumber } from '@shared/utils'
+import { routeapp } from '../../utils'
 
 import SummaryRouteModal from './SummaryRouteModal.vue'
 
@@ -131,10 +121,10 @@ export default {
     }
   },
   computed: {
-    ...mapState("cartdrawer", ["routeProduct", "cartItems"]),
-    ...mapGetters("cartdrawer", ["getSubTotalPricesWithoutRoute", "routeProductInCart"]),
+    ...mapState('cartdrawer', ['routeProduct', 'cartItems']),
+    ...mapGetters('cartdrawer', ['getSubTotalPricesWithoutRoute', 'routeProductInCart']),
     subtotal() {
-      return formatPriceToNumber(this.getSubTotalPricesWithoutRoute);
+      return formatPriceToNumber(this.getSubTotalPricesWithoutRoute)
     },
     haveRouteProductInCart() {
       return !!this.routeProductInCart
@@ -144,62 +134,56 @@ export default {
     }
   },
   mounted() {
-    this.getQuote();
+    this.getQuote()
   },
   methods: {
-    ...mapActions( "cartdrawer",
-      ["setRouteProduct"]
-    ),
+    ...mapActions('cartdrawer', ['setRouteProduct']),
     getQuote() {
       const subtotal = this.subtotal
       const route_api_key = window.Scoutside.api.route_api_key
-      routeapp.get_quote(
-        route_api_key,
-        subtotal,
-        "USD",
-        async ({ insurance_price }) => {
-          this.real_insurance_price = insurance_price
-          await this.roundInsurePrice()
-          this.loading = false
-          if (this.haveRouteProductInCart) this.addProduct()
-        }
-      );
+      routeapp.get_quote(route_api_key, subtotal, 'USD', async ({ insurance_price }) => {
+        this.real_insurance_price = insurance_price
+        await this.roundInsurePrice()
+        this.loading = false
+        if (this.haveRouteProductInCart) this.addProduct()
+      })
     },
     async roundInsurePrice() {
       await this.setVariantRoute()
-      this.insurance_price = formatPriceToNumber(this.variant.price)
+      this.insurance_price = formatPriceToNumber(this.variant?.price)
     },
     async setVariantRoute() {
       const routeProduct = await this.getRouteProduct()
-      const variantFound = routeProduct.variants.find(variant => formatPriceToNumber(variant.price) >= this.real_insurance_price)
+      const variantFound = routeProduct.variants.find(
+        variant => formatPriceToNumber(variant?.price) >= this.real_insurance_price
+      )
       this.variant = variantFound
     },
     async getRouteProduct() {
       let routeProduct = this.routeProduct
-      if(!Object.keys(routeProduct).length) {
+      if (!Object.keys(routeProduct).length) {
         routeProduct = await this.setRouteProduct()
       }
       return routeProduct
     },
     insurreChange() {
-      if(this.haveRouteProductInCart) {
+      if (this.haveRouteProductInCart) {
         // remove
-        this.$store.dispatch("cartdrawer/removeRouteProductToCart")
-      }
-      else {
+        this.$store.dispatch('cartdrawer/removeRouteProductToCart')
+      } else {
         // add
         this.addProduct()
       }
     },
     addProduct() {
-      this.$store.dispatch("cartdrawer/addRouteProduct", {
+      this.$store.dispatch('cartdrawer/addRouteProduct', {
         routeProduct: this.routeProduct,
         variant: this.variant
       })
     },
     changeModal(val) {
       this.openModal = val
-    },
+    }
   },
   watch: {
     getSubTotalPricesWithoutRoute() {
@@ -207,15 +191,15 @@ export default {
       this.getQuote()
     }
   }
-};
+}
 </script>
 
 <style lang="scss" scoped>
 .route-widget-container {
-  padding: 0 .5rem;
+  padding: 0 0.5rem;
 
   .pw-msg-paleo {
-    font-size: .8rem;
+    font-size: 0.8rem;
   }
 }
 </style>

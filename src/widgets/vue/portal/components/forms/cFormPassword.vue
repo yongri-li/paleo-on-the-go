@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapActions } from 'vuex'
 import { _authRecover } from '@shared/scripts'
 import cAlert from '@shared/components/core/cAlert.vue'
 import cField from '@shared/components/core/cField.vue'
@@ -74,6 +74,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('customer', ['customerRecoverPassword']),
     validateForm() {
       this.status = false
       this.errors = {}
@@ -94,7 +95,16 @@ export default {
       this.validateForm()
       if (!this.hasErrors) {
         this.loading = true
-        const { error } = await _authRecover({ email: this.passwordModel.email })
+        const query = `mutation {
+          customerRecover(email: "${this.passwordModel.email}") {
+            customerUserErrors {
+              code
+              field
+              message
+            }
+          }
+        }`
+        const { error, success } = await this.customerRecoverPassword({ query })
         if (!error) {
           this.status = 'success'
           if (!this.hideAlert && this.content.success_text) {
@@ -102,16 +112,7 @@ export default {
           }
         } else {
           this.status = 'error'
-          switch (error) {
-            case 'NO_CUSTOMER':
-              this.messages.push(this.content.error_customer)
-              break
-            case 'LIMIT_EXCEEDED':
-              this.messages.push(this.content.error_limit)
-              break
-            default:
-              this.messages.push(this.content.error_general)
-          }
+          this.messages.push(this.content.error_general)
         }
         this.loading = false
       }

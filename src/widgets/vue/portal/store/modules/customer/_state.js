@@ -11,7 +11,8 @@ export default () => ({
     charges: false,
     onetimes: false,
     orders: false,
-    subscriptions: false
+    subscriptions: false,
+    paymentMethod: false
   },
   addressIds: [],
   thisChargeId: false,
