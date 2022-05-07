@@ -1,0 +1,19 @@
+<script>
+  const heroRewards = {}
+  heroRewards.content = {{ section.settings | json }}
+
+  window.Scoutside.rewards.heroRewards = heroRewards
+</script>
+
+{% schema %}
+  {
+    "name": "POTG Rewards",
+    "settings": [
+      {
+        "label": "Subtext logged out",
+        "type": "text",
+        "id": "subtext_logged_out"
+      }
+    ]
+  }
+{% endschema %}

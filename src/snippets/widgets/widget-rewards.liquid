@@ -1,0 +1,14 @@
+<script>
+  window.Scoutside = window.Scoutside || {};
+  window.Scoutside.rewards = window.Scoutside.rewards || {};
+</script>
+
+{% section 'widget-rewards-hero' %}
+
+<v-rewards
+  id="v-rewards"
+  class="v-widget"
+> </v-rewards>
+
+{{ 'widget-rewards.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'widget-rewards.js' | asset_url }}"></script>

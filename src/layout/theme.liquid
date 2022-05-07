@@ -1,6 +1,6 @@
 <!doctype html>
 <html
-  lang="{{ shop.locale }}" 
+  lang="{{ shop.locale }}"
   class="{% if template == 'index' %} o-html-home{% endif %}{% if template == 'product' %} o-product{% endif %}"
 >
 <head>
@@ -10,6 +10,7 @@
   {% render 'theme-shop' %}
   {% render 'theme-api' %}
   {{ content_for_header }}
+  {% render 'vendors-loyalty-lion' %}
   <style>
     #preview-bar-iframe {
       display: none !important
@@ -28,6 +29,5 @@
   {% endif %}
   {% comment %}{% render 'widget-cart' %}{% endcomment %}
   {% render 'theme-scripts' %}
-  {% render 'vendors-loyalty-lion' %}
 </body>
 </html>
