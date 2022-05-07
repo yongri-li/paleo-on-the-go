@@ -1,8 +1,10 @@
 import { apiService } from '@shared/services'
+import { graphqlService } from '@shared/services'
 import addressActions from './addresses/_actions'
 import chargesActions from './charges/_actions'
 import onetimesActions from './onetimes/_actions'
 import subscriptionsActions from './subscriptions/_actions'
+import paymentMethodActions from './paymentMethod/_actions'
 
 export default {
   async customerSetState({ commit }) {
@@ -52,8 +54,21 @@ export default {
       return { error: 'ACTION_ERROR' }
     }
   },
+  async customerRecoverPassword({ commit }, payload) {
+    try {
+      const { query } = payload
+      const graphqlClient = new graphqlService()
+      const { data } = await graphqlClient.post({ query })
+      const customerRecover = data.data.customerRecover
+      if (customerRecover.customerUserErrors.length) return { error: customerRecover.customerUserErrors }
+      return { success: 'ACTION_SUCCESS' }
+    } catch {
+      return { error: 'ACTION_ERROR' }
+    }
+  },
   ...addressActions,
   ...chargesActions,
   ...onetimesActions,
-  ...subscriptionsActions
+  ...subscriptionsActions,
+  ...paymentMethodActions
 }

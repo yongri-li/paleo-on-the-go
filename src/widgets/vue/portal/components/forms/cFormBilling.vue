@@ -200,7 +200,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('customer', ['customerUpdateBilling']),
+    ...mapActions('customer', ['customerUpdatePaymentMethod']),
     validateForm() {
       this.status = false
       this.errors = {}
@@ -259,8 +259,11 @@ export default {
       this.validateForm()
       if (!this.hasErrors) {
         this.loading = true
-        const { customer, error } = await this.customerUpdateBilling({ address: this.billingModel })
-        console.log('customer, error', customer, error)
+        //const { customer, error } = await this.customerUpdateBilling({ address: this.billingModel })
+        const { paymentMethod, error } = await this.customerUpdatePaymentMethod({
+          address: this.billingModel
+        })
+        console.log(paymentMethod, error)
         if (!error) {
           this.status = 'success'
           if (!this.hideAlert && this.content.success_text) {

@@ -31,8 +31,7 @@ export default {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'x-fmp-key': 'sk_1x1_3ca18d3355b439e6c191d41754de54af8709dbf92aa1a0ef92fc2024b0db2f2e'
-        // 'x-fmp-key': window.Scoutside.api.fmp_app_key
+        'x-paleo-key': window.Scoutside.api.custom_app_key
       },
       body: JSON.stringify({
         addressId,

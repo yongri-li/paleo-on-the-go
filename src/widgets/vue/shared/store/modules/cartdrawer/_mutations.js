@@ -10,14 +10,21 @@ import {
 } from './_mutations-type'
 
 export default {
-  [ADD_BOX_TO_CART] (state, { items }) {
+  [ADD_BOX_TO_CART](state, { items }) {
     state.cartItems.box = [...items]
   },
-  [SET_SIZE_SELECTED] (state, { sizeSelected }) {
+  [SET_SIZE_SELECTED](state, { sizeSelected }) {
     state.sizeSelected = sizeSelected
   },
-  [CLEAR_BOX] (state) {
+  [CLEAR_BOX](state) {
     state.cartItems.box = []
+  },
+  CLEAR_GENERAL(state) {
+    state.cartItems.general = []
+  },
+  ADD_GENERAL_TO_CART(state, items) {
+    console.log(items)
+    state.cartItems.general = [...state.cartItems.general, items]
   },
   CUSTOMER_UPDATE_SUBSCRIPTIONS(state, payload) {
     const prevSubscriptions = [...state.resources.subscriptions]
@@ -49,25 +56,25 @@ export default {
     })
     state.resources.onetimes = [...filteredOnetimes, ...onetimes]
   },
-  [CREATE_ROUTE_PROTECTION_PRODUCT] (state, { routeProduct }) {
+  [CREATE_ROUTE_PROTECTION_PRODUCT](state, { routeProduct }) {
     state.routeProduct = {
       ...routeProduct
     }
   },
-  [REMOVE_ROUTE_PROTECTION_TO_CART] (state) {
+  [REMOVE_ROUTE_PROTECTION_TO_CART](state) {
     const indexFound = state.cartItems.general.findIndex(item => item.route_protection)
-    if(indexFound > -1) {
+    if (indexFound > -1) {
       state.cartItems.general.splice(indexFound, 1)
     }
   },
-  [ADD_ROUTE_PROTECTION_TO_CART] (state, { routeProduct }) {
+  [ADD_ROUTE_PROTECTION_TO_CART](state, { routeProduct }) {
     state.cartItems.general.push({
       ...routeProduct
     })
   },
-  REMOVE_ITEM_FROM_CART (state, id) {
+  REMOVE_ITEM_FROM_CART(state, id) {
     const indexFound = state.cartItems.general.findIndex(item => item.id === id)
-    if(indexFound > -1) {
+    if (indexFound > -1) {
       state.cartItems.general.splice(indexFound, 1)
     }
   }

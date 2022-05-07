@@ -18,7 +18,7 @@ export default {
   //         method: 'GET',
   //         headers: {
   //           'Content-Type': 'application/json',
-  //           'x-fmp-key': window.Scoutside.api.fmp_app_key,
+  //           'x-paleo-key': window.Scoutside.api.fmp_app_key,
   //           'x-fmp-customer': window.Scoutside.api.customer_email_hash
   //         }
   //       }

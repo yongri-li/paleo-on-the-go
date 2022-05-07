@@ -66,6 +66,7 @@ export default {
 
     button {
       background-color: transparent;
+      line-height: 0;
     }
 
     .panel-answer {

@@ -18,15 +18,25 @@
               :class="i + 1 > ratings ? 'unrated' : null"
             ></span>
             <button @click="scrollToReviews">{{ ratingsCount }} Reviews</button>
+            <!-- <a href="#shopify-product-reviews">test link</a> -->
           </div>
           <h1 class="c-h1 c-heading">{{ product.title }}</h1>
           <h5 v-if="subtitle" class="c-h5 pdp__content--wrap__subheader">{{ subtitle }}</h5>
+
+          <cVariantTabs v-if="isSwag" :variantInfo="variants" @selectedVar="selectVariant" />
+
           <h5 v-if="price" class="c-h5 pdp__content--wrap__price">{{ price }}</h5>
 
           <div class="pdp__content--ctas">
+            <cBtnQty
+              v-if="isSwag"
+              :quantity="quantity"
+              @qtyIncrease="qtyChange('add')"
+              @qtyDecrease="qtyChange('minus')"
+            />
             <c-button
               class="c-cta pdp__main--atcButton"
-              @click="handleGetStarted"
+              @click="sendToCart"
               :loading="loading"
               :text="isCustomer ? (added ? addedTxt : labels.atc) : labels.getStarted"
               :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
@@ -55,10 +65,13 @@
 </template>
 
 <script>
+import { mapActions, mapMutations } from 'vuex'
 import { formatPrice } from '../utils'
 import cProductGallery from '@shared/components/parts/cProductGallery.vue'
 import cButton from '@shared/components/core/cButton.vue'
 import cSelectTabs from '@shared/components/parts/cSelectTabs.vue'
+import cVariantTabs from '@shared/components/parts/cVariantTabs.vue'
+import cBtnQty from '@shared/components/core/cBtnQty.vue'
 import cRelatedMeals from './sections/cRelatedMeals.vue'
 
 export default {
@@ -70,13 +83,17 @@ export default {
     isMobile: false,
     loading: false,
     added: false,
-    addedTxt: 'Added'
+    addedTxt: 'Added',
+    quantity: 1,
+    selectedVar: null
   }),
   components: {
     cProductGallery,
     cButton,
     cRelatedMeals,
-    cSelectTabs
+    cSelectTabs,
+    cVariantTabs,
+    cBtnQty
   },
   computed: {
     labels() {
@@ -95,6 +112,9 @@ export default {
     isCustomer() {
       return customer.email && customer.shopify_id ? true : false
     },
+    isSwag() {
+      return this.is_swag === 'true'
+    },
     ratingLeaf() {
       return `<svg width="18" height="30" viewBox="0 0 18 30" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M9.16859 -3.09007e-05L0.403564 16.3262L8.03129 23.6963L8.03129 29.0255L10.2961 29.0255L10.2961 23.6963L17.9238 16.3262L9.16859 -3.09007e-05ZM3.20759 15.891L8.03129 6.89608L8.03129 20.5626L3.20759 15.891ZM10.2961 6.89608L15.1296 15.891L10.2961 20.5626L10.2961 6.89608Z" fill="#8ECEAB"/>
@@ -107,15 +127,23 @@ export default {
     ratings() {
       const rate = this.rating ? JSON.parse(this.rating) : null
       return rate ? Math.round(rate.value * 1) : 0
+    },
+    variants() {
+      return this.product.variants
+    },
+    selectedVariant() {
+      return this.variants[this.selectedVar]
     }
   },
   methods: {
+    // ...mapActions('babcart', ['addToCartFromPortal']),
+    ...mapMutations('cartdrawer', ['ADD_GENERAL_TO_CART', 'CLEAR_GENERAL']),
     onResize() {
       this.isMobile = window.innerWidth < 768
     },
     handleAdd() {
       this.loading = true
-      ///// Add Shared Cart function here.
+      ////// Add Shared Cart function here.
       setTimeout(() => {
         this.loading = false
         this.added = true
@@ -126,6 +154,25 @@ export default {
       sessionStorage.setItem('startBtnClk', true)
       sessionStorage.setItem('boxSize', 12)
       window.location = '/pages/bundle/#/subscriptions'
+    },
+    qtyChange(operator) {
+      operator === 'add' ? (this.quantity += 1) : this.quantity > 1 && (this.quantity -= 1)
+    },
+    selectVariant(val) {
+      this.selectedVar = val
+    },
+    sendToCart() {
+      // sessionStorage.setItem('boxSize', this.totalSubItems)
+      // sessionStorage.setItem('addressId', this.addressId)
+      // sessionStorage.setItem('nextChargeDate', this.charge.scheduledAt)
+      const variantProduct = { ...this.product }
+      variantProduct.quantity = this.quantity
+      variantProduct.varId = this.selectedVariant.id
+      variantProduct.varNum = this.selectedVar
+      variantProduct.varPrice = this.selectedVariant.price
+      variantProduct.varTitle = this.selectedVariant.title
+      variantProduct.order_type = 'general'
+      this.ADD_GENERAL_TO_CART(variantProduct)
     },
     scrollToReviews() {
       const reviews = document.getElementById('shopify-product-reviews')
@@ -171,7 +218,6 @@ export default {
         document.removeEventListener('mouseup', mouseUpHandler)
       }
 
-      // Attach the handler
       ele.addEventListener('mousedown', mouseDownHandler)
     },
     showCTAonScrollPast() {
@@ -278,6 +324,9 @@ export default {
       }
 
       &--ctas {
+        display: flex;
+        gap: 2rem;
+        align-items: center;
         margin: 1.5rem 0 0.5rem;
       }
 

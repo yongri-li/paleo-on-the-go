@@ -2,6 +2,7 @@ import chargesMutations from './charges/_mutations'
 import onetimesMutations from './onetimes/_mutations'
 import addressesMutations from './addresses/_mutations'
 import subscriptionsMutations from './subscriptions/_mutations'
+import paymentMethodMutations from './paymentMethod/_mutations'
 
 export default {
   CUSTOMER_SET_READY(state) {

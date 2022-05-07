@@ -14,7 +14,7 @@
       <c-FilterNav
         v-if="!isMobile"
         :items="filterItems"
-        :totalItems="asd"
+        :totalItems="totalItms"
         :isOpen="isFilterOpen"
         :collections="collections"
         @getFilters="addFilterTag"
@@ -60,7 +60,7 @@ export default {
     isMobile: false,
     filterTags: [],
     isFilterOpen: false,
-    asd: 0
+    totalItms: 0
   }),
   components: {
     cPageHero,
@@ -144,7 +144,7 @@ export default {
       this.$nextTick(() => {
         setTimeout(() => {
           const arrs = this.$refs.cols.map(el => el.children[2].children.length)
-          this.asd = arrs.reduce((acc, cur) => acc + cur)
+          this.totalItms = arrs.reduce((acc, cur) => acc + cur)
         }, 25)
       })
     }
@@ -178,9 +178,8 @@ export default {
     padding: 3.5rem 0;
 
     &--collection:not(:first-child) {
-      /*margin-bottom: 2.5rem;*/
-      margin-top: -1rem;
-      padding-top: 6.5rem;
+      scroll-margin-top: 2rem;
+      padding-top: 5rem;
     }
 
     @include media-mobile-down {

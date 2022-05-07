@@ -56,9 +56,6 @@ export default {
     preventScroll() {
       return this.$store.getters['ui/uiSettingByKey']('preventScroll')
     },
-    apiTest() {
-      return new apiService()
-    },
     addresses() {
       return this.$store.state.customer.resources.addresses
     },
@@ -76,6 +73,9 @@ export default {
         if (this.shopifyReady) clearInterval(shopifyInterval)
       }, 100)
     }
+    // apiTest() {
+    //   return new apiService()
+    // },
     // async getRCdata() {
     //   const apiClient = new apiService()
     //   const { data } = await this.apiTest.get(
