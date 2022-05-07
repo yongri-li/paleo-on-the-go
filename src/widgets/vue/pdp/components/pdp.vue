@@ -36,11 +36,11 @@
             />
             <c-button
               class="c-cta pdp__main--atcButton"
-              @click="sendToCart"
+              @click="handleCTA"
               :loading="loading"
               :text="isCustomer ? (added ? addedTxt : labels.atc) : labels.getStarted"
               :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
-              :attributes="{ disabled: loading }"
+              :attributes="{ disabled: loading || added }"
               :class="added ? 'item--added' : null"
             />
           </div>
@@ -55,7 +55,7 @@
     <c-button
       ref="fixedCTA"
       class="c-cta pdp__main--atcButton mobileBottom__cta u-hideTabletUp"
-      @click="handleGetStarted"
+      @click="handleCTA"
       :loading="loading"
       :text="isCustomer ? (added ? addedTxt : labels.atc) : labels.getStarted"
       :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
@@ -136,24 +136,9 @@ export default {
     }
   },
   methods: {
-    // ...mapActions('babcart', ['addToCartFromPortal']),
     ...mapMutations('cartdrawer', ['ADD_GENERAL_TO_CART', 'CLEAR_GENERAL']),
     onResize() {
       this.isMobile = window.innerWidth < 768
-    },
-    handleAdd() {
-      this.loading = true
-      ////// Add Shared Cart function here.
-      setTimeout(() => {
-        this.loading = false
-        this.added = true
-      }, 1000)
-    },
-    handleGetStarted() {
-      this.loading = true
-      sessionStorage.setItem('startBtnClk', true)
-      sessionStorage.setItem('boxSize', 12)
-      window.location = '/pages/bundle/#/subscriptions'
     },
     qtyChange(operator) {
       operator === 'add' ? (this.quantity += 1) : this.quantity > 1 && (this.quantity -= 1)
@@ -161,18 +146,30 @@ export default {
     selectVariant(val) {
       this.selectedVar = val
     },
-    sendToCart() {
-      // sessionStorage.setItem('boxSize', this.totalSubItems)
-      // sessionStorage.setItem('addressId', this.addressId)
-      // sessionStorage.setItem('nextChargeDate', this.charge.scheduledAt)
-      const variantProduct = { ...this.product }
-      variantProduct.quantity = this.quantity
-      variantProduct.varId = this.selectedVariant.id
-      variantProduct.varNum = this.selectedVar
-      variantProduct.varPrice = this.selectedVariant.price
-      variantProduct.varTitle = this.selectedVariant.title
-      variantProduct.order_type = 'general'
+    getStarted() {
+      sessionStorage.setItem('startBtnClk', true)
+      sessionStorage.setItem('boxSize', 12)
+      window.location = '/pages/bundle/#/subscriptions'
+    },
+    addToCart() {
+      const variantProduct = {
+        ...this.product,
+        quantity: this.quantity,
+        varId: this.selectedVariant.id,
+        varNum: this.selectedVar,
+        varPrice: this.selectedVariant.price,
+        varTitle: this.selectedVariant.title,
+        order_type: 'general'
+      }
       this.ADD_GENERAL_TO_CART(variantProduct)
+      setTimeout(() => {
+        this.loading = false
+        this.added = true
+      }, 625)
+    },
+    handleCTA() {
+      this.loading = true
+      this.isSwag ? this.addToCart() : this.getStarted()
     },
     scrollToReviews() {
       const reviews = document.getElementById('shopify-product-reviews')
@@ -221,11 +218,12 @@ export default {
       ele.addEventListener('mousedown', mouseDownHandler)
     },
     showCTAonScrollPast() {
-      document.addEventListener('scroll', e => {
+      const toggleClassOnScroll = () => {
         let scrollY = window.scrollY
         const cta = this.$refs.fixedCTA.$el
         scrollY > 768 ? cta.classList.add('scrolledPast') : cta.classList.remove('scrolledPast')
-      })
+      }
+      document.addEventListener('scroll', toggleClassOnScroll, { passive: true })
     }
   },
   mounted() {
@@ -252,6 +250,7 @@ export default {
     if (typeof window !== 'undefined') {
       window.removeEventListener('resize', this.onResize, { passive: true })
     }
+    document.removeEventListener('scroll', this.showCTAonScrollPast, { passive: true })
   },
   beforeMount() {
     this.onResize()
