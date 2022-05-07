@@ -80,7 +80,6 @@ export default {
       rechargeSubIds: [],
       rechargeAddonIds: [],
       rechargeAddonVarIds: []
-      // newSubItems: []
     }
   },
   components: {

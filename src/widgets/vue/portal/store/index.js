@@ -10,4 +10,6 @@ const store = new Vuex.Store({
   plugins: [persist.plugin]
 })
 
+console.log('portal store:', store, store.plugins)
+
 export default store

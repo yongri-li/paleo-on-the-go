@@ -388,6 +388,12 @@ export default {
       padding: 1.25rem 2.5rem;
     }
 
+    @include media-tablet-up {
+      .c-shipmentsBox__content {
+        min-height: 758px;
+      }
+    }
+
     @include media-mobile-down {
       .c-shipmentsBox__content {
         padding: 1.25rem;

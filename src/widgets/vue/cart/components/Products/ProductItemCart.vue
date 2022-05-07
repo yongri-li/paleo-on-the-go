@@ -1,33 +1,22 @@
 <template>
-  <div
-    class="pitem"
-    :class="{ 'u-hide': product.hide }"
-  >
+  <div class="pitem" :class="{ 'u-hide': product.hide }">
     <div class="pitem__colum product">
       <div class="pitem__figure">
-        <img
-          class="pitem__figure--img"
-          :src="imageUrl"
-          :alt="product.title"
-        />
+        <img class="pitem__figure--img" :src="imageUrl" :alt="product.title" />
       </div>
       <div class="pitem__info">
         <div class="pitem__info--title">
           {{ product.title }}
         </div>
-        <!-- <div class="pitem__info--subtitle">
-          with dasljdal adsajdla
-        </div> -->
+        <div class="pitem__info--subtitle">
+          {{ product.varTitle }}
+        </div>
         <div class="pitem__price u-hideTabletUp">
           {{ finalPrice }}
         </div>
         <div class="pitem__qt-remove u-hideTabletUp">
-          <div class="pitem__qt">
-            QTY: {{ product.quantity }}
-          </div>
-          <div class="pitem__remove">
-            Remove
-          </div>
+          <div class="pitem__qt">QTY: {{ product.quantity }}</div>
+          <div class="pitem__remove">Remove</div>
         </div>
       </div>
     </div>
@@ -37,9 +26,7 @@
     <div class="pitem__price u-hideMobileDown">
       {{ finalPrice }}
     </div>
-    <div @click="removeItem(product.id)" class="pitem__remove u-hideMobileDown">
-      Remove
-    </div>
+    <div @click="removeItem(product.id)" class="pitem__remove u-hideMobileDown">Remove</div>
   </div>
 </template>
 
@@ -52,16 +39,17 @@ export default {
     product: {
       type: Object,
       required: true
-    },
+    }
   },
   computed: {
     imageUrl() {
       const imgFound = this.product.media.find(item => item.position === 1)
-      const urlFinal = imgFound.src.replace('.jpg','_150x150.jpg').replace('.png','_150x150.png')
+      const urlFinal = imgFound.src.replace('.jpg', '_150x150.jpg').replace('.png', '_150x150.png')
       return urlFinal
     },
     finalPrice() {
-      return formatPrice(this.product.price * this.product.quantity)
+      const price = this.product.varPrice ? this.product.varPrice : this.product.price
+      return formatPrice(price * this.product.quantity)
     }
   },
   methods: {
@@ -69,13 +57,12 @@ export default {
     removeItem(id) {
       this.REMOVE_ITEM_FROM_CART(id)
     }
-  },
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 .pitem {
-
   @include media-tablet-up {
     @include flex($align: center);
   }
@@ -102,7 +89,7 @@ export default {
     width: 65%;
 
     &--title {
-      font-family: Knockout,sans-serif;
+      font-family: Knockout, sans-serif;
       font-size: 1.5rem;
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
@@ -114,13 +101,13 @@ export default {
 
     &--subtitle {
       color: #7b7979;
-      font-size: .9rem;
+      font-size: 0.9rem;
     }
   }
 
   &__price {
     font-size: 1.2rem;
-    margin: .5rem 0;
+    margin: 0.5rem 0;
 
     @include media-tablet-up {
       width: 23%;
@@ -130,7 +117,7 @@ export default {
   }
 
   &__qt-remove {
-    font-size: .9rem;
+    font-size: 0.9rem;
     @include flex($justify: space-between);
   }
 

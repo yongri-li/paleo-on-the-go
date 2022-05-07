@@ -45,7 +45,6 @@ export default {
     items() {
       const box = this.getItemForCart('box')
       const general = this.getItemForCart('general')
-
       return [...box, ...general]
     }
   },
@@ -62,11 +61,11 @@ export default {
         const discount = isSubscription ? this.sizeSelected.discount / 100 : 0
 
         return {
-          id: item.variants[0].id,
-          product_id: 1615890513975,
+          id: item.varId ? item.varId : item.variants[0].id,
+          product_id: item.id,
           variant_id: item.variants[0].id,
           quantity: item.quantity,
-          price: item.price / 100,
+          price: item.varPrice ? item.varPrice / 100 : item.price / 100,
           // price: item.price * (1 - discount),
           properties: {
             _onetime: item.order_type === 'onetime',
@@ -80,7 +79,6 @@ export default {
     },
     buildCartData() {
       return {
-        // items: this.items.box?.length ? this.items.box : this.items,
         items: this.items,
         note_attributes: [],
         attributes: {},
@@ -113,31 +111,9 @@ export default {
       const tokenJson = await tokenRequest.json()
       return tokenJson.token
     },
-    async sendPayloadToAPP({ token, payload }) {
-      // get hash from cart
-      // const hashRequest = await fetch('/cart?view=hash', {
-      //   method: 'GET',
-      //   headers: {
-      //     'Content-Type': 'application/json'
-      //   }
-      // })
-      // send payload to checkout in app
-      // const appRequest = await fetch('https://paleo-custom-app.herokuapp.com/plan/checkout', {
-      //   method: 'POST',
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //     'x-fmp-key': 'sk_1x1_3ca18d3355b439e6c191d41754de54af8709dbf92aa1a0ef92fc2024b0db2f2e'
-      //     // 'x-paleo-key': window.Scoutside.api.paleo_app_key
-      //   },
-      //   body: JSON.stringify(payload)
-      // })
-      // const appResponse = await appRequest.json()
-      //return appResponse
-    },
     async checkout() {
       // create cartData
       const cartData = this.buildCartData()
-      console.log('cart data', cartData)
 
       // send data to cart (clear & add)
       const addRequest = await this.sendProductToCart(cartData)
@@ -160,17 +136,12 @@ export default {
       // get token
       const token = await this.getTokenFromCart()
 
-      // update payload object to send to checkout
-      // payload.cart_token = token
-      // payload.note = cartData.note
-
       if (this.sizeSelected.order_type === 'subscription') {
         const appRequest = await fetch('https://paleo-custom-app.herokuapp.com/plan/checkout', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
-            'x-fmp-key': 'sk_1x1_3ca18d3355b439e6c191d41754de54af8709dbf92aa1a0ef92fc2024b0db2f2e'
-            // 'x-paleo-key': window.Scoutside.api.paleo_app_key
+            'x-paleo-key': window.Scoutside.api.custom_app_key
           },
           body: JSON.stringify(hashJson)
         })
