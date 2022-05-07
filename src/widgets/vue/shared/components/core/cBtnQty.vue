@@ -11,21 +11,12 @@
 </template>
 
 <script>
-import cIcon from '@shared/components/core/cIcon.vue'
 export default {
   name: 'cBtnQty',
   props: {
     quantity: {
       type: Number
     }
-  },
-  methods: {
-    handleQtyIncrease() {
-      this.$emit('qtyIncrease')
-    }
-  },
-  components: {
-    cIcon
   }
 }
 </script>

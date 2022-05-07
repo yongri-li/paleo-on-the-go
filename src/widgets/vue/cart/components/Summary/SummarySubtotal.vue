@@ -5,7 +5,14 @@
       <div class="subtotal__price">
         {{ finalSubtotal }}
       </div>
-      <div :class="{ agree: agree }" class="subtotal__checkout" @click="checkout">Checkout</div>
+      <c-button
+        class="c-cta subtotal__checkout"
+        @click="checkout"
+        :loading="loading"
+        text="Checkout"
+        :attributes="{ disabled: !agree || loading }"
+        :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
+      />
       <div class="subtotal__msg">
         {{ settings.message_subtotal }}
       </div>
@@ -27,13 +34,16 @@
 <script>
 import { mapState, mapGetters } from 'vuex'
 import { formatPrice } from '@shared/utils'
+import cButton from '@shared/components/core/cButton.vue'
 
 export default {
   data() {
     return {
-      agree: false
+      agree: false,
+      loading: false
     }
   },
+  components: { cButton },
   computed: {
     ...mapState('ui', ['settings']),
     ...mapState('cartdrawer', ['cartItems', 'sizeSelected']),
@@ -112,6 +122,7 @@ export default {
       return tokenJson.token
     },
     async checkout() {
+      this.loading = true
       // create cartData
       const cartData = this.buildCartData()
 
@@ -176,19 +187,10 @@ export default {
   }
 
   &__checkout {
-    background-color: $color-primary;
-    text-align: center;
-    padding: 1rem 0;
-    font-size: 1.3rem;
-    font-weight: 500;
+    width: 100%;
+    max-width: 100%;
+    font-size: 1.33rem;
     margin-bottom: 1.5rem;
-    opacity: 0.5;
-    pointer-events: none;
-  }
-  &__checkout.agree {
-    opacity: 1;
-    pointer-events: initial;
-    cursor: pointer;
   }
 
   &__msg {
