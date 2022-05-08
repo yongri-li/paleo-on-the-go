@@ -175,9 +175,22 @@ export default {
       &--drop-down {
         margin-left: 8px;
         transition: all 0.3s ease;
+        transform: rotate(180deg);
+
+        @include media-tablet-up {
+          border: 1px solid $color-black;
+          border-radius: 100%;
+          width: 30px;
+          height: 30px;
+          @include flex($justify: center);
+
+          svg {
+            width: 65%;
+          }
+        }
       }
       &--drop-down.show {
-        transform: rotate(180deg);
+        transform: rotate(0);
       }
     }
 

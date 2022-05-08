@@ -131,13 +131,14 @@ $height-header-title: 59px;
     justify-content: center;
     border-radius: 100%;
     transition: all .3s ease;
+    transform: rotate(180deg);
 
     svg {
       transform: scale(.5);
     }
   }
   &--drop-down.show {
-    transform: rotate(180deg);
+    transform: rotate(0);
   }
 
   @include media-tablet-up {
