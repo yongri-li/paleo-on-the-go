@@ -35,7 +35,7 @@
           :class="{'u-hidden': isOneTime}"
         >
           <v-select
-            placeholder="Ships Every 1 Week"
+            placeholder="Ships Every..."
             label="label"
             :options="frequencies"
             :searchable="false"
@@ -44,7 +44,7 @@
             @input="setFrequency"
           >
             <template v-slot:option="option">
-              {{ option.label }}
+              {{ option.labelOption }}
               <span class="vs__dropdown-option--radio"></span>
             </template>
           </v-select>
@@ -80,7 +80,7 @@
             @input="setFrequency"
           >
             <template v-slot:option="option">
-              {{ option.label }}
+              {{ option.labelOption }}
               <span class="vs__dropdown-option--radio"></span>
             </template>
           </v-select>
@@ -114,32 +114,6 @@ import { CHANGE_FREQUENCY_SELECTED } from '../../store/modules/frequency/_mutati
 import { CLEAR_BOX } from '@shared/store/modules/cartdrawer/_mutations-type'
 
 export default {
-  data() {
-    return {
-      options: [
-        {
-          label: '2 Week',
-          week: 2
-        },
-        {
-          label: '4 Week',
-          week: 4
-        },
-        {
-          label: '6 Week',
-          week: 6
-        },
-        {
-          label: '8 Week',
-          week: 8
-        },
-      ],
-      frequency: {
-        label: '2 Week',
-        week: 2
-      }
-    }
-  },
   computed: {
     ...mapState('cartdrawer', [
       'sizeSelected'
@@ -264,21 +238,25 @@ export default {
     }
 
     .vs__dropdown-toggle {
-      border-radius: 10px;
-      padding: .3rem .3rem .5rem;
+      border-radius: 20px;
+      padding: 0.5rem 0.3rem;
       background-color: $color-white;
+    }
+    .vs--open .vs__dropdown-toggle {
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
     }
 
     .vs__dropdown-menu {
-      border-bottom-right-radius: 10px;
-      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 20px;
+      border-bottom-left-radius: 20px;
       padding: 0;
-      top: 80%;
+      top: 90%;
       box-shadow: none;
     }
 
     .vs__dropdown-option{
-      padding: .3rem calc(.5rem + 7px);
+      padding: .6rem .7rem .6rem calc(.5rem + 7px);
       border-top: 1px solid #D3D2D2;
       @include flex($justify: space-between);
 
