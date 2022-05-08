@@ -153,7 +153,7 @@ export default {
     }
 
     &-header {
-      height: 25%;
+      height: auto;
     }
 
     &-title {
@@ -178,6 +178,13 @@ export default {
     &-pills {
       height: 65%;
       overflow-y: auto;
+      padding: 0 0 1rem;
+
+      @include media-tablet-up {
+        .pdp__tabs--wrap {
+          margin-bottom: 2rem;
+        }
+      }
     }
   }
 
@@ -203,5 +210,10 @@ export default {
   background-color: $color-white;
   border: none;
   z-index: 5;
+
+  @include media-tablet-up {
+    background-color: $color-black;
+    color: $color-white;
+  }
 }
 </style>
