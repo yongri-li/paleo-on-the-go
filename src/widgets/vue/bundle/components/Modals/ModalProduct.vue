@@ -204,16 +204,17 @@ export default {
       position: relative;
     }
   }
-}
 
-.modal__close {
-  background-color: $color-white;
-  border: none;
-  z-index: 5;
+  .modal__close {
+    background-color: $color-white;
+    border: none;
+    z-index: 5;
 
-  @include media-tablet-up {
-    background-color: $color-black;
-    color: $color-white;
+    @include media-tablet-up {
+      background-color: $color-black;
+      color: $color-white;
+    }
   }
 }
+
 </style>
