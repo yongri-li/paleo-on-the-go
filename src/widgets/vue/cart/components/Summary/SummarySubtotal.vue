@@ -85,6 +85,7 @@ export default {
             _subscription: item.order_type === 'subscription',
             _addons: item.order_type === 'addons',
             _general: item.order_type === 'general',
+            _subtitle: item.subtitle,
             ...otherProps
           }
         }

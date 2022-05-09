@@ -1,0 +1,123 @@
+@font-face {
+  font-family: 'Knockout';
+  src:  url(https://cdn.shopify.com/s/files/1/0088/3163/1415/t/18/assets/Knockout-HTF71-FullMiddlewt.woff2?v=13303388755518577586) format("woff2"),
+        url(https://cdn.shopify.com/s/files/1/0088/3163/1415/t/18/assets/Knockout-HTF71-FullMiddlewt.woff?v=7469279421951661549) format("woff");
+}
+
+body {
+  background-color: #FEFDFB;
+}
+
+h3 {
+  font-family: 'Knockout', sans-serif;
+  color: #231F20;
+  text-transform: uppercase;
+  font-size: 1.5rem;
+}
+
+.checkout_shipping_form .call-to-action {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.checkout_shipping_form .call-to-action::before,
+.checkout_shipping_form .call-to-action::after{
+  display: none;
+}
+
+#continue-button {
+  padding: 1.3rem 2.3rem;
+  font-size: 1.2rem;
+}
+
+.chrome input[type=radio]:checked, .safari input[type=radio]:checked {
+  box-shadow: inset 0 0 0 10px #fcd32b;
+}
+
+#payment_due_amount {
+  color: #231F20;
+  font-weight: bold;
+}
+
+
+.order-summary__section--product-list{
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+.order-summary__section--item-box {
+  order: 0;
+}
+.order-summary__section--addons {
+  order: 1;
+}
+.order-summary__section--general {
+  order: 2;
+}
+
+
+.order-summary__section--product-list .product-list{
+  display: none;
+}
+
+
+.order-summary__section--title {
+  background-color: #EFEDE6;
+  color: #231F20;
+  font-weight: 500;
+  font-size: 1.2rem;
+  padding: 1rem;
+}
+
+.order-summary__section--product-list .product {
+  display: flex;
+  align-items: center;
+  padding: 1.3rem 1rem;
+  color: #231F20;
+  border-bottom: 1px solid #EFEDE6;
+}
+
+.order-summary__section--product-list .product__figure {
+  position: relative;
+  width: 20%;
+  margin-right: 5%;
+}
+.order-summary__section--product-list .product__figure img {
+  border-radius: 100%;
+}
+
+.order-summary__section--product-list .product__quantity {
+  position: absolute;
+  left: 0;
+  top: 0;
+  background-color: #FCD32B;
+  width: 20px;
+  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  font-size: .7rem;
+  font-weight: bold;
+}
+
+.order-summary__section--product-list .product__data {
+  width: 45%;
+}
+
+.order-summary__section--product-list .product__data--name {
+  font-weight: 700;
+  font-size: 1rem;
+}
+.order-summary__section--product-list .product__data--subtitle {
+  color: #A7A5A6;
+  display: block;
+}
+
+.order-summary__section--product-list .product__price {
+  width: 30%;
+  text-align: right;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
