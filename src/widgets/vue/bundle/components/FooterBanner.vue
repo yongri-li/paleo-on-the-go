@@ -36,33 +36,36 @@ export default {
 <style lang="scss" scoped>
 
 .footer-banner {
-  background-color: #231F20;
-  color: #fefefe;
+  background-color: $color-black;
+  color: $color-white;
   position: fixed;
   bottom: 0;
   left: 0;
   z-index: 2;
   width: 100%;
   padding: .5rem 0;
-  display: flex;
-  align-items: center;
-  justify-content: space-evenly;
+  @include flex($justify: space-evenly);
 
   &__title {
-    font-family: 'Knockout', sans-serif;
+    font-family: $font-heading;
     text-transform: uppercase;
   }
 
   &__item {
-    display: flex;
-    align-items: center;
+    @include flex($justify: center, $wrap: nowrap);
+    max-width: 25%;
 
     &--icon {
       margin-right: .5rem;
+      width: 12%;
     }
 
     &--txt {
       text-transform: capitalize;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      width: 100%;
     }
 
   }
@@ -77,7 +80,7 @@ export default {
 
   .footer-banner {
     &__title {
-      color: #FCD32B;
+      color: $color-primary;
     }
   }
 
