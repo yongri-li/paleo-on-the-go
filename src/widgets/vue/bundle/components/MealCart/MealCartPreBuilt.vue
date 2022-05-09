@@ -114,7 +114,7 @@ export default {
 
     .vs__search {
       margin-top: 0;
-      font-weight: 500;
+      font-weight: 600;
       font-family: $font-body;
     }
 
@@ -129,6 +129,7 @@ export default {
         -webkit-box-orient: vertical;
         display: -webkit-box;
         overflow: hidden;
+        font-weight: 600;
       }
     }
     .vs--open .vs__dropdown-toggle {

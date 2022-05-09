@@ -32,7 +32,7 @@ export default {
 .addons {
   &__title {
     text-transform: uppercase;
-    font-weight: 500;
+    font-weight: 700;
     font-size: 1.2rem;
     letter-spacing: .06em;
     margin-bottom: .5rem;

@@ -134,7 +134,7 @@ export default {
     &--price {
       margin-top: 0.7rem;
       font-size: 1rem;
-      font-weight: 500;
+      font-weight: 700;
     }
   }
 
