@@ -38,14 +38,14 @@
               class="c-cta pdp__main--atcButton"
               @click="handleCTA"
               :loading="loading"
-              :text="isCustomer ? (added ? addedTxt : labels.atc) : labels.getStarted"
+              :text="isCustomer || isSwag ? (added ? addedTxt : labels.atc) : labels.getStarted"
               :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
               :attributes="{ disabled: loading || added }"
               :class="added ? 'item--added' : null"
             />
           </div>
 
-          <cSelectTabs :pdpinfo="info" />
+          <cSelectTabs :pdpinfo="info" :isSwag="isSwag" />
         </div>
       </section>
     </div>

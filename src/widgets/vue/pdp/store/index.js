@@ -14,6 +14,4 @@ const store = new Vuex.Store({
   plugins: [persist.plugin]
 })
 
-console.log(store, store.plugins)
-
 export default store

@@ -1,25 +1,37 @@
 <template>
 	<section class="pdp__tabs">
-		<div class="pdp__tabs--wrap">
-			<div
-				v-for="(val, name, i) in pdpinfo"
-				v-if="i < 4"
-				class="pdp__tabs--tab"
-				:class="active === i && 'isActive'"
-				:key="name"
-				@click="selectTab(i)"
-			>
-				{{ name }}
+		<div v-if="isSwag">
+			<div class="pdp__tabs--wrap">
+				<div class="pdp__tabs--tab isActive">
+					{{ Object.keys(pdpinfo)[0] }}
+				</div>
+			</div>
+			<div class="pdp__tabs--info">
+				<article class="isActive" v-html="description"></article>
 			</div>
 		</div>
-		<div class="pdp__tabs--info">
-			<article
-				v-for="(val, name, i) in pdpinfo"
-				v-if="i < 4"
-				:key="i"
-				:class="active === i && 'isActive'"
-				v-html="name !== 'nutrition' ? val : nutritionHtml"
-			></article>
+		<div v-else>
+			<div class="pdp__tabs--wrap">
+				<div
+					v-for="(val, name, i) in pdpinfo"
+					v-if="i < 4"
+					class="pdp__tabs--tab"
+					:class="active === i && 'isActive'"
+					:key="name"
+					@click="selectTab(i)"
+				>
+					{{ name }}
+				</div>
+			</div>
+			<div class="pdp__tabs--info">
+				<article
+					v-for="(val, name, i) in pdpinfo"
+					v-if="i < 4"
+					:key="i"
+					:class="active === i && 'isActive'"
+					v-html="name !== 'nutrition' ? val : nutritionHtml"
+				></article>
+			</div>
 		</div>
 	</section>
 </template>
@@ -29,6 +41,9 @@ export default {
 	props: {
 		pdpinfo: {
 			type: Object
+		},
+		isSwag: {
+			type: Boolean
 		}
 	},
 	data() {
@@ -37,6 +52,9 @@ export default {
 		}
 	},
 	computed: {
+		description() {
+			return this.pdpinfo.description
+		},
 		nutritionImg() {
 			const imgSrc = this.pdpinfo.nutrition_image
 			return imgSrc && !imgSrc.includes('no-image') ? `<img src='${imgSrc}' /><br/>` : ''
