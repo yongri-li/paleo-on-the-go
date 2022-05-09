@@ -7,7 +7,7 @@
       </div>
       <c-button
         class="c-cta subtotal__checkout"
-        :class="{ agree: agree }"
+        :class="{ 'not-agree': !agree }"
         @click="checkout"
         :loading="loading"
         text="Checkout"
@@ -24,7 +24,13 @@
           v-model="agree"
           class="subtotal__agree--check"
         />
-        <label for="agreecheck" class="subtotal__agree--label"> I agree with the </label>
+        <label
+          for="agreecheck"
+          class="subtotal__agree--label"
+          :class="{ agree: agree }"
+        >
+          I agree with the
+        </label>
         <a href="#" target="_blank" class="subtotal__agree--redirect"> Shipping Terms and Conditions </a>
       </div>
     </div>
@@ -198,6 +204,12 @@ export default {
     font-weight: 500;
     margin-bottom: 1.5rem;
   }
+  &__checkout.not-agree {
+    pointer-events: none;
+    color: #4F4C4D;
+    background-color: #FEEDAA;
+    border-color: #FEEDAA;
+  }
 
   &__msg {
     font-size: 1.1rem;
@@ -209,7 +221,30 @@ export default {
     @include flex();
 
     &--check {
-      margin-right: 3px;
+      display: none;
+    }
+
+    &--label {
+      @include flex();
+
+      &::before {
+        content: '';
+        display: inline-block;
+        margin-right: 3px;
+        width: 13px;
+        height: 13px;
+        background-color: $color-white;
+        border: 1px solid $color-black;
+        border-radius: 3px;
+      }
+    }
+    &--label.agree {
+      &::before {
+        content: '✓';
+        color: $color-primary;
+        background-color: $color-black;
+        border: 1px solid $color-black;
+      }
     }
 
     &--redirect {
