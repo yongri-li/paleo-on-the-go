@@ -5,6 +5,12 @@
   >
     <div class="pcard__header">
       <div class="pcard__header--figure" @click="openModal">
+        <span
+          v-if="flag"
+          :class="`pcard__header--flag pcard__header--flag--${flagHandle}`"
+        >
+          {{ flag }}
+        </span>
         <img
           class="pcard__header--img"
           :src="imageUrl"
@@ -16,7 +22,7 @@
           {{ product.title }}
         </div>
         <div class="pcard__info--subtitle">
-          this is for metafields subtitles
+          {{ product.subtitle }}
         </div>
         <div class="pcard__add-to-cart">
           <product-btn-add-to-cart
@@ -73,7 +79,7 @@
 <script>
 import { mapState, mapGetters, mapActions } from 'vuex'
 import { MODAL_SETUP } from '../../store/modules/modals/_mutations-type'
-import { formatPrice } from '../../utils'
+import { formatPrice, handleize, getOutOfStock } from '@shared/utils'
 import ProductBtnAddToCart from './ProductBtnAddToCart.vue'
 
 export default {
@@ -139,6 +145,18 @@ export default {
     },
     typeOrder() {
       return this.$route.params.box
+    },
+    outOfStock() {
+      const inventoryData = this.product.inventory[0]
+      const tags = this.product.tags
+
+      return getOutOfStock({tags, inventoryData})
+    },
+    flag() {
+      return this.outOfStock ? 'Out Of Stock' : this.product.flag
+    },
+    flagHandle() {
+      return this.flag ? handleize(this.flag) : null
     }
   },
   methods: {
@@ -172,10 +190,33 @@ export default {
 
     &--figure {
       width: 40%;
+      position: relative;
 
       @media screen and (min-width: 769px){
         width: 100%;
       }
+    }
+
+    &--flag {
+      position: absolute;
+      background-color: $color-black;
+      color: $color-primary;
+      font-size: 1rem;
+      font-weight: 500;
+      padding: 0.5rem 0;
+      // z-index: 9;
+      min-width: 120px;
+      @include flex($justify: center);
+    }
+
+    &--flag--seasonal-item {
+      background-color: $color-primary;
+      color: $color-black;
+    }
+
+    &--flag--most-popular {
+      background-color: $color-secondary;
+      color: $color-black;
     }
 
     @media screen and (min-width: 769px){
@@ -188,10 +229,15 @@ export default {
     width: 55%;
     position: relative;
 
+    @media screen and (min-width: 769px){
+      height: 78px;
+      margin-bottom: 1rem;
+    }
+
     &--title {
       color: #231F20;
-      font-family: 'Knockout', sans-serif;
-      font-size: 1.5rem;
+      font-family: $font-product-title;
+      font-size: 1.4rem;
       line-height: 110%;
       letter-spacing: -0.02em;
       text-transform: capitalize;
@@ -200,15 +246,18 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
+      margin-bottom: .2rem;
 
       @media screen and (min-width: 769px){
-        height: 53px;
+        height: 28px;
+        -webkit-line-clamp: 1;
       }
     }
 
     &--subtitle {
       color: #7B7979;
-      font-size: .8rem;
+      font-size: 1rem;
+      line-height: 135%;
     }
 
     @media screen and (min-width: 769px){
@@ -264,7 +313,7 @@ export default {
       margin: 0;
       position: absolute;
       left: 0;
-      top: -85%;
+      top: -95%;
       width: 100%;
       display: flex;
       justify-content: center;

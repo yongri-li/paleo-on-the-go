@@ -230,6 +230,7 @@ export default {
 
   &.pdp__thumbnail--active {
     opacity: 1;
+    outline: 1px solid $color-black;
   }
 }
 

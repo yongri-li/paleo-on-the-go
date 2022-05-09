@@ -89,7 +89,7 @@ export default {
   @include flex($justify: space-between);
   border-top: 1px solid $color-ecru;
   border-bottom: 1px solid $color-ecru;
-  padding: 1rem 0.5rem;
+  padding: 0 0.5rem;
   margin-top: .5rem;
   height: 77px;
 
@@ -114,14 +114,14 @@ export default {
 
     .vs__search {
       margin-top: 0;
-      font-weight: 500;
+      font-weight: 600;
       font-family: $font-body;
     }
 
     .vs__dropdown-toggle {
-      border-radius: 10px;
-      padding: .3rem .3rem .5rem;
-      height: 43px;
+      border-radius: 20px;
+      padding: 0.8rem 0.3rem;
+      height: auto;
 
       .vs__selected {
         text-overflow: ellipsis;
@@ -129,19 +129,24 @@ export default {
         -webkit-box-orient: vertical;
         display: -webkit-box;
         overflow: hidden;
+        font-weight: 600;
       }
+    }
+    .vs--open .vs__dropdown-toggle {
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
     }
 
     .vs__dropdown-menu {
-      border-bottom-right-radius: 10px;
-      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 20px;
+      border-bottom-left-radius: 20px;
       padding: 0;
-      top: 80%;
+      top: 90%;
       box-shadow: none;
     }
 
     .vs__dropdown-option{
-      padding: .3rem calc(.5rem + 7px);
+      padding: .6rem .7rem .6rem calc(.5rem + 7px);
       border-top: 1px solid #D3D2D2;
       @include flex($justify: space-between);
 

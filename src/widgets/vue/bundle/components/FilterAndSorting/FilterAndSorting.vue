@@ -45,8 +45,8 @@
             PREFERENCE
           </div>
           <ul class="fas__filter--list">
-            <li v-for="item in preferences"
-              :key="item.tag"
+            <li v-for="(item, index) in preferences"
+              :key="index"
               class="fas__filter--opt"
               :class="{ active: item.active }"
               @click="addFilter(item)"
@@ -78,7 +78,17 @@
     <div class="fas__items">
       {{ lengthProducts }} items
     </div>
-    <div class="fas__sort">
+    <div
+      v-if="contents.showFilters"
+      class="fas__close"
+      @click="toggleContent('showFilters')"
+    >
+      x
+    </div>
+    <div
+      :class="{hide: contents.showFilters}"
+      class="fas__sort"
+    >
       <!-- Sort By -->
       <v-select
         placeholder="Sort By"
@@ -95,14 +105,25 @@
         </template>
       </v-select>
     </div>
+    <c-overlay
+      class="fas__overlay"
+      :show="contents.showFilters"
+      slot="overlay"
+      @close="toggleContent('showFilters')"
+    />
   </div>
 </template>
 
 <script>
+import cOverlay from '@shared/components/core/cOverlay.vue'
 import { mapState } from 'vuex'
-import { FILTER_TOGGLE_ACTIVE } from '../../store/modules/filters/_mutations-type'
+import { FILTER_TOGGLE_ACTIVE, CLEAN_ALL_FILTERS } from '../../store/modules/filters/_mutations-type'
+import { notScrollBody } from '../../../shared/utils'
 
 export default {
+  components: {
+    cOverlay
+  },
   props: {
     lengthProducts: {
       type: Number
@@ -140,19 +161,38 @@ export default {
       return sortRouter ? { label: sortRouter } : { label: 'Best Selling' }
     }
   },
-  mounted() {
-    this.setFiltersRouter()
+  created() {
+    // watch the params of the route to fetch the data again
+    this.$watch(
+      () => this.$route.params,
+      () => {
+        this.setFiltersRouter()
+      },
+      // fetch the data when the view is created and the data is
+      // already being observed
+      { immediate: true }
+    )
   },
   methods: {
     toggleContent(content) {
       if(content === 'showPreference') {
         this.contents.showProductType = false
+        this.showFiltersContent(content)
       }
       if(content === 'showProductType') {
         this.contents.showPreference = false
+        this.showFiltersContent(content)
       }
 
       this.contents[content] = !this.contents[content]
+    },
+    showFiltersContent(content) {
+      if(this.contents.showFilters && this.contents[content]) {
+        this.contents.showFilters = false
+      }
+      else {
+        this.contents.showFilters = true
+      }
     },
     addFilter(item) {
       const queryRouter = this.$route.query
@@ -204,15 +244,19 @@ export default {
       const queryRouter = this.$route.query
       const keys = Object.keys(queryRouter)
 
+      this.$store.commit(`filters/${CLEAN_ALL_FILTERS}`)
+
       keys.forEach(key => {
         if(key === 'preference' || key === 'product_type') {
-          const valSplit = queryRouter[key].split(',')
-          valSplit.forEach(val => {
-            this.$store.commit(`filters/${FILTER_TOGGLE_ACTIVE}`, {
-              tag: val,
-              active: true
+          if(queryRouter[key]) {
+            const valSplit = queryRouter[key].split(',')
+            valSplit.forEach(val => {
+              this.$store.commit(`filters/${FILTER_TOGGLE_ACTIVE}`, {
+                tag: val,
+                active: true
+              })
             })
-          })
+          }
         }
       })
     },
@@ -229,6 +273,12 @@ export default {
         }
         this.$router.push({ query })
       }
+    }
+  },
+  watch: {
+    'contents.showFilters'(current) {
+      const isMobile = window.innerWidth < 768
+      if(isMobile) notScrollBody(current)
     }
   }
 }
@@ -251,7 +301,7 @@ export default {
     width: 10%;
 
     @include media-tablet-up {
-      width: 80%;
+      width: 75%;
       @include flex();
 
       &--icon {
@@ -262,6 +312,10 @@ export default {
     &--types {
       display: none;
 
+      &-item {
+        pointer-events: none;
+      }
+
       @include media-tablet-up {
         width: 80%;
         @include flex();
@@ -269,8 +323,9 @@ export default {
         &-item {
           @include flex();
           margin: 0 2rem;
-          font-weight: 500;
+          font-weight: 600;
           cursor: pointer;
+          pointer-events: all;
         }
 
         &-number {
@@ -284,10 +339,10 @@ export default {
     &--content {
       position: absolute;
       top: 100%;
-      left: 0;
+      left: -10px;
       background-color: #f3f0e9;
-      width: 100%;
-      z-index: 1;
+      width: 105%;
+      z-index: 105;
       border-top: 1px solid #D3D2D2;
       padding: 1rem;
       transition: all .4s;
@@ -297,10 +352,11 @@ export default {
         position: relative;
         top: 8px;
         left: -1.5rem;
-        z-index: auto;
+        // z-index: auto;
         padding: 0;
         border-top: 0;
         transform: initial;
+        overflow: hidden;
       }
 
       .fas__filter {
@@ -308,20 +364,22 @@ export default {
           padding: 1rem 0;
 
           @include media-tablet-up {
-            padding: .5rem 0;
+            padding: .5rem 0 0;
             position: absolute;
             background-color: $color-white;
             border-bottom-right-radius: 15px;
             border-bottom-left-radius: 15px;
-            z-index: -1;
             width: auto;
-            transform: translateY(-100%);
-            transition: all .3s;
+            display: none;
+            // z-index: -1;
+            // transform: translateY(-100%);
+            // transition: all .3s;
           }
         }
         &--options.show {
-          z-index: auto;
-          transform: translateY(0);
+          // z-index: auto;
+          // transform: translateY(0);
+          display: block;
         }
 
         &--title {
@@ -354,7 +412,7 @@ export default {
 
           @include media-tablet-up {
             background-color: #f3f0e9;
-            margin: 0 1rem;
+            margin: 0 1rem .5rem;
             padding: 0.5rem 1rem;
             font-weight: 500;
             font-size: 1rem;
@@ -400,7 +458,7 @@ export default {
 
     &--content.show {
       transform: translateX(0);
-
+      overflow: unset;
     }
   }
 
@@ -410,7 +468,7 @@ export default {
     font-size: 1rem;
 
     @include media-tablet-up {
-      width: 5%;
+      width: 10%;
       text-align: right;
     }
   }
@@ -460,6 +518,29 @@ export default {
       }
     }
 
+  }
+  @include media-tablet-down {
+    &__sort.hide {
+      display: none;
+    }
+  }
+
+  &__overlay {
+    top: 120px;
+    z-index: 104;
+    @include media-tablet-up {
+      display: none;
+    }
+  }
+
+  &__close {
+    width: 35%;
+    text-align: right;
+    font-size: 1.4rem;
+    cursor: pointer;
+    @include media-tablet-up {
+      display: none;
+    }
   }
 }
 

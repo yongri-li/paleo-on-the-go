@@ -10,7 +10,11 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
+
+body {
+  background-color: #f3f0e9;
+}
 
 #meal-builder {
   position: relative;

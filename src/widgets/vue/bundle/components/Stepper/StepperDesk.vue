@@ -16,7 +16,12 @@
         :class="{ active: step.active, clickeable: step.param }"
         @click="backRouter(step)"
       >
-        <div class="sp__item--number">
+        <div v-if="step.complete" class="sp__item--number">
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M16.8889 1L6.2963 11.1111L1 6.05578" stroke="#FCD32B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </div>
+        <div v-else class="sp__item--number">
           {{ index + 1 }}
         </div>
         <div class="sp__item--title">
@@ -30,7 +35,6 @@
 </template>
 
 <script>
-import { changeRouter } from '../../utils'
 
 export default {
   computed: {
@@ -47,7 +51,8 @@ export default {
         {
           name: 'Meals',
           active: true,
-          param: 'subscription'
+          param: 'subscription',
+          complete: param === 'addons'
         },
         {
           name: 'Add-Ons',
@@ -83,7 +88,7 @@ export default {
   methods: {
     backRouter(step) {
       if (step.active && step.param) {
-        changeRouter(step.param)
+        this.$router.go(-1)
       }
     }
   }
@@ -121,6 +126,10 @@ export default {
       font-size: 1rem;
       margin-right: 1rem;
       @include flex($justify: center);
+
+      svg {
+        width: 50%;
+      }
     }
 
     &--title {

@@ -20,7 +20,7 @@ export default {
     commit( CHANGE_SIZE_SELECTED, { val } )
     store.commit( `babcart/${CLEAN_ALL_CART}` )
   },
-  validateChangeSizeSelected({ getters, dispatch }, newVal) {
+  validateChangeSizeSelected({ state, getters, dispatch }, newVal) {
     const { length, orderType } = getters.getLengthAndTypeCart
     const newValType = newVal === 'onetime' ? 'onetime' : 'subscription'
 
@@ -29,6 +29,9 @@ export default {
         component: 'ModalConfirmBoxSizes',
         settings: {
           params: { newVal }
+        },
+        content: {
+          ...state.modal[newValType]
         }
       })
     }

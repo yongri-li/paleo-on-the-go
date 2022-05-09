@@ -64,17 +64,36 @@ export default {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 
 @include media-tablet-up {
 
-  .modal__options {
-    @include flex($justify: space-between);
+  .modal__box-size {
 
-    &--item {
-      width: 48%;
+    .modal__options {
+      @include flex($justify: space-between);
+
+      &--item {
+        width: 48%;
+      }
+    }
+
+    .box-sizes__option {
+      &--content {
+        flex-direction: column;
+        align-items: flex-start;
+
+        &::before {
+          width: 5%;
+        }
+      }
+
+      &--title {
+        margin-bottom: .2rem;
+      }
     }
   }
+
 
 }
 

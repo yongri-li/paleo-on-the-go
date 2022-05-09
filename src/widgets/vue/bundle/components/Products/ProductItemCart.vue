@@ -9,8 +9,10 @@
         <div class="pitemcart__info--title">
           {{ product.title }}
         </div>
-        <div class="pitemcart__info--description">with dasljdal adsajdla</div>
-        <div class="pitemcart__info--price" v-if="!fromPortal">
+        <div class="pitemcart__info--description">
+          {{ product.subtitle }}
+        </div>
+        <div class="pitemcart__info--price">
           {{ finalPrice }}
         </div>
       </div>
@@ -132,7 +134,7 @@ export default {
     &--price {
       margin-top: 0.7rem;
       font-size: 1rem;
-      font-weight: 500;
+      font-weight: 700;
     }
   }
 

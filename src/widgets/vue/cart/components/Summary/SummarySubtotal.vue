@@ -7,10 +7,10 @@
       </div>
       <c-button
         class="c-cta subtotal__checkout"
+        :class="{ 'not-agree': !agree }"
         @click="checkout"
         :loading="loading"
         text="Checkout"
-        :attributes="{ disabled: !agree || loading }"
         :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
       />
       <div class="subtotal__msg">
@@ -24,7 +24,13 @@
           v-model="agree"
           class="subtotal__agree--check"
         />
-        <label for="agreecheck" class="subtotal__agree--label"> I agree with the </label>
+        <label
+          for="agreecheck"
+          class="subtotal__agree--label"
+          :class="{ agree: agree }"
+        >
+          I agree with the
+        </label>
         <a href="#" target="_blank" class="subtotal__agree--redirect"> Shipping Terms and Conditions </a>
       </div>
     </div>
@@ -37,6 +43,9 @@ import { formatPrice } from '@shared/utils'
 import cButton from '@shared/components/core/cButton.vue'
 
 export default {
+  components: {
+    cButton
+  },
   data() {
     return {
       agree: false,
@@ -82,6 +91,7 @@ export default {
             _subscription: item.order_type === 'subscription',
             _addons: item.order_type === 'addons',
             _general: item.order_type === 'general',
+            _subtitle: item.subtitle,
             ...otherProps
           }
         }
@@ -131,6 +141,7 @@ export default {
       console.log(addRequest)
       if (addRequest.status !== 200) {
         // throw error
+        // show error msj
         return
       }
 
@@ -189,8 +200,15 @@ export default {
   &__checkout {
     width: 100%;
     max-width: 100%;
-    font-size: 1.33rem;
+    font-size: 1.3rem;
+    font-weight: 500;
     margin-bottom: 1.5rem;
+  }
+  &__checkout.not-agree {
+    pointer-events: none;
+    color: #4F4C4D;
+    background-color: #FEEDAA;
+    border-color: #FEEDAA;
   }
 
   &__msg {
@@ -203,7 +221,30 @@ export default {
     @include flex();
 
     &--check {
-      margin-right: 3px;
+      display: none;
+    }
+
+    &--label {
+      @include flex();
+
+      &::before {
+        content: '';
+        display: inline-block;
+        margin-right: 3px;
+        width: 13px;
+        height: 13px;
+        background-color: $color-white;
+        border: 1px solid $color-black;
+        border-radius: 3px;
+      }
+    }
+    &--label.agree {
+      &::before {
+        content: '✓';
+        color: $color-primary;
+        background-color: $color-black;
+        border: 1px solid $color-black;
+      }
     }
 
     &--redirect {

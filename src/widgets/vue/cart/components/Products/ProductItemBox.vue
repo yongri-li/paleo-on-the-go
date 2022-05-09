@@ -19,7 +19,7 @@
           {{ product.title }}
         </div>
         <div class="pitemcart__info--description">
-          with dasljdal adsajdla
+          {{ product.subtitle }}
         </div>
         <div class="pitemcart__info--price">
           {{ finalPrice }}

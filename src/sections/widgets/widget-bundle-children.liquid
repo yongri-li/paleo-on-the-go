@@ -6,7 +6,6 @@
     var collectionJSON = JSON.parse( JSON.stringify({{ _collection | json }}) )
     collections.push({
       ...collectionJSON,
-      short_description: '{{ block.settings.short_description }}',
       url: '{{ block.settings.url }}',
       products: [
         {% paginate _collection.products by 50 %}
@@ -16,12 +15,18 @@
               url: '{{ _product.url }}',
               collection: collectionJSON,
               subtitle: '{{ _product.metafields.my_fields.subtitle }}',
+              flag: `{{ _product.metafields.my_fields.flag }}`,
               info: {
                 description: `{{ _product.description }}`,
                 ingredients: `{{ _product.metafields.my_fields.ingredient }}`,
                 heating: `{{ _product.metafields.my_fields.heating }}`,
                 nutrition: `{{ _product.metafields.my_fields.nutrition }}`
               },
+              inventory: [
+                {% for variant in _product.variants %}
+                  '{{ variant.inventory_quantity }}',
+                {% endfor %}
+              ],
               {% for variant in _product.variants %}
                 price_hashes: '{{ variant.price | money_without_currency | hmac_sha256: settings.custom_app_secret }}',
               {% endfor %}
@@ -39,6 +44,7 @@
 {% schema %}
   {
     "name": "Bundle - Children",
+    "max_blocks": 3,
     "blocks": [
       {
         "type": "childrens",
@@ -54,11 +60,6 @@
             "id": "url",
             "type": "text",
             "info": "Path appended to base url without /"
-          },
-          {
-            "label": "Short Description",
-            "id": "short_description",
-            "type": "richtext"
           }
         ]
       }

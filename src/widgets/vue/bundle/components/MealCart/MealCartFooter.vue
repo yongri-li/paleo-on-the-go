@@ -198,7 +198,9 @@ export default {
         this.$router.push('/addons')
       } else if (this.fromPortal && this.isCustomer) {
         this.updateAddonsAndSubs()
-      } else {
+      }
+      else {
+        this.loading = true
         await this.setDataFromBox({
           items: this.cart.items,
           addons: this.cart.addons,
@@ -267,12 +269,12 @@ export default {
 
     &--sub {
       color: #a7a5a6;
-      font-size: 1.1rem;
+      font-size: 1.2rem;
       margin-right: 0.3rem;
       text-decoration: line-through;
 
       @include media-tablet-up {
-        font-size: 1.3rem;
+        font-size: 1.6rem;
       }
     }
 
@@ -302,7 +304,10 @@ export default {
 
   .disable {
     pointer-events: none;
-    opacity: 0.6;
+    // opacity: 0.6;
+    color: #4F4C4D;
+    background-color: #FEEDAA;
+    border-color: #FEEDAA;
   }
 }
 </style>
