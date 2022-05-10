@@ -198,8 +198,7 @@ export default {
         this.$router.push('/addons')
       } else if (this.fromPortal && this.isCustomer) {
         this.updateAddonsAndSubs()
-      }
-      else {
+      } else {
         this.loading = true
         await this.setDataFromBox({
           items: this.cart.items,
@@ -229,7 +228,6 @@ export default {
   },
   mounted() {
     this.getRCdata()
-    //setTimeout(() => this.getRCdata(), 300)
   }
 }
 </script>
@@ -305,9 +303,9 @@ export default {
   .disable {
     pointer-events: none;
     // opacity: 0.6;
-    color: #4F4C4D;
-    background-color: #FEEDAA;
-    border-color: #FEEDAA;
+    color: #4f4c4d;
+    background-color: #feedaa;
+    border-color: #feedaa;
   }
 }
 </style>

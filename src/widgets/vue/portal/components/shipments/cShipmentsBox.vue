@@ -188,7 +188,6 @@ export default {
       return this.allItems.filter(itm => itm.productTitle.includes('route'))
     },
     addOnItems() {
-      // return this.$store.state.customer.resources.onetimes
       return this.$store.getters['customer/customerOnetimesByAddressId'](this.addressId)
     },
     addOnItemsIds() {
@@ -298,7 +297,6 @@ export default {
       })
     },
     editAddOns() {
-      this.setMealBox()
       this.handleChangeMeals()
       window.location.href = '/pages/bundle/#/addons'
     }
