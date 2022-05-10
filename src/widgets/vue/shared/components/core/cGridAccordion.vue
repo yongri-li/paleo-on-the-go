@@ -1,5 +1,5 @@
 <template>
-  <article class="c-homeFaqs vueComp__portal">
+  <article class="c-homeFaqs vueComp__foodsourcing">
     <h2 class="c-h1">
       <span class="u-highlightText--secondary">
         {{ title.first }}
@@ -76,7 +76,7 @@ export default {
           console.log('this',this)
           if(this != itemActive && itemActive) {
             itemActive.dispatchEvent(clickEvent)
-            // this.classList.add('active')
+            this.classList.add('active')
           }
           else {
             this.classList.toggle('active')
@@ -95,7 +95,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.vueComp__portal {
+.vueComp__foodsourcing {
   max-width: 1500px;
   padding: 5rem 1rem;
   margin: 0 auto;
