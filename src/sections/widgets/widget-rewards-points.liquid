@@ -1,0 +1,79 @@
+<script>
+  const iconPoints = {}
+  iconPoints.blocks = []
+
+  {% for block in section.blocks %}
+    iconPoints.blocks.push({
+      ...JSON.parse('{{ block.settings | json }}')
+    })
+  {% endfor %}
+
+  window.Scoutside.rewards.points = iconPoints
+</script>
+
+<style>
+  {% for block in section.blocks %}
+    .v-widget .lion-rule-item__icon.lion-icon__rule.{{block.settings.target}} {
+      background-image: url('{{ block.settings.image_icon | img_url: '130x130'}}');
+    }
+  {% endfor %}
+</style>
+
+{% schema %}
+  {
+    "name": "Points Icons",
+    "blocks": [
+      {
+        "type": "icon",
+        "name": "ICON",
+        "settings": [
+          {
+            "label": "Image Icon",
+            "type": "image_picker",
+            "id": "image_icon"
+          },
+          {
+            "label": "Target",
+            "type": "select",
+            "id": "target",
+            "options": [
+              {
+                "value": "lion-icon__rule--purchase",
+                "label": "MAKE A PURCHASE"
+              },
+              {
+                "value": "lion-icon__rule--signup",
+                "label": "CREATE AN ACCOUNT"
+              },
+              {
+                "value": "lion-icon__rule--pageview",
+                "label": "VISIT"
+              },
+              {
+                "value": "lion-icon__rule--instagram-follow",
+                "label": "FOLLOW US ON INSTAGRAM"
+              },
+              {
+                "value": "lion-icon__rule--twitter-follow",
+                "label": "FOLLOW US ON TWITTER"
+              },
+              {
+                "value": "lion-icon__rule--facebook-like",
+                "label": "LIKE US ON FACEBOOK"
+              },
+              {
+                "value": "lion-icon__rule--birthday",
+                "label": "HAPPY BIRTHDAY"
+              },
+              {
+                "value": "lion-icon__rule--referral",
+                "label": "REFER FRIENDS"
+              }
+            ],
+            "default": "lion-icon__rule--purchase"
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}
