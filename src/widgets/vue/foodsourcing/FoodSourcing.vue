@@ -36,11 +36,8 @@
     <c-tiles :tiles="tilesBlocks" class="tiles-container" />
     <section class="faq-container">
       <c-faq-accordion
-        :content="faqBlocks"
-        :title="{
-          first: 'Our',
-          second: 'Ingredients'
-        }"
+        :faqs="faqBlocks"
+        :title="['Our', 'Ingredients']"
       />
     </section>
   </div>
