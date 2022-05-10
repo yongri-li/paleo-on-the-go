@@ -1,6 +1,6 @@
 <template>
   <div v-if="product"
-    :class="{ active: isProductInCart }"
+    :class="{ active: isProductInCart, 'out-of-stock': outOfStock }"
     class="pcard"
   >
     <div class="pcard__header">
@@ -219,6 +219,12 @@ export default {
       color: $color-black;
     }
 
+    &--flag--out-of-stock {
+      background-color: #c63636;
+      color: #fefefe;
+      text-transform: uppercase;
+    }
+
     @media screen and (min-width: 769px){
       flex-direction: column;
     }
@@ -410,6 +416,17 @@ export default {
     color: $color-white;
   }
 
+}
+
+.out-of-stock {
+  .pcard {
+    &__info {
+      opacity: .5;
+    }
+    &__add-to-cart {
+      display: none;
+    }
+  }
 }
 
 </style>
