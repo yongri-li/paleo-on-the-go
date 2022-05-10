@@ -44,4 +44,12 @@ export default {
     border-bottom: none;
   }
 }
+
+.o-containerMedium {
+  @include media-tablet-up {
+    max-width: 1600px;
+    width: 90vw;
+    padding: 0;
+  }
+}
 </style>
