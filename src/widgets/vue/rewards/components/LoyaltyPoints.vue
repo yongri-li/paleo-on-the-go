@@ -60,33 +60,6 @@ export default {
     height: 60px;
   }
 
-  .lion-icon {
-    &__rule--purchase {
-      background-image: url('https://cdn.shopify.com/s/files/1/0088/3163/1415/files/icon-make-a-purchase_256x256_crop_center.png');
-    }
-    &__rule--signup {
-      background-image: url('https://cdn.shopify.com/s/files/1/0088/3163/1415/files/icon-create-an-account_256x256_crop_center.png');
-    }
-    &__rule--pageview {
-      background-image: url('https://cdn.shopify.com/s/files/1/0088/3163/1415/files/icon-visit_256x256_crop_center.png');
-    }
-    &__rule--instagram-follow {
-      background-image: url('https://cdn.shopify.com/s/files/1/0088/3163/1415/files/icon-follow-instagram_256x256_crop_center.png');
-    }
-    &__rule--twitter-follow {
-      background-image: url('https://cdn.shopify.com/s/files/1/0088/3163/1415/files/icon-follow-twitter_256x256_crop_center.png');
-    }
-    &__rule--facebook-like {
-      background-image: url('https://cdn.shopify.com/s/files/1/0088/3163/1415/files/icon-like-us-facebook_256x256_crop_center.png');
-    }
-    &__rule--birthday {
-      background-image: url('https://cdn.shopify.com/s/files/1/0088/3163/1415/files/icon-happy-birthday_256x256_crop_center.png');
-    }
-    &__rule--referral {
-      background-image: url('https://cdn.shopify.com/s/files/1/0088/3163/1415/files/icon-refer_256x256_crop_center.png');
-    }
-  }
-
   &--authenticated {
     .lion-action-button {
       position: absolute;
