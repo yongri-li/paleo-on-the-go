@@ -85,7 +85,7 @@ export default {
 <style lang="scss">
 
 .page {
-  border: 1px solid blue;
+  // border: 1px solid blue;
   .hero-ancillary__text {
     color: $color-black;
     top: 5%;
