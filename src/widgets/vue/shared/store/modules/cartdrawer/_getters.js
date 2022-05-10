@@ -25,6 +25,15 @@ export default {
       final
     }
   },
+  getAddonPrices: state => {
+    let final = 0
+    state.cartItems.box.forEach(({ price, quantity, order_type }) => {
+      if (order_type === 'addons') {
+        final += price * quantity
+      }
+    })
+    return final
+  },
   getGeneralPrices: state => {
     let final = 0
     state.cartItems.general.forEach(({ varPrice, price, quantity }) => {

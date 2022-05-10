@@ -24,11 +24,7 @@
           v-model="agree"
           class="subtotal__agree--check"
         />
-        <label
-          for="agreecheck"
-          class="subtotal__agree--label"
-          :class="{ agree: agree }"
-        >
+        <label for="agreecheck" class="subtotal__agree--label" :class="{ agree: agree }">
           I agree with the
         </label>
         <a href="#" target="_blank" class="subtotal__agree--redirect"> Shipping Terms and Conditions </a>
@@ -57,9 +53,9 @@ export default {
     ...mapState('ui', ['settings']),
     ...mapState('cartdrawer', ['cartItems', 'sizeSelected']),
     ...mapState('frequency', ['frequencySelected']),
-    ...mapGetters('cartdrawer', ['getBoxPrices', 'getGeneralPrices']),
+    ...mapGetters('cartdrawer', ['getBoxPrices', 'getAddonPrices', 'getGeneralPrices']),
     finalSubtotal() {
-      return formatPrice(this.getBoxPrices.final + this.getGeneralPrices)
+      return formatPrice(this.getBoxPrices.final + this.getAddonPrices + this.getGeneralPrices)
     },
     items() {
       const box = this.getItemForCart('box')
@@ -206,9 +202,9 @@ export default {
   }
   &__checkout.not-agree {
     pointer-events: none;
-    color: #4F4C4D;
-    background-color: #FEEDAA;
-    border-color: #FEEDAA;
+    color: #4f4c4d;
+    background-color: #feedaa;
+    border-color: #feedaa;
   }
 
   &__msg {

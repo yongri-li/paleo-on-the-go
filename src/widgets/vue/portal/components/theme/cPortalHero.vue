@@ -44,7 +44,7 @@ export default {
       return this.$store.getters['customize/customizeContentByKey']('shipments')
     },
     nextCharge() {
-      return this.customerUpcomingCharges.length ? this.customerUpcomingCharges[0] : null
+      return this.customerUpcomingCharges?.length ? this.customerUpcomingCharges[0] : null
     },
     firstName() {
       return customer.first_name
