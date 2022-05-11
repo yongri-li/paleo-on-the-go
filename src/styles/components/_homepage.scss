@@ -138,6 +138,12 @@
       max-width: clamp(100px, 20ch, 51vw);
       @include text-line-clamp($lines: 1);
     }
+
+    @-moz-document url-prefix() {
+      svg {
+        max-width: 74px;
+      }
+    }
   }
 }
 

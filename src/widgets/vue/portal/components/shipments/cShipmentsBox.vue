@@ -272,6 +272,7 @@ export default {
       sessionStorage.setItem('boxSize', this.totalSubItems)
       sessionStorage.setItem('addressId', this.addressId)
       sessionStorage.setItem('nextChargeDate', this.charge.scheduledAt)
+      sessionStorage.setItem('frequency', this.frequency)
       this.addToCartFromPortal({
         items: {
           productsArr: this.portalProducts.items,
@@ -388,7 +389,7 @@ export default {
 
     @include media-tablet-up {
       .c-shipmentsBox__content {
-        min-height: 758px;
+        min-height: 796px;
       }
     }
 

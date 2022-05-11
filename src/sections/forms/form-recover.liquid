@@ -1,11 +1,8 @@
-{% assign heading = "Reset Password" %}
-{% assign text = "Please enter your email and we'll send you a password reset link" %}
+{% assign heading = "Forgot Password" %}
+{% assign text = "Choose a weekly meal plan that fits your lifestyle. Unlock exclusive savings on subscription plans – the more you buy the more you save!" %}
 {% assign success_text = "We sent you an email to reset your password" %}
-{% assign email_placeholder = "Email Address*" %}
+{% assign email_placeholder = "Email" %}
 {% assign submit_button = "Submit" %}
-{% assign register_text = "Not a member?" %}
-{% assign register_link = "Create an account" %}
-{% assign remember_password_link = "Remember Password?" %}
 
 {% if section.settings.heading != blank %}{% assign heading = section.settings.heading %}{% endif %}
 {% if section.settings.text != blank %}{% assign text = section.settings.text %}{% endif %}
@@ -16,20 +13,18 @@
 {% if section.settings.register_link != blank %}{% assign register_link = section.settings.register_link %}{% endif %}
 {% if section.settings.submit_button != blank %}{% assign submit_button = section.settings.submit_button %}{% endif %}
 
-<div class="c-formRecover c-form c-form--isNarrow u-hide"
+<div class="c-formRecover c-form c-form--wood c-form--isWide u-hide"
   data-form-recover
 >
-  <div class="c-formRecover__container o-pageNarrow">
+  <div class="c-form__container o-pageNarrow">
     <h1 class="c-formRecover__heading c-h1 c-form__heading u-textCenter">
       {{ heading }}
     </h1> 
-    {% if section.settings.text != blank %}
-      <p class="c-formRecover__text c-p3 c-form__text u-textCenter">
-        {{ section.settings.text }}
+      <p class="c-formRecover__text c-p2 c-form__text u-textCenter">
+        {{ text }}
       </p>
-    {% endif %}
     <div class="c-formRecover__content c-form__content">
-      {%- form 'recover_customer_password' -%}
+      {% form 'recover_customer_password' %}
         {%- if form.errors -%}
           <div class="c-formRecover__alert c-form__alert c-form__alert--isError">
             {{ form.errors | default_errors }}
@@ -41,34 +36,27 @@
           </div>
         {%- endif -%}
         <div class="c-formRecover__field c-field">
-          <input class="c-formRecover__input c-input c-input--isDefault"
+          <input 
+            class="c-formRecover__input c-input c-input--isDefault c-input--squared"
             type="email" 
-            name="customer[email]" 
+            name="email" 
             placeholder="{{ email_placeholder }}"
           />
         </div>
-        <button class="c-formRecover__button c-form__submit
-          c-button 
-          c-button--isDefault
-          c-button--isSecondary"
+        <button class="c-formRecover__button c-form__submit c-cta c-cta--extraTall"
           type="submit"
         >
           {{ submit_button }}
         </button>
       {%- endform -%} 
-      <div class="c-formRecover__sub c-form__sub">
-        <p class="c-formRecover__forgot c-p3 c-form__subText">
-          {{ register_text }}
-          <a href="/account/register" class="c-formRecover__forgotLink 
-            c-form__subLink"
+
+       <div class="c-formRegister__sub c-form__sub">
+        <p class="c-formRegister__forgot c-p3 c-form__subText">
+          {{ section.settings.get_started_text }}
+          <a href="{{ section.settings.get_started_link}}" class="c-formRegister__forgotLink c-form__subLink"
+            data-form-recover-trigger
           >
-            {{ register_link }}
-          </a>
-          <br />
-          <a href="#" class="c-formRecover__forgotLink c-form__subLink"
-            data-form-login-trigger
-          >
-            {{ remember_password_link }}
+            {{ section.settings.get_started_label }}
           </a>
         </p>
       </div>
@@ -119,6 +107,21 @@
         "id": "remember_password_link",
         "type": "text",
         "label": "Remember Password Link"
+      },
+      {
+        "id": "get_started_text",
+        "type": "text",
+        "label": "Get Started Text"
+      },
+      {
+        "id": "get_started_label",
+        "type": "text",
+        "label": "Get Started Label"
+      },
+      {
+        "id": "get_started_link",
+        "type": "page",
+        "label": "Get Started Link"
       }
     ]
   }

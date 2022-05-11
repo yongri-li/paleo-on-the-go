@@ -283,6 +283,12 @@ export default {
 </script>
 
 <style lang="scss">
+.c-ordersAccordion {
+  .c-ordersAccordion__content {
+    min-height: 700px;
+  }
+}
+
 .c-accordionItem__content {
   /*  will-change: max-height, margin-top;*/
 

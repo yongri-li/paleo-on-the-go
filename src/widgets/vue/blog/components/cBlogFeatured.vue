@@ -60,7 +60,8 @@ export default {
 		padding: 0;
 
 		&--inner {
-			padding: 3rem 33% 3rem 3rem;
+			/*padding: 3rem 33% 3rem 3rem;*/
+			padding: 3rem 12vw 3rem 6vw;
 
 			.post-title {
 				letter-spacing: 1px;

@@ -136,8 +136,20 @@ export default {
       this.notContinue = false
       return 'Checkout'
     },
+    finalSubs() {
+      const currentSubs = [...this.subs]
+      const frequency = sessionStorage.getItem('frequency')
+      return currentSubs.map(item => {
+        return {
+          ...item,
+          properties: {
+            shipping_interval_frequency: +frequency,
+            shipping_interval_unit_type: 'week'
+          }
+        }
+      })
+    },
     hasNewAddons() {
-      if (!this.addons.length) return false
       if (this.addons.length !== this.rechargeAddons.length) return true
 
       const rcVarIdsSrt = this.rechargeAddonVarIds.sort()
@@ -180,7 +192,7 @@ export default {
 
       await this.customerUpdatePlan({
         addressId: this.addressId,
-        updates: [...this.subs],
+        updates: [...this.finalSubs],
         deletes: this.rechargeSubs
       })
 
@@ -205,7 +217,6 @@ export default {
           addons: this.cart.addons,
           sizeSelected: this.sizeSelected
         })
-        // console.log('finish and need to go to /cart')
         window.location = '/cart'
       }
     },
