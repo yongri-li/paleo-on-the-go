@@ -1,3 +1,5 @@
+import { formatPrice } from '@shared/utils'
+
 export default {
   getSubscriptionItems: state => {
     return state.cartItems.box.filter(item => item.order_type === 'subscription')
@@ -11,14 +13,14 @@ export default {
   getBoxPrices: state => {
     let sub = 0
     let final = 0
-    let discount = 0
+    let discount = 1
     state.cartItems.box.forEach(({ price, quantity, order_type }) => {
       if (order_type === 'subscription') {
-        discount = state.sizeSelected.discount / 100
+        discount = (100 - state.sizeSelected.discount) / 100
       }
       if (order_type === 'subscription' || order_type === 'onetime') {
         sub += price * quantity
-        price = price * (1 - discount)
+        price = +(Math.round((price * discount) / 100 + 'e+2') + 'e-2')
         final += price * quantity
       }
     })

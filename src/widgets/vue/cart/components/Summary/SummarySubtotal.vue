@@ -35,7 +35,7 @@
 
 <script>
 import { mapState, mapGetters } from 'vuex'
-import { formatPrice } from '@shared/utils'
+import { formatPrice, formatPriceDollars } from '@shared/utils'
 import cButton from '@shared/components/core/cButton.vue'
 
 export default {
@@ -55,7 +55,9 @@ export default {
     ...mapState('frequency', ['frequencySelected']),
     ...mapGetters('cartdrawer', ['getBoxPrices', 'getAddonPrices', 'getGeneralPrices']),
     finalSubtotal() {
-      return formatPrice(this.getBoxPrices.final + this.getAddonPrices + this.getGeneralPrices)
+      return formatPriceDollars(
+        this.getBoxPrices.final + this.getAddonPrices / 100 + this.getGeneralPrices / 100
+      )
     },
     items() {
       const box = this.getItemForCart('box')
