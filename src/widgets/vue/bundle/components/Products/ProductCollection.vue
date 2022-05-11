@@ -1,58 +1,54 @@
 <template>
   <div class="product-collection">
-    <product-card
-      v-for="product in productsAvailable"
-      :key="product.id"
-      :product="product"
-      class="item"
-    />
+    <div v-for="product in productsAvailable" :key="product.id" class="item">
+      <product-card :product="product" />
+    </div>
   </div>
 </template>
 
 <script>
-import ProductCard from './ProductCard.vue'
+import ProductCard from "./ProductCard.vue";
 
 export default {
-  name: 'ProductCollection',
+  name: "ProductCollection",
   components: {
-    ProductCard
+    ProductCard,
   },
   props: {
     products: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     productsAvailable() {
-      return this.products.filter(product => product.available)
-    }
-  }
-}
+      return this.products.filter((product) => product.available);
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-
 .product-collection {
-
   .item {
     margin-bottom: 1rem;
 
     @include media-tablet-up {
-      width: 32.6%;
+      width: 50%;
+    }
+    @include media-desktop-up {
+      width: 33.3333333%;
     }
   }
 
   @include media-tablet-up {
     @include flex($align: flex-start);
 
-    .item:nth-child(3n+2) {
-      margin-left: 1%;
-      margin-right: 1%;
+    margin: 0 -6px;
+    .item {
+      padding-left: 6px;
+      padding-right: 6px;
     }
   }
-
 }
-
-
 </style>

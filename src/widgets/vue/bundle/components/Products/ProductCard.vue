@@ -1,5 +1,6 @@
 <template>
-  <div v-if="product"
+  <div
+    v-if="product"
     :class="{ active: isProductInCart, 'out-of-stock': outOfStock }"
     class="pcard"
   >
@@ -11,11 +12,7 @@
         >
           {{ flag }}
         </span>
-        <img
-          class="pcard__header--img"
-          :src="imageUrl"
-          :alt="product.title"
-        />
+        <img class="pcard__header--img" :src="imageUrl" :alt="product.title" />
       </div>
       <div class="pcard__info">
         <div class="pcard__info--title" @click="openModal">
@@ -32,28 +29,24 @@
             :where="where"
             class="pcard__add-to-cart--open"
           />
-          <div v-else
+          <div
+            v-else
             class="pcard__add-to-cart--first"
-            @click="addToCart({
-              product,
-              where,
-            })"
+            @click="
+              addToCart({
+                product,
+                where,
+              })
+            "
           >
-            <span>
-              +
-            </span>
-            <span class="pcard__add-to-cart--txt">
-              Add
-            </span>
+            <span> + </span>
+            <span class="pcard__add-to-cart--txt"> Add </span>
           </div>
         </div>
       </div>
     </div>
     <div class="pcard__prices" @click="openModal">
-      <div
-        v-if="typeOrder === 'addons'"
-        class="pcard__price--addons"
-      >
+      <div v-if="typeOrder === 'addons'" class="pcard__price--addons">
         <div class="pcard__price--number">
           {{ boxesPricingScale[0].price }}
         </div>
@@ -77,111 +70,104 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from 'vuex'
-import { MODAL_SETUP } from '../../store/modules/modals/_mutations-type'
-import { formatPrice, handleize, getOutOfStock } from '@shared/utils'
-import ProductBtnAddToCart from './ProductBtnAddToCart.vue'
+import { mapState, mapGetters, mapActions } from "vuex";
+import { MODAL_SETUP } from "../../store/modules/modals/_mutations-type";
+import { formatPrice, handleize, getOutOfStock } from "@shared/utils";
+import ProductBtnAddToCart from "./ProductBtnAddToCart.vue";
 
 export default {
-  name: 'ProductCard',
+  name: "ProductCard",
   components: {
-    ProductBtnAddToCart
+    ProductBtnAddToCart,
   },
   props: {
     product: {
       type: Object,
       default: null,
-      required: true
+      required: true,
     },
     addToCartOpen: {
       type: Boolean,
-      default: false
+      default: false,
     },
   },
   computed: {
-    ...mapState('mealcart',[
-      'sizes'
-    ]),
-    ...mapGetters('mealcart',[
-      'getSizeSelected'
-    ]),
-    ...mapGetters('babcart',[
-      'getProductFromCartByID'
-    ]),
+    ...mapState("mealcart", ["sizes"]),
+    ...mapGetters("mealcart", ["getSizeSelected"]),
+    ...mapGetters("babcart", ["getProductFromCartByID"]),
     imageUrl() {
-      const imgFound = this.product.media.find(item => item.position === 1)
-      const urlFinal = imgFound.src.replace('.jpg','_450x450.jpg').replace('.png','_450x450.png')
-      return urlFinal
+      const imgFound = this.product.media.find((item) => item.position === 1);
+      const urlFinal = imgFound.src
+        .replace(".jpg", "_450x450.jpg")
+        .replace(".png", "_450x450.png");
+      return urlFinal;
     },
     boxesPricingScale() {
-      return this.sizes.map(size => {
-        const selected = this.getSizeSelected.val === size.val
-        const discount = size.discount / 100
-        const price = this.product.price * (1 - discount)
+      return this.sizes.map((size) => {
+        const selected = this.getSizeSelected.val === size.val;
+        const discount = size.discount / 100;
+        const price = this.product.price * (1 - discount);
 
         return {
           title: size.title,
           price: formatPrice(price),
           val: size.val,
-          selected: selected
-        }
-      })
+          selected: selected,
+        };
+      });
     },
     where() {
-      const param = this.$route.params.box
-      return param === 'addons' ? 'addons' : 'items'
+      const param = this.$route.params.box;
+      return param === "addons" ? "addons" : "items";
     },
     productInCart() {
       return this.getProductFromCartByID({
         id: this.product.id,
-        where: this.where
-      })
+        where: this.where,
+      });
     },
     isProductInCart() {
-      return !!this.productInCart
+      return !!this.productInCart;
     },
     qtProduct() {
-      return this.productInCart?.quantity || 0
+      return this.productInCart?.quantity || 0;
     },
     typeOrder() {
-      return this.$route.params.box
+      return this.$route.params.box;
     },
     outOfStock() {
-      const inventoryData = this.product.inventory[0]
-      const tags = this.product.tags
+      const inventoryData = this.product.inventory[0];
+      const tags = this.product.tags;
 
-      return getOutOfStock({tags, inventoryData})
+      return getOutOfStock({ tags, inventoryData });
     },
     flag() {
-      return this.outOfStock ? 'Out Of Stock' : this.product.flag
+      return this.outOfStock ? "Out Of Stock" : this.product.flag;
     },
     flagHandle() {
-      return this.flag ? handleize(this.flag) : null
-    }
+      return this.flag ? handleize(this.flag) : null;
+    },
   },
   methods: {
-    ...mapActions('babcart',[
-      'addToCart',
-    ]),
+    ...mapActions("babcart", ["addToCart"]),
     openModal() {
       this.$store.commit(`modals/${MODAL_SETUP}`, {
-        component: 'ModalProduct',
+        component: "ModalProduct",
         settings: {
           params: {
-            product: this.product
-          }
-        }
-      })
-    }
-  }
-}
+            product: this.product,
+          },
+        },
+      });
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-
 .pcard {
-  background-color: #FEFEFE;
-  padding: .5rem;
+  background-color: #fefefe;
+  padding: 0.5rem;
 
   &__header {
     display: flex;
@@ -192,8 +178,12 @@ export default {
       width: 40%;
       position: relative;
 
-      @media screen and (min-width: 769px){
+      @include media-tablet-up {
         width: 100%;
+      }
+
+      img {
+        display: block;
       }
     }
 
@@ -201,11 +191,11 @@ export default {
       position: absolute;
       background-color: $color-black;
       color: $color-primary;
-      font-size: 1rem;
+      font-size: 0.75rem;
       font-weight: 500;
-      padding: 0.5rem 0;
+      padding: 0.5rem 0.94rem;
       // z-index: 9;
-      min-width: 120px;
+      min-width: 100px;
       @include flex($justify: center);
     }
 
@@ -225,25 +215,25 @@ export default {
       text-transform: uppercase;
     }
 
-    @media screen and (min-width: 769px){
+    @include media-tablet-up {
+      font-size: 0.88rem;
       flex-direction: column;
     }
-
   }
 
   &__info {
     width: 55%;
     position: relative;
 
-    @media screen and (min-width: 769px){
+    @include media-tablet-up {
       height: 78px;
       margin-bottom: 1rem;
     }
 
     &--title {
-      color: #231F20;
+      color: #231f20;
       font-family: $font-product-title;
-      font-size: 1.4rem;
+      font-size: 1rem;
       line-height: 110%;
       letter-spacing: -0.02em;
       text-transform: capitalize;
@@ -252,70 +242,82 @@ export default {
       overflow: hidden;
       text-overflow: ellipsis;
       display: -webkit-box;
-      margin-bottom: .2rem;
+      margin-bottom: 0.2rem;
 
-      @media screen and (min-width: 769px){
-        height: 28px;
+      @include media-tablet-up {
+        height: 1.38rem;
+        font-size: 1.25rem;
         -webkit-line-clamp: 1;
       }
     }
 
     &--subtitle {
-      color: #7B7979;
-      font-size: 1rem;
+      color: #7b7979;
+      font-size: 0.75rem;
       line-height: 135%;
+      @include media-tablet-up {
+        font-size: 0.88rem;
+      }
     }
 
-    @media screen and (min-width: 769px){
+    @include media-tablet-up {
       width: 100%;
-      padding: .3rem;
+      padding: 0.3rem;
     }
-
   }
 
   &__add-to-cart {
     margin-top: 1rem;
     font-weight: bold;
-    color: #231F20;
+    color: #231f20;
+
+    &::v-deep .pbtn__add-to-cart--opc {
+      width: 26px;
+      height: 26px;
+      line-height: 26px;
+      @include media-tablet-up {
+        width: 40px;
+        height: 40px;
+        line-height: 40px;
+      }
+    }
 
     &--first {
       cursor: pointer;
       background-color: #fcd32b;
       padding: 0.5rem 1rem;
-      width: 48%;
+      width: 80px;
       border-radius: 20px;
       display: flex;
       align-items: center;
       justify-content: space-evenly;
+      font-size: 1rem;
 
-      @media screen and (min-width: 769px) {
-
+      @include media-tablet-up {
         background-color: #fefefe;
         padding: 0;
-        width: 3.5rem;
-        height: 3.5rem;
+        width: 3.25rem;
+        height: 3.25rem;
         border-radius: 100%;
         border: 1.5px solid #231f20;
-
+        font-size: 2rem;
       }
-
     }
 
     &--open {
-      padding: .2rem;
-      width: 60%;
+      padding: 0.2rem;
+      width: 90px;
       border-radius: 20px;
-      font-size: 1.6rem;
+      font-size: 1.13rem;
 
       @include media-tablet-up {
-        width: 50%;
-        font-size: 2.2rem;
+        width: 180px;
+        font-size: 1.5rem;
         border-radius: 30px;
       }
     }
 
     @include media-tablet-up {
-
       margin: 0;
       position: absolute;
       left: 0;
@@ -332,7 +334,6 @@ export default {
       &--qt {
         font-size: 1.8rem;
       }
-
     }
   }
 
@@ -340,10 +341,10 @@ export default {
     display: flex;
     justify-content: flex-start;
     width: 100%;
-    margin-top: .5rem;
+    margin-top: 0.5rem;
 
-    @media screen and (min-width: 769px){
-      padding: 0 .3rem;
+    @include media-tablet-up {
+      padding: 0 0.3rem;
     }
   }
 
@@ -352,24 +353,24 @@ export default {
     flex-direction: column;
     text-align: center;
     width: 25%;
-    background-color: #FEFEFE;
+    background-color: #fefefe;
 
     &--data {
       font-weight: bold;
-      border: 1px solid #EFEDE6;
+      border: 1px solid #efede6;
       box-sizing: border-box;
-      padding: .3rem 0;
+      padding: 0.3rem 0;
     }
 
     &--title {
-      color: #231F20;
+      color: #231f20;
       text-transform: uppercase;
-      font-size: .8rem;
+      font-size: 0.75rem;
     }
 
     &--number {
-      color: #4F4C4D;
-      font-size: 1rem;
+      color: #4f4c4d;
+      font-size: 0.94rem;
     }
 
     &--addons {
@@ -380,22 +381,19 @@ export default {
       }
     }
   }
-
 }
 
 .active {
-  background-color: #231F20;
+  background-color: #231f20;
 
   .pcard {
-
     &__info {
-
       &--title {
-        color: #FEFEFE;
+        color: #fefefe;
       }
 
       &--subtitle {
-        color: #FEFEFE;
+        color: #fefefe;
       }
     }
 
@@ -405,28 +403,23 @@ export default {
       }
     }
   }
-
-
 }
 
 .selected {
-
   .pcard__price--data {
     background-color: $color-black;
     color: $color-white;
   }
-
 }
 
 .out-of-stock {
   .pcard {
     &__info {
-      opacity: .5;
+      opacity: 0.5;
     }
     &__add-to-cart {
       display: none;
     }
   }
 }
-
 </style>
