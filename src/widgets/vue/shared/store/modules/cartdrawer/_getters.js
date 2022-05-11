@@ -12,12 +12,12 @@ export default {
     let sub = 0
     let final = 0
     state.cartItems.box.forEach(({ price, quantity, order_type }) => {
-      sub += price * quantity
       if (order_type === 'subscription') {
+        sub += price * quantity
         const discount = state.sizeSelected.discount / 100
         price = price * (1 - discount)
+        final += price * quantity
       }
-      final += price * quantity
     })
 
     return {
