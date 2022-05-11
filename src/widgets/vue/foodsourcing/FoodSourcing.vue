@@ -36,11 +36,8 @@
     <c-tiles :tiles="tilesBlocks" class="tiles-container" />
     <section class="faq-container">
       <c-faq-accordion
-        :content="faqBlocks"
-        :title="{
-          first: 'Our',
-          second: 'Ingredients'
-        }"
+        :faqs="faqBlocks"
+        :title="['Our', 'Ingredients']"
       />
     </section>
   </div>
@@ -85,7 +82,7 @@ export default {
 <style lang="scss">
 
 .page {
-  border: 1px solid blue;
+  // border: 1px solid blue;
   .hero-ancillary__text {
     color: $color-black;
     top: 5%;

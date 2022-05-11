@@ -31,7 +31,7 @@
       />
     </section>
     <section class="faq-container">
-      <c-faq-accordion :content="faqBlocks" />
+      <c-faq-accordion :faqs="faqBlocks" :title="['Common', 'Questions']"/>
     </section>
     <section class="bottom-container">
       <c-bottom-hero :content="pageBottomBannerContent" />

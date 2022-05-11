@@ -1,9 +1,6 @@
 <template>
   <div class="o-container page">
-    <div class="c-h1">
-      {{ header }}
-    </div>
-    <div v-html="body"></div>
+    <div v-html="content"></div>
   </div>
 </template>
 
@@ -11,8 +8,7 @@
 export default {
   data() {
     return {
-      header: window.Scoutside.policies.content.header,
-      body: window.Scoutside.policies.content.body
+      content: window.Scoutside.policies.content
     }
   }
 }

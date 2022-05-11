@@ -14,13 +14,14 @@
   AncillaryAccordions = { ...AncillaryAccordions, ...titles }
 
   window.Scoutside.ancillary.accordions = AncillaryAccordions
-  
+
 </script>
 
 
 {% schema %}
   {
     "name": "Accordions Section",
+    "max_blocks": 6,
     "settings": [
       {
         "id": "faqs_title",
@@ -33,7 +34,7 @@
       {
         "name": "FAQs",
         "type": "faq",
-        "settings": [            
+        "settings": [
           {
             "label": "Question",
             "type": "text",
