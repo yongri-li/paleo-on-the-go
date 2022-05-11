@@ -1,5 +1,11 @@
 export const formatPrice = cents => {
-  const price = (cents / 100).toFixed(2)
+  cents = cents / 100
+  const price = +(Math.round(cents + 'e+2') + 'e-2')
+  return '$' + price
+}
+
+export const formatPriceDollars = dollars => {
+  const price = +(Math.round(dollars + 'e+2') + 'e-2')
   return '$' + price
 }
 
@@ -222,11 +228,11 @@ export const getPriceWithDiscount = ({ price, discount }) => {
   return price * (1 - discount)
 }
 
-export const getOutOfStock = ({tags, inventoryData}) => {
+export const getOutOfStock = ({ tags, inventoryData }) => {
   let inventoryTag = 0
   const indexFound = tags.findIndex(tag => tag.includes('inventory_'))
-  if(indexFound > -1) {
-    inventoryTag = tags[indexFound].replace('inventory_','')
+  if (indexFound > -1) {
+    inventoryTag = tags[indexFound].replace('inventory_', '')
   }
 
   const diff = parseInt(inventoryData) - parseInt(inventoryTag)
@@ -235,10 +241,9 @@ export const getOutOfStock = ({tags, inventoryData}) => {
 
 export const notScrollBody = (state = true) => {
   const body = document.querySelector('body')
-  if(state) {
+  if (state) {
     body.style.overflow = 'hidden'
-  }
-  else {
+  } else {
     body.style.overflow = 'initial'
   }
 }

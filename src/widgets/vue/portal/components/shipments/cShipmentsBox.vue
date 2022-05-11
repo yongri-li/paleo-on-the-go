@@ -120,9 +120,6 @@ import cAccordionItem from '@shared/components/core/cAccordionItem.vue'
 import cShipmentsDiscount from './cShipmentsDiscount.vue'
 import cShipmentsSummary from './cShipmentsSummary.vue'
 import Datepicker from 'vuejs-datepicker'
-import { _filterItemsByAddOns, _filterItemsBySubscription, _filterTest } from '../../utils'
-import { format } from 'date-fns'
-import { convertToYYYYMMDDlocalT } from '@shared/utils'
 
 export default {
   props: {

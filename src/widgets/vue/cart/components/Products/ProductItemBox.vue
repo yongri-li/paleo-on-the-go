@@ -1,15 +1,8 @@
 <template>
-  <div
-    :class="[typeClass]"
-    class="pitemcart"
-  >
+  <div :class="[typeClass]" class="pitemcart">
     <div class="pitemcart__body">
       <div class="pitemcart__figure">
-        <img
-          class="pitemcart__figure--img"
-          :src="imageUrl"
-          :alt="product.title"
-        />
+        <img class="pitemcart__figure--img" :src="imageUrl" :alt="product.title" />
         <div class="pitemcart__figure--qt">
           {{ product.quantity }}
         </div>
@@ -45,25 +38,22 @@ export default {
     }
   },
   computed: {
-    ...mapState('cartdrawer', [
-      'sizeSelected'
-    ]),
+    ...mapState('cartdrawer', ['sizeSelected']),
     imageUrl() {
       const imgFound = this.product.media.find(item => item.position === 1)
-      const urlFinal = imgFound.src.replace('.jpg','_150x150.jpg').replace('.png','_150x150.png')
+      const urlFinal = imgFound.src.replace('.jpg', '_150x150.jpg').replace('.png', '_150x150.png')
       return urlFinal
     },
     finalPrice() {
-      const discount = this.sizeSelected.discount / 100
-      const price = this.product.price * (1 - discount)
+      const discount = (100 - this.sizeSelected.discount) / 100
+      const price = this.product.price * discount
       return formatPrice(price)
     }
-  },
+  }
 }
 </script>
 
 <style lang="scss" scoped>
-
 .pitemcart {
   @include flex($justify: space-between);
   margin-top: 1.2rem;
@@ -94,12 +84,12 @@ export default {
       border-radius: 100%;
       width: 25px;
       height: 25px;
-      @include flex($justify: center)
+      @include flex($justify: center);
     }
 
     &--qt {
       background-color: $color-primary;
-      font-size: .8rem;
+      font-size: 0.8rem;
       font-weight: 700;
       position: absolute;
       bottom: 0;
@@ -126,8 +116,8 @@ export default {
     }
 
     &--description {
-      color: #7B7979;
-      font-size: .9rem;
+      color: #7b7979;
+      font-size: 0.9rem;
     }
 
     &--price {
@@ -146,28 +136,20 @@ export default {
 }
 
 .addons.pitemcart {
-
   .pitemcart {
-
     &__body {
       width: 100%;
     }
 
     &__figure {
-
       &--remove {
         display: none;
       }
-
     }
 
     &__add-to-cart {
       display: none;
     }
-
   }
-
 }
-
-
 </style>
