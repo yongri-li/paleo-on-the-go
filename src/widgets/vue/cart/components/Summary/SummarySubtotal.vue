@@ -56,7 +56,6 @@ export default {
     ...mapGetters('cartdrawer', ['getBoxPrices', 'getAddonPrices', 'getGeneralPrices']),
     finalSubtotal() {
       return formatPrice(this.getBoxPrices.final + this.getAddonPrices + this.getGeneralPrices)
-      // return formatPrice(this.getBoxPrices.final + this.getGeneralPrices)
     },
     items() {
       const box = this.getItemForCart('box')

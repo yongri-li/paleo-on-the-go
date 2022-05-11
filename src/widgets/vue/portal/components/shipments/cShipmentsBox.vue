@@ -213,7 +213,10 @@ export default {
     },
     frequency() {
       const freqObj = this.subscriptionItems?.find(sub => sub.frequency)
-      return !!freqObj ? freqObj.frequency : 1
+      const freqBackup = this.$store.getters['customer/customerSubscriptionsByAddressId'](
+        this.addressId
+      )?.find(sub => sub.frequency)
+      return !!freqObj ? freqObj.frequency : freqBackup.frequency
     },
     totalSubItems() {
       return this.subItemsNoRoute?.reduce((sum, sub) => sum + sub.quantity, 0)
