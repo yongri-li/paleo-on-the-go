@@ -270,6 +270,7 @@ export default {
       sessionStorage.setItem('addressId', this.addressId)
       sessionStorage.setItem('nextChargeDate', this.charge.scheduledAt)
       sessionStorage.setItem('frequency', this.frequency)
+      sessionStorage.setItem('fromPortal', true)
       this.addToCartFromPortal({
         items: {
           productsArr: this.portalProducts.items,

@@ -18,7 +18,13 @@
       >
         <div v-if="step.complete" class="sp__item--number">
           <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M16.8889 1L6.2963 11.1111L1 6.05578" stroke="#FCD32B" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+            <path
+              d="M16.8889 1L6.2963 11.1111L1 6.05578"
+              stroke="#FCD32B"
+              stroke-width="1.75"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
           </svg>
         </div>
         <div v-else class="sp__item--number">
@@ -35,15 +41,13 @@
 </template>
 
 <script>
-
 export default {
   computed: {
     isCustomer() {
       return customer.email && customer.shopify_id ? true : false
     },
     fromPortal() {
-      const referrerPage = document.referrer
-      return referrerPage.includes('/account') ? true : false
+      return !!sessionStorage.getItem('fromPortal')
     },
     steps() {
       const param = this.$route.params.box

@@ -52,7 +52,7 @@ export default {
   data() {
     return {
       showCartMobile: false,
-      fromPortal: false,
+      fromPortal: !!sessionStorage.getItem('fromPortal'),
       addressId: null,
       nextChargeDate: null
     }
@@ -160,12 +160,12 @@ export default {
       const orderType = this.getSizeSelected.order_type
       const box = this.$route.params.box
 
-      if (referrerPage.includes('/account')) {
-        this.fromPortal = true
+      if (this.fromPortal) {
         if (box) {
           this.$store.commit(`mealcart/${CHANGE_SIZE_SELECTED}`, { val: `${boxSize}items` })
-          return
         }
+        sessionStorage.removeItem('fromPortal')
+        return
       }
 
       if (fromStartBtn) this.$store.commit(`mealcart/${CHANGE_SIZE_SELECTED}`, { val: `${boxSize}items` })
