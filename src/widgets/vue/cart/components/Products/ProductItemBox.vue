@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { formatPrice } from '@shared/utils'
+import { formatPriceDollars } from '@shared/utils'
 import { mapState } from 'vuex'
 
 export default {
@@ -46,8 +46,8 @@ export default {
     },
     finalPrice() {
       const discount = (100 - this.sizeSelected.discount) / 100
-      const price = this.product.price * discount
-      return formatPrice(price)
+      const price = (this.product.price * discount) / 100
+      return formatPriceDollars(price)
     }
   }
 }

@@ -18,6 +18,7 @@
     <meal-cart-footer
       :cart="cart"
       :subtotal="cartSubTotal"
+      :subtotalWithDiscount="cartSubTotalWithDiscount"
       :size-selected="getSizeSelected"
       :cart-length="cartLength"
       :cart-add-ons="cartAddOns"
@@ -79,6 +80,17 @@ export default {
         subtotal += item.price * item.quantity
       })
       return subtotal
+    },
+    cartSubTotalWithDiscount() {
+      let sub = 0
+      let final = 0
+      const discount = (100 - this.getSizeSelected.discount) / 100
+      this.cart.items.forEach(item => {
+        sub += item.price * item.quantity
+        let price = +(Math.round((item.price * discount) / 100 + 'e+2') + 'e-2')
+        final += price * item.quantity
+      })
+      return final
     },
     cartAddOns() {
       let total = 0

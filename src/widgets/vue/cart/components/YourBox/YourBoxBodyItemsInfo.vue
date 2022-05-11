@@ -8,7 +8,7 @@
             {{ formatPrice(getBoxPrices.sub) }}
           </div>
           <div class="info__price--final">
-            {{ formatPrice(getBoxPrices.final) }}
+            {{ formatPriceDollars(getBoxPrices.final) }}
           </div>
         </div>
       </div>

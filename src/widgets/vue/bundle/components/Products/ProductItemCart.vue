@@ -29,7 +29,7 @@
 <script>
 import ProductBtnAddToCart from './ProductBtnAddToCart.vue'
 import { mapGetters } from 'vuex'
-import { formatPrice } from '@shared/utils'
+import { formatPriceDollars } from '@shared/utils'
 import { REMOVE_PRODUCT_TO_CART } from '@shared/store/modules/babcart/_mutations-type'
 
 export default {
@@ -61,9 +61,9 @@ export default {
       return urlFinal
     },
     finalPrice() {
-      const discount = this.getSizeSelected.discount / 100
-      const price = this.where === 'addons' ? this.product.price : this.product.price * (1 - discount)
-      return formatPrice(price)
+      const discount = (100 - this.getSizeSelected.discount) / 100
+      const price = this.where !== 'addons' ? (this.product.price * discount) / 100 : this.product.price / 100
+      return formatPriceDollars(price)
     }
   },
   methods: {

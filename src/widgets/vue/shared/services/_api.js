@@ -3,6 +3,7 @@ import { cookieService } from '@shared/services'
 
 export default class API {
   constructor() {
+    // const cookieToken = document.cookie.split('ss_access_token=')[1]
     const token = cookieService.getItem({ key: 'ss_access_token' })
     const tokenLs = localStorage.getItem('api_access_token')
     this.url = cookieService.getItem({ key: 'ss_api_url' })
