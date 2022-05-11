@@ -175,6 +175,7 @@ export default {
       })
       removeReloadWarning()
       this.loading.cancel = false
+      location.reload()
     }
   }
 }

@@ -136,7 +136,7 @@
       <hr v-if="hasSubs" />
       <c-h
         class="c-details__heading"
-        v-if="hasSubs && content.plans_heading"
+        v-if="content.plans_heading"
         tag="h2"
         level="2"
         :text="content.plans_heading"
@@ -191,25 +191,6 @@
             </c-accordion>
           </c-detailsBlock>
         </div>
-        <!--         <div class="c-details__boxSingle" v-for="address in addressList.inactive" :key="address.id">
-          <c-detailsBlock class="c-details__boxItem">
-            <div class="c-details__boxContent">
-              <address class="c-details__boxAddress" v-html="address.address1" style="margin: 0" />
-            </div>
-            <c-button
-              class="c-details__boxButton isReactivate"
-              :text="content.plans_button_activate"
-              :modifiers="['isUnderline', 'isBlack']"
-              @click="
-                UI_SET_SIDEBAR({
-                  component: 'cSidebarActivate',
-                  content: sidebarContent.activate,
-                  settings: { address: address }
-                })
-              "
-            />
-          </c-detailsBlock>
-        </div> -->
       </div>
     </div>
   </div>
@@ -292,7 +273,7 @@ export default {
       return this.$store.getters['ui/uiByKey']('sidebar')
     },
     activateItems() {
-      return !this.hasSubs && this.addressList.active ? this.addressList.active : this.addressList.inactive
+      return !this.hasSubs && this.addressList.inactive ? this.addressList.inactive : null
     }
   },
   methods: {
@@ -495,7 +476,7 @@ export default {
     }
   }
   .c-details__editTrigger::after {
-    content: 'Reactivate';
+    content: 'Reactivate Plan';
   }
   .c-accordionItem__trigger--isOpen {
     .c-details__editTrigger::after {
@@ -505,6 +486,12 @@ export default {
   .withAccordion {
     .c-accordionItem__trigger--isOpen + .c-accordionItem__content {
       margin-top: 0 !important;
+    }
+  }
+
+  @include media-mobile-down {
+    .c-details__editTrigger::after {
+      content: 'Reactivate';
     }
   }
 }

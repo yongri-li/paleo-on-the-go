@@ -104,7 +104,7 @@ export default {
         })
       })
       removeReloadWarning()
-      this.loading = false
+      location.reload()
     }
   }
 }
