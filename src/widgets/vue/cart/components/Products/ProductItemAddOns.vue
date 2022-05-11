@@ -13,7 +13,7 @@
           {{ product.title }}
         </div>
         <div class="pitemaddons__info--subtitle">
-          with dasljdal adsajdla
+          {{ product.subtitle }}
         </div>
         <div class="pitemaddons__price u-hideTabletUp">
           {{ finalPrice }}

@@ -20,7 +20,8 @@
                 description: `{{ _product.description }}`,
                 ingredients: `{{ _product.metafields.my_fields.ingredient }}`,
                 heating: `{{ _product.metafields.my_fields.heating }}`,
-                nutrition: `{{ _product.metafields.my_fields.nutrition }}`
+                nutrition: `{{ _product.metafields.my_fields.nutrition }}`,
+                nutrition_image: `{{ product.metafields.my_fields.nutrition_image | img_url: 'master' }}`
               },
               inventory: [
                 {% for variant in _product.variants %}
