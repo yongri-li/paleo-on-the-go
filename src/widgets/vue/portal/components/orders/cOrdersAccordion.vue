@@ -223,10 +223,6 @@ export default {
     },
     totalAddOns() {
       return this.addons?.reduce((sum, sub) => sum + sub.quantity, 0)
-    },
-    testonetimez() {
-      const subs = this.subscriptions.length
-      return this.subscriptions.slice(subs)
     }
   },
   methods: {
