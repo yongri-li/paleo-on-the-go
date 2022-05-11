@@ -1,0 +1,38 @@
+<script>
+  const sizes = [
+    {
+      title: "One Time",
+      number_size: 8,
+      discount: 0,
+      order_type: "onetime",
+      selected: false,
+      val: "onetime",
+    },
+    {
+      title: "8 items",
+      number_size: 8,
+      discount: 5,
+      order_type: "subscription",
+      selected: false,
+      val: "8items",
+    },
+    {
+      title: "12 items",
+      number_size: 12,
+      discount: 7,
+      order_type: "subscription",
+      selected: true,
+      val: "12items",
+    },
+    {
+      title: "16 items",
+      number_size: 16,
+      discount: 9,
+      order_type: "subscription",
+      selected: false,
+      val: "16items",
+    }
+  ]
+
+  window.Scoutside.bundle.sizes = sizes
+</script>
