@@ -119,6 +119,15 @@ export default {
 			transition: opacity 175ms;
 		}
 
+		/* Safari Only */
+		@media not all and (min-resolution: 0.001dpcm) {
+			@supports (-webkit-appearance: none) {
+				article > * {
+					@include text-line-clamp($lines: 4);
+				}
+			}
+		}
+
 		article.isActive {
 			opacity: 1;
 		}

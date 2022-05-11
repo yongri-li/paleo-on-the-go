@@ -196,9 +196,6 @@ export default {
     addOnItemsQtys() {
       return this.addOnItems.map(addon => addon.quantity)
     },
-    // subscriptions() {
-    //   return this.$store.getters['customer/customerSubscriptionsByAddressId'](this.addressId)
-    // },
     subscriptionItems() {
       return this.allItems.filter(item => !this.addOnItemsIds.includes(item.productId))
     },
