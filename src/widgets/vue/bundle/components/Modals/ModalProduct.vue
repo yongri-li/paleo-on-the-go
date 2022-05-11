@@ -134,6 +134,12 @@ export default {
         top: auto;
         width: 100%;
       }
+
+      .pdp__thumbnailButton:hover {
+        img {
+          box-shadow: none;
+        }
+      }
     }
 
     .pdp__galleryImageWrapper {
