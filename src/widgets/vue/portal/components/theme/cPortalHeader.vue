@@ -24,7 +24,7 @@
       <transition name="t-mobileNav-slide">
         <nav class="c-portalHeader__mobileNav" v-if="open" @click="closeNavClk">
           <component
-            class="c-portalHeader__mobileLink asdasd"
+            class="c-portalHeader__mobileLink"
             v-for="(link, index) in navigation"
             :key="index"
             :is="link.tag"
@@ -67,7 +67,7 @@ export default {
           if (link.page === 'external') {
             link = { ...link, tag: 'a', attributes: { href: link.url } }
           } else if (link.page === 'signout') {
-            link = { ...link, tag: 'a', attributes: { href: '/account/logout' } }
+            link = { ...link, tag: 'a', attributes: { href: '/account/logout', dataset: 'logout-link' } }
           } else {
             link = { ...link, tag: 'router-link', attributes: { to: { name: link.page } } }
             if (link.page === 'shipment') link.attributes.exact = true

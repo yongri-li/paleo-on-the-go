@@ -1,12 +1,14 @@
 export const formatPrice = cents => {
-  cents = cents / 100
-  const price = +(Math.round(cents + 'e+2') + 'e-2')
+  // cents = cents / 100
+  // const price = +(Math.round(cents + 'e+2') + 'e-2')
+  // return '$' + price
+  const price = (cents / 100).toFixed(2)
   return '$' + price
 }
 
 export const formatPriceDollars = dollars => {
   const price = +(Math.round(dollars + 'e+2') + 'e-2')
-  return '$' + price
+  return '$' + price.toFixed(2)
 }
 
 export const formatPriceToNumber = cents => {

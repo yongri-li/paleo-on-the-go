@@ -3,10 +3,10 @@ import { tns } from 'tiny-slider/src/tiny-slider'
 
 // const windowPath = window.location.pathname
 // if (windowPath === '/account') window.location.href = '/account#/shipments/'
-
 const isHomepage = document.querySelector('.o-homepage')
 const getStartedBtns = document.querySelectorAll('[data-get-started]')
 const boxTabs = document.querySelectorAll('.js--planClk')
+const logoutLinks = document.querySelectorAll('[data-logout-link]')
 
 // dynamic link and boxsize on getstarted plan btn clicks
 const sendBoxInfo = btn => {
@@ -16,6 +16,13 @@ const sendBoxInfo = btn => {
 }
 getStartedBtns.forEach(btn => btn.addEventListener('click', () => sendBoxInfo(btn)))
 if (isHomepage) boxTabs.forEach(box => box.addEventListener('click', () => sendBoxInfo(box)))
+
+logoutLinks.forEach(lnk =>
+	lnk.addEventListener('click', () => {
+		localStorage.removeItem('vuex')
+		localStorage.setItem('last_email', customer.email)
+	})
+)
 
 if (document.querySelector('[data-tile-slider]')) {
 	const copyTiles = tns({

@@ -72,6 +72,14 @@ export default {
         this.shopifyReady = window.Scoutside.api.ready
         if (this.shopifyReady) clearInterval(shopifyInterval)
       }, 100)
+    },
+    async setRources() {
+      const { success, error } = await this.customerSetResources({
+        resources: ['addresses', 'charges', 'subscriptions', 'orders', 'onetimes']
+      })
+      const { portal, shop, bundle, customer } = await window.Scoutside
+      this.state.products = { ...portal.products.catalog }
+      this.heroReady = !!portal
     }
     // apiTest() {
     //   return new apiService()
@@ -97,12 +105,12 @@ export default {
     // }
   },
   async created() {
-    const { success, error } = await this.customerSetResources({
-      resources: ['addresses', 'charges', 'subscriptions', 'orders', 'onetimes']
-    })
-    const { portal, shop, bundle, customer } = await window.Scoutside
-    this.state.products = { ...portal.products.catalog }
-    this.heroReady = !!portal
+    this.setRources()
+    const lastEmail = localStorage.getItem('last_email')
+    if (lastEmail !== customer.email) {
+      localStorage.setItem('last_email', customer.email)
+      location.reload()
+    }
   },
   async mounted() {
     this.setReady()

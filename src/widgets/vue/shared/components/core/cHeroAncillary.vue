@@ -1,19 +1,8 @@
 <template>
   <div class="hero-ancillary">
-    <img
-      :src="mobileBackground"
-      :alt="text"
-      class="u-hideTabletUp"
-    />
-    <img
-      :src="deskBackground"
-      :alt="text"
-      class="u-hideMobileDown u-showTabletUp"
-    />
-    <div
-      class="c-h1 hero-ancillary__text"
-      :class="{ 'u-hide': text.length === 0 }"
-    >
+    <img :src="mobileBackground" :alt="text" class="u-hideTabletUp" />
+    <img :src="deskBackground" :alt="text" class="u-hideMobileDown u-showTabletUp" />
+    <div class="c-h1 hero-ancillary__text" :class="{ 'u-hide': text.length === 0 }">
       {{ text }}
     </div>
   </div>
@@ -23,12 +12,10 @@
 export default {
   props: {
     deskBackground: {
-      type: String,
-      required: true
+      type: String
     },
     mobileBackground: {
-      type: String,
-      required: true
+      type: String
     },
     text: {
       type: String,

@@ -208,9 +208,6 @@ export default {
     subscriptions() {
       return this.$store.getters['customer/customerSubscriptionsByAddressId'](this.addressId)
     },
-    // subscriptionItems() {
-    //   return this.allItems.filter(item => !this.addOnItemsIds.includes(item.productId))
-    // },
     addons() {
       return this.$store.getters['customer/customerOnetimesByAddressId'](this.addressId)
     },
@@ -227,9 +224,6 @@ export default {
   },
   methods: {
     buildInfo(order) {
-      // const { currencySymbol, content, _formatMoney } = this
-      // const total = _formatMoney({ amount: order.total })
-      // let info = `${currencySymbol}${total} | ${content.name} #${order.number}`
       const { content } = this
       let info = `${content.name} #${order.number}`
       return info
@@ -250,30 +244,13 @@ export default {
       if (shippingStatus === 'delivered') return 'check'
     },
     billingStatus(order) {
-      // let text = `${this.content.payment}`
       const status = order.billingStatus
       const statusCap = status.charAt(0).toUpperCase() + status.slice(1)
       return statusCap
     },
     summaryLines(order) {
       return this._buildSummary({ item: order })
-    },
-    testFilt(items) {
-      //console.log(filterAddOns(items))
-      const allitems = items.length - 1
-      // items.slice(allitems)
-      console.log(items, items.slice(allitems))
     }
-
-    // getSubscriptionItems(items) {
-    //   return _filterItemsBySubscription(items)
-    // }
-    // getAddOns(items) {
-    //   return _filterItemsByAddOns(items)
-    // }
-  },
-  created() {
-    this.testFilt(this.orders[0].lineItems)
   }
 }
 </script>
@@ -286,8 +263,6 @@ export default {
 }
 
 .c-accordionItem__content {
-  /*  will-change: max-height, margin-top;*/
-
   .c-ordersItem__details .c-h4 {
     font-size: 1rem;
   }

@@ -42,6 +42,10 @@ export default {
       type: Number,
       required: true
     },
+    subtotalWithDiscount: {
+      type: Number,
+      required: true
+    },
     sizeSelected: {
       type: Object,
       required: true
@@ -91,8 +95,7 @@ export default {
       return this.typeClass === 'addons' ? this.cartAddOns : 0
     },
     final() {
-      const discount = this.sizeSelected.discount / 100
-      const total = this.subtotal * (1 - discount) + this.priceAddOns
+      const total = this.subtotalWithDiscount * 100 + this.priceAddOns
       return total === 0 ? '$0.00' : formatPrice(total)
     },
     isCustomer() {
