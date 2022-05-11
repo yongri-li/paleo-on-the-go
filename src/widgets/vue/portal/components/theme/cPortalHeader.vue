@@ -18,7 +18,7 @@
       u-hideTabletUp`"
     >
       <div class="c-portalHeader__mobileTrigger" @click="open = !open">
-        <span class="c-portalHeader__mobileLabel" v-if="activeLink" v-html="activeLink.text" />
+        <span class="c-portalHeader__mobileLabel" v-if="activeLink">Manage Account</span>
         <c-svg class="c-portalHeader__mobileSvg" name="circleChevron" />
       </div>
       <transition name="t-mobileNav-slide">

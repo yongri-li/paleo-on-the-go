@@ -103,7 +103,7 @@ export default {
 		}
 
 		.c-topHero__imgWrap {
-			min-height: 40vh;
+			min-height: 62vh;
 		}
 	}
 }
