@@ -3,7 +3,7 @@
     <div class="meal-cart__box-total">
       <div class="meal-cart__box-total--title">BOX TOTAL</div>
       <div class="meal-cart__box-total--amounts">
-        <div v-if="subtotal > 0" class="meal-cart__box-total--sub">
+        <div v-if=" typeClass !== 'onetime' " class="meal-cart__box-total--sub">
           {{ subtotalFormat }}
         </div>
         <div class="meal-cart__box-total--final">
