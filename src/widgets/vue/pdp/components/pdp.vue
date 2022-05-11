@@ -5,11 +5,14 @@
         class="main__column"
         :autoplay="gallery_autoplay"
         :images="product.images"
-        :flag="flag"
+        :flag="flagComputed"
       />
 
       <section class="pdp__content">
-        <div class="pdp__content--wrap">
+        <div
+          class="pdp__content--wrap"
+          :class="{'pdp__content--wrap-out-of-stock': outOfStock}"
+        >
           <div class="rating__leaf--warp">
             <span
               v-html="ratingLeaf"
@@ -34,6 +37,12 @@
               @qtyIncrease="qtyChange('add')"
               @qtyDecrease="qtyChange('minus')"
             />
+            <div
+              v-if="outOfStock"
+              class="c-h2"
+            >
+              WE'RE MAKING MORE NOW!
+            </div>
             <c-button
               class="c-cta pdp__main--atcButton"
               @click="handleCTA"
@@ -67,6 +76,7 @@
 <script>
 import { mapActions, mapMutations } from 'vuex'
 import { formatPrice } from '../utils'
+import { getOutOfStock } from '@shared/utils'
 import cProductGallery from '@shared/components/parts/cProductGallery.vue'
 import cButton from '@shared/components/core/cButton.vue'
 import cSelectTabs from '@shared/components/parts/cSelectTabs.vue'
@@ -133,6 +143,15 @@ export default {
     },
     selectedVariant() {
       return this.variants[this.selectedVar]
+    },
+    outOfStock() {
+      const inventoryData = this.product.inventory[0]
+      const tags = this.product.tags
+
+      return getOutOfStock({tags, inventoryData})
+    },
+    flagComputed() {
+      return this.outOfStock ? 'Out Of Stock' : this.flag
     }
   },
   methods: {
@@ -320,10 +339,19 @@ export default {
           padding: 0;
           margin-bottom: 1.25rem;
         }
+
+        // &-out-of-stock {
+        //   .c-heading,
+        //   .pdp__content--wrap__subheader,
+        //   .pdp__content--wrap__price {
+        //     opacity: .5;
+        //   }
+        // }
       }
 
       &--ctas {
         display: flex;
+        flex-wrap: wrap;
         gap: 2rem;
         align-items: center;
         margin: 1.5rem 0 0.5rem;

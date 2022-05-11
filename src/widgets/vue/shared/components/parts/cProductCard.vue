@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { formatPrice, handleize } from '../../utils'
+import { formatPrice, handleize, getOutOfStock } from '../../utils'
 
 export default {
   props: {
@@ -67,8 +67,14 @@ export default {
     // tagText() {
     //   return this.tag ? this.tag : this.product.type
     // },
+    outOfStock() {
+      const inventoryData = this.product.inventory[0]
+      const tags = this.product.tags
+
+      return getOutOfStock({tags, inventoryData})
+    },
     flag() {
-      return this.product.flag
+      return this.outOfStock ? 'Out Of Stock' : this.product.flag
     },
     flagHandle() {
       return this.flag ? handleize(this.flag) : null
@@ -102,6 +108,13 @@ export default {
   &__flag--most-popular {
     background-color: $color-secondary;
     color: $color-black;
+  }
+
+  &__flag--out-of-stock {
+    background-color: #C63636;
+    color: $color-white;
+    text-transform: uppercase;
+    display: block !important;
   }
 }
 </style>

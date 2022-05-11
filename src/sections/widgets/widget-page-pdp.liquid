@@ -15,10 +15,10 @@
     heating: `{{ product.metafields.my_fields.heating }}`,
     nutrition: `{{ product.metafields.my_fields.nutrition }}`,
     nutrition_image: `{{ product.metafields.my_fields.nutrition_image | img_url: 'master' }}`
-  } 
+  }
   pdp['rating_count'] = `{{ product.metafields.reviews.rating_count }}`
   pdp['rating'] = `{{ product.metafields.reviews.rating }}`
-  
+
   pdp['product']['price_hashes'] = [
     {% for variant in product.variants %}
         '{{ variant.price | money_without_currency | hmac_sha256: settings.custom_app_secret }}',
@@ -28,20 +28,26 @@
     {% for variant in product.variants %}
         '{{ variant.inventory_quantity }}',
     {% endfor %}
-  ]   
+  ]
 
   const related_products = [];
   const related_subtitle = [];
   const related_flags = [];
   {%- for collection in collections limit:100 -%}
-    {%- if collection.id == 286781505735 -%}  
+    {%- if collection.id == 286781505735 -%}
       {%- for _product in collection.products limit:4 -%}
-        related_products.push({{ _product | json }});
+        var productWithInventory = {{ _product | json }}
+        productWithInventory['inventory'] = [
+          {% for variant in _product.variants %}
+            '{{ variant.inventory_quantity }}',
+          {% endfor %}
+        ]
+        related_products.push(productWithInventory);
         related_subtitle.push(`{{ _product.metafields.my_fields.subtitle }}`);
         related_flags.push(`{{ _product.metafields.my_fields.flag}}`);
       {%- endfor -%} 
     {%- endif -%}
-  {%- endfor -%}  
+  {%- endfor -%}
   pdp['related_products'] = related_products.map((prd,i) => {
     let related_product = { ...prd }
     related_product['subtitle'] = related_subtitle[i]
@@ -52,7 +58,7 @@
   {% for block in section.blocks %}
     pdp['{{ block.type }}'] = pdp['{{ block.type }}'] || []
     pdp['{{ block.type }}'].push({{ block.settings | json }})
-  {% endfor %}  
+  {% endfor %}
 
   window.Scoutside.pdp = pdp
 </script>
@@ -209,7 +215,7 @@
       {
         "type": "product_faq",
         "name": "FAQs",
-        "settings": [           
+        "settings": [
           {
             "id": "box_question",
             "type": "text",
@@ -219,9 +225,9 @@
             "id": "box_answer",
             "type": "textarea",
             "label": "Answer"
-          }          
+          }
         ]
       }
-    ]    
+    ]
   }
 {% endschema %}
