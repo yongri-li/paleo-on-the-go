@@ -249,7 +249,8 @@ export default {
       return this.$store.getters['customize/customizeContentByKey']('details')
     },
     hasSubs() {
-      return this.customerRecharge.subscriptionsActive ? true : false
+      return !!this.addressList.active.length
+      //return this.customerRecharge.subscriptionsActive ? true : false
     },
     sidebarContent() {
       const billing = this.$store.getters['customize/customizeSidebarByPrefix']('billing_')
