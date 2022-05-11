@@ -11,19 +11,18 @@ export default {
   getBoxPrices: state => {
     let sub = 0
     let final = 0
+    let discount = 0
     state.cartItems.box.forEach(({ price, quantity, order_type }) => {
       if (order_type === 'subscription') {
+        discount = state.sizeSelected.discount / 100
+      }
+      if (order_type === 'onetime' || 'subscription') {
         sub += price * quantity
-        const discount = state.sizeSelected.discount / 100
         price = price * (1 - discount)
         final += price * quantity
       }
     })
-
-    return {
-      sub,
-      final
-    }
+    return { sub, final }
   },
   getAddonPrices: state => {
     let final = 0
