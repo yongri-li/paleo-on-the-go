@@ -1,12 +1,14 @@
 import '@styles/index.scss'
 import { tns } from 'tiny-slider/src/tiny-slider'
 
-// const windowPath = window.location.pathname
+const windowPath = window.location.pathname
 // if (windowPath === '/account') window.location.href = '/account#/shipments/'
 const isHomepage = document.querySelector('.o-homepage')
 const getStartedBtns = document.querySelectorAll('[data-get-started]')
 const boxTabs = document.querySelectorAll('.js--planClk')
 const logoutLinks = document.querySelectorAll('[data-logout-link]')
+
+if (!windowPath.includes('/bundle')) sessionStorage.removeItem('fromPortal')
 
 // dynamic link and boxsize on getstarted plan btn clicks
 const sendBoxInfo = btn => {

@@ -164,7 +164,6 @@ export default {
         if (box) {
           this.$store.commit(`mealcart/${CHANGE_SIZE_SELECTED}`, { val: `${boxSize}items` })
         }
-        sessionStorage.removeItem('fromPortal')
         return
       }
 

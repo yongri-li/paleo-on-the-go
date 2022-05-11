@@ -9,10 +9,7 @@
       />
 
       <section class="pdp__content">
-        <div
-          class="pdp__content--wrap"
-          :class="{'pdp__content--wrap-out-of-stock': outOfStock}"
-        >
+        <div class="pdp__content--wrap" :class="{ 'pdp__content--wrap-out-of-stock': outOfStock }">
           <div class="rating__leaf--warp">
             <span
               v-html="ratingLeaf"
@@ -37,12 +34,7 @@
               @qtyIncrease="qtyChange('add')"
               @qtyDecrease="qtyChange('minus')"
             />
-            <div
-              v-if="outOfStock"
-              class="c-h2"
-            >
-              WE'RE MAKING MORE NOW!
-            </div>
+            <div v-if="outOfStock" class="c-h2">WE'RE MAKING MORE NOW!</div>
             <c-button
               class="c-cta pdp__main--atcButton"
               @click="handleCTA"
@@ -148,7 +140,7 @@ export default {
       const inventoryData = this.product.inventory[0]
       const tags = this.product.tags
 
-      return getOutOfStock({tags, inventoryData})
+      return getOutOfStock({ tags, inventoryData })
     },
     flagComputed() {
       return this.outOfStock ? 'Out Of Stock' : this.flag
@@ -256,7 +248,6 @@ export default {
         rateStars.forEach(star => (star.innerHTML = leafIcon))
         unrateStars.forEach(star => {
           star.innerHTML = leafIcon
-          star.style.opacity = '0.5'
         })
       }
       setTimeout(() => setLeaves(), 301)

@@ -15,24 +15,48 @@
         />
       </div>
     </section>
-    <c-button
-      class="c-sidebarCancel__cancelButton"
-      @click="handleActivate"
-      :loading="loading"
-      text="Reactivate Subscription"
-      :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
-      :attributes="{ disabled: loading }"
-    />
-    <c-button
-      class="u-mrgTop--sm"
-      text="Nevermind"
-      :modifiers="['isUnderline', 'isBlack']"
-      @click="$root.$emit('closeAccActivate', [boxNum, boxName])"
-    />
-    <span class="activate-disclaimer"
-      >Your subscription will charge 2 days after you reactivate it – this gives you time to edit your
-      subscription, adjust your charge date, or update your frequency if needed.</span
-    >
+    <div class="u-hideTabletUp">
+      <br />
+      <span class=""
+        >Your subscription will charge 2 days after you reactivate it – this gives you time to edit your
+        subscription, adjust your charge date, or update your frequency if needed.</span
+      >
+      <c-button
+        class="c-sidebarCancel__cancelButton"
+        @click="handleActivate"
+        :loading="loading"
+        text="Reactivate Subscription"
+        :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
+        :attributes="{ disabled: loading }"
+      />
+      <c-button
+        class="u-mrgTop--sm"
+        text="Nevermind"
+        style="margin: 1rem auto"
+        :modifiers="['isUnderline', 'isBlack']"
+        @click="$root.$emit('closeAccActivate', [boxNum, boxName])"
+      />
+    </div>
+    <div class="u-hideMobileDown">
+      <c-button
+        class="c-sidebarCancel__cancelButton"
+        @click="handleActivate"
+        :loading="loading"
+        text="Reactivate Subscription"
+        :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
+        :attributes="{ disabled: loading }"
+      />
+      <c-button
+        class="u-mrgTop--sm"
+        text="Nevermind"
+        :modifiers="['isUnderline', 'isBlack']"
+        @click="$root.$emit('closeAccActivate', [boxNum, boxName])"
+      />
+      <span class="activate-disclaimer"
+        >Your subscription will charge 2 days after you reactivate it – this gives you time to edit your
+        subscription, adjust your charge date, or update your frequency if needed.</span
+      >
+    </div>
   </div>
 </template>
 
