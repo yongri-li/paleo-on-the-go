@@ -16,7 +16,7 @@ export default {
       if (order_type === 'subscription') {
         discount = state.sizeSelected.discount / 100
       }
-      if (order_type === 'onetime' || 'subscription') {
+      if (order_type === 'subscription' || order_type === 'onetime') {
         sub += price * quantity
         price = price * (1 - discount)
         final += price * quantity
