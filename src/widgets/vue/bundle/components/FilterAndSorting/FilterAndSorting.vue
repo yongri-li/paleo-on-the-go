@@ -487,6 +487,7 @@ export default {
     .v-select {
       .vs__dropdown-toggle {
         border: none;
+        padding: 4px 0;
       }
 
       .vs__dropdown-option {

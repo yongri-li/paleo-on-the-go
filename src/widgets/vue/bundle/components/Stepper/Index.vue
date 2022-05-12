@@ -6,19 +6,18 @@
 </template>
 
 <script>
-import StepperMobile from './StepperMobile.vue'
-import StepperDesk from './StepperDesk.vue'
+import StepperMobile from "./StepperMobile.vue";
+import StepperDesk from "./StepperDesk.vue";
 
 export default {
   components: {
     StepperMobile,
-    StepperDesk
-  }
-}
+    StepperDesk,
+  },
+};
 </script>
 
 <style lang="scss" scoped>
-
 .stepper {
   &__desk {
     display: none;
@@ -33,6 +32,11 @@ export default {
       display: none;
     }
   }
-}
 
+  @include media-tablet-only {
+    &__desk {
+      flex-direction: column;
+    }
+  }
+}
 </style>

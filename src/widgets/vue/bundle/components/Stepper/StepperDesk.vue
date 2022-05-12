@@ -17,7 +17,13 @@
         @click="backRouter(step)"
       >
         <div v-if="step.complete" class="sp__item--number">
-          <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <svg
+            width="18"
+            height="12"
+            viewBox="0 0 18 12"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
             <path
               d="M16.8889 1L6.2963 11.1111L1 6.05578"
               stroke="#FCD32B"
@@ -44,59 +50,59 @@
 export default {
   computed: {
     isCustomer() {
-      return customer.email && customer.shopify_id ? true : false
+      return customer.email && customer.shopify_id ? true : false;
     },
     fromPortal() {
-      return !!sessionStorage.getItem('fromPortal')
+      return !!sessionStorage.getItem("fromPortal");
     },
     steps() {
-      const param = this.$route.params.box
+      const param = this.$route.params.box;
       const steps = [
         {
-          name: 'Meals',
+          name: "Meals",
           active: true,
-          param: 'subscription',
-          complete: param === 'addons'
+          param: "subscription",
+          complete: param === "addons",
         },
         {
-          name: 'Add-Ons',
-          active: param === 'addons'
+          name: "Add-Ons",
+          active: param === "addons",
         },
         {
-          name: 'Review',
-          active: false
+          name: "Review",
+          active: false,
         },
         {
-          name: 'Checkout',
-          active: false
-        }
-      ]
+          name: "Checkout",
+          active: false,
+        },
+      ];
 
-      if (param === 'onetime') {
-        steps.splice(1, 1)
-        steps[0].param = 'onetime'
+      if (param === "onetime") {
+        steps.splice(1, 1);
+        steps[0].param = "onetime";
       }
 
-      if (this.isCustomer && this.fromPortal && param !== 'onetime') {
-        steps.splice(3, 1)
-        steps[2].name = 'Udpate Box'
+      if (this.isCustomer && this.fromPortal && param !== "onetime") {
+        steps.splice(3, 1);
+        steps[2].name = "Udpate Box";
       }
 
-      if (this.isCustomer && this.fromPortal && param === 'addons') {
-        steps[2].active = true
+      if (this.isCustomer && this.fromPortal && param === "addons") {
+        steps[2].active = true;
       }
 
-      return steps
-    }
+      return steps;
+    },
   },
   methods: {
     backRouter(step) {
-      if (step.active && step.param) {
-        this.$router.go(-1)
+      if (step.active && step.complete && step.param) {
+        this.$router.push(`/${step.param}`);
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -104,17 +110,27 @@ export default {
   padding: 2rem 0;
 
   &__logo {
-    flex-grow: 20%;
+    width: 15%;
+
+    @include media-tablet-only {
+      @include flex($justify: center);
+      margin-bottom: 1rem;
+    }
 
     &--link {
       display: block;
-      width: 60%;
+      // width: 60%;
+      width: 145px;
     }
   }
 
   &__content {
-    width: 60%;
+    width: 70%;
     @include flex($justify: center);
+
+    @include media-tablet-only {
+      width: 100%;
+    }
   }
 
   &__item {
@@ -123,8 +139,8 @@ export default {
 
     &--number {
       border: 1px solid $color-black;
-      width: 35px;
-      height: 35px;
+      width: 30px;
+      height: 30px;
       border-radius: 100%;
       font-weight: 500;
       font-size: 1rem;
@@ -138,8 +154,11 @@ export default {
 
     &--title {
       font-family: $font-heading;
-      font-size: 1.3rem;
+      font-size: 1.13rem;
       text-transform: uppercase;
+      @include media-tablet-only {
+        font-size: 1rem;
+      }
     }
 
     &--line {
