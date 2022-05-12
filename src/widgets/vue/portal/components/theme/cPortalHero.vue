@@ -8,10 +8,10 @@
       <h1 class="c-h1">
         {{ content.main_heading }}<span> {{ formatDayDateIOS(nextCharge.scheduledAt) }}</span>
       </h1>
-      <h5 class="c-h5">Rewards Balance: {{ '1,200 Points' }}</h5>
+      <h5 class="c-h5">Rewards Balance: {{ rewardPoints }} </h5>
       <div class="c-shipments__hero--btns">
-        <button class="c-button c-button--isDefault c-button--isPrimary">Earn Points</button>
-        <button class="c-button c-button--isDefault c-button--isPrimary">Redeem Rewards</button>
+        <button class="c-button c-button--isDefault c-button--isPrimary" @click="goToPoints('earn')">Earn Points</button>
+        <button class="c-button c-button--isDefault c-button--isPrimary" @click="goToPoints('redeem')">Redeem Rewards</button>
       </div>
     </section>
     <section class="c-shipments__hero--wrap" v-else>
@@ -48,6 +48,9 @@ export default {
     },
     firstName() {
       return customer.first_name
+    },
+    rewardPoints() {
+      return document.querySelector('.lion-loyalty-widget__points')?.textContent
     }
   },
   methods: {
@@ -58,6 +61,10 @@ export default {
     },
     onResize() {
       this.isMobile = window.innerWidth < 768 ? true : false
+    },
+    goToPoints(action){
+      const href = action === 'earn' ? '/pages/rewards#earn-points' : '/pages/rewards#rewards'
+      window.location.href = href
     }
   },
   created() {
@@ -90,7 +97,7 @@ export default {
 
     @include media-desktop-up {
       h1 {
-        max-width: 33vw;
+        max-width: 37vw;
       }
     }
   }
