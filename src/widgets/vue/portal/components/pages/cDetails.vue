@@ -141,12 +141,15 @@
         level="2"
         :text="content.plans_heading"
       />
+
       <div class="c-details__box c-box__isEditSubs editCancel" v-if="hasSubs && showAddresses">
-        <div class="c-details__boxSingle" v-for="(address, i) in addressList.active" :key="address.id">
+        <div class="c-details__boxSingle" v-for="(address, i) in addressList.active" :data="reloadKey + i">
           <c-detailsBlock class="c-details__boxItem withAccordion" v-if="customerRecharge">
             <c-accordion>
               <c-accordionItem
                 :boxNum="i"
+                :key="reloadKey + i"
+                :mountToggle="true"
                 @closeAccCancel="closeAccCancelFn"
                 :closeAccCancelBox="[closeAccCancelBox, boxIncCancel]"
               >
@@ -240,7 +243,8 @@ export default {
       error: false,
       setBoxHeight: false,
       closeAccCancelBox: null,
-      boxIncCancel: 0
+      boxIncCancel: 0,
+      reloadKey: 0
     }
   },
   computed: {
@@ -299,6 +303,18 @@ export default {
       if (error) this.error = error
       this.ready = true
     } else this.ready = true
+  },
+  async mounted() {
+    // document.addEventListener(
+    //   'sidebarSubsEditMount',
+    //   e => {
+    //     const { mounted } = e.detail
+    //     if (mounted) {
+    //       this.reloadKey++
+    //     }
+    //   },
+    //   { once: true }
+    // )
   },
   beforeDestroy() {
     this.$root.$off('closeAccActivate')
