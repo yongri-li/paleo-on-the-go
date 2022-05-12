@@ -1,29 +1,11 @@
 <template>
   <div class="modal__box-size">
-    <div class="modal__close" @click="closeModal">
-      x
-    </div>
-    <div class="modal__title">
-      CHANGE BOX SIZE
-    </div>
-    <meal-cart-box-sizes
-      :size-selected="getSizeSelected"
-      @change="changeSizeSelected"
-      radio-name="popup"
-    />
+    <div class="modal__close" @click="closeModal">x</div>
+    <div class="modal__title">CHANGE BOX SIZE</div>
+    <meal-cart-box-sizes :size-selected="getSizeSelected" @change="changeSizeSelected" radio-name="popup" />
     <div class="modal__options">
-      <div
-        class="modal__options--item modal__options--cancel"
-        @click="closeModal"
-      >
-        Cancel
-      </div>
-      <div
-        class="modal__options--item modal__options--continue"
-        @click="saveChanged"
-      >
-        Save
-      </div>
+      <div class="modal__options--item modal__options--cancel" @click="closeModal">Cancel</div>
+      <div class="modal__options--item modal__options--continue" @click="saveChanged">Save</div>
     </div>
   </div>
 </template>
@@ -39,20 +21,20 @@ export default {
   },
   data() {
     return {
-      valSelected: '',
+      valSelected: ''
     }
   },
   mounted() {
     this.valSelected = this.getSizeSelected.val
   },
   computed: {
-    ...mapGetters('mealcart', [
-      'getSizeSelected'
-    ])
+    ...mapGetters('mealcart', ['getSizeSelected'])
   },
   methods: {
     changeSizeSelected(newVal) {
       this.valSelected = newVal
+      const boxSize = +newVal.split('items')[0]
+      sessionStorage.setItem('boxSize', boxSize)
     },
     closeModal() {
       this.$emit('close')
@@ -65,11 +47,8 @@ export default {
 </script>
 
 <style lang="scss">
-
 @include media-tablet-up {
-
   .modal__box-size {
-
     .modal__options {
       @include flex($justify: space-between);
 
@@ -89,13 +68,9 @@ export default {
       }
 
       &--title {
-        margin-bottom: .2rem;
+        margin-bottom: 0.2rem;
       }
     }
   }
-
-
 }
-
-
 </style>
