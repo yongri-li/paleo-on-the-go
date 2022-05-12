@@ -176,7 +176,7 @@ export default {
   &__products {
     height: calc(96vh - 430px);
     overflow-y: auto;
-    transition: all 0.7s ease-out;
+    // transition: all 0.7s ease-out;
 
     @include media-tablet-up {
       height: auto;
@@ -238,14 +238,6 @@ export default {
 
     &__products.hidden {
       height: 0;
-    }
-
-    &__products {
-      height: 55vh;
-
-      @include media-tablet-up {
-        height: 40vh;
-      }
     }
   }
 }
