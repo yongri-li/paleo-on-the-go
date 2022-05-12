@@ -2,8 +2,14 @@
   <div :class="[typeClass]" class="pitemcart">
     <div class="pitemcart__body">
       <div class="pitemcart__figure">
-        <div class="pitemcart__figure--remove" @click="removeProductToCart">x</div>
-        <img class="pitemcart__figure--img" :src="imageUrl" :alt="product.title" />
+        <div class="pitemcart__figure--remove" @click="removeProductToCart">
+          x
+        </div>
+        <img
+          class="pitemcart__figure--img"
+          :src="imageUrl"
+          :alt="product.title"
+        />
       </div>
       <div class="pitemcart__info">
         <div class="pitemcart__info--title">
@@ -27,54 +33,59 @@
 </template>
 
 <script>
-import ProductBtnAddToCart from './ProductBtnAddToCart.vue'
-import { mapGetters } from 'vuex'
-import { formatPriceDollars } from '@shared/utils'
-import { REMOVE_PRODUCT_TO_CART } from '@shared/store/modules/babcart/_mutations-type'
+import ProductBtnAddToCart from "./ProductBtnAddToCart.vue";
+import { mapGetters } from "vuex";
+import { formatPriceDollars } from "@shared/utils";
+import { REMOVE_PRODUCT_TO_CART } from "@shared/store/modules/babcart/_mutations-type";
 
 export default {
   components: {
-    ProductBtnAddToCart
+    ProductBtnAddToCart,
   },
   props: {
     product: {
       type: Object,
-      required: true
+      required: true,
     },
     typeClass: {
       type: String,
-      default: 'subscription'
+      default: "subscription",
     },
     where: {
       type: String,
-      required: true
+      required: true,
     },
     fromPortal: {
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   computed: {
-    ...mapGetters('mealcart', ['getSizeSelected']),
+    ...mapGetters("mealcart", ["getSizeSelected"]),
     imageUrl() {
-      const imgFound = this.product.media.find(item => item.position === 1)
-      const urlFinal = imgFound.src.replace('.jpg', '_150x150.jpg').replace('.png', '_150x150.png')
-      return urlFinal
+      const imgFound = this.product.media.find((item) => item.position === 1);
+      const urlFinal = imgFound.src
+        .replace(".jpg", "_150x150.jpg")
+        .replace(".png", "_150x150.png");
+      return urlFinal;
     },
     finalPrice() {
-      const discount = (100 - this.getSizeSelected.discount) / 100
-      const price = this.where !== 'addons' ? (this.product.price * discount) / 100 : this.product.price / 100
-      return formatPriceDollars(price)
-    }
+      const discount = (100 - this.getSizeSelected.discount) / 100;
+      const price =
+        this.where !== "addons"
+          ? (this.product.price * discount) / 100
+          : this.product.price / 100;
+      return formatPriceDollars(price);
+    },
   },
   methods: {
     removeProductToCart() {
       this.$store.commit(`babcart/${REMOVE_PRODUCT_TO_CART}`, {
         idProduct: this.product.id,
-        where: this.where
-      })
-    }
-  }
-}
+        where: this.where,
+      });
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -82,9 +93,16 @@ export default {
   @include flex($justify: space-between);
   margin-top: 1.2rem;
 
+  @include media-desktop-up {
+    @include flex($justify: space-between, $wrap: nowrap);
+  }
+
   &__body {
     @include flex($justify: space-between);
     width: 70%;
+    @include media-tablet-only {
+      width: 100%;
+    }
   }
 
   &__figure {
@@ -116,8 +134,8 @@ export default {
     width: 70%;
 
     &--title {
-      font-family: $font-heading;
-      font-size: 1.5rem;
+      font-family: $font-product-title;
+      font-size: 1rem;
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
       overflow: hidden;
@@ -128,21 +146,36 @@ export default {
 
     &--description {
       color: #7b7979;
-      font-size: 0.9rem;
+      font-size: 0.75rem;
     }
 
     &--price {
-      margin-top: 0.7rem;
-      font-size: 1rem;
+      margin-top: 0.38rem;
+      font-size: 0.88rem;
       font-weight: 700;
     }
   }
 
   &__add-to-cart {
-    width: 26%;
-    font-size: 1.5rem;
+    width: 90px;
+    font-size: 1.13rem;
     border-radius: 20px;
     padding: 0.2rem;
+
+    @include media-tablet-up {
+      margin: 0.5rem 0;
+    }
+
+    @include media-tablet-only {
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    &::v-deep .pbtn__add-to-cart--opc {
+      width: 26px;
+      height: 26px;
+      line-height: 26px;
+    }
   }
 }
 
