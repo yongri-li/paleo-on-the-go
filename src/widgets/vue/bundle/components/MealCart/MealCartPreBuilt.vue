@@ -27,82 +27,82 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions } from 'vuex'
-import { CLEAN_ALL_CART } from '@shared/store/modules/babcart/_mutations-type'
+import { mapGetters, mapState, mapActions } from "vuex";
+import { CLEAN_ALL_CART } from "@shared/store/modules/babcart/_mutations-type";
 
 export default {
   data() {
     return {
       selected: false,
-    }
+    };
   },
   computed: {
-    ...mapState('mealcart', [
-      'prebuilt'
-    ]),
-    ...mapGetters('mealcart', [
-      'getSizeSelected',
-      'getPrebuiltByBox',
-      'getProductPrebuilt'
+    ...mapState("mealcart", ["prebuilt"]),
+    ...mapGetters("mealcart", [
+      "getSizeSelected",
+      "getPrebuiltByBox",
+      "getProductPrebuilt",
     ]),
     options() {
-      const sizeSelected = this.getSizeSelected
-      const sizeNumber = sizeSelected.val === 'onetime' ? 0 : sizeSelected.number_size
-      const options = this.getPrebuiltByBox(sizeNumber)
-      return options.map(option => {
+      const sizeSelected = this.getSizeSelected;
+      const sizeNumber =
+        sizeSelected.val === "onetime" ? 0 : sizeSelected.number_size;
+      const options = this.getPrebuiltByBox(sizeNumber);
+      return options.map((option) => {
         return {
           label: option.bundlename,
-          size: sizeNumber
-        }
-      })
-    }
+          size: sizeNumber,
+        };
+      });
+    },
   },
   methods: {
-    ...mapActions('mealcart', [
-      'validateSetPrebuilt'
-    ]),
+    ...mapActions("mealcart", ["validateSetPrebuilt"]),
     setBundleSelected(val) {
-      console.log('val',val)
-      if(val) {
-        this.selected = true
+      console.log("val", val);
+      if (val) {
+        this.selected = true;
 
         const products = this.getProductPrebuilt({
           bundlename: val.label,
-          size: val.size
-        })
-        console.log('products',products)
-        this.validateSetPrebuilt(products)
-      }
-      else {
-        this.selected = false
+          size: val.size,
+        });
+        console.log("products", products);
+        this.validateSetPrebuilt(products);
+      } else {
+        this.selected = false;
 
-        this.$store.commit(`babcart/${CLEAN_ALL_CART}`)
+        this.$store.commit(`babcart/${CLEAN_ALL_CART}`);
       }
-    }
-  }
-}
+    },
+  },
+};
 </script>
 
 <style lang="scss">
-
 .prebuilt {
   @include flex($justify: space-between);
   border-top: 1px solid $color-ecru;
   border-bottom: 1px solid $color-ecru;
-  padding: 0 0.5rem;
-  margin-top: .5rem;
-  height: 77px;
+  padding: 0.5rem;
+  margin-top: 0.5rem;
 
   &__info {
     width: 40%;
 
+    @include media-tablet-only {
+      width: 100%;
+      margin-bottom: 0.5rem;
+    }
+
     &--title {
       font-family: $font-heading;
       text-transform: uppercase;
-      font-size: 1.2rem;
+      // font-size: 1.2rem;
+      font-size: 1rem;
     }
     &--subtitle {
-      font-size: .8rem;
+      font-size: 0.88rem;
     }
   }
 
@@ -111,6 +111,10 @@ export default {
     font-weight: 500;
     text-transform: capitalize;
     font-size: 1rem;
+
+    @include media-tablet-only {
+      width: 100%;
+    }
 
     .vs__search {
       margin-top: 0;
@@ -145,9 +149,9 @@ export default {
       box-shadow: none;
     }
 
-    .vs__dropdown-option{
-      padding: .6rem .7rem .6rem calc(.5rem + 7px);
-      border-top: 1px solid #D3D2D2;
+    .vs__dropdown-option {
+      padding: 0.6rem 0.7rem 0.6rem calc(0.5rem + 7px);
+      border-top: 1px solid #d3d2d2;
       @include flex($justify: space-between);
 
       &--radio {
@@ -165,7 +169,12 @@ export default {
 
         .vs__dropdown-option--radio {
           border-color: $color-white;
-          background: radial-gradient($color-primary 0%, $color-primary 35%, transparent 45%, transparent);
+          background: radial-gradient(
+            $color-primary 0%,
+            $color-primary 35%,
+            transparent 45%,
+            transparent
+          );
         }
       }
     }
@@ -177,5 +186,4 @@ export default {
     }
   }
 }
-
 </style>

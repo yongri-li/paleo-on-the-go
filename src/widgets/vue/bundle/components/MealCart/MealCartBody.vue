@@ -7,7 +7,11 @@
       :class="[haveProductsClass]"
       class="meal-cart__body--boxsize"
     />
-    <div :class="[haveProductsClass]" class="meal-cart__body--changeboxsize" @click="openModal">
+    <div
+      :class="[haveProductsClass]"
+      class="meal-cart__body--changeboxsize"
+      @click="openModal"
+    >
       Change box size
     </div>
     <meal-cart-pre-built class="meal-cart__body--prebuilt" />
@@ -16,47 +20,49 @@
 </template>
 
 <script>
-import MealCartBoxSizes from './MealCartBoxSizes.vue'
-import MealCartPreBuilt from './MealCartPreBuilt.vue'
-import MealCartProductList from './MealCartProductList.vue'
+import MealCartBoxSizes from "./MealCartBoxSizes.vue";
+import MealCartPreBuilt from "./MealCartPreBuilt.vue";
+import MealCartProductList from "./MealCartProductList.vue";
 
-import { mapActions } from 'vuex'
+import { mapActions } from "vuex";
 
-import { MODAL_SETUP } from '../../store/modules/modals/_mutations-type'
+import { MODAL_SETUP } from "../../store/modules/modals/_mutations-type";
 
 export default {
   components: {
     MealCartBoxSizes,
     MealCartPreBuilt,
-    MealCartProductList
+    MealCartProductList,
   },
   props: {
     typeClass: {
       type: String,
-      default: 'subscription'
+      default: "subscription",
     },
     haveProductsClass: {
       type: String,
-      default: 'without-products'
+      default: "without-products",
     },
     sizeSelected: {
       type: Object,
-      required: true
+      required: true,
     },
     fromPortal: {
-      type: Boolean
-    }
+      type: Boolean,
+    },
   },
   methods: {
-    ...mapActions('mealcart', ['validateChangeSizeSelected']),
+    ...mapActions("mealcart", ["validateChangeSizeSelected"]),
     changeSizeSelected(newVal) {
-      this.validateChangeSizeSelected(newVal)
+      this.validateChangeSizeSelected(newVal);
     },
     openModal() {
-      this.$store.commit(`modals/${MODAL_SETUP}`, { component: 'ModalBoxSize' })
-    }
-  }
-}
+      this.$store.commit(`modals/${MODAL_SETUP}`, {
+        component: "ModalBoxSize",
+      });
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -79,7 +85,7 @@ export default {
   &--changeboxsize.with-products {
     @include media-tablet-up {
       display: block;
-      font-size: 1.2rem;
+      font-size: 1rem;
       font-weight: 600;
       text-transform: capitalize;
       text-decoration: underline;

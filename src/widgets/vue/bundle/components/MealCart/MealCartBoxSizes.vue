@@ -1,6 +1,7 @@
 <template>
   <div class="box-sizes">
-    <label v-for="size in sizes"
+    <label
+      v-for="size in sizes"
       :key="size.title"
       :style="{ order: size.order }"
       class="box-sizes__option"
@@ -14,7 +15,7 @@
       />
       <div class="box-sizes__option--content">
         <span class="box-sizes__option--title">
-         {{ size.title }}
+          {{ size.title }}
         </span>
         <div class="box-sizes__option--info">
           <span class="box-sizes__option--info-mobile">
@@ -28,71 +29,67 @@
     </label>
     <div class="box-sizes__subscribe-title">
       <div class="box-sizes__subscribe-title--line"></div>
-      <div class="box-sizes__subscribe-title--txt">
-        subscribe and save
-      </div>
+      <div class="box-sizes__subscribe-title--txt">subscribe and save</div>
       <div class="box-sizes__subscribe-title--line"></div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState } from "vuex";
 
 export default {
   props: {
     sizeSelected: {
       type: Object,
-      required: true
+      required: true,
     },
     radioName: {
       type: String,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     ...mapState({
-      stateSizes: state => state.mealcart.sizes
+      stateSizes: (state) => state.mealcart.sizes,
     }),
     sizes() {
-      return this.stateSizes.map( (size, index) => {
-        const isSubscription = size.order_type === 'subscription'
+      return this.stateSizes.map((size, index) => {
+        const isSubscription = size.order_type === "subscription";
 
         const info = {
           mobile: isSubscription
-                  ? `Subscribe & Save ${size.discount}%`
-                  : `${size.number_size} Items Minimum`,
+            ? `Subscribe & Save ${size.discount}%`
+            : `${size.number_size} Items Minimum`,
           desk: isSubscription
-                ? `${size.discount}% Saving`
-                : `${size.number_size} Items Minimum`,
-        }
+            ? `${size.discount}% Saving`
+            : `${size.number_size} Items Minimum`,
+        };
 
-        const order = isSubscription ? index+1 : index
+        const order = isSubscription ? index + 1 : index;
 
         return {
           title: size.title,
           val: size.val,
           info,
-          order
-        }
-      })
+          order,
+        };
+      });
     },
     picked: {
-      get: function() {
-        return this.sizeSelected.val
+      get: function () {
+        return this.sizeSelected.val;
       },
-      set: function(newVal) {
-        this.$emit('change',newVal)
-      }
-    }
+      set: function (newVal) {
+        this.$emit("change", newVal);
+      },
+    },
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
-
 .box-sizes {
-
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
@@ -111,13 +108,13 @@ export default {
 
     &--content {
       width: 100%;
-      background-color: #EFEDE6;
+      background-color: #efede6;
       display: flex;
       flex-direction: column;
       align-items: center;
       padding: 0.7rem 0;
 
-      @media screen and (min-width: 789px) {
+      @include media-tablet-up {
         flex-direction: row;
         align-items: flex-end;
         padding: 1rem;
@@ -126,38 +123,39 @@ export default {
           content: "";
           display: inline-block;
           vertical-align: bottom;
-          width: 4%;
-          height: 30%;
-          margin-right: 0.3rem;
+          width: 16px;
+          height: 16px;
           border-radius: 50%;
-          border: 0.1rem solid #231F20;
+          border: 0.1rem solid #231f20;
           position: absolute;
-          right: 4%;
+          right: 1rem;
           top: 35%;
         }
       }
     }
 
     &--title {
-      font-family: 'Knockout';
+      font-family: "Knockout";
       text-transform: uppercase;
-      font-size: 1.5rem;
+      font-size: 1.38rem;
+      line-height: 1;
 
-      @media screen and (min-width: 789px) {
+      @include media-tablet-up {
         line-height: 1.3rem;
         margin-right: 1rem;
       }
     }
 
     &--info {
-      font-size: .8rem;
+      font-size: 0.75rem;
 
       &-desk {
         display: none;
       }
 
-      @media screen and (min-width: 789px) {
+      @include media-tablet-up {
         font-size: 1rem;
+        line-height: 1.3rem;
 
         &-mobile {
           display: none;
@@ -172,32 +170,35 @@ export default {
       display: none;
 
       &:checked + * {
-        background-color: #231F20;
-        color: #FEFEFE;
+        background-color: #231f20;
+        color: #fefefe;
 
         .box-sizes__option--title {
-          color: #FCD32B;
+          color: #fcd32b;
         }
 
         &::before {
-          border-color: #FCD32B;
-          background: radial-gradient(#FCD32B 0%, #FCD32B 35%, transparent 45%, transparent);
+          border-color: #fcd32b;
+          background: radial-gradient(
+            #fcd32b 0%,
+            #fcd32b 35%,
+            transparent 45%,
+            transparent
+          );
         }
       }
-
     }
 
-    @media screen and (min-width: 789px) {
+    @include media-tablet-up {
       width: 100%;
       margin-bottom: 1rem;
     }
-
   }
 
   &__subscribe-title {
     display: none;
 
-    @media screen and (min-width: 769px) {
+    @include media-tablet-up {
       order: 1;
       display: flex;
       align-items: center;
@@ -206,18 +207,16 @@ export default {
       margin: 0.5rem 0 1rem;
 
       &--line {
-        border: 1px solid #231F20;
+        border: 1px solid #231f20;
         width: 25%;
       }
 
       &--txt {
         text-transform: uppercase;
-        font-size: .9rem;
+        font-size: 0.9rem;
         font-weight: 500;
       }
     }
   }
-
 }
-
 </style>
