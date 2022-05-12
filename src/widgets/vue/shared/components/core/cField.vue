@@ -39,9 +39,10 @@ export default {
 .c-field__label {
   display: block;
   margin-bottom: 10px;
-  font-size: 15px;
-  font-weight: 500;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: 1px;
+  /*text-transform: uppercase;*/
+  text-transform: capitalize;
 }
 </style>

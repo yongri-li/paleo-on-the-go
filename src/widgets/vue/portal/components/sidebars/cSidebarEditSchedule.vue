@@ -225,6 +225,13 @@ export default {
   background-color: $color-white;
   padding: 2rem 1.5rem;
 
+  @include media-desktop-up {
+    .c-h5 {
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+  }
+
   @include media-mobile-down {
     padding: 2rem 1rem;
   }
@@ -232,9 +239,7 @@ export default {
   .c-h5 {
     font-size: 1.125rem;
     font-weight: 600;
-    letter-spacing: 1px;
     margin-bottom: 1rem;
-    text-transform: uppercase;
   }
 
   hr {
@@ -264,9 +269,14 @@ export default {
     }
 
     @include media-mobile-down {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      grid-gap: 1rem;
+
       div {
-        font-size: 12px;
-        padding: 0.7rem 1rem;
+        font-size: 15px;
+        padding: 0.85rem 1rem;
+        text-align: center;
       }
     }
   }
@@ -277,7 +287,8 @@ export default {
     padding: 1.5rem;
 
     @include media-mobile-down {
-      padding: 1rem 0.75rem;
+      border: none;
+      padding: 0;
     }
 
     header {
