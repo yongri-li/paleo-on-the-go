@@ -5,11 +5,12 @@
       :items="filterItems"
       :isOpen="isFilterOpen"
       :collections="collections"
+      :isGifts="isGifts"
       @getFilters="addFilterTag"
       @trigger="triggerFilters"
       @collection="updateCollection"
     />
-    <c-page-hero :content="content" class="c-plp__hero" />
+    <c-page-hero :content="asdcontent" class="c-plp__hero" />
     <section class="c-plp__body">
       <c-FilterNav
         v-if="!isMobile"
@@ -17,6 +18,7 @@
         :totalItems="totalItms"
         :isOpen="isFilterOpen"
         :collections="collections"
+        :isGifts="isGifts"
         @getFilters="addFilterTag"
         @trigger="triggerFilters"
         @collection="updateCollection"
@@ -77,8 +79,11 @@ export default {
         { icon: 'noGMO', name: 'Cassava Free' }
       ]
     },
+    isGifts() {
+      return this.collection_handle === 'gifts'
+    },
     collections() {
-      return this.sub_collection_items
+      return this.isGifts ? this.gifts_collection_items : this.sub_collection_items
     },
     isCustomer() {
       return customer.email && customer.shopify_id ? true : false
@@ -98,7 +103,19 @@ export default {
         }
       })
       return obj
+    },
+    asdcontent() {
+      let obj = {}
+      const startTxt = this.isGifts ? 'gift_hero_' : 'hero_'
+      Object.entries(this.$data).map(([key, val]) => {
+        if (key.startsWith(startTxt)) {
+          const name = key.replace(startTxt, '')
+          obj[name] = val
+        }
+      })
+      return obj
     }
+
     // filteredProducts() {
     //   return this.collections[this.activeNum].products.filter(prd => {
     //     if (prd.tags.some(tag => this.filterTags.includes(tag))) return prd

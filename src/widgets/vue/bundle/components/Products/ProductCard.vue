@@ -1,15 +1,8 @@
 <template>
-  <div
-    v-if="product"
-    :class="{ active: isProductInCart, 'out-of-stock': outOfStock }"
-    class="pcard"
-  >
+  <div v-if="product" :class="{ active: isProductInCart, 'out-of-stock': outOfStock }" class="pcard">
     <div class="pcard__header">
       <div class="pcard__header--figure" @click="openModal">
-        <span
-          v-if="flag"
-          :class="`pcard__header--flag pcard__header--flag--${flagHandle}`"
-        >
+        <span v-if="flag" :class="`pcard__header--flag pcard__header--flag--${flagHandle}`">
           {{ flag }}
         </span>
         <img class="pcard__header--img" :src="imageUrl" :alt="product.title" />
@@ -35,7 +28,7 @@
             @click="
               addToCart({
                 product,
-                where,
+                where
               })
             "
           >
@@ -70,98 +63,96 @@
 </template>
 
 <script>
-import { mapState, mapGetters, mapActions } from "vuex";
-import { MODAL_SETUP } from "../../store/modules/modals/_mutations-type";
-import { formatPrice, handleize, getOutOfStock } from "@shared/utils";
-import ProductBtnAddToCart from "./ProductBtnAddToCart.vue";
+import { mapState, mapGetters, mapActions } from 'vuex'
+import { MODAL_SETUP } from '../../store/modules/modals/_mutations-type'
+import { formatPrice, handleize, getOutOfStock, formatPriceDollars } from '@shared/utils'
+import ProductBtnAddToCart from './ProductBtnAddToCart.vue'
 
 export default {
-  name: "ProductCard",
+  name: 'ProductCard',
   components: {
-    ProductBtnAddToCart,
+    ProductBtnAddToCart
   },
   props: {
     product: {
       type: Object,
       default: null,
-      required: true,
+      required: true
     },
     addToCartOpen: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   computed: {
-    ...mapState("mealcart", ["sizes"]),
-    ...mapGetters("mealcart", ["getSizeSelected"]),
-    ...mapGetters("babcart", ["getProductFromCartByID"]),
+    ...mapState('mealcart', ['sizes']),
+    ...mapGetters('mealcart', ['getSizeSelected']),
+    ...mapGetters('babcart', ['getProductFromCartByID']),
     imageUrl() {
-      const imgFound = this.product.media.find((item) => item.position === 1);
-      const urlFinal = imgFound.src
-        .replace(".jpg", "_450x450.jpg")
-        .replace(".png", "_450x450.png");
-      return urlFinal;
+      const imgFound = this.product.media.find(item => item.position === 1)
+      const urlFinal = imgFound.src.replace('.jpg', '_450x450.jpg').replace('.png', '_450x450.png')
+      return urlFinal
     },
     boxesPricingScale() {
-      return this.sizes.map((size) => {
-        const selected = this.getSizeSelected.val === size.val;
-        const discount = size.discount / 100;
-        const price = this.product.price * (1 - discount);
+      return this.sizes.map(size => {
+        const selected = this.getSizeSelected.val === size.val
+        const discount = (100 - size.discount) / 100
+        const price = (this.product.price * discount) / 100
 
         return {
           title: size.title,
-          price: formatPrice(price),
+          price: formatPriceDollars(price),
           val: size.val,
-          selected: selected,
-        };
-      });
+          selected: selected
+        }
+      })
     },
     where() {
-      const param = this.$route.params.box;
-      return param === "addons" ? "addons" : "items";
+      const param = this.$route.params.box
+      return param === 'addons' ? 'addons' : 'items'
     },
     productInCart() {
       return this.getProductFromCartByID({
         id: this.product.id,
-        where: this.where,
-      });
+        where: this.where
+      })
     },
     isProductInCart() {
-      return !!this.productInCart;
+      return !!this.productInCart
     },
     qtProduct() {
-      return this.productInCart?.quantity || 0;
+      return this.productInCart?.quantity || 0
     },
     typeOrder() {
-      return this.$route.params.box;
+      return this.$route.params.box
     },
     outOfStock() {
-      const inventoryData = this.product.inventory[0];
-      const tags = this.product.tags;
+      const inventoryData = this.product.inventory[0]
+      const tags = this.product.tags
 
-      return getOutOfStock({ tags, inventoryData });
+      return getOutOfStock({ tags, inventoryData })
     },
     flag() {
-      return this.outOfStock ? "Out Of Stock" : this.product.flag;
+      return this.outOfStock ? 'Out Of Stock' : this.product.flag
     },
     flagHandle() {
-      return this.flag ? handleize(this.flag) : null;
-    },
+      return this.flag ? handleize(this.flag) : null
+    }
   },
   methods: {
-    ...mapActions("babcart", ["addToCart"]),
+    ...mapActions('babcart', ['addToCart']),
     openModal() {
       this.$store.commit(`modals/${MODAL_SETUP}`, {
-        component: "ModalProduct",
+        component: 'ModalProduct',
         settings: {
           params: {
-            product: this.product,
-          },
-        },
-      });
-    },
-  },
-};
+            product: this.product
+          }
+        }
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

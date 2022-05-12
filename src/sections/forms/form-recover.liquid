@@ -13,6 +13,23 @@
 {% if section.settings.register_link != blank %}{% assign register_link = section.settings.register_link %}{% endif %}
 {% if section.settings.submit_button != blank %}{% assign submit_button = section.settings.submit_button %}{% endif %}
 
+<style>
+  .c-formRecover .c-formRecover__content  {
+    max-width: 450px;
+    margin: 0 auto;
+  }
+
+  .c-formRecover .c-form__container {
+    max-width: 572px;
+  }
+
+  .c-formRecover__button.c-form__submit  {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+  }
+</style>
+
 <div class="c-formRecover c-form c-form--wood c-form--isWide u-hide"
   data-form-recover
 >
@@ -43,11 +60,14 @@
             placeholder="{{ email_placeholder }}"
           />
         </div>
-        <button class="c-formRecover__button c-form__submit c-cta c-cta--extraTall"
+        <button class="c-formRecover__button c-form__submit c-cta c-cta--extraTall
+          c-button 
+          c-button--isDefault
+          c-button--isPrimary"
           type="submit"
         >
           {{ submit_button }}
-        </button>
+        </button>        
       {%- endform -%} 
 
        <div class="c-formRegister__sub c-form__sub">

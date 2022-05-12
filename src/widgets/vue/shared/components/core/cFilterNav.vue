@@ -1,10 +1,11 @@
 <template>
 	<nav class="c-plp__body--nav">
-		<div class="trigger-filters" @click="triggerFilters">
+		<div v-if="!isGifts" class="trigger-filters" @click="triggerFilters">
 			<c-svg class="trigger-filters__icon" name="filter" />
 			<span class="trigger-filters__copy">Filters</span>
 		</div>
 		<c-dropdownFull
+			v-if="!isGifts"
 			:items="items"
 			:isOpen="isOpen"
 			:totalItems="totalItems"
@@ -45,6 +46,10 @@ export default {
 			required: true
 		},
 		isOpen: {
+			type: Boolean,
+			default: false
+		},
+		isGifts: {
 			type: Boolean,
 			default: false
 		}

@@ -1,5 +1,5 @@
-{% assign heading = "Register" %}
-{% assign text = "" %}
+{% assign heading = "Welcome to Paleo On The Go" %}
+{% assign text = "Fill in the details to create an account" %}
 {% assign first_name_placeholder = "First Name*" %}
 {% assign last_name_placeholder = "Last Name*" %}
 {% assign email_placeholder = "Email Address*" %}
@@ -18,6 +18,17 @@
 {% if section.settings.account_link != blank %}{% assign account_link = section.settings.account_link %}{% endif %}
 {% if section.settings.submit_button != blank %}{% assign submit_button = section.settings.submit_button %}{% endif %}
 
+<style>
+  .c-formRegister__heading {
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  .c-button--isDefault.c-formRegister__button {
+    max-width: 100%
+  }
+</style>
+
 <div class="c-formRegister c-form c-form--isNarrow"
   data-form-register
 >
@@ -25,6 +36,7 @@
     <h1 class="c-formRegister__heading c-h1 c-form__heading u-textCenter">
       {{ heading }}
     </h1> 
+    <br/>
     {% if section.settings.text != blank %}
       <p class="c-formRegister__text c-p3 c-form__text u-textCenter">
         {{ section.settings.text }}
@@ -68,7 +80,7 @@
         <button class="c-formRegister__button c-form__submit
           c-button 
           c-button--isDefault
-          c-button--isSecondary"
+          c-button--isPrimary"
           type="submit"
         >
           {{ submit_button }}
@@ -77,6 +89,7 @@
       <div class="c-formRegister__sub c-form__sub">
         <p class="c-formRegister__forgot c-p3 c-form__subText">
           {{ account_text }}
+          <br/>
           <a href="/account/login" class="c-formRegister__forgotLink c-form__subLink"
             data-form-recover-trigger
           >
