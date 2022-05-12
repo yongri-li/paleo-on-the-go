@@ -10,6 +10,7 @@ export const routeapp = new (function () {
         m = !1,
         s = '',
         o = new Date().getFullYear()
+
     function c() {
         var e, o, t
         for (t in ((m = x()),
@@ -20,14 +21,26 @@ export const routeapp = new (function () {
         (document.querySelector('#' + d + ' .rw-checkbox-span .rw-on-text').className = 'rw-on-text ' + o),
         (document.querySelector('#' + d + ' .rw-checkbox-span .rw-off-text').className = 'rw-off-text ' + o),
         r))
-            r[t](m ? { insurance_selected: !m } : { currency: a, insurance_price: l, insurance_selected: !m })
+            r[t](
+                m
+                    ? {
+                          insurance_selected: !m
+                      }
+                    : {
+                          currency: a,
+                          insurance_price: l,
+                          insurance_selected: !m
+                      }
+            )
     }
+
     function x() {
         return (
             !!document.querySelector('#' + d) &&
             'true' == document.querySelector('#' + d).getAttribute('data-default-checked')
         )
     }
+
     function u(e, o, t, r) {
         e +=
             '?' +
@@ -50,17 +63,23 @@ export const routeapp = new (function () {
                     } catch (e) {
                         t(n.responseText)
                     }
-                else t({ error: n.status })
+                else
+                    t({
+                        error: n.status
+                    })
             }),
             n.send()
     }
+
     function p() {
         document.querySelector('#' + d + ' .route-modal').className += ' rm-open'
     }
+
     function w() {
         var e = document.querySelector('#' + d + ' .route-modal')
         e.className = e.className.replace(' rm-open', '')
     }
+
     function h() {
         var e, o
         n &&
@@ -94,13 +113,20 @@ export const routeapp = new (function () {
         ;(s = e),
             u(
                 '/v1/quote',
-                { subtotal: o, currency: t },
+                {
+                    subtotal: o,
+                    currency: t
+                },
                 function (e) {
                     ;(a = e.currency),
                         (l = e.insurance_price),
                         (m = x()),
                         h(),
-                        r({ currency: a, insurance_price: e.insurance_price, insurance_selected: m })
+                        r({
+                            currency: a,
+                            insurance_price: e.insurance_price,
+                            insurance_selected: m
+                        })
                 },
                 n
             )

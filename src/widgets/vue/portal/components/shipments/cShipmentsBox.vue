@@ -17,7 +17,7 @@
                   component: 'cSidebarShipping',
                   addressNum: boxNumber,
                   charge: charge,
-                  content: sidebarContent,
+                  content: sidebarContent
                 })
               "
               >{{ charge.shipping_address.address1 }}</span
@@ -36,16 +36,10 @@
               </h2>
 
               <!--  <div> -->
-              <button
-                class="c-button c-button--isDefault c-button--isPrimary"
-                @click="handleChangeMeals"
-              >
+              <button class="c-button c-button--isDefault c-button--isPrimary" @click="handleChangeMeals">
                 Change Meals
               </button>
-              <button
-                class="c-button c-button--isHollow c-button--isBlack"
-                @click="handleEditSchedule"
-              >
+              <button class="c-button c-button--isHollow c-button--isBlack" @click="handleEditSchedule">
                 Edit Schedule
               </button>
             </div>
@@ -70,22 +64,15 @@
               <div class="c-shipmentsBox__header--inner">
                 <h6 class="c-h6">{{ totalAddOns }} Add-Ons &nbsp;</h6>
                 <span class="c-basicTxt--md"> One-Time Purchase</span>
-                <span class="c-shipmentsBox__header--addons" @click="editAddOns"
-                  >Edit Add-Ons</span
-                >
+                <span class="c-shipmentsBox__header--addons" @click="editAddOns">Edit Add-Ons</span>
               </div>
             </header>
 
-            <div
-              v-if="!isMobile && totalAddOns < 1"
-              class="c-shipmentsBox__emptyAddon"
-            >
+            <div v-if="!isMobile && totalAddOns < 1" class="c-shipmentsBox__emptyAddon">
               <img :src="content.addons_promo_image" alt="addon promo" />
               <section>
                 <h6 class="c-h6">{{ content.addons_promo_text }}</h6>
-                <span @click="editAddOns">{{
-                  content.addons_promo_trigger_text
-                }}</span>
+                <span @click="editAddOns">{{ content.addons_promo_trigger_text }}</span>
               </section>
             </div>
 
@@ -106,7 +93,7 @@
               :content="{
                 placeholder: content.discount_placeholder,
                 button_text: content.discount_button_text,
-                button_success: content.discount_button_success,
+                button_success: content.discount_button_success
               }"
             />
             <c-shipmentsSummary
@@ -119,7 +106,7 @@
                 label_discount: content.summary_label_discount,
                 label_tax: content.summary_label_tax,
                 label_shipping: content.summary_label_shipping,
-                label_total: content.summary_label_total,
+                label_total: content.summary_label_total
               }"
               @summaryAccOpen="setBoxMaxHeight"
             />
@@ -131,50 +118,54 @@
 </template>
 
 <script>
-import { mapMutations, mapActions } from "vuex";
-import cH from "@shared/components/core/cH.vue";
-import cSvg from "@shared/components/core/cSvg.vue";
-import cIcon from "@shared/components/core/cIcon.vue";
-import cButton from "@shared/components/core/cButton.vue";
-import cLoading from "@shared/components/core/cLoading.vue";
-import cOrdersItem from "../orders/cOrdersItem.vue";
-import cAccordion from "@shared/components/core/cAccordion.vue";
-import cAccordionItem from "@shared/components/core/cAccordionItem.vue";
-import cShipmentsDiscount from "./cShipmentsDiscount.vue";
-import cShipmentsSummary from "./cShipmentsSummary.vue";
-import Datepicker from "vuejs-datepicker";
+import { mapMutations, mapActions } from 'vuex'
+import cH from '@shared/components/core/cH.vue'
+import cSvg from '@shared/components/core/cSvg.vue'
+import cIcon from '@shared/components/core/cIcon.vue'
+import cButton from '@shared/components/core/cButton.vue'
+import cLoading from '@shared/components/core/cLoading.vue'
+import cOrdersItem from '../orders/cOrdersItem.vue'
+import cAccordion from '@shared/components/core/cAccordion.vue'
+import cAccordionItem from '@shared/components/core/cAccordionItem.vue'
+import cShipmentsDiscount from './cShipmentsDiscount.vue'
+import cShipmentsSummary from './cShipmentsSummary.vue'
+import Datepicker from 'vuejs-datepicker'
+import { routeapp } from '../../utils'
+import { formatPriceToNumber } from '@shared/utils'
 
 export default {
   props: {
     content: {
       type: Object,
-      required: true,
+      required: true
     },
     charge: {
       type: Object,
-      required: true,
+      required: true
     },
     shipDate: {
       type: String,
-      required: true,
+      required: true
     },
     boxNumber: {
-      type: [Number, String],
+      type: [Number, String]
     },
     modifiers: {
       type: Array,
-      default: () => [],
+      default: () => []
     },
     allProducts: {
       type: Array,
-      required: true,
-    },
+      required: true
+    }
   },
   data() {
     return {
       isUpcoming: true,
       setBoxHeight: false,
-    };
+      insurance_price: '--',
+      real_insurance_price: '--'
+    }
   },
   components: {
     cH,
@@ -186,161 +177,162 @@ export default {
     cAccordionItem,
     cShipmentsDiscount,
     cShipmentsSummary,
-    Datepicker,
+    Datepicker
   },
   computed: {
     isMobile() {
-      return window.innerWidth < 768 ? true : false;
+      return window.innerWidth < 768 ? true : false
     },
     addressId() {
-      return this.charge.addressId;
+      return this.charge.addressId
     },
     address() {
-      return this.$store.getters["customer/customerAddressById"](
-        this.addressId
-      );
+      return this.$store.getters['customer/customerAddressById'](this.addressId)
     },
     allItems() {
-      return this.charge.lineItems;
+      return this.charge.lineItems
     },
     itemsNoRoute() {
-      return this.allItems.filter((itm) => !itm.productTitle.includes("route"));
+      return this.allItems.filter(itm => !itm.productTitle.includes('route'))
     },
     routeItems() {
-      return this.allItems.filter((itm) => itm.productTitle.includes("route"));
+      return this.allItems.filter(itm => itm.productTitle.includes('route'))
+    },
+    routeProduct() {
+      return this.allProducts.find(itm => itm.title.includes('Route Package'))
     },
     addOnItems() {
-      return this.$store.getters["customer/customerOnetimesByAddressId"](
-        this.addressId
-      );
+      return this.$store.getters['customer/customerOnetimesByAddressId'](this.addressId)
     },
     addOnItemsIds() {
-      return this.addOnItems.map((addon) => addon.productId);
+      return this.addOnItems.map(addon => addon.productId)
     },
     addOnItemsQtys() {
-      return this.addOnItems.map((addon) => addon.quantity);
+      return this.addOnItems.map(addon => addon.quantity)
     },
     subscriptionItems() {
-      return this.allItems.filter(
-        (item) => !this.addOnItemsIds.includes(item.productId)
-      );
+      return this.allItems.filter(item => !this.addOnItemsIds.includes(item.productId))
     },
     subItemsNoRoute() {
-      return this.itemsNoRoute.filter(
-        (item) => !this.addOnItemsIds.includes(item.productId)
-      );
+      return this.itemsNoRoute.filter(item => !this.addOnItemsIds.includes(item.productId))
     },
     subProductIds() {
-      return this.subItemsNoRoute.map((prd) => prd.productId * 1);
+      return this.subItemsNoRoute.map(prd => prd.productId * 1)
     },
     subProductQtys() {
-      return this.subItemsNoRoute.map((prd) => prd.quantity);
+      return this.subItemsNoRoute.map(prd => prd.quantity)
     },
     frequency() {
-      const freqObj = this.subscriptionItems?.find((sub) => sub.frequency);
-      const freqBackup = this.$store.getters[
-        "customer/customerSubscriptionsByAddressId"
-      ](this.addressId)?.find((sub) => sub.frequency);
-      return !!freqObj ? freqObj.frequency : freqBackup.frequency;
+      const freqObj = this.subscriptionItems?.find(sub => sub.frequency)
+      const freqBackup = this.$store.getters['customer/customerSubscriptionsByAddressId'](
+        this.addressId
+      )?.find(sub => sub.frequency)
+      return !!freqObj ? freqObj.frequency : freqBackup.frequency
     },
     totalSubItems() {
-      return this.subItemsNoRoute?.reduce((sum, sub) => sum + sub.quantity, 0);
+      return this.subItemsNoRoute?.reduce((sum, sub) => sum + sub.quantity, 0)
     },
     totalAddOns() {
-      return this.addOnItems?.reduce((sum, sub) => sum + sub.quantity, 0);
+      return this.addOnItems?.reduce((sum, sub) => sum + sub.quantity, 0)
     },
     sidebarHeadings() {
-      const shipping =
-        this.$store.getters["customize/customizeSidebarByPrefix"]("shipping_");
-      return { shipping };
+      const shipping = this.$store.getters['customize/customizeSidebarByPrefix']('shipping_')
+      return { shipping }
     },
     sidebarContent() {
-      const billing =
-        this.$store.getters["customize/customizeSidebarByPrefix"]("billing_");
-      const shipping =
-        this.$store.getters["customize/customizeSidebarByPrefix"]("shipping_");
-      return { ...billing, ...shipping };
+      const billing = this.$store.getters['customize/customizeSidebarByPrefix']('billing_')
+      const shipping = this.$store.getters['customize/customizeSidebarByPrefix']('shipping_')
+      return { ...billing, ...shipping }
     },
     sidebarEditSchedule() {
-      const content =
-        this.$store.getters["customize/customizeSidebarByPrefix"](
-          "edit_schedule"
-        );
-      return { content };
+      const content = this.$store.getters['customize/customizeSidebarByPrefix']('edit_schedule')
+      return { content }
     },
     portalProducts() {
       return {
         items: this.subProductIds
           .map((id, i) => {
-            let productFound = this.allProducts.find((prod) => prod.id === id);
+            let productFound = this.allProducts.find(prod => prod.id === id)
             let item = productFound
               ? {
                   ...productFound,
-                  quantity: this.subProductQtys[i],
+                  quantity: this.subProductQtys[i]
                 }
-              : null;
-            return item;
+              : null
+            return item
           })
-          .filter((product) => product),
+          .filter(product => product),
         addons: this.addOnItemsIds.map((id, i) => {
-          let addonFound = this.allProducts.find((prod) => prod.id === +id);
+          let addonFound = this.allProducts.find(prod => prod.id === +id)
           let addon = addonFound
             ? {
                 ...addonFound,
-                quantity: this.addOnItemsQtys[i],
+                quantity: this.addOnItemsQtys[i]
               }
-            : null;
-          return addon;
-        }),
-      };
-    },
+            : null
+          return addon
+        })
+      }
+    }
+  },
+  mounted() {
+    this.getQuote()
   },
   methods: {
-    ...mapMutations("ui", ["UI_SET_SIDEBAR", "UI_SET_MODAL"]),
-    ...mapMutations("customer", [
-      "CUSTOMER_SET_THIS_CHARGEID",
-      "CUSTOMER_SET_NEXT_CHARGEDATE",
-    ]),
-    ...mapActions("babcart", ["addToCartFromPortal"]),
+    ...mapMutations('ui', ['UI_SET_SIDEBAR', 'UI_SET_MODAL']),
+    ...mapMutations('customer', ['CUSTOMER_SET_THIS_CHARGEID', 'CUSTOMER_SET_NEXT_CHARGEDATE']),
+    ...mapActions('babcart', ['addToCartFromPortal']),
     setBoxMaxHeight() {
-      this.setBoxHeight = !this.setBoxHeight;
+      this.setBoxHeight = !this.setBoxHeight
     },
+    getQuote() {
+      const subtotal = 212.45
+      const route_api_key = window.Scoutside.api.route_api_key
+
+      routeapp.get_quote(route_api_key, subtotal, 'USD', async ({ insurance_price }) => {
+        this.real_insurance_price = insurance_price
+        // await this.roundInsurePrice()
+      })
+    },
+    // async roundInsurePrice() {
+    //   this.insurance_price = formatPriceToNumber(this.routeProduct?.price)
+    // },
     setMealBox() {
-      sessionStorage.setItem("boxSize", this.totalSubItems);
-      sessionStorage.setItem("addressId", this.addressId);
-      sessionStorage.setItem("nextChargeDate", this.charge.scheduledAt);
-      sessionStorage.setItem("frequency", this.frequency);
-      sessionStorage.setItem("fromPortal", true);
+      sessionStorage.setItem('boxSize', this.totalSubItems)
+      sessionStorage.setItem('addressId', this.addressId)
+      sessionStorage.setItem('nextChargeDate', this.charge.scheduledAt)
+      sessionStorage.setItem('frequency', this.frequency)
+      sessionStorage.setItem('fromPortal', true)
       this.addToCartFromPortal({
         items: {
           productsArr: this.portalProducts.items,
-          where: "items",
+          where: 'items'
         },
         addons: {
           productsArr: this.portalProducts.addons,
-          where: "addons",
-        },
-      });
+          where: 'addons'
+        }
+      })
     },
     handleChangeMeals() {
-      this.setMealBox();
-      window.location.href = "/pages/bundle/#/subscription";
+      this.setMealBox()
+      window.location.href = '/pages/bundle/#/subscription'
     },
     handleEditSchedule() {
-      this.CUSTOMER_SET_THIS_CHARGEID(this.charge.id);
-      this.CUSTOMER_SET_NEXT_CHARGEDATE(this.charge.scheduledAt);
+      this.CUSTOMER_SET_THIS_CHARGEID(this.charge.id)
+      this.CUSTOMER_SET_NEXT_CHARGEDATE(this.charge.scheduledAt)
       this.UI_SET_SIDEBAR({
-        component: "cSidebarEditSchedule",
+        component: 'cSidebarEditSchedule',
         addressId: this.addressId,
-        content: this.sidebarEditSchedule.content,
-      });
+        content: this.sidebarEditSchedule.content
+      })
     },
     editAddOns() {
-      this.handleChangeMeals();
-      window.location.href = "/pages/bundle/#/addons";
-    },
-  },
-};
+      this.handleChangeMeals()
+      window.location.href = '/pages/bundle/#/addons'
+    }
+  }
+}
 </script>
 
 <style lang="scss">
@@ -482,7 +474,7 @@ export default {
     position: absolute;
     top: 0;
     right: 0;
-    font-family: "Roboto", sans-serif;
+    font-family: 'Roboto', sans-serif;
     font-size: 1.125rem;
     text-decoration: underline;
     text-transform: capitalize;
