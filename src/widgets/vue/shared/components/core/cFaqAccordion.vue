@@ -84,7 +84,7 @@ export default {
     display: block;
   }
 
-  @inlcude media-mobile-down {
+  @include media-mobile-down {
     .c-homeFaqs__item {
       button {
         line-height: 1.25;
