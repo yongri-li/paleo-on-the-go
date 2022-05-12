@@ -25,7 +25,20 @@
   }
 
   .c-button--isDefault.c-formRegister__button {
-    max-width: 100%
+    max-width: 100%;
+    transition: 150ms;
+  }
+
+  .c-formRegister__content label {
+    font-size: 1rem;
+  }
+
+  .c-formRegister__content label a {
+    text-decoration: underline;
+  }
+
+  #termsAgree {
+    cursor: pointer;
   }
 </style>
 
@@ -81,11 +94,16 @@
           c-button 
           c-button--isDefault
           c-button--isPrimary"
+          disabled
           type="submit"
         >
           {{ submit_button }}
         </button>
       {%- endform -%} 
+        <br/>
+      <input type="checkbox" id="termsAgree" name="termsAgree" value="agree">
+      <label for="termsAgree"> I agree to the <a href="/pages/terms-and-conditions" target="_blank">Terms & Conditions</a> and <a href="/pages/privacy-policy" target="_blank">Privacy Policy</a>.</label><br> 
+
       <div class="c-formRegister__sub c-form__sub">
         <p class="c-formRegister__forgot c-p3 c-form__subText">
           {{ account_text }}
@@ -100,6 +118,12 @@
     </div>
   </div>
 </div>
+
+<script>
+  const chkBtn = document.querySelector('.c-formRegister__button')
+  const termsChk = document.getElementById('termsAgree')
+  termsChk.addEventListener('change', e => e.target.checked ? chkBtn.removeAttribute('disabled') : chkBtn.disabled = 'true')
+</script>
 
 {% schema %}
   {

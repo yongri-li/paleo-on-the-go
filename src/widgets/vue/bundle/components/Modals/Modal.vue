@@ -1,11 +1,6 @@
 <template>
   <div class="modal">
-    <c-overlay
-      class="modal__overlay"
-      :show="true"
-      @close="closeModal"
-      slot="overlay"
-    />
+    <c-overlay class="modal__overlay" :show="true" @close="closeModal" slot="overlay" />
     <component
       class="modal__content"
       :is="modal.component"
@@ -27,9 +22,7 @@ export default {
     cOverlay
   },
   computed: {
-    ...mapState('modals', [
-      'modal'
-    ])
+    ...mapState('modals', ['modal'])
   },
   methods: {
     closeModal() {
@@ -41,9 +34,7 @@ export default {
 </script>
 
 <style lang="scss">
-
 .modal {
-
   &__overlay {
     z-index: 105;
     // cursor: pointer;
@@ -79,7 +70,6 @@ export default {
   }
 
   &__options {
-
     &--item {
       padding: 1rem 0;
       margin-top: 1rem;
@@ -90,28 +80,27 @@ export default {
     }
 
     &--cancel {
-      border: 1px solid #A7A5A6;
+      border: 1px solid #a7a5a6;
     }
 
     &--continue {
-      background-color: $color-primary
+      background-color: $color-primary;
     }
   }
 
   &__close {
     position: absolute;
-    right: 3%;
-    top: 3%;
+    right: 1rem;
+    top: 1rem;
+    line-height: 1.9;
     font-family: $font-heading;
-    font-size: 1.5rem;
+    font-size: 1.125rem;
     border-radius: 100%;
     cursor: pointer;
-    width: 35px;
-    height: 35px;
+    width: 2rem;
+    height: 2rem;
     border: 1px solid $color-black;
     @include flex($justify: center);
   }
-
 }
-
 </style>
