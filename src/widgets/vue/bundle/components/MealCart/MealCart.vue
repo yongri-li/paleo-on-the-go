@@ -220,10 +220,15 @@ $translateY: calc(100% - $height-header-title);
 
 .meal-cart {
   @include media-tablet-up {
-    width: 27%;
+    width: 300px;
     min-height: 700px;
     display: flex;
     flex-direction: column;
+    flex-shrink: 0;
+  }
+
+  @include media-up(1440px) {
+    width: 380px;
   }
 
   &__info {

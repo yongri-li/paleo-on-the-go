@@ -298,8 +298,8 @@ export default {
         pointer-events: none;
         display: flex;
 
-        &::v-deep svg {
-          height: 19px;
+        .c-svg {
+          width: 16px;
         }
       }
     }
@@ -317,7 +317,7 @@ export default {
 
         &-item {
           @include flex();
-          margin: 0 1.13rem;
+          margin: 0 0.75rem;
           font-weight: 600;
           cursor: pointer;
           pointer-events: all;
@@ -326,6 +326,18 @@ export default {
         &-number {
           color: #a7a5a6;
           margin-left: 0.5rem;
+        }
+      }
+
+      @include media-tablet-only {
+        &-item {
+          font-size: 0.75rem;
+        }
+      }
+
+      @include media-desktop-up {
+        &-item {
+          margin: 0 1.13rem;
         }
       }
     }
@@ -482,6 +494,10 @@ export default {
       // width: 15%;
       width: 145px;
       flex-shrink: 0;
+    }
+
+    @include media-tablet-only {
+      font-size: 0.75rem;
     }
 
     .v-select {

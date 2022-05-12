@@ -88,11 +88,11 @@ export default {
   margin-top: 0.5rem;
 
   &__info {
-    width: 40%;
+    width: 100%;
+    margin-bottom: 0.5rem;
 
-    @include media-tablet-only {
-      width: 100%;
-      margin-bottom: 0.5rem;
+    @include media-up(1440px) {
+      width: 40%;
     }
 
     &--title {
@@ -107,13 +107,12 @@ export default {
   }
 
   &__select {
-    width: 55%;
     font-weight: 500;
     text-transform: capitalize;
     font-size: 1rem;
-
-    @include media-tablet-only {
-      width: 100%;
+    width: 100%;
+    @include media-up(1440px) {
+      width: 55%;
     }
 
     .vs__search {
