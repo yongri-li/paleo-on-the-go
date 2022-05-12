@@ -83,5 +83,13 @@ export default {
   .active .icon-opened {
     display: block;
   }
+
+  @inlcude media-mobile-down {
+    .c-homeFaqs__item {
+      button {
+        line-height: 1.25;
+      }
+    }
+  }
 }
 </style>

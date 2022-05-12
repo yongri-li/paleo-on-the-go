@@ -5,6 +5,7 @@
         <component
           class="c-portalHeader__mainLink"
           v-for="(link, index) in navigation"
+          v-if="index < 3"
           :key="index"
           :is="link.tag"
           v-bind="link.attributes"
