@@ -2,50 +2,43 @@
   <div class="fas">
     <div class="fas__filter">
       <div class="fas__filter--icon" @click="toggleContent('showFilters')">
-        <svg width="20" height="23" viewBox="0 0 20 23" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="11" width="23" height="2" transform="rotate(90 11 0)" fill="#231F20"/>
-          <rect x="18" width="23" height="2" transform="rotate(90 18 0)" fill="#231F20"/>
-          <rect x="4" width="23" height="2" transform="rotate(90 4 0)" fill="#231F20"/>
-          <rect x="12" y="2.5" width="4" height="4" rx="2" transform="rotate(90 12 2.5)" fill="#EFEDE6" stroke="#231F20" stroke-width="2"/>
-          <rect x="19" y="10.5" width="4" height="4" rx="2" transform="rotate(90 19 10.5)" fill="#EFEDE6" stroke="#231F20" stroke-width="2"/>
-          <rect x="5" y="16.5" width="4" height="4" rx="2" transform="rotate(90 5 16.5)" fill="#EFEDE6" stroke="#231F20" stroke-width="2"/>
-        </svg>
+        <c-svg name="filter" />
       </div>
       <div class="fas__filter--types">
-        <div class="fas__filter--types-item" @click="toggleContent('showPreference')">
-          <div class="fas__filter--types-text">
-            Preference
-          </div>
-          <div v-if="lengthFilterActive(preferences)"
+        <div
+          class="fas__filter--types-item"
+          @click="toggleContent('showPreference')"
+        >
+          <div class="fas__filter--types-text">Preference</div>
+          <div
+            v-if="lengthFilterActive(preferences)"
             class="fas__filter--types-number"
           >
-            ({{lengthFilterActive(preferences)}})
+            ({{ lengthFilterActive(preferences) }})
           </div>
         </div>
-        <div class="fas__filter--types-item" @click="toggleContent('showProductType')">
-          <div class="fas__filter--types-text">
-            Product Type
-          </div>
-          <div v-if="lengthFilterActive(productType)"
+        <div
+          class="fas__filter--types-item"
+          @click="toggleContent('showProductType')"
+        >
+          <div class="fas__filter--types-text">Product Type</div>
+          <div
+            v-if="lengthFilterActive(productType)"
             class="fas__filter--types-number"
           >
-            ({{lengthFilterActive(productType)}})
+            ({{ lengthFilterActive(productType) }})
           </div>
         </div>
       </div>
-      <div
-        class="fas__filter--content"
-        :class="{ show: contents.showFilters }"
-      >
+      <div class="fas__filter--content" :class="{ show: contents.showFilters }">
         <div
           class="fas__filter--options"
           :class="{ show: contents.showPreference }"
         >
-          <div class="fas__filter--title">
-            PREFERENCE
-          </div>
+          <div class="fas__filter--title">PREFERENCE</div>
           <ul class="fas__filter--list">
-            <li v-for="(item, index) in preferences"
+            <li
+              v-for="(item, index) in preferences"
               :key="index"
               class="fas__filter--opt"
               :class="{ active: item.active }"
@@ -59,11 +52,10 @@
           class="fas__filter--options"
           :class="{ show: contents.showProductType }"
         >
-          <div class="fas__filter--title">
-            PRODUCT TYPE
-          </div>
+          <div class="fas__filter--title">PRODUCT TYPE</div>
           <ul class="fas__filter--list">
-            <li v-for="item in productType"
+            <li
+              v-for="item in productType"
               :key="item.tag"
               class="fas__filter--opt"
               :class="{ active: item.active }"
@@ -75,20 +67,15 @@
         </div>
       </div>
     </div>
-    <div class="fas__items">
-      {{ lengthProducts }} items
-    </div>
+    <div class="fas__items">{{ lengthProducts }} items</div>
     <div
       v-if="contents.showFilters"
       class="fas__close"
       @click="toggleContent('showFilters')"
     >
-      x
+      &times;
     </div>
-    <div
-      :class="{hide: contents.showFilters}"
-      class="fas__sort"
-    >
+    <div :class="{ hide: contents.showFilters }" class="fas__sort">
       <!-- Sort By -->
       <v-select
         placeholder="Sort By"
@@ -115,19 +102,25 @@
 </template>
 
 <script>
-import cOverlay from '@shared/components/core/cOverlay.vue'
-import { mapState } from 'vuex'
-import { FILTER_TOGGLE_ACTIVE, CLEAN_ALL_FILTERS } from '../../store/modules/filters/_mutations-type'
-import { notScrollBody } from '../../../shared/utils'
+import { mapState } from "vuex";
+import {
+  FILTER_TOGGLE_ACTIVE,
+  CLEAN_ALL_FILTERS,
+} from "../../store/modules/filters/_mutations-type";
+import { notScrollBody } from "../../../shared/utils";
+
+import cOverlay from "@shared/components/core/cOverlay.vue";
+import cSvg from "@shared/components/core/cSvg.vue";
 
 export default {
   components: {
-    cOverlay
+    cOverlay,
+    cSvg,
   },
   props: {
     lengthProducts: {
-      type: Number
-    }
+      type: Number,
+    },
   },
   data() {
     return {
@@ -138,174 +131,176 @@ export default {
       },
       options: [
         {
-          label: 'Best Selling'
+          label: "Best Selling",
         },
         {
-          label: 'Newest'
-        }
+          label: "Newest",
+        },
       ],
-    }
+    };
   },
   computed: {
-    ...mapState('filters',[
-      'filters'
-    ]),
+    ...mapState("filters", ["filters"]),
     preferences() {
-      return filters.filter(fil => fil.filter_type === 'preference')
+      return filters.filter((fil) => fil.filter_type === "preference");
     },
     productType() {
-      return filters.filter(fil => fil.filter_type === 'product_type')
+      return filters.filter((fil) => fil.filter_type === "product_type");
     },
     selected() {
-      const sortRouter = this.$route.query.sort
-      return sortRouter ? { label: sortRouter } : { label: 'Best Selling' }
-    }
+      const sortRouter = this.$route.query.sort;
+      return sortRouter ? { label: sortRouter } : { label: "Best Selling" };
+    },
   },
   created() {
     // watch the params of the route to fetch the data again
     this.$watch(
       () => this.$route.params,
       () => {
-        this.setFiltersRouter()
+        this.setFiltersRouter();
       },
       // fetch the data when the view is created and the data is
       // already being observed
       { immediate: true }
-    )
+    );
   },
   methods: {
     toggleContent(content) {
-      if(content === 'showPreference') {
-        this.contents.showProductType = false
-        this.showFiltersContent(content)
+      if (content === "showPreference") {
+        this.contents.showProductType = false;
+        this.showFiltersContent(content);
       }
-      if(content === 'showProductType') {
-        this.contents.showPreference = false
-        this.showFiltersContent(content)
+      if (content === "showProductType") {
+        this.contents.showPreference = false;
+        this.showFiltersContent(content);
       }
 
-      this.contents[content] = !this.contents[content]
+      this.contents[content] = !this.contents[content];
     },
     showFiltersContent(content) {
-      if(this.contents.showFilters && this.contents[content]) {
-        this.contents.showFilters = false
-      }
-      else {
-        this.contents.showFilters = true
+      if (this.contents.showFilters && this.contents[content]) {
+        this.contents.showFilters = false;
+      } else {
+        this.contents.showFilters = true;
       }
     },
     addFilter(item) {
-      const queryRouter = this.$route.query
-      const keys = Object.keys(queryRouter)
-      let query = {}
-      let val
+      const queryRouter = this.$route.query;
+      const keys = Object.keys(queryRouter);
+      let query = {};
+      let val;
 
-      if(item.active) {
+      if (item.active) {
         // remove filter from router
-        const valSplit = queryRouter[item.filter_type].split(',')
-        const indexTag = valSplit.indexOf(item.tag)
-        valSplit.splice(indexTag, 1)
+        const valSplit = queryRouter[item.filter_type].split(",");
+        const indexTag = valSplit.indexOf(item.tag);
+        valSplit.splice(indexTag, 1);
 
-        val = valSplit.length ? valSplit.join(',') : undefined
+        val = valSplit.length ? valSplit.join(",") : undefined;
         query = {
           ...queryRouter,
-          [item.filter_type]: val
-        }
+          [item.filter_type]: val,
+        };
 
         // change active to false
         this.$store.commit(`filters/${FILTER_TOGGLE_ACTIVE}`, {
           tag: item.tag,
-          active: false
-        })
-      }
-      else {
+          active: false,
+        });
+      } else {
         // add filter to router
-        const hasOtherParam = keys.includes(item.filter_type) && (queryRouter[item.filter_type] !== undefined)
+        const hasOtherParam =
+          keys.includes(item.filter_type) &&
+          queryRouter[item.filter_type] !== undefined;
         val = hasOtherParam
-              ? `${queryRouter[item.filter_type]},${item.tag}`
-              : item.tag
+          ? `${queryRouter[item.filter_type]},${item.tag}`
+          : item.tag;
 
         query = {
           ...queryRouter,
-          [item.filter_type]: val
-        }
+          [item.filter_type]: val,
+        };
 
         // change active to true
         this.$store.commit(`filters/${FILTER_TOGGLE_ACTIVE}`, {
           tag: item.tag,
-          active: true
-        })
+          active: true,
+        });
       }
 
       // change query
-      this.$router.push({ query })
+      this.$router.push({ query });
     },
     setFiltersRouter() {
-      const queryRouter = this.$route.query
-      const keys = Object.keys(queryRouter)
+      const queryRouter = this.$route.query;
+      const keys = Object.keys(queryRouter);
 
-      this.$store.commit(`filters/${CLEAN_ALL_FILTERS}`)
+      this.$store.commit(`filters/${CLEAN_ALL_FILTERS}`);
 
-      keys.forEach(key => {
-        if(key === 'preference' || key === 'product_type') {
-          if(queryRouter[key]) {
-            const valSplit = queryRouter[key].split(',')
-            valSplit.forEach(val => {
+      keys.forEach((key) => {
+        if (key === "preference" || key === "product_type") {
+          if (queryRouter[key]) {
+            const valSplit = queryRouter[key].split(",");
+            valSplit.forEach((val) => {
               this.$store.commit(`filters/${FILTER_TOGGLE_ACTIVE}`, {
                 tag: val,
-                active: true
-              })
-            })
+                active: true,
+              });
+            });
           }
         }
-      })
+      });
     },
     lengthFilterActive(filters) {
-      const filtersActive = filters.filter(item => item.active)
-      return filtersActive.length
+      const filtersActive = filters.filter((item) => item.active);
+      return filtersActive.length;
     },
     setSorting(val) {
-      const queryRouter = this.$route.query
-      if(queryRouter.sort !== val.label) {
+      const queryRouter = this.$route.query;
+      if (queryRouter.sort !== val.label) {
         const query = {
           ...queryRouter,
-          sort: val.label
-        }
-        this.$router.push({ query })
+          sort: val.label,
+        };
+        this.$router.push({ query });
       }
-    }
+    },
   },
   watch: {
-    'contents.showFilters'(current) {
-      const isMobile = window.innerWidth < 768
-      if(isMobile) notScrollBody(current)
-    }
-  }
-}
+    "contents.showFilters"(current) {
+      const isMobile = window.innerWidth < 768;
+      if (isMobile) notScrollBody(current);
+    },
+  },
+};
 </script>
 
 <style lang="scss">
-
 .fas {
-  @include flex();
+  @include flex($wrap: nowrap);
   margin-bottom: 1rem;
-  padding: .5rem 0;
+  padding: 0.5rem 0;
   position: relative;
 
   @include media-tablet-up {
     background-color: $color-white;
-    padding: .5rem 1.5rem;
+    padding: 0.5rem 1.5rem;
   }
 
   &__filter {
     width: 10%;
 
     @include media-tablet-up {
-      width: 75%;
       @include flex();
+      flex-grow: 1;
 
       &--icon {
         pointer-events: none;
+        display: flex;
+
+        &::v-deep svg {
+          height: 19px;
+        }
       }
     }
 
@@ -314,25 +309,24 @@ export default {
 
       &-item {
         pointer-events: none;
+        font-size: 0.88rem;
       }
 
       @include media-tablet-up {
-        width: 80%;
         @include flex();
 
         &-item {
           @include flex();
-          margin: 0 2rem;
+          margin: 0 1.13rem;
           font-weight: 600;
           cursor: pointer;
           pointer-events: all;
         }
 
         &-number {
-          color: #A7A5A6;
-          margin-left: .5rem;
+          color: #a7a5a6;
+          margin-left: 0.5rem;
         }
-
       }
     }
 
@@ -343,9 +337,9 @@ export default {
       background-color: #f3f0e9;
       width: 105%;
       z-index: 105;
-      border-top: 1px solid #D3D2D2;
+      border-top: 1px solid #d3d2d2;
       padding: 1rem;
-      transition: all .4s;
+      transition: all 0.4s;
       transform: translateX(-110%);
 
       @include media-tablet-up {
@@ -364,7 +358,7 @@ export default {
           padding: 1rem 0;
 
           @include media-tablet-up {
-            padding: .5rem 0 0;
+            padding: 0.5rem 0 0;
             position: absolute;
             background-color: $color-white;
             border-bottom-right-radius: 15px;
@@ -400,8 +394,8 @@ export default {
           @include flex();
 
           &::before {
-            content: '';
-            border: 1px solid #A7A5A6;
+            content: "";
+            border: 1px solid #a7a5a6;
             width: 15px;
             height: 15px;
             margin-right: 10px;
@@ -412,7 +406,7 @@ export default {
 
           @include media-tablet-up {
             background-color: #f3f0e9;
-            margin: 0 1rem .5rem;
+            margin: 0 1rem 0.5rem;
             padding: 0.5rem 1rem;
             font-weight: 500;
             font-size: 1rem;
@@ -429,19 +423,18 @@ export default {
           text-decoration: underline;
 
           &::before {
-            content: '✓';
+            content: "✓";
             color: $color-white;
             background-color: $color-black;
           }
 
-          @include media-tablet-up  {
-
+          @include media-tablet-up {
             text-decoration: none;
             color: $color-white;
             background-color: $color-black;
 
             &::after {
-              content: 'x';
+              content: "x";
               font-family: $font-heading;
               margin-left: 7px;
             }
@@ -464,23 +457,31 @@ export default {
 
   &__items {
     width: 50%;
-    color: #A7A5A6;
-    font-size: 1rem;
+    color: #a7a5a6;
+    font-size: 0.88rem;
+
+    @include media-tablet-only {
+      display: none;
+    }
 
     @include media-tablet-up {
-      width: 10%;
+      // width: 10%;
       text-align: right;
+      width: auto;
+      flex-shrink: 0;
     }
   }
 
   &__sort {
     width: 40%;
     text-align: right;
-    font-size: 1rem;
+    font-size: 0.88rem;
     font-weight: 500;
 
     @include media-tablet-up {
-      width: 15%;
+      // width: 15%;
+      width: 145px;
+      flex-shrink: 0;
     }
 
     .v-select {
@@ -488,7 +489,7 @@ export default {
         border: none;
       }
 
-      .vs__dropdown-option{
+      .vs__dropdown-option {
         &--highlight {
           background-color: $color-black;
           color: $color-primary;
@@ -517,7 +518,6 @@ export default {
         padding: 0;
       }
     }
-
   }
   @include media-tablet-down {
     &__sort.hide {
@@ -543,5 +543,4 @@ export default {
     }
   }
 }
-
 </style>
