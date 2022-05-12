@@ -114,6 +114,7 @@ export default {
   }
 }
 .c-sidebar__container {
+  position: relative;
   padding: 40px 0 60px;
 
   .c-sidebar__content {
@@ -142,5 +143,11 @@ export default {
 .c-sidebar__heading {
   color: $color-black;
   margin-top: 1.5rem;
+
+  @include media-mobile-down {
+    position: absolute;
+    top: 0.75rem;
+    left: 4.75rem;
+  }
 }
 </style>

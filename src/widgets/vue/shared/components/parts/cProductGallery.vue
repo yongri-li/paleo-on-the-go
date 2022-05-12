@@ -217,6 +217,7 @@ export default {
   cursor: pointer;
   display: block;
   height: fit-content;
+  max-width: 84px;
   z-index: 1;
 }
 

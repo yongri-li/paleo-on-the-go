@@ -5,7 +5,7 @@
         <component
           class="c-portalHeader__mainLink"
           v-for="(link, index) in navigation"
-          v-if="index < 3"
+          v-if="index !== 3"
           :key="index"
           :is="link.tag"
           v-bind="link.attributes"
@@ -54,6 +54,9 @@ export default {
   components: { cSvg },
   computed: {
     ...mapGetters('customer', ['customerShopify', 'customerRecharge']),
+    hasSubs() {
+      return !!this.customerRecharge?.subscriptionsTotal
+    },
     navigation() {
       let links = this.$store.getters['customize/customizePartByKey']('navigation')
       if (links) {
@@ -68,10 +71,16 @@ export default {
           if (link.page === 'external') {
             link = { ...link, tag: 'a', attributes: { href: link.url } }
           } else if (link.page === 'signout') {
-            link = { ...link, tag: 'a', attributes: { href: '/account/logout', dataset: 'logout-link' } }
+            link = {
+              ...link,
+              tag: 'a',
+              attributes: { href: '/account/logout', class: 'logoutLink', dataset: 'logout-link' }
+            }
+          } else if (!this.hasSubs && link.page === 'shipments') {
+            link = { attributes: { style: 'display:none' } }
           } else {
             link = { ...link, tag: 'router-link', attributes: { to: { name: link.page } } }
-            if (link.page === 'shipment') link.attributes.exact = true
+            if (link.page === 'shipments') link.attributes.exact = true
           }
           return link
         })
@@ -118,6 +127,11 @@ export default {
   position: relative;
   @include media-tablet-up {
     height: 58px;
+
+    .logoutLink {
+      flex: 1;
+      justify-content: flex-end;
+    }
   }
   @include media-mobile-down {
     background-color: $color-black;

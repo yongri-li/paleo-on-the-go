@@ -125,7 +125,7 @@
     const { cartdrawer: { cartItems } } = JSON.parse(localStorage.getItem('vuex'))    
     const cartIcon = document.querySelector('.c-headerMain__secondary--cart')
     const cartNum = document.getElementById('cartIcon')      
-    const totalCart = cartItems.general?.length + (cartItems.box.length ? 1 : 0)    
+    const totalCart = cartItems?.general.length + (cartItems?.box.length ? 1 : 0)    
     cartNum.textContent = totalCart  
     cartIcon.classList.add('scalePop')  
     setTimeout(()=> cartIcon.classList.remove('scalePop') , 750)  

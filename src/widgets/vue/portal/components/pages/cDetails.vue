@@ -136,7 +136,7 @@
       <hr v-if="hasSubs" />
       <c-h
         class="c-details__heading"
-        v-if="content.plans_heading"
+        v-if="content.plans_heading && showAddresses"
         tag="h2"
         level="2"
         :text="content.plans_heading"
