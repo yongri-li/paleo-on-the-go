@@ -4,7 +4,11 @@
     <!-- &#10005; -->
     <div class="modal__product--content">
       <div class="modal__product--figure">
-        <c-product-gallery :images="product.images" :is-modal="true" class="modal__product--img" />
+        <c-product-gallery
+          :images="product.images"
+          :is-modal="true"
+          class="modal__product--img"
+        />
       </div>
       <div class="modal__product--data">
         <div class="modal__product--data-header">
@@ -15,8 +19,13 @@
             {{ product.subtitle }}
           </div>
         </div>
-        <c-select-tabs :pdpinfo="product.info" class="modal__product--data-pills" />
-        <div class="modal__product--add-to-cart" @click="addToCartModal">Add To Box</div>
+        <c-select-tabs
+          :pdpinfo="product.info"
+          class="modal__product--data-pills"
+        />
+        <div class="modal__product--add-to-cart" @click="addToCartModal">
+          Add To Box
+        </div>
       </div>
     </div>
   </div>
@@ -42,17 +51,19 @@ export default {
       return this.params.product;
     },
     imageUrl() {
-      const imgFound = this.product.media.find(item => item.position === 1)
-      const urlFinal = imgFound.src.replace('.jpg', '_800x800.jpg').replace('.png', '_800x800.png')
-      return urlFinal
+      const imgFound = this.product.media.find((item) => item.position === 1);
+      const urlFinal = imgFound.src
+        .replace(".jpg", "_800x800.jpg")
+        .replace(".png", "_800x800.png");
+      return urlFinal;
     },
     where() {
-      const param = this.$route.params.box
-      return param === 'addons' ? 'addons' : 'items'
-    }
+      const param = this.$route.params.box;
+      return param === "addons" ? "addons" : "items";
+    },
   },
   methods: {
-    ...mapActions('mealcart', ['addToCart']),
+    ...mapActions("mealcart", ["addToCart"]),
     closeModal() {
       this.$emit("close");
     },
@@ -60,12 +71,12 @@ export default {
       this.addToCart({
         idCollection: this.product.collection.id,
         idProduct: this.product.id,
-        where: this.where
-      })
-      this.closeModal()
-    }
-  }
-}
+        where: this.where,
+      });
+      this.closeModal();
+    },
+  },
+};
 </script>
 
 <style lang="scss">
@@ -102,6 +113,7 @@ export default {
   &--figure {
     height: 30%;
     overflow: hidden;
+    width: 100%;
 
     @include media-tablet-up {
       width: 50%;
@@ -111,13 +123,26 @@ export default {
   }
 
   &--img {
-    margin-top: -15%;
+    margin-top: 0;
+    position: relative;
+    height: 100%;
+
+    section,
+    .tns-outer,
+    .tns-inner,
+    .tns-slider,
+    .tns-item,
+    .pdp__galleryImageWrapper {
+      height: 100%;
+      max-height: none;
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
 
     @include media-tablet-up {
-      margin-top: 0;
-      position: relative;
-      height: 100%;
-
       .pdp__thumbnails {
         position: absolute;
         bottom: 3%;
@@ -137,20 +162,6 @@ export default {
         width: 3.5rem;
         min-width: unset;
       }
-
-      section,
-      .tns-outer,
-      .tns-inner,
-      .tns-slider,
-      .tns-item,
-      .pdp__galleryImageWrapper {
-        height: 100%;
-        img {
-          width: 100%;
-          height: 100%;
-          object-fit: cover;
-        }
-      }
     }
 
     &--img .pdp__galleryImageWrapper {
@@ -161,7 +172,9 @@ export default {
   &--data {
     padding: 1rem;
     height: 70%;
+    width: 100%;
     position: relative;
+    @include flex($direction: column, $wrap: nowrap, $align: flex-start);
 
     @include media-tablet-up {
       height: 100%;
@@ -175,44 +188,73 @@ export default {
 
     &-title {
       font-family: $font-heading;
-      font-size: 5vh;
+      font-size: 2.63rem;
 
       @include media-tablet-up {
+        font-size: 2.5rem;
+      }
+      @include media-desktop-up {
         font-size: 3rem;
       }
     }
 
     &-subtitle {
       color: #7b7979;
-      font-size: 2.5vh;
+      font-size: 1rem;
       margin-bottom: 1.5rem;
 
-      @include media-tablet-up {
+      @include media-desktop-up {
         font-size: 1.7rem;
       }
     }
 
     &-pills {
-      height: 65%;
-      overflow-y: auto;
+      @include flex($direction: column, $wrap: nowrap);
+      flex-grow: 1;
+      height: auto;
+      overflow: hidden;
+      width: 100%;
+
       padding: 0 0 1rem;
+
+      .pdp__tabs {
+        &--wrap {
+          overflow: auto;
+          flex-shrink: 0;
+          width: 100%;
+          &::-webkit-scrollbar {
+            display: none;
+          }
+        }
+        &--tab {
+          padding: 0.5rem 1rem;
+          font-size: 0.88rem;
+        }
+        &--info {
+          flex-grow: 1;
+          overflow-y: auto;
+          max-height: none;
+          margin: 1rem 0 2.25rem;
+          font-size: 0.88rem;
+        }
+      }
 
       @include media-tablet-up {
         .pdp__tabs {
           &--wrap {
             margin-bottom: 2rem;
-
             width: 100%;
             overflow: auto;
-            &::-webkit-scrollbar {
-              display: none;
-            }
           }
           &--tab {
             margin-right: 10px;
+            font-size: 1rem;
             &:last-child {
               margin-right: 0;
             }
+          }
+          &--info {
+            font-size: 1.13rem;
           }
         }
       }
