@@ -116,12 +116,14 @@ export default {
     @include media-tablet-up {
       margin-top: 0;
       position: relative;
+      height: 100%;
 
       .pdp__thumbnails {
         position: absolute;
         bottom: 3%;
         top: auto;
         width: 100%;
+        overflow: auto;
       }
 
       .pdp__thumbnailButton:hover {
@@ -129,9 +131,29 @@ export default {
           box-shadow: none;
         }
       }
+
+      .pdp__thumbnail {
+        height: 3.5rem;
+        width: 3.5rem;
+        min-width: unset;
+      }
+
+      section,
+      .tns-outer,
+      .tns-inner,
+      .tns-slider,
+      .tns-item,
+      .pdp__galleryImageWrapper {
+        height: 100%;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
     }
 
-    .pdp__galleryImageWrapper {
+    &--img .pdp__galleryImageWrapper {
       width: 100%;
     }
   }
@@ -171,18 +193,27 @@ export default {
     }
 
     &-pills {
-      height: calc(84% - 5rem);
+      height: 65%;
       overflow-y: auto;
       padding: 0 0 1rem;
 
       @include media-tablet-up {
-        .pdp__tabs--wrap {
-          position: sticky;
-          top: 0;
-          background: $color-ecru;
-          padding-bottom: 0.5rem;
-          margin-bottom: 0.5rem;
-          z-index: 1;
+        .pdp__tabs {
+          &--wrap {
+            margin-bottom: 2rem;
+
+            width: 100%;
+            overflow: auto;
+            &::-webkit-scrollbar {
+              display: none;
+            }
+          }
+          &--tab {
+            margin-right: 10px;
+            &:last-child {
+              margin-right: 0;
+            }
+          }
         }
       }
     }
