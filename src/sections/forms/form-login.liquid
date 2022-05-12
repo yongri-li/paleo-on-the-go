@@ -1,11 +1,11 @@
 {% assign heading = "Login" %}
-{% assign text = "" %}
+{% assign text = "Please login to your account" %}
 {% assign email_placeholder = "Email Address*" %}
 {% assign password_placeholder = "Password*" %}
-{% assign submit_button = "Submit" %}
+{% assign submit_button = "Login" %}
 {% assign forgot_password_link = "Forgot your password?" %}
 {% assign register_text = "Don't have an account?" %}
-{% assign register_link = "Register" %}
+{% assign register_link = "Get Started" %}
 
 {% if section.settings.heading != blank %}{% assign heading = section.settings.heading %}{% endif %}
 {% if section.settings.text != blank %}{% assign text = section.settings.text %}{% endif %}
@@ -52,8 +52,9 @@
         <button class="c-formLogin__button c-form__submit
           c-button 
           c-button--isDefault
-          c-button--isSecondary"
+          c-button--isPrimary"
           type="submit"
+          style="max-width:100%"
         >
           {{ submit_button }}
         </button>
@@ -66,7 +67,9 @@
             {{ forgot_password_link }}
           </a>
           <br />
+          <br/>
           {{ register_text }}
+          <br/>
           <a href="/account/register" class="c-formLogin__forgotLink 
             c-form__subLink"
           >
@@ -90,7 +93,8 @@
       {
         "id": "text",
         "type": "text",
-        "label": "Text"
+        "label": "Text",
+        "default": "Please login to your account"
       },
       {
         "id": "email_placeholder",
@@ -105,7 +109,8 @@
       {
         "id": "submit_button",
         "type": "text",
-        "label": "Submit Button"
+        "label": "Submit Button",
+        "default": "Login"
       },
       {
         "id": "register_text",

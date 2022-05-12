@@ -1,6 +1,7 @@
-{% assign customerTags = customer.tags | join:',' %}
 {%- capture boxSizes -%}8,12,16{%- endcapture -%}
 {% assign boxSizes = boxSizes | split:',' %}
+{%- capture boxDiscounts -%}5,7,9{%- endcapture -%}
+{% assign boxDiscounts = boxDiscounts | split:',' %}
 
 
 <article class="c-homePlans">
@@ -37,10 +38,10 @@
             <h2 class="c-h2">{{ boxSizes[forloop.index0] }} Items</h2>
             <div>
               <span class="c-plansGrid__plan--savings u-hideMobileDown" >
-                {{boxSizes[forloop.index0]}}% Savings
+                {{boxDiscounts[forloop.index0]}}% Savings
               </span>
               <span class="c-plansGrid__plan--savings js--planClk u-hideTabletUp" data-boxsize="{{boxSizes[forloop.index0]}}">
-                Subscribe & Save {{boxSizes[forloop.index0]}}%
+                Subscribe & Save {{boxDiscounts[forloop.index0]}}%
               </span>
             </div>
             <button class="c-button c-button--isDefault c-button--isPrimary" data-get-started data-boxsize="{{boxSizes[forloop.index0]}}">

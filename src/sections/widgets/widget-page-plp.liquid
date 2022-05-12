@@ -1,8 +1,10 @@
 {% assign master_collection_handle = section.settings.master_collection %}
+{% assign gifts_collection_handle = section.settings.gifts_collection %}
 
 <script>
   let plp = {{ section.settings | json }}
 
+  // master collection
   const master_collection_items = [];
   {%- for collection in collections limit: 100 -%}
     {%- if collection.handle == master_collection_handle -%}
@@ -12,6 +14,33 @@
     {%- endif -%}
   {%- endfor -%}
 
+  // gifts collection
+  const gifts_collection_items = [];
+  {%- for collection in collections limit: 100 -%}
+    {%- if collection.handle == gifts_collection_handle -%}    
+      gifts_collection_items.push({
+        ...JSON.parse(JSON.stringify({{collection | json }})),
+        short_description: '{{ section.settings.gifts_description }}',
+        products: [
+          {%- for _product in collection.products limit:999 -%}
+            {
+              ...JSON.parse(JSON.stringify({{ _product | json }})),
+              subtitle: `{{ _product.metafields.my_fields.subtitle }}`,
+              url: '{{ _product.url }}',
+              flag: '{{ _product.metafields.my_fields.flag }}',
+              inventory: [
+                {% for variant in _product.variants %}
+                  '{{ variant.inventory_quantity }}',
+                {% endfor %}
+              ]
+            },
+          {%- endfor -%}
+        ]
+      });
+    {%- endif -%}
+  {%- endfor -%}  
+
+  // main pdp collections
   const collections = [];
   {% for block in section.blocks %}
     {% assign _collection = collections[block.settings.collection] %}
@@ -39,24 +68,36 @@
   {% endfor %}
 
   plp['master_collection_items'] = master_collection_items;
-  plp['sub_collection_items'] = collections
+  plp['sub_collection_items'] = collections;
+  plp['collection_handle'] = `{{ handle }}`;
+  plp['gifts_collection_items'] = gifts_collection_items;
 
   window.Scoutside.plp = plp
 </script>
 
 {% schema %}
   {
-    "name": "Master Collection",
+    "name": "PLP Collections Page",
     "settings": [
       {
         "id": "master_collection",
         "type": "collection",
         "label": "Master Collection"
       },
+      {
+        "id": "gifts_collection",
+        "type": "collection",
+        "label": "Gifts Collection"
+      },   
+      {
+        "id": "gifts_description",
+        "type": "richtext",
+        "label": "Short Description"
+      },         
 
       {
         "type": "header",
-        "content": "Hero Content"
+        "content": "Menu Hero Content"
       },
       {
         "id": "hero_small_heading",
@@ -88,8 +129,48 @@
       {
         "id": "hero_bg_image",
         "type": "image_picker",
-        "label": "Background Image"
+        "label": "Menu Background Image"
       },
+
+
+      {
+        "type": "header",
+        "content": "Gifts Hero Content"
+      },
+      {
+        "id": "gift_hero_small_heading",
+        "type": "text",
+        "label": "Small Heading",
+        "default": "NEW MERCH!"
+      },
+      {
+        "id": "gift_hero_heading",
+        "type": "text",
+        "label": "Gifts Heading"
+      },
+      {
+        "id": "gift_hero_main_copy",
+        "type": "text",
+        "label": "Gifts Main Copy"
+      },
+      {
+        "id": "gift_hero_btn_cta",
+        "type": "text",
+        "label": "Button CTA",
+        "default": "Build Your Box"
+      },
+      {
+        "id": "gift_hero_btn_url",
+        "type": "url",
+        "label": "CTA URL"
+      },
+      {
+        "id": "gift_hero_bg_image",
+        "type": "image_picker",
+        "label": "Gifts Background Image"
+      },
+
+
       {
         "type": "header",
         "content": "Bottom Banner"
