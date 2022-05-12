@@ -327,7 +327,7 @@ export default {
       margin: 0;
       position: absolute;
       left: 0;
-      top: -95%;
+      top: -60px;
       width: 100%;
       display: flex;
       justify-content: center;
