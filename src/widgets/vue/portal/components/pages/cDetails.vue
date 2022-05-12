@@ -89,7 +89,7 @@
                 <div class="" slot="content">
                   <c-formBilling
                     class="c-sidebarBilling__form"
-                    :hideAlert="true"
+                    :hideAlert="false"
                     :content="{
                       first_label: sidebarContent.billing.billing_first_label,
                       last_label: sidebarContent.billing.billing_last_label,
@@ -354,10 +354,15 @@ export default {
   margin-bottom: 0.5rem;
   font-size: 1.125rem;
 }
-.c-details__boxStatus {
-  visibility: hidden;
-  /*  transition: visibility 175ms;*/
+
+@include media-mobile-down {
+  .c-details__boxStatus {
+    /*  visibility: hidden;*/
+    display: none;
+    /*  transition: visibility 175ms;*/
+  }
 }
+
 .c-accordionItem__trigger--isOpen {
   .c-details__boxStatus {
     font-weight: 500;

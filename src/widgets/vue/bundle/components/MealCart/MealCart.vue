@@ -169,7 +169,6 @@ export default {
             val: `${boxSize}items`,
           });
         }
-        sessionStorage.removeItem("fromPortal");
         return;
       }
 

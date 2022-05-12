@@ -1,6 +1,5 @@
 <template>
   <form :class="_buildModifiers('c-formBilling', modifiers)" @submit.prevent="handleSubmit" v-if="content">
-    <c-alert class="c-formBilling__alert" v-if="!hideAlert && status" :role="status" :messages="messages" />
     <div class="c-formBilling__fieldGroup">
       <c-field class="c-formBilling__field" v-if="content.first_label" :label="content.first_label">
         <c-input
@@ -125,20 +124,23 @@
         />
       </c-field>
     </div> -->
-    <c-button
-      class="c-formBilling__button"
-      v-if="content.button_text"
-      :loading="loading"
-      :success="status === 'success'"
-      :attributes="{
-        disabled: status === 'success'
-      }"
-      :text="{
-        default: content.button_text,
-        success: content.button_success
-      }"
-      :modifiers="['isDefault', 'isPrimary', 'hideTextLoading', 'isSubmit']"
-    />
+    <div class="c-formBilling__ctaWrap">
+      <c-button
+        class="c-formBilling__button"
+        v-if="content.button_text"
+        :loading="loading"
+        :success="status === 'success'"
+        :attributes="{
+          disabled: status === 'success'
+        }"
+        :text="{
+          default: content.button_text,
+          success: content.button_success
+        }"
+        :modifiers="['isDefault', 'isPrimary', 'hideTextLoading', 'isSubmit']"
+      />
+      <c-alert class="c-formBilling__alert" v-if="!hideAlert && status" :role="status" :messages="messages" />
+    </div>
   </form>
 </template>
 
@@ -181,8 +183,7 @@ export default {
       loading: false,
       status: false,
       messages: [],
-      errors: {},
-      test: 'testing'
+      errors: {}
     }
   },
   components: {
@@ -200,7 +201,7 @@ export default {
     }
   },
   methods: {
-    ...mapActions('customer', ['customerUpdatePaymentMethod']),
+    ...mapActions('customer', ['customerUpdatePaymentMethod', 'customerUpdateBilling']),
     validateForm() {
       this.status = false
       this.errors = {}
@@ -251,6 +252,7 @@ export default {
           messages: ['Country required']
         }
       ])
+      console.log(formValidation)
       if (formValidation.hasErrors) this.status = 'error'
       this.errors = { ...formValidation.errors }
       this.messages = [...formValidation.messages]
@@ -259,11 +261,12 @@ export default {
       this.validateForm()
       if (!this.hasErrors) {
         this.loading = true
-        //const { customer, error } = await this.customerUpdateBilling({ address: this.billingModel })
-        const { paymentMethod, error } = await this.customerUpdatePaymentMethod({
-          address: this.billingModel
-        })
-        console.log(paymentMethod, error)
+        const { customer, error } = await this.customerUpdateBilling({ address: this.billingModel })
+        console.log(error)
+        // const { paymentMethod, error } = await this.customerUpdatePaymentMethod({
+        //   address: this.billingModel
+        // })
+        // console.log(paymentMethod, error)
         if (!error) {
           this.status = 'success'
           if (!this.hideAlert && this.content.success_text) {
@@ -276,7 +279,8 @@ export default {
               this.messages.push(this.content.error_limit)
               break
             default:
-              this.messages.push(this.content.error_general)
+              // this.messages.push(this.content.error_general)
+              this.messages.push('Error, could not save')
           }
         }
         this.loading = false
@@ -304,6 +308,16 @@ export default {
   @include grid($columns: 1fr, $auto-flow: row, $gap: 0 40px);
   @include media-tablet-up {
     grid-template-columns: 1fr 1fr;
+  }
+}
+
+.c-formBilling__ctaWrap {
+  display: flex;
+  align-items: flex-end;
+  gap: 2rem;
+
+  .c-formBilling__button {
+    margin-bottom: 0;
   }
 }
 </style>

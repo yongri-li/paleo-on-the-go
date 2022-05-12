@@ -1,6 +1,21 @@
 .pdp__productReviews {
   padding: 4.5rem 0 2rem;
 
+  .spr-starrating {
+    .spr-icon-star-empty {
+      opacity: 0.45;
+    }
+
+    .spr-icon-star-empty.spr-icon-star-hover,
+    .spr-icon-star-hover:hover {
+      opacity: 1;
+    }
+
+    .spr-icon-star-empty.spr-icon-star-hover:before {
+      content: '' !important;
+    }
+  }
+
   .spr-header-title {
     display: block;
     font-family: Knockout, sans-serif;
