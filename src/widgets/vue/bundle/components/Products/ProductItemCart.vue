@@ -97,6 +97,10 @@ export default {
     @include flex($justify: space-between, $wrap: nowrap);
   }
 
+  &:last-child {
+    margin-bottom: 1.2rem;
+  }
+
   &__body {
     @include flex($justify: space-between);
     width: 70%;
