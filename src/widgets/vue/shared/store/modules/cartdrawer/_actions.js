@@ -85,25 +85,33 @@ export default {
     commit(CREATE_ROUTE_PROTECTION_PRODUCT, { routeProduct })
     return routeProduct
   },
-  async addRouteProduct({ commit }, { routeProduct, variant }) {
+  async addRouteProduct({ commit, getters }, { routeProduct, variant }) {
+
+    // calculate where put the route product
+    const hasSubscription = getters.getSubscriptionItems.length > 0
+    const where = hasSubscription ? 'box' : 'general'
+
     // Remove some product we have before
-    commit(REMOVE_ROUTE_PROTECTION_TO_CART)
+    commit(REMOVE_ROUTE_PROTECTION_TO_CART, { where })
 
     // create routeProduct to add
     routeProduct = {
       ...routeProduct,
       variants: [variant],
       hide: true,
-      order_type: 'general',
+      order_type: hasSubscription ? 'subscription' : 'general',
       quantity: 1,
       price: variant.price,
       route_protection: true
     }
 
     // add product
-    commit(ADD_ROUTE_PROTECTION_TO_CART, { routeProduct })
+    commit(ADD_ROUTE_PROTECTION_TO_CART, { routeProduct, where })
   },
-  removeRouteProductToCart({ commit }) {
-    commit(REMOVE_ROUTE_PROTECTION_TO_CART)
+  removeRouteProductToCart({ commit, getters }) {
+    const hasSubscription = getters.getSubscriptionItems.length > 0
+    const where = hasSubscription ? 'box' : 'general'
+
+    commit(REMOVE_ROUTE_PROTECTION_TO_CART, { where })
   }
 }

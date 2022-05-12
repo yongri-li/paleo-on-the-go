@@ -1,5 +1,3 @@
-import { formatPrice } from '@shared/utils'
-
 export default {
   getSubscriptionItems: state => {
     return state.cartItems.box.filter(item => item.order_type === 'subscription')
@@ -43,7 +41,11 @@ export default {
     return final
   },
   routeProductInCart: state => {
-    return state.cartItems.general.find(item => item.route_protection)
+    let routeProduct = state.cartItems.general.find(item => item.route_protection)
+    if(!routeProduct) {
+      routeProduct = state.cartItems.box.find(item => item.route_protection)
+    }
+    return routeProduct
   },
   getSubTotalPricesWithoutRoute: (state, getters) => {
     const boxPrice = getters.getBoxPrices.final * 100
