@@ -296,6 +296,11 @@ export default {
 
       &--icon {
         pointer-events: none;
+        display: flex;
+
+        &::v-deep svg {
+          height: 19px;
+        }
       }
     }
 
@@ -304,6 +309,7 @@ export default {
 
       &-item {
         pointer-events: none;
+        font-size: 0.88rem;
       }
 
       @include media-tablet-up {
@@ -452,7 +458,7 @@ export default {
   &__items {
     width: 50%;
     color: #a7a5a6;
-    font-size: 1rem;
+    font-size: 0.88rem;
 
     @include media-tablet-only {
       display: none;
@@ -469,13 +475,12 @@ export default {
   &__sort {
     width: 40%;
     text-align: right;
-    font-size: 1rem;
+    font-size: 0.88rem;
     font-weight: 500;
 
     @include media-tablet-up {
       // width: 15%;
-      // width: 135px;
-      width: 155px;
+      width: 145px;
       flex-shrink: 0;
     }
 
