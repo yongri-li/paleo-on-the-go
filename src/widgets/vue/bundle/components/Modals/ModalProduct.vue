@@ -23,23 +23,23 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import cProductGallery from '@shared/components/parts/cProductGallery.vue'
-import cSelectTabs from '@shared/components/parts/cSelectTabs.vue'
+import { mapActions } from "vuex";
+import cProductGallery from "@shared/components/parts/cProductGallery.vue";
+import cSelectTabs from "@shared/components/parts/cSelectTabs.vue";
 
 export default {
   components: {
     cProductGallery,
-    cSelectTabs
+    cSelectTabs,
   },
   props: {
     params: {
-      type: Object
-    }
+      type: Object,
+    },
   },
   computed: {
     product() {
-      return this.params.product
+      return this.params.product;
     },
     imageUrl() {
       const imgFound = this.product.media.find(item => item.position === 1)
@@ -54,7 +54,7 @@ export default {
   methods: {
     ...mapActions('mealcart', ['addToCart']),
     closeModal() {
-      this.$emit('close')
+      this.$emit("close");
     },
     addToCartModal() {
       this.addToCart({

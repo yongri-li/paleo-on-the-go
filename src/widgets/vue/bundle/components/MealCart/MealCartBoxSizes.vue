@@ -140,6 +140,10 @@ export default {
       font-size: 1.38rem;
       line-height: 1;
 
+      @include media-tablet-only {
+        font-size: 1.13rem;
+      }
+
       @include media-tablet-up {
         line-height: 1.3rem;
         margin-right: 1rem;
@@ -154,7 +158,6 @@ export default {
       }
 
       @include media-tablet-up {
-        font-size: 1rem;
         line-height: 1.3rem;
 
         &-mobile {
@@ -163,6 +166,10 @@ export default {
         &-desk {
           display: block;
         }
+      }
+
+      @include media-desktop-up {
+        font-size: 1rem;
       }
     }
 
@@ -208,13 +215,19 @@ export default {
 
       &--line {
         border: 1px solid #231f20;
-        width: 25%;
+        width: 22%;
       }
 
       &--txt {
         text-transform: uppercase;
-        font-size: 0.9rem;
+        font-size: 0.81rem;
         font-weight: 500;
+      }
+    }
+
+    @include media-desktop-up {
+      &--line {
+        width: 25%;
       }
     }
   }
