@@ -1,8 +1,6 @@
 <template>
   <div class="modal__product">
-    <div class="modal__close" @click="closeModal">
-      x
-    </div>
+    <div class="modal__close" @click="closeModal">x</div>
     <div class="modal__product--content">
       <div class="modal__product--figure">
         <c-product-gallery
@@ -33,56 +31,56 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
-import cProductGallery from '@shared/components/parts/cProductGallery.vue'
-import cSelectTabs from '@shared/components/parts/cSelectTabs.vue'
+import { mapActions } from "vuex";
+import cProductGallery from "@shared/components/parts/cProductGallery.vue";
+import cSelectTabs from "@shared/components/parts/cSelectTabs.vue";
 
 export default {
   components: {
     cProductGallery,
-    cSelectTabs
+    cSelectTabs,
   },
   props: {
     params: {
-      type: Object
-    }
+      type: Object,
+    },
   },
   computed: {
     product() {
-      return this.params.product
+      return this.params.product;
     },
     imageUrl() {
-      const imgFound = this.product.media.find(item => item.position === 1)
-      const urlFinal = imgFound.src.replace('.jpg','_800x800.jpg').replace('.png','_800x800.png')
-      return urlFinal
+      const imgFound = this.product.media.find((item) => item.position === 1);
+      const urlFinal = imgFound.src
+        .replace(".jpg", "_800x800.jpg")
+        .replace(".png", "_800x800.png");
+      return urlFinal;
     },
     where() {
-      const param = this.$route.params.box
-      return param === 'addons' ? 'addons' : 'items'
+      const param = this.$route.params.box;
+      return param === "addons" ? "addons" : "items";
     },
   },
   methods: {
-    ...mapActions('mealcart', [
-      'addToCart'
-    ]),
+    ...mapActions("mealcart", ["addToCart"]),
     closeModal() {
-      this.$emit('close')
+      this.$emit("close");
     },
     addToCartModal() {
       this.addToCart({
         idCollection: this.product.collection.id,
         idProduct: this.product.id,
         where: this.where,
-      })
-      this.closeModal()
-    }
-  }
-}
+      });
+      this.closeModal();
+    },
+  },
+};
 </script>
 
 <style lang="scss">
 .modal__product {
-  background-color: #F3F0E9;
+  background-color: #f3f0e9;
   text-align: initial;
   left: 0;
   width: 100%;
@@ -127,12 +125,14 @@ export default {
     @include media-tablet-up {
       margin-top: 0;
       position: relative;
+      height: 100%;
 
       .pdp__thumbnails {
         position: absolute;
         bottom: 3%;
         top: auto;
         width: 100%;
+        overflow: auto;
       }
 
       .pdp__thumbnailButton:hover {
@@ -140,9 +140,29 @@ export default {
           box-shadow: none;
         }
       }
+
+      .pdp__thumbnail {
+        height: 3.5rem;
+        width: 3.5rem;
+        min-width: unset;
+      }
+
+      section,
+      .tns-outer,
+      .tns-inner,
+      .tns-slider,
+      .tns-item,
+      .pdp__galleryImageWrapper {
+        height: 100%;
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+      }
     }
 
-    .pdp__galleryImageWrapper {
+    &--img .pdp__galleryImageWrapper {
       width: 100%;
     }
   }
@@ -156,6 +176,7 @@ export default {
       height: 100%;
       width: 50%;
       padding: 5rem 3rem 1rem;
+      overflow: auto;
     }
 
     &-header {
@@ -172,7 +193,7 @@ export default {
     }
 
     &-subtitle {
-      color: #7B7979;
+      color: #7b7979;
       font-size: 2.5vh;
       margin-bottom: 1.5rem;
 
@@ -187,13 +208,26 @@ export default {
       padding: 0 0 1rem;
 
       @include media-tablet-up {
-        .pdp__tabs--wrap {
-          margin-bottom: 2rem;
+        .pdp__tabs {
+          &--wrap {
+            margin-bottom: 2rem;
+
+            width: 100%;
+            overflow: auto;
+            &::-webkit-scrollbar {
+              display: none;
+            }
+          }
+          &--tab {
+            margin-right: 10px;
+            &:last-child {
+              margin-right: 0;
+            }
+          }
         }
       }
     }
   }
-
 
   &--add-to-cart {
     @include flex($justify: center);
@@ -222,5 +256,4 @@ export default {
     }
   }
 }
-
 </style>

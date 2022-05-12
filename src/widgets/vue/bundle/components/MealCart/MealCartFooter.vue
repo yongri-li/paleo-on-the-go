@@ -315,7 +315,7 @@ export default {
   &__btn-next {
     width: 100%;
     max-width: none;
-    font-size: 1.25rem;
+    font-size: 1rem;
     padding: 0 2rem;
     margin-top: 0.5rem;
     height: 54px;
