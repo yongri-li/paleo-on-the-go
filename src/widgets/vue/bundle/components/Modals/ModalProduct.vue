@@ -1,13 +1,10 @@
 <template>
   <div class="modal__product">
-    <div class="modal__close" @click="closeModal">x</div>
+    <div class="modal__close" @click="closeModal">&#10006;</div>
+    <!-- &#10005; -->
     <div class="modal__product--content">
       <div class="modal__product--figure">
-        <c-product-gallery
-          :images="product.images"
-          :is-modal="true"
-          class="modal__product--img"
-        />
+        <c-product-gallery :images="product.images" :is-modal="true" class="modal__product--img" />
       </div>
       <div class="modal__product--data">
         <div class="modal__product--data-header">
@@ -18,13 +15,8 @@
             {{ product.subtitle }}
           </div>
         </div>
-        <c-select-tabs
-          :pdpinfo="product.info"
-          class="modal__product--data-pills"
-        />
-        <div class="modal__product--add-to-cart" @click="addToCartModal">
-          Add To Box
-        </div>
+        <c-select-tabs :pdpinfo="product.info" class="modal__product--data-pills" />
+        <div class="modal__product--add-to-cart" @click="addToCartModal">Add To Box</div>
       </div>
     </div>
   </div>
@@ -50,19 +42,17 @@ export default {
       return this.params.product;
     },
     imageUrl() {
-      const imgFound = this.product.media.find((item) => item.position === 1);
-      const urlFinal = imgFound.src
-        .replace(".jpg", "_800x800.jpg")
-        .replace(".png", "_800x800.png");
-      return urlFinal;
+      const imgFound = this.product.media.find(item => item.position === 1)
+      const urlFinal = imgFound.src.replace('.jpg', '_800x800.jpg').replace('.png', '_800x800.png')
+      return urlFinal
     },
     where() {
-      const param = this.$route.params.box;
-      return param === "addons" ? "addons" : "items";
-    },
+      const param = this.$route.params.box
+      return param === 'addons' ? 'addons' : 'items'
+    }
   },
   methods: {
-    ...mapActions("mealcart", ["addToCart"]),
+    ...mapActions('mealcart', ['addToCart']),
     closeModal() {
       this.$emit("close");
     },
@@ -70,17 +60,17 @@ export default {
       this.addToCart({
         idCollection: this.product.collection.id,
         idProduct: this.product.id,
-        where: this.where,
-      });
-      this.closeModal();
-    },
-  },
-};
+        where: this.where
+      })
+      this.closeModal()
+    }
+  }
+}
 </script>
 
 <style lang="scss">
 .modal__product {
-  background-color: #f3f0e9;
+  background-color: $color-ecru;
   text-align: initial;
   left: 0;
   width: 100%;
@@ -91,11 +81,12 @@ export default {
   overflow: hidden;
 
   @include media-tablet-up {
-    width: 80%;
+    width: 84%;
     max-width: 1400px;
-    left: 10%;
-    height: 70%;
-    max-height: 670px;
+    left: 8%;
+    height: 80%;
+    min-height: 500px;
+    max-height: 698px;
     border-radius: 0;
   }
 
@@ -175,8 +166,7 @@ export default {
     @include media-tablet-up {
       height: 100%;
       width: 50%;
-      padding: 5rem 3rem 1rem;
-      overflow: auto;
+      padding: 3.25rem 3rem 1rem;
     }
 
     &-header {
@@ -253,6 +243,18 @@ export default {
     @include media-tablet-up {
       background-color: $color-black;
       color: $color-white;
+    }
+  }
+
+  @include media-mobile-down {
+    height: 96%;
+
+    &.modal__content {
+      top: 4%;
+
+      .tns-controls {
+        display: none;
+      }
     }
   }
 }

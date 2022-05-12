@@ -109,10 +109,13 @@ export default {
 
 	&--info {
 		position: relative;
-		padding: 1.5rem 0;
+		padding: 0.25rem 0;
+		margin: 1rem 0 1.25rem;
+		max-height: clamp(300px, 24vw, 460px);
+		overflow-y: scroll;
 
 		article {
-			@include text-line-clamp($lines: 8);
+			/*@include text-line-clamp($lines: 8);*/
 			height: fit-content;
 			line-height: 1.5;
 			opacity: 0;
