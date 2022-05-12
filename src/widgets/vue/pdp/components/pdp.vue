@@ -163,6 +163,9 @@ export default {
       window.location = '/pages/bundle/#/subscriptions'
     },
     addToCart() {
+      const evt = new CustomEvent('swagCartAdded', { detail: { added: true } }, false)
+      document.dispatchEvent(evt)
+
       const variantProduct = {
         ...this.product,
         quantity: this.quantity,

@@ -177,6 +177,18 @@ export default {
       this.loading.cancel = false
       location.reload()
     }
+  },
+  mounted() {
+    // const evt = new CustomEvent(
+    //   'sidebarSubsEditMount',
+    //   {
+    //     detail: {
+    //       mounted: true
+    //     }
+    //   },
+    //   false
+    // )
+    // document.dispatchEvent(evt)
   }
 }
 </script>

@@ -36,6 +36,9 @@ export default {
     },
     closeAccCancelBox: {
       type: Array
+    },
+    mountToggle: {
+      type: Boolean
     }
   },
   data: () => ({
@@ -125,10 +128,16 @@ export default {
   created() {
     this.evtListenClickToggle()
   },
-  mounted() {
+  async mounted() {
     window.addEventListener('resize', this.changeHeight)
     if (this.open) this.toggleContent()
     setTimeout(() => (this.transition = true), this.duration)
+
+    // if (this.mountToggle) {
+    //   const asd = this.$refs.content
+    //   asd.style.maxHeight = '862px'
+    //   setTimeout(() => (asd.style.maxHeight = '0'), 150)
+    // }
   },
   beforeDestroy() {
     window.removeEventListener('resize', this.changeHeight)

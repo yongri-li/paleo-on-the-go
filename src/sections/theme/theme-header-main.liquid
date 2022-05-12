@@ -13,6 +13,29 @@
 {% if section.settings.account_text != blank %}{% assign account_text = section.settings.account_text %}{% endif %}
 {% if section.settings.start_text != blank %}{% assign start_text = section.settings.start_text %}{% endif %}
 
+
+<style>
+
+  .scalePop {
+    animation-duration: 225ms;
+    animation-name: scalePop;
+  }
+  
+  @keyframes scalePop {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.1);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+
+</style>
+
+
 <div class="c-headerMain" data-header-main>
   <div class="c-headerMain__wrapper o-containerLarge">
 
@@ -73,30 +96,48 @@
               Sign Out
             </a>                                
           </section>
-        </nav>
-        <div class="c-headerMain__secondary--cart">
-          <a href="/cart">{%- render 'icon-cart' -%}</a>
-        </div>        
+        </nav>       
       {% else %}
-   <!--    <button class="c-button c-button--isHollow c-button--isBlack"> -->
-        <a href="/account/login" class="c-button c-button--isHollow c-button--isBlack">
+        <a href="/account/login" class="c-headerMain__account">
+          <span class="c-headerMain__accountText" style="grid-row: 1/3">{{ login_text }}</span>
           {% if section.settings.login_image %}
             <img class="c-headerMain__accountImage"
               src="{{ section.settings.login_image | img_url }}"
               alt="{{ section.settings.login_image.alt }}" 
             />
-          {% else %}
-            <span class="c-headerMain__accountText">{{ login_text }}</span>
           {% endif %}
-        </a>
-<!--       </button> -->
+        </a>    
       {% endif %}
+      <div class="c-headerMain__secondary--cart">
+        <a href="/cart">{%- render 'icon-cart' -%}
+          <span id="cartIcon"></span>
+        </a>
+      </div>           
       <button class="c-headerMain__start c-button c-button--isDefault c-button--isPrimary" data-get-started data-boxsize='12'>
         <span class="c-headerMain__startText">{{ start_text }}</span>        
       </button>
     </div>
   </div>
 </div>
+
+<script>
+  const updateCartIcon = async () => {
+    const { cartdrawer: { cartItems } } = JSON.parse(localStorage.getItem('vuex'))    
+    const cartIcon = document.querySelector('.c-headerMain__secondary--cart')
+    const cartNum = document.getElementById('cartIcon')      
+    const totalCart = cartItems.general?.length + (cartItems.box.length ? 1 : 0)    
+    cartNum.textContent = totalCart  
+    cartIcon.classList.add('scalePop')  
+    setTimeout(()=> cartIcon.classList.remove('scalePop') , 750)  
+  }
+  updateCartIcon()
+
+  document.addEventListener('swagCartAdded', e => {
+    const { added } = e.detail
+    if (added) setTimeout(()=> updateCartIcon(), 200)
+  }, { once: true })  
+
+</script>
 
 
 {% schema %}
@@ -130,12 +171,7 @@
       {
         "type": "header",
         "content": "Account"
-      },
-      {
-        "id": "login_text",
-        "type": "text",
-        "label": "Login Text"
-      },
+      },     
       {
         "id": "account_text",
         "type": "text",
@@ -146,6 +182,20 @@
         "type": "image_picker",
         "label": "Account Image"
       },
+      {
+        "type": "header",
+        "content": "Login"
+      },        
+      {
+        "id": "login_text",
+        "type": "text",
+        "label": "Login Text"
+      },
+      {
+        "id": "login_image",
+        "type": "image_picker",
+        "label": "Login Image"
+      },       
       {
         "type": "header",
         "content": "Get Started"

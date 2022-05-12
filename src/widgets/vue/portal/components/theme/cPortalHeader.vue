@@ -201,6 +201,10 @@ export default {
   background-color: $color-white;
   transition: max-height 0.2s ease-in-out;
   overflow: hidden;
+
+  .router-link-active {
+    background-color: $color-secondary;
+  }
 }
 .c-portalHeader__mobileLink {
   width: 100%;
