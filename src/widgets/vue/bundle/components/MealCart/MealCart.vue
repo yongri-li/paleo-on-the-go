@@ -227,6 +227,10 @@ $translateY: calc(100% - $height-header-title);
     flex-shrink: 0;
   }
 
+  @include media-desktop-up {
+    width: 340px;
+  }
+
   @include media-up(1440px) {
     width: 380px;
   }

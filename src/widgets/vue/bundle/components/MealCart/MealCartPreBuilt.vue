@@ -91,7 +91,7 @@ export default {
     width: 100%;
     margin-bottom: 0.5rem;
 
-    @include media-up(1440px) {
+    @include media-desktop-up {
       width: 40%;
     }
 
@@ -111,7 +111,7 @@ export default {
     text-transform: capitalize;
     font-size: 1rem;
     width: 100%;
-    @include media-up(1440px) {
+    @include media-desktop-up {
       width: 55%;
     }
 
