@@ -34,6 +34,10 @@ src/assets/widget-portal.css
 src/assets/widget-portal.js
 src/assets/widget-article.css
 src/assets/widget-article.js
+src/assets/widget-pdp.css
+src/assets/widget-pdp.js
+src/assets/widget-plp.css
+src/assets/widget-plp.js
 src/assets/widget-policiespage.css
 src/assets/widget-policiespage.js
 src/assets/widget-pdp.css
@@ -104,3 +108,4 @@ _site
 secrets.json
 .jekyll-metadata
 .ruby-version
+.prettierrc
