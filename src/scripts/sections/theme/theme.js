@@ -18,9 +18,7 @@ const sendBoxInfo = btn => {
 	window.location.href = '/pages/bundle/#/subscription'
 }
 getStartedBtns.forEach(btn => btn.addEventListener('click', () => sendBoxInfo(btn)))
-startBoxBab.forEach(btn =>
-	btn.addEventListener('click', () => (location.href = '/pages/bundle/#/subscription'))
-)
+startBoxBab.forEach(btn => btn.addEventListener('click', () => (location.href = '/pages/bundle/')))
 if (isHomepage) boxTabs.forEach(box => box.addEventListener('click', () => sendBoxInfo(box)))
 
 logoutLinks.forEach(lnk =>
