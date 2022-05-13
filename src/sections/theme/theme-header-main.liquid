@@ -122,8 +122,11 @@
 
 <script>
   const updateCartIcon = async () => {
-    const { cartdrawer: { cartItems } } = JSON.parse(localStorage.getItem('vuex'))  
-    console.log(cartItems)  
+    const cartVuex = JSON.parse(localStorage.getItem('vuex'))  
+    if(!cartVuex) return
+    console.log(cartVuex)
+    const { cartdrawer: { cartItems } } = cartVuex
+    console.log(cartItems)
     const cartIcon = document.querySelector('.c-headerMain__secondary--cart')
     const cartNum = document.getElementById('cartIcon')      
     const totalCart = cartItems ? cartItems.general?.length + (cartItems.box?.length ? 1 : 0) : 0;

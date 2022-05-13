@@ -1,5 +1,6 @@
 <template>
   <div :class="_buildModifiers('c-shipmentsBox', modifiers)" ref="shipmentBox">
+    <!-- <button @click="addRouteProduct">test route</button> -->
     <c-accordion>
       <c-accordionItem
         class="c-shipmentsBox__wrap"
@@ -132,6 +133,7 @@ import cShipmentsSummary from './cShipmentsSummary.vue'
 import Datepicker from 'vuejs-datepicker'
 import { routeapp } from '../../utils'
 import { formatPriceToNumber } from '@shared/utils'
+import { _buildUpdates } from '@vue/portal/utils'
 
 export default {
   props: {
@@ -274,12 +276,10 @@ export default {
       }
     }
   },
-  mounted() {
-    this.getQuote()
-  },
   methods: {
     ...mapMutations('ui', ['UI_SET_SIDEBAR', 'UI_SET_MODAL']),
     ...mapMutations('customer', ['CUSTOMER_SET_THIS_CHARGEID', 'CUSTOMER_SET_NEXT_CHARGEDATE']),
+    ...mapActions('customer', ['customerCreateSubscriptions']),
     ...mapActions('babcart', ['addToCartFromPortal']),
     setBoxMaxHeight() {
       this.setBoxHeight = !this.setBoxHeight
@@ -291,6 +291,60 @@ export default {
         this.route_price = insurance_price
       })
     },
+    async addRouteProduct() {
+      let routeProduct = { ...this.routeProduct }
+      routeProduct.price = this.route_price * 100
+      console.log(routeProduct)
+      // const data = await this.customerUpdateSubscriptions({
+      //   addressId: this.addressId,
+      //   updates: _buildUpdates({
+      //     items: [routeProduct],
+      //     values: { interval: { unit: 'week', frequency: this.frequency } }
+      //   })
+      // })
+      // console.log(data)
+      // const { addressId, creates } = payload
+
+      // EXAMPLE PRODUCT
+
+      // subscriptionUpdates() {
+      //   return this.cart?.items.map((child) => {
+      //     return {
+      //       address_id: this.addressId,
+      //       charge_interval_frequency: 1,
+      //       next_charge_scheduled_at: this.nextChargeDate,
+      //       order_interval_frequency: 1,
+      //       order_interval_unit: "week",
+      //       price: (child.variants[0].price / 100).toFixed(2),
+      //       hash: child.price_hashes,
+      //       tags: child.tags,
+      //       shopify_variant_id: child.variants[0].id,
+      //       quantity: child.quantity,
+      //     };
+      //   });
+      // }
+
+      //       {
+      //     "address_id": "88549970",
+      //     "charge_interval_frequency": 1,
+      //     "next_charge_scheduled_at": "2022-05-14T00:00:00",
+      //     "order_interval_frequency": 1,
+      //     "order_interval_unit": "week",
+      //     "price": "7.50",
+      //     "hash": "a512d82f17f6b753b4c0f073881dbf439d23e63be50b1898a28af47e5199dc4b",
+      //     "tags": ["aip", "AIP Friendly", "autoimmune protocol meals", "brocolli", "cassava-free", "detox", "Full Menu", "keto", "paleo", "pork-free", "related", "risoto", "risotto", "seafood-free", "sidedish", "sugar detox", "vegetable", "vegetable sides", "whole 30", "whole30"],
+      //     "shopify_variant_id": 14121665953847,
+      //     "quantity": 12
+      // }
+
+      const update = await this.customerCreateSubscriptions({
+        addressId: this.addressId,
+        creates: [routeProduct]
+      })
+
+      console.log(update)
+    },
+
     // async roundInsurePrice() {
     //   this.route_price = formatPriceToNumber(this.routeProduct?.price)
     // },
@@ -328,6 +382,9 @@ export default {
       this.handleChangeMeals()
       window.location.href = '/pages/bundle/#/addons'
     }
+  },
+  mounted() {
+    this.getQuote()
   }
 }
 </script>

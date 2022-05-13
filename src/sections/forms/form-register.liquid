@@ -56,7 +56,7 @@
       </p>
     {% endif %}
     <div class="c-formRegister__content c-form__content">
-      {%- form "create_customer" return_to: '/account#/details' -%} 
+      {%- form "create_customer", return_to: '/account#/details' -%} 
         {%- if form.errors -%}
           <div class="c-formRegister__alert c-form__alert c-form__alert--isError">
             {{ form.errors | default_errors }}

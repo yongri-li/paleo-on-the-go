@@ -24,7 +24,7 @@
             :shipDate="formatDayDateIOS(charge.scheduledAt)"
           />
         </section>
-        <c-shipmentsEmpty v-if="!charges.length" :content="content" />
+        <c-shipmentsEmpty v-if="!charges.length" :content="content" :isRecharge="isRecharge" />
       </div>
     </article>
 
@@ -51,6 +51,9 @@ export default {
     allProducts: {
       type: Array,
       required: true
+    },
+    isRecharge: {
+      type: Boolean
     }
   },
   components: {
