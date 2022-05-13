@@ -6,11 +6,11 @@
       </div>
       <div class="c-shipmentsEmpty__wrap--right">
         <h2 class="c-h2">{{ content.no_subs_heading }}</h2>
-        <p>{{ content.no_subs_text }}</p>
+        <p>{{ isRecharge ? content.no_subs_text : content.no_subs_orders_text }}</p>
         <c-button
           class="c-button c-button--isDefault c-button--isPrimary"
-          @click="$router.push({ path: '/details' })"
-          :text="content.no_subs_cta_text"
+          @click="handleCta"
+          :text="isRecharge ? content.no_subs_cta_text : 'Shop Now'"
           :modifiers="['isDefault', 'isPrimary']"
         />
       </div>
@@ -27,12 +27,21 @@ export default {
       type: Object,
       required: true
     },
+    isRecharge: {
+      type: Boolean,
+      default: true
+    },
     modifiers: {
       type: Array,
       default: () => []
     }
   },
-  components: { cButton }
+  components: { cButton },
+  methods: {
+    handleCta() {
+      this.isRecharge ? $router.push({ path: '/details' }) : (location.href = '/pages/bundle/#/subscription')
+    }
+  }
 }
 </script>
 

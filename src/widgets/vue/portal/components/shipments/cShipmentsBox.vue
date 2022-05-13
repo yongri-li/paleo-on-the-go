@@ -1,6 +1,6 @@
 <template>
   <div :class="_buildModifiers('c-shipmentsBox', modifiers)" ref="shipmentBox">
-    <button @click="addRouteProduct">asdsa</button>
+    <!-- <button @click="addRouteProduct">test route</button> -->
     <c-accordion>
       <c-accordionItem
         class="c-shipmentsBox__wrap"

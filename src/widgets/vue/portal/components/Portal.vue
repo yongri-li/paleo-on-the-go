@@ -8,7 +8,12 @@
       :modifiers="['isSecondary', 'isHollow', 'isLargest']"
     />
     <transition name="t-content-fade" v-if="customerReady" mode="out-in">
-      <router-view class="c-portal__content" :key="$route.name" :allProducts="allProducts" />
+      <router-view
+        class="c-portal__content"
+        :key="$route.name"
+        :allProducts="allProducts"
+        :isRecharge="!!customerRecharge"
+      />
     </transition>
     <c-sidebar class="c-portal__sidebar" v-if="customerReady" data-portal-header />
     <c-modal class="c-portal__modal" v-if="customerReady" data-portal-modal />
