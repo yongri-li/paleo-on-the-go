@@ -3,7 +3,7 @@
     <stepper />
     <div class="content-products-cart">
       <div class="content-products">
-        <filter-and-sorting :length-products="products.length" />
+        <filter-and-sorting :length-products="lengthProductsAvailable" />
         <product-collection :products="products" />
       </div>
       <meal-cart />
@@ -64,6 +64,9 @@ export default {
     products() {
       return this.getProductsFromRoute(this.$route);
     },
+    lengthProductsAvailable() {
+      return this.products.filter(product => product.available).length
+    }
   },
   methods: {
     setFooter() {
