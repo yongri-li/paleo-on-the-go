@@ -4,7 +4,13 @@
 
     <article class="box__byAddressId">
       <div class="c-shipments__content" v-if="ready">
-        <section v-for="(charge, i) in charges" class="c-shipments__flex">
+        <c-shipmentsChargeFailed v-if="isFailedCharge" :content="content" class="c-shipments__callout" />
+        <!-- :newCardPending="" -->
+        <section
+          v-for="(charge, i) in charges"
+          class="c-shipments__flex"
+          :class="isFailedCharge && 'grey-out'"
+        >
           <h2 v-if="!!charge && i < 1" class="c-h2">Upcoming Orders</h2>
           <c-shipmentsBox
             v-if="content"
@@ -31,6 +37,7 @@ import { mapGetters, mapState, mapActions, mapMutations } from 'vuex'
 import cShipmentsLoading from '../shipments/cShipmentsLoading.vue'
 import cShipmentsEmpty from '../shipments/cShipmentsEmpty.vue'
 import cShipmentsBox from '../shipments/cShipmentsBox.vue'
+import cShipmentsChargeFailed from '../shipments/cShipmentsChargeFailed.vue'
 import cFaqAccordion from '@shared/components/core/cFaqAccordion.vue'
 import { format } from 'date-fns'
 import { convertToYYYYMMDDlocalT } from '@shared/utils'
@@ -50,16 +57,25 @@ export default {
     cShipmentsLoading,
     cShipmentsEmpty,
     cShipmentsBox,
+    cShipmentsChargeFailed,
     cFaqAccordion
   },
   computed: {
     ...mapState('customer', ['addressIds']),
-    ...mapGetters('customer', ['customerUpcomingCharge', 'customerUpcomingCharges', ['customerShopify']]),
+    ...mapGetters('customer', [
+      'customerUpcomingCharge',
+      'customerUpcomingCharges',
+      'customerChargeError',
+      ['customerShopify']
+    ]),
     content() {
       return this.$store.getters['customize/customizeContentByKey']('shipments')
     },
     charges() {
-      return this.customerUpcomingCharges
+      return this.customerUpcomingCharges?.filter(chrg => chrg.status !== ('REFUNDED' || 'CANCELLED'))
+    },
+    isFailedCharge() {
+      return this.charges.some(chrg => chrg.status === 'ERROR')
     },
     faqTitle() {
       const titleArr = this.content.faqs_title.split(' ')
@@ -90,6 +106,11 @@ export default {
 <style lang="scss">
 .c-shipments {
   background-color: $color-ecru;
+
+  .grey-out {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 }
 
 .c-shipments__flex {
