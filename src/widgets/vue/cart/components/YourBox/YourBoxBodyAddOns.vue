@@ -1,8 +1,6 @@
 <template>
   <div class="addons">
-    <div class="addons__title">
-      Add Ons
-    </div>
+    <div class="addons__title">Add Ons</div>
     <product-item-add-ons
       v-for="addon in addons"
       :key="addon.id"
@@ -13,19 +11,19 @@
 </template>
 
 <script>
-import ProductItemAddOns from '../Products/ProductItemAddOns.vue'
+import ProductItemAddOns from "../Products/ProductItemAddOns.vue";
 
 export default {
   props: {
     addons: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   components: {
-    ProductItemAddOns
+    ProductItemAddOns,
   },
-}
+};
 </script>
 
 <style lang="scss" scoped>
@@ -33,17 +31,13 @@ export default {
   &__title {
     text-transform: uppercase;
     font-weight: 700;
-    font-size: 1.2rem;
-    letter-spacing: .06em;
-    margin-bottom: .5rem;
-
-    @include media-tablet-up {
-      font-size: 1rem;
-    }
+    font-size: 0.88rem;
+    letter-spacing: 0.06em;
+    margin-bottom: 0.5rem;
   }
   &__content {
     background-color: #efede6;
-    padding: .5rem;
+    padding: 0.5rem;
   }
 }
 </style>

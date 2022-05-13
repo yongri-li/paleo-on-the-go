@@ -5,61 +5,56 @@
     </div>
     <div class="your-box__content">
       <div class="your-box__content-header">
-        <div class="your-box__content-column product">
-          Product
-        </div>
-        <div class="your-box__content-column qty u-hideMobileDown">
-          QTY
-        </div>
-        <div class="your-box__content-column price u-hideMobileDown">
-          Price
-        </div>
+        <div class="your-box__content-column product">Product</div>
+        <div class="your-box__content-column qty u-hideMobileDown">QTY</div>
+        <div class="your-box__content-column price u-hideMobileDown">Price</div>
       </div>
-      <your-box-body class="your-box__content-body"/>
+      <your-box-body class="your-box__content-body" />
     </div>
   </div>
 </template>
 
 <script>
-import YourBoxBody from './YourBoxBody.vue'
-import { mapState } from 'vuex'
+import YourBoxBody from "./YourBoxBody.vue";
+import { mapState } from "vuex";
 
 export default {
   components: {
-    YourBoxBody
+    YourBoxBody,
   },
   computed: {
-    ...mapState('ui', [
-      'settings'
-    ])
-  }
-}
+    ...mapState("ui", ["settings"]),
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 .your-box {
-
   margin-bottom: 2rem;
 
   &__title {
     font-family: $font-heading;
-    font-size: 3rem;
+    font-size: 2.63rem;
     text-transform: uppercase;
     margin-bottom: 1rem;
+
+    @include media-tablet-up {
+      font-size: 2.5rem;
+    }
   }
 
   &__content {
     @include media-tablet-up {
-      &-column.product{
+      &-column.product {
         width: 55%;
       }
 
-      &-column.qty{
+      &-column.qty {
         width: 10%;
         text-align: center;
       }
 
-      &-column.price{
+      &-column.price {
         width: 22%;
         text-align: right;
       }
@@ -69,23 +64,23 @@ export default {
   &__content-header {
     text-transform: uppercase;
     font-weight: 700;
-    font-size: 1.2rem;
+    font-size: 0.88rem;
     letter-spacing: 0.06em;
+    line-height: 1.4;
 
     @include media-tablet-up {
-      font-size: 1rem;
-      padding: 0 .4rem;
+      padding: 0 0.4rem;
       @include flex();
 
-      &-column.product{
+      &-column.product {
         width: 60%;
       }
 
-      &-column.qty{
+      &-column.qty {
         width: 10%;
       }
 
-      &-column.price{
+      &-column.price {
         width: 15%;
         text-align: right;
       }
@@ -93,8 +88,8 @@ export default {
   }
 
   &__content-body {
-    border: 1px solid #EFEDE6;
-    padding: .4rem;
+    border: 1px solid #efede6;
+    padding: 0.4rem;
     margin-top: 1rem;
 
     @include media-tablet-up {
