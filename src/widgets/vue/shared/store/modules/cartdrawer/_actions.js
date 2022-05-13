@@ -92,7 +92,8 @@ export default {
     const where = hasSubscription ? 'box' : 'general'
 
     // Remove some product we have before
-    commit(REMOVE_ROUTE_PROTECTION_TO_CART, { where })
+    commit(REMOVE_ROUTE_PROTECTION_TO_CART, { where: 'box' })
+    commit(REMOVE_ROUTE_PROTECTION_TO_CART, { where: 'general' })
 
     // create routeProduct to add
     routeProduct = {
