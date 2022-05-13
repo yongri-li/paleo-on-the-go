@@ -223,7 +223,7 @@
 
     @include media-tablet-down {
       padding: 1.5rem 0.5rem;
-      width: 100vw;
+      width: 100%;
 
       .c-plansGrid__plan {
         padding-bottom: 1.5rem;
@@ -656,39 +656,34 @@
 // BOTTOM BANNER ***
 .c-homeBtm__banner {
   background-color: $color-secondary;
-  padding: 2rem;
+  padding: 1rem 0.5rem;
+  position: relative;
+  z-index: 5;
 
-  section,
-  div {
+  @include media-tablet-up {
+    padding: 2rem;
+  }
+
+  section {
     display: flex;
     align-items: center;
     justify-content: center;
-    grid-gap: 2rem;
+
+    @include media-tablet-up {
+      gap: 32px;
+    }
 
     .c-h2 {
       margin: 0;
-    }
 
-    input {
-      height: 50px;
-      min-width: 280px;
-      border: none;
-      color: $color-black;
-      font-family: 'Roboto', sans-serif;
-      font-size: 1rem;
-      font-weight: 500;
-      outline: none;
-      padding: 0.5rem 1rem;
+      font-size: 11.250vw;
+      @include media-tablet-up {
+        font-size: 3.711vw;
+      }
+      @include media-desktop-up {
+        font-size: 4.236vw;
+      }
     }
-
-    .c-button {
-      height: 50px;
-      padding: 1rem 2rem;
-    }
-  }
-
-  div {
-    grid-gap: 1rem;
   }
 
   @include media-mobile-down {
@@ -707,6 +702,21 @@
     div {
       grid-gap: 0;
     }
+  }
+}
+
+.c-homeBtm__form {
+  width: 100%;
+
+  @include media-tablet-up {
+    flex-grow: 1;
+    width: auto;
+  }
+
+  .klaviyo-form,
+  .klaviyo-form > div,
+  .klaviyo-form form {
+    width: 100%;
   }
 }
 
@@ -776,7 +786,7 @@ section {
   }
 
   .c-homeSplit {
-    width: 100vw;
+    width: 100%;
     flex-direction: column;
 
     .c-homeSplit__right div {
