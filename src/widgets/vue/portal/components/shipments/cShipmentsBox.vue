@@ -163,8 +163,7 @@ export default {
     return {
       isUpcoming: true,
       setBoxHeight: false,
-      insurance_price: '--',
-      real_insurance_price: '--'
+      route_price: '--'
     }
   },
   components: {
@@ -286,16 +285,14 @@ export default {
       this.setBoxHeight = !this.setBoxHeight
     },
     getQuote() {
-      const subtotal = 212.45
       const route_api_key = window.Scoutside.api.route_api_key
 
-      routeapp.get_quote(route_api_key, subtotal, 'USD', async ({ insurance_price }) => {
-        this.real_insurance_price = insurance_price
-        // await this.roundInsurePrice()
+      routeapp.get_quote(route_api_key, this.charge.subtotal, 'USD', async ({ insurance_price }) => {
+        this.route_price = insurance_price
       })
     },
     // async roundInsurePrice() {
-    //   this.insurance_price = formatPriceToNumber(this.routeProduct?.price)
+    //   this.route_price = formatPriceToNumber(this.routeProduct?.price)
     // },
     setMealBox() {
       sessionStorage.setItem('boxSize', this.totalSubItems)
