@@ -3,18 +3,15 @@
 <article class="c-homeBtm__banner">
   <section>
     <h2 class="c-h2">{{section.settings.banner_tagline}}</h2>
-    <div>
-      <!-- Klayvio Embed here -->
-      <input type="text" placeholder="Email Address">
-      <button class="c-button c-button--isDefault c-button--isPrimary">
-        Submit
-      </button>
+    <div class="c-homeBtm__form">
+      <!-- Klaviyo Embed here -->
+      <div class="klaviyo-form-Rv4S6s"></div>
     </div>
   </section>
 </article>
 
 
-<main class="c-footerMain" data-footer-main>  
+<main class="c-footerMain" data-footer-main>
   <nav class="c-footerMain__wrapper o-containerLarge">
     <section class="c-footerMain__leftBrandContact">
       <div class="c-footerMain__logoBox">
@@ -24,8 +21,8 @@
       </div>
 
       {% if section.blocks %}
-      <div class="c-footerMain__socialMediaLinks">  
-        {% for block in section.blocks %}          
+      <div class="c-footerMain__socialMediaLinks">
+        {% for block in section.blocks %}
           {%- assign soc_url = block.settings.social_link | split: '.com' -%}
           {%- assign cut_www = soc_url[0] | split: 'https://www.' -%}
           {%- assign soc_icon = cut_www[1] | prepend: 'icon-' -%}
@@ -38,21 +35,21 @@
       <div class="c-footerMain__contact">
         <h4 class="isBold">
           <a href="tel:{{section.settings.contact_phone}}">P: {{ section.settings.contact_phone }}</a>
-        </h4>          
+        </h4>
         <div class="c-footerLegal__copyright">
           © {{ section.settings.copyright_text }}
-        </div>  
-      </div>   
+        </div>
+      </div>
     </section>
 
     <section class="c-footerMain__wrapperSub">
     {%- for link in linklists[section.settings.footer_menu].links -%}
-      <section class="c-footerMain__mainMenu">        
+      <section class="c-footerMain__mainMenu">
         <h4 class="c-h4">
           {{ link.title }}
           <span class="icon-opened">{% render 'icon-menu-open' %}</span>
           <span class="icon-closed">{% render 'icon-menu-closed' %}</span>
-        </h4>  
+        </h4>
         {% if link.links != blank %}
           <div class="c-footerMain__subMenu">
           {%- for childlink in link.links -%}
@@ -60,10 +57,10 @@
               {{ childlink.title }}
             </a>
           {%- endfor -%}
-          </div>        
+          </div>
        {% endif %}
        </section>
-    {%- endfor -%}    
+    {%- endfor -%}
     </section>
   </nav>
 </main>
@@ -98,7 +95,7 @@ topLevelNavEls.forEach((item) => {
         "id": "logo_text",
         "type": "text",
         "label": "Logo Text"
-      },      
+      },
       {
         "type": "link_list",
         "id": "footer_menu",
@@ -109,12 +106,12 @@ topLevelNavEls.forEach((item) => {
         "id": "copyright_text",
         "type": "text",
         "label": "Copyright Text"
-      },  
+      },
       {
         "id": "contact_phone",
         "type": "text",
         "label": "Phone Number"
-      },           
+      },
       {
         "id": "contact_email",
         "type": "text",
@@ -130,13 +127,13 @@ topLevelNavEls.forEach((item) => {
         "id": "btm_klayvio_link",
         "type": "text",
         "label": "Klayvio Link"
-      }            
+      }
     ],
     "blocks": [
         {
           "type": "social-media",
           "name": "Social Media Account",
-          "settings": [           
+          "settings": [
             {
               "id": "social_link",
               "type": "url",
@@ -144,6 +141,6 @@ topLevelNavEls.forEach((item) => {
             }
           ]
         }
-    ]    
+    ]
   }
 {% endschema %}
