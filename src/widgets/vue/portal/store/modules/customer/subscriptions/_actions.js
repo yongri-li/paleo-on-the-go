@@ -13,5 +13,15 @@ export default {
       await commit('CUSTOMER_UPDATE_CHARGES', { charges, keys: ['id', 'addressId'] })
     if (subscriptions) await commit('CUSTOMER_UPDATE_SUBSCRIPTIONS', { subscriptions })
     return { subscriptions, charges, error }
+  },
+  async customerCreateSubscriptions({ commit }, payload) {
+    const apiClient = new apiService()
+    const { addressId, creates } = payload
+    console.log(payload)
+    const { data } = await apiClient.post('/v1/customer/subscriptions', {
+      data: { addressId, creates }
+    })
+    const { charges, subscriptions, error } = data
+    return { subscriptions, error }
   }
 }
