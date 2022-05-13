@@ -63,14 +63,13 @@ export default {
     },
   },
   methods: {
-    ...mapActions("mealcart", ["addToCart"]),
+    ...mapActions("babcart", ["addToCart"]),
     closeModal() {
       this.$emit("close");
     },
     addToCartModal() {
       this.addToCart({
-        idCollection: this.product.collection.id,
-        idProduct: this.product.id,
+        product: this.product,
         where: this.where,
       });
       this.closeModal();
