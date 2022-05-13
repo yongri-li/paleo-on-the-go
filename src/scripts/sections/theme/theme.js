@@ -5,6 +5,7 @@ const windowPath = window.location.pathname
 // if (windowPath === '/account') window.location.href = '/account#/shipments/'
 const isHomepage = document.querySelector('.o-homepage')
 const getStartedBtns = document.querySelectorAll('[data-get-started]')
+const startBoxBab = document.querySelectorAll('[data-start-box]')
 const boxTabs = document.querySelectorAll('.js--planClk')
 const logoutLinks = document.querySelectorAll('[data-logout-link]')
 
@@ -17,6 +18,9 @@ const sendBoxInfo = btn => {
 	window.location.href = '/pages/bundle/#/subscription'
 }
 getStartedBtns.forEach(btn => btn.addEventListener('click', () => sendBoxInfo(btn)))
+startBoxBab.forEach(btn =>
+	btn.addEventListener('click', () => (location.href = '/pages/bundle/#/subscription'))
+)
 if (isHomepage) boxTabs.forEach(box => box.addEventListener('click', () => sendBoxInfo(box)))
 
 logoutLinks.forEach(lnk =>
