@@ -51,6 +51,7 @@ export default {
 
     .content-box-cart {
       padding-right: 1.25rem;
+      width: 100%;
     }
 
     .content-summary {
