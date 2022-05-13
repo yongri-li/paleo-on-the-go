@@ -6,8 +6,6 @@
 {% assign account_text = "{{ account_text }}" %}
 {% assign name_text = customer.first_name %}
 
-{% comment %}{% endcomment %}
-
 {% if section.settings.logo_text != blank %}{% assign logo_text = section.settings.logo_text %}{% endif %}
 {% if section.settings.login_text != blank %}{% assign login_text = section.settings.login_text %}{% endif %}
 {% if section.settings.account_text != blank %}{% assign account_text = section.settings.account_text %}{% endif %}
@@ -117,9 +115,9 @@
           <span id="cartIcon"></span>
         </a>
       </div>           
-      <button class="c-headerMain__start c-button c-button--isDefault c-button--isPrimary" data-start-box>
+      <a href="/pages/bundle/" class="c-headerMain__start c-button c-button--isDefault c-button--isPrimary">
         <span class="c-headerMain__startText">{{ start_text }}</span>        
-      </button>
+      </a>
     </div>
   </div>
 </div>
