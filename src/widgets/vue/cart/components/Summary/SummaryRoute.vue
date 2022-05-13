@@ -149,11 +149,11 @@ export default {
     },
   },
   mounted() {
-    this.getQuote();
+    this.getQuote(true);
   },
   methods: {
     ...mapActions("cartdrawer", ["setRouteProduct"]),
-    getQuote() {
+    getQuote(firstLoad = false) {
       const subtotal = this.subtotal;
       const route_api_key = window.Scoutside.api.route_api_key;
       routeapp.get_quote(
@@ -166,6 +166,8 @@ export default {
           this.loading = false;
           if (this.haveRouteProductInCart && this.cta === "ADD+")
             this.addProduct();
+
+          if (firstLoad) this.addProduct()
         }
       );
     },
