@@ -136,6 +136,7 @@ export default {
     ...mapGetters("cartdrawer", [
       "getSubTotalPricesWithoutRoute",
       "routeProductInCart",
+      "getSubscriptionItems",
     ]),
     subtotal() {
       return formatPriceToNumber(this.getSubTotalPricesWithoutRoute);
@@ -163,7 +164,8 @@ export default {
           this.real_insurance_price = insurance_price;
           await this.roundInsurePrice();
           this.loading = false;
-          if (this.haveRouteProductInCart) this.addProduct();
+          if (this.haveRouteProductInCart && this.cta === "ADD+")
+            this.addProduct();
         }
       );
     },

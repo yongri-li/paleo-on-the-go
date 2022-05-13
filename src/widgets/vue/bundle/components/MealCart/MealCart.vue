@@ -205,6 +205,14 @@ export default {
         this.$store.commit(`babcart/${CLEAN_ALL_CART}`);
         return;
       }
+
+      // this is for wrong params
+      if (box !== "subscription" && box !== "onetime" && box !== "addons") {
+        console.log("entro al if de wrong params");
+        changeRouter(orderType)
+        return;
+      }
+
     },
     changeCartMobile(val) {
       this.showCartMobile = val;

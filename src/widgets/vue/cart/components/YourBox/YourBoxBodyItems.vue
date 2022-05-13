@@ -3,7 +3,7 @@
     <your-box-body-items-info />
     <div class="items__products">
       <product-item-box
-        v-for="item in items"
+        v-for="item in filteredItems"
         :key="item.id"
         :product="item"
         type-class="addons"
@@ -26,6 +26,11 @@ export default {
     items: {
       type: Array,
       required: true,
+    },
+  },
+  computed: {
+    filteredItems() {
+      return this.items.filter((item) => item.hide !== true);
     },
   },
 };
