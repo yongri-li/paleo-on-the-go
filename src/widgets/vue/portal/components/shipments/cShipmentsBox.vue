@@ -1,6 +1,6 @@
 <template>
   <div :class="_buildModifiers('c-shipmentsBox', modifiers)" ref="shipmentBox">
-    <!-- <button @click="addRouteProduct">test route</button> -->
+    <button @click="addRouteProduct">test route</button> <span>{{ hasRouteItem }}</span>
     <c-accordion>
       <c-accordionItem
         class="c-shipmentsBox__wrap"
@@ -54,7 +54,7 @@
           <div v-if="isUpcoming" class="c-shipmentsBox__lineItems">
             <div class="c-shipmentsBox__grid">
               <c-orders-item
-                v-for="(item, subIndex) in subsItems"
+                v-for="(item, subIndex) in subItemsNoRoute"
                 :key="subIndex"
                 :item="item"
                 :content="content"
@@ -201,25 +201,25 @@ export default {
     subObjects() {
       return this.$store.getters['customer/customerSubscriptionsByAddressId'](this.addressId)
     },
-    subsIds() {
+    subIds() {
       return this.subObjects.map(sub => sub.productId * 1)
     },
-    subsItems() {
-      return this.allSubs.filter(item => this.subsIds.includes(+item.productId))
+    subItems() {
+      return this.allSubs.filter(item => this.subIds.includes(+item.productId))
     },
     subItemsNoRoute() {
-      return this.allSubs.filter(itm => !itm.productTitle.includes('route'))
+      return this.subItems.filter(itm => !itm.productTitle.includes('route'))
     },
     subProductIds() {
       return this.subItemsNoRoute.map(prd => prd.productId * 1)
     },
-    subsProductQtys() {
+    subProductQtys() {
       return this.subItemsNoRoute.map(prd => prd.quantity)
-      //return this.subsItems.map(prd => prd.quantity)
+      //return this.subItems.map(prd => prd.quantity)
     },
 
-    routeItems() {
-      return this.allSubs.filter(itm => itm.productTitle.includes('route'))
+    hasRouteItem() {
+      return this.allSubs.some(itm => itm.productTitle.includes('route'))
     },
     routeProduct() {
       return this.allProducts.find(itm => itm.title.includes('Route Package'))
@@ -252,7 +252,7 @@ export default {
     },
 
     frequency() {
-      const freqObj = this.subsItems?.find(sub => sub.frequency)
+      const freqObj = this.subItems?.find(sub => sub.frequency)
       const freqBackup = this.$store.getters['customer/customerSubscriptionsByAddressId'](
         this.addressId
       )?.find(sub => sub.frequency)
@@ -279,13 +279,13 @@ export default {
     },
     portalProducts() {
       return {
-        items: this.subProductIds //this.subsIds
+        items: this.subProductIds //this.subIds
           .map((id, i) => {
             let productFound = this.allProducts.find(prod => prod.id === id)
             let item = productFound
               ? {
                   ...productFound,
-                  quantity: this.subsProductQtys[i]
+                  quantity: this.subProductQtys[i]
                 }
               : null
             return item

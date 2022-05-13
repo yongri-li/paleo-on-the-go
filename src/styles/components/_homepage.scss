@@ -674,6 +674,10 @@
     .klaviyo-form {
       button {
         font-weight: 500 !important;
+        min-width: 100px;
+        @include media-desktop-up {
+          min-width: 224px;
+        }
       }
 
       input,
@@ -688,7 +692,7 @@
 
     .c-h2 {
       margin: 0;
-      font-size: 2rem;
+      font-size: 2.5rem;
       @include media-tablet-up {
         font-size: 3.5vw;
       }
@@ -713,6 +717,7 @@
 
     div {
       grid-gap: 0;
+      padding-right: 0 !important;
     }
   }
 }
