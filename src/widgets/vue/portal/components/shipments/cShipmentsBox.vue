@@ -304,6 +304,39 @@ export default {
       // })
       // console.log(data)
       // const { addressId, creates } = payload
+
+      // EXAMPLE PRODUCT
+
+      // subscriptionUpdates() {
+      //   return this.cart?.items.map((child) => {
+      //     return {
+      //       address_id: this.addressId,
+      //       charge_interval_frequency: 1,
+      //       next_charge_scheduled_at: this.nextChargeDate,
+      //       order_interval_frequency: 1,
+      //       order_interval_unit: "week",
+      //       price: (child.variants[0].price / 100).toFixed(2),
+      //       hash: child.price_hashes,
+      //       tags: child.tags,
+      //       shopify_variant_id: child.variants[0].id,
+      //       quantity: child.quantity,
+      //     };
+      //   });
+      // }
+
+      //       {
+      //     "address_id": "88549970",
+      //     "charge_interval_frequency": 1,
+      //     "next_charge_scheduled_at": "2022-05-14T00:00:00",
+      //     "order_interval_frequency": 1,
+      //     "order_interval_unit": "week",
+      //     "price": "7.50",
+      //     "hash": "a512d82f17f6b753b4c0f073881dbf439d23e63be50b1898a28af47e5199dc4b",
+      //     "tags": ["aip", "AIP Friendly", "autoimmune protocol meals", "brocolli", "cassava-free", "detox", "Full Menu", "keto", "paleo", "pork-free", "related", "risoto", "risotto", "seafood-free", "sidedish", "sugar detox", "vegetable", "vegetable sides", "whole 30", "whole30"],
+      //     "shopify_variant_id": 14121665953847,
+      //     "quantity": 12
+      // }
+
       const update = await this.customerCreateSubscriptions({
         addressId: this.addressId,
         creates: [routeProduct]
