@@ -223,7 +223,7 @@
 
     @include media-tablet-down {
       padding: 1.5rem 0.5rem;
-      width: 100vw;
+      width: 100%;
 
       .c-plansGrid__plan {
         padding-bottom: 1.5rem;
@@ -786,7 +786,7 @@ section {
   }
 
   .c-homeSplit {
-    width: 100vw;
+    width: 100%;
     flex-direction: column;
 
     .c-homeSplit__right div {
