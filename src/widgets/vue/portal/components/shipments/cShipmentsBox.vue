@@ -1,6 +1,6 @@
 <template>
   <div :class="_buildModifiers('c-shipmentsBox', modifiers)" ref="shipmentBox">
-    <!-- <button @click="addRouteProduct">test route</button> -->
+    <button @click="addRouteProduct">test route</button>
     <c-accordion>
       <c-accordionItem
         class="c-shipmentsBox__wrap"
@@ -54,8 +54,8 @@
           <div v-if="isUpcoming" class="c-shipmentsBox__lineItems">
             <div class="c-shipmentsBox__grid">
               <c-orders-item
-                v-for="(item, subscriptionIndex) in subscriptionItems"
-                :key="subscriptionIndex"
+                v-for="(item, subIndex) in subsItems"
+                :key="subIndex"
                 :item="item"
                 :content="content"
               />
@@ -193,15 +193,36 @@ export default {
     allItems() {
       return this.charge.lineItems
     },
-    itemsNoRoute() {
-      return this.allItems.filter(itm => !itm.productTitle.includes('route'))
+
+    allSubs() {
+      return this.allItems.filter(itm => !itm.properties.find(prop => prop.name === '_addOn'))
     },
+    subObjects() {
+      return this.$store.getters['customer/customerSubscriptionsByAddressId'](this.addressId)
+    },
+    subsIds() {
+      return this.subObjects.map(sub => sub.productId * 1)
+    },
+    subsItems() {
+      return this.allSubs.filter(item => this.subsIds.includes(+item.productId))
+    },
+    subItemsNoRoute() {
+      return this.allSubs.filter(itm => !itm.productTitle.includes('route'))
+    },
+    subProductIds() {
+      return this.subItemsNoRoute.map(prd => prd.productId * 1)
+    },
+    subProductQtys() {
+      return this.subItemsNoRoute.map(prd => prd.quantity)
+    },
+
     routeItems() {
-      return this.allItems.filter(itm => itm.productTitle.includes('route'))
+      return this.allSubs.filter(itm => itm.productTitle.includes('route'))
     },
     routeProduct() {
       return this.allProducts.find(itm => itm.title.includes('Route Package'))
     },
+
     addOnItems() {
       return this.$store.getters['customer/customerOnetimesByAddressId'](this.addressId)
     },
@@ -211,20 +232,9 @@ export default {
     addOnItemsQtys() {
       return this.addOnItems.map(addon => addon.quantity)
     },
-    subscriptionItems() {
-      return this.allItems.filter(item => !this.addOnItemsIds.includes(item.productId))
-    },
-    subItemsNoRoute() {
-      return this.itemsNoRoute.filter(item => !this.addOnItemsIds.includes(item.productId))
-    },
-    subProductIds() {
-      return this.subItemsNoRoute.map(prd => prd.productId * 1)
-    },
-    subProductQtys() {
-      return this.subItemsNoRoute.map(prd => prd.quantity)
-    },
+
     frequency() {
-      const freqObj = this.subscriptionItems?.find(sub => sub.frequency)
+      const freqObj = this.subsItems?.find(sub => sub.frequency)
       const freqBackup = this.$store.getters['customer/customerSubscriptionsByAddressId'](
         this.addressId
       )?.find(sub => sub.frequency)

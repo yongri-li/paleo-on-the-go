@@ -20,6 +20,10 @@
     animation-duration: 225ms;
     animation-name: scalePop;
   }
+
+  .hasItem .cartIconBg {
+    fill: #FCD32B;
+  }
   
   @keyframes scalePop {
     0% {
@@ -124,12 +128,11 @@
   const updateCartIcon = async () => {
     const cartVuex = JSON.parse(localStorage.getItem('vuex'))  
     if(!cartVuex) return
-    console.log(cartVuex)
     const { cartdrawer: { cartItems } } = cartVuex
-    console.log(cartItems)
     const cartIcon = document.querySelector('.c-headerMain__secondary--cart')
     const cartNum = document.getElementById('cartIcon')      
     const totalCart = cartItems ? cartItems.general?.length + (cartItems.box?.length ? 1 : 0) : 0;
+    totalCart !== 0 ? cartIcon.classList.add('hasItem') : cartIcon.classList.remove('hasItem') 
     cartNum.textContent = totalCart  
     cartIcon.classList.add('scalePop')  
     setTimeout(()=> cartIcon.classList.remove('scalePop') , 750)  
