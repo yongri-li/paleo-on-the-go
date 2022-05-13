@@ -11,16 +11,16 @@
       </div>
       <div class="l-hero__buttons">
         <a
-          href="#earn-points"
           class="l-hero__buttons--item"
           data-scroll-links
+          @click="emitGoToSection($event,'earn-points')"
         >
           Earn Points
         </a>
         <a
-          href="#rewards"
           class="l-hero__buttons--item l-hero__buttons--primary"
           data-scroll-links
+          @click="emitGoToSection($event,'rewards')"
         >
           Redeem Rewards
         </a>
@@ -64,6 +64,12 @@ export default {
   data() {
     return {
       subtext: window.Scoutside.rewards.heroRewards.content.subtext_logged_out
+    }
+  },
+  methods: {
+    emitGoToSection(e, refName) {
+      e.preventDefault()
+      this.$emit('dogotosection', refName)
     }
   }
 }

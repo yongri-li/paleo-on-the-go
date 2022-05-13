@@ -1,8 +1,8 @@
 <template>
   <div class="page o-containerMedium">
-    <loyalty-hero class="section" :has-loggin="hasLoggin" />
-    <loyalty-points class="section"/>
-    <loyalty-rewards class="section"/>
+    <loyalty-hero class="section" :has-loggin="hasLoggin" @dogotosection="goToSection"/>
+    <loyalty-points class="section" ref="earn-points"/>
+    <loyalty-rewards class="section" ref="rewards"/>
     <loyalty-tiers class="section"/>
   </div>
 </template>
@@ -28,6 +28,16 @@ export default {
   computed: {
     hasLoggin() {
       return !!this.customer.shopify_id.length
+    }
+  },
+  methods: {
+    goToSection(refName) {
+      const element = this.$refs[refName].$el
+      const top = element.offsetTop
+      window.scroll({
+        top: top - 100,
+        behavior: "smooth"
+      });
     }
   }
 }
