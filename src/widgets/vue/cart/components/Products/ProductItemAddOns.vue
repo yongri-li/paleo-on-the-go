@@ -33,31 +33,32 @@
 </template>
 
 <script>
-import { formatPrice } from '@shared/utils'
+import { formatPrice } from "@shared/utils";
 
 export default {
   props: {
     product: {
       type: Object,
-      required: true
+      required: true,
     },
   },
   computed: {
     imageUrl() {
-      const imgFound = this.product.media.find(item => item.position === 1)
-      const urlFinal = imgFound.src.replace('.jpg','_150x150.jpg').replace('.png','_150x150.png')
-      return urlFinal
+      const imgFound = this.product.media.find((item) => item.position === 1);
+      const urlFinal = imgFound.src
+        .replace(".jpg", "_150x150.jpg")
+        .replace(".png", "_150x150.png");
+      return urlFinal;
     },
     finalPrice() {
-      return formatPrice(this.product.price * this.product.quantity)
-    }
-  }
-}
+      return formatPrice(this.product.price * this.product.quantity);
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 .pitemaddons {
-
   @include media-tablet-up {
     @include flex($align: center);
   }
@@ -75,6 +76,10 @@ export default {
     width: 30%;
     margin-right: 5%;
 
+    &--img {
+      display: block;
+    }
+
     @include media-tablet-up {
       width: 20%;
     }
@@ -84,8 +89,8 @@ export default {
     width: 65%;
 
     &--title {
-      font-family: Knockout,sans-serif;
-      font-size: 1.5rem;
+      font-family: $font-product-title;
+      font-size: 1.25rem;
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
       overflow: hidden;
@@ -96,13 +101,13 @@ export default {
 
     &--subtitle {
       color: #7b7979;
-      font-size: .9rem;
+      font-size: 0.88rem;
     }
   }
 
   &__price {
-    font-size: 1.2rem;
-    margin: .5rem 0;
+    font-size: 1rem;
+    margin: 0.5rem 0;
 
     @include media-tablet-up {
       width: 23%;
@@ -112,7 +117,7 @@ export default {
   }
 
   &__qt {
-    font-size: .9rem;
+    font-size: 0.9rem;
 
     @include media-tablet-up {
       width: 10%;

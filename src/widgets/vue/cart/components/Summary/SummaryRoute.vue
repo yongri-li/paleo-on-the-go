@@ -38,12 +38,22 @@
             </div>
           </div>
           <div v-if="loading" class="pw-toggle-wrapper">
-            <div class="pw-price quote" data-widget-label="true" tabindex="0" data-testid="quote">
+            <div
+              class="pw-price quote"
+              data-widget-label="true"
+              tabindex="0"
+              data-testid="quote"
+            >
               ..loading
             </div>
           </div>
           <div v-else class="pw-toggle-wrapper">
-            <div class="pw-price quote" data-widget-label="true" tabindex="0" data-testid="quote">
+            <div
+              class="pw-price quote"
+              data-widget-label="true"
+              tabindex="0"
+              data-testid="quote"
+            >
               {{ insurance_price }}
             </div>
             <div
@@ -92,7 +102,8 @@
       </div>
     </div>
     <div class="pw-msg-paleo">
-      *By deselecting shipping protection, Paleo On The Go is not liable for lost, damaged, or stolen items
+      *By deselecting shipping protection, Paleo On The Go is not liable for
+      lost, damaged, or stolen items
     </div>
     <div class="pw-border"></div>
     <summary-route-modal :open="openModal" @close-modal="changeModal(false)" />
@@ -100,98 +111,109 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions } from 'vuex'
+import { mapGetters, mapState, mapActions } from "vuex";
 
-import { formatPriceToNumber } from '@shared/utils'
-import { routeapp } from '../../utils'
+import { formatPriceToNumber } from "@shared/utils";
+import { routeapp } from "../../utils";
 
-import SummaryRouteModal from './SummaryRouteModal.vue'
+import SummaryRouteModal from "./SummaryRouteModal.vue";
 
 export default {
   components: {
-    SummaryRouteModal
+    SummaryRouteModal,
   },
   data() {
     return {
       loading: true,
-      insurance_price: '--',
-      real_insurance_price: '--',
+      insurance_price: "--",
+      real_insurance_price: "--",
       openModal: false,
-      variant: {}
-    }
+      variant: {},
+    };
   },
   computed: {
-    ...mapState('cartdrawer', ['routeProduct', 'cartItems']),
-    ...mapGetters('cartdrawer', ['getSubTotalPricesWithoutRoute', 'routeProductInCart', 'getSubscriptionItems']),
+    ...mapState("cartdrawer", ["routeProduct", "cartItems"]),
+    ...mapGetters("cartdrawer", [
+      "getSubTotalPricesWithoutRoute",
+      "routeProductInCart",
+      "getSubscriptionItems",
+    ]),
     subtotal() {
-      return formatPriceToNumber(this.getSubTotalPricesWithoutRoute)
+      return formatPriceToNumber(this.getSubTotalPricesWithoutRoute);
     },
     haveRouteProductInCart() {
-      return !!this.routeProductInCart
+      return !!this.routeProductInCart;
     },
     cta() {
-      return this.haveRouteProductInCart ? 'REMOVE' : 'ADD+'
-    }
+      return this.haveRouteProductInCart ? "REMOVE" : "ADD+";
+    },
   },
   mounted() {
-    this.getQuote()
+    this.getQuote();
   },
   methods: {
-    ...mapActions('cartdrawer', ['setRouteProduct']),
+    ...mapActions("cartdrawer", ["setRouteProduct"]),
     getQuote() {
-      const subtotal = this.subtotal
-      const route_api_key = window.Scoutside.api.route_api_key
-      routeapp.get_quote(route_api_key, subtotal, 'USD', async ({ insurance_price }) => {
-        this.real_insurance_price = insurance_price
-        await this.roundInsurePrice()
-        this.loading = false
-        if (this.haveRouteProductInCart && this.cta === 'ADD+') this.addProduct()
-      })
+      const subtotal = this.subtotal;
+      const route_api_key = window.Scoutside.api.route_api_key;
+      routeapp.get_quote(
+        route_api_key,
+        subtotal,
+        "USD",
+        async ({ insurance_price }) => {
+          this.real_insurance_price = insurance_price;
+          await this.roundInsurePrice();
+          this.loading = false;
+          if (this.haveRouteProductInCart && this.cta === "ADD+")
+            this.addProduct();
+        }
+      );
     },
     async roundInsurePrice() {
-      await this.setVariantRoute()
-      this.insurance_price = formatPriceToNumber(this.variant?.price)
+      await this.setVariantRoute();
+      this.insurance_price = formatPriceToNumber(this.variant?.price);
     },
     async setVariantRoute() {
-      const routeProduct = await this.getRouteProduct()
+      const routeProduct = await this.getRouteProduct();
       const variantFound = routeProduct.variants.find(
-        variant => formatPriceToNumber(variant?.price) >= this.real_insurance_price
-      )
-      this.variant = variantFound
+        (variant) =>
+          formatPriceToNumber(variant?.price) >= this.real_insurance_price
+      );
+      this.variant = variantFound;
     },
     async getRouteProduct() {
-      let routeProduct = this.routeProduct
+      let routeProduct = this.routeProduct;
       if (!Object.keys(routeProduct).length) {
-        routeProduct = await this.setRouteProduct()
+        routeProduct = await this.setRouteProduct();
       }
-      return routeProduct
+      return routeProduct;
     },
     insurreChange() {
       if (this.haveRouteProductInCart) {
         // remove
-        this.$store.dispatch('cartdrawer/removeRouteProductToCart')
+        this.$store.dispatch("cartdrawer/removeRouteProductToCart");
       } else {
         // add
-        this.addProduct()
+        this.addProduct();
       }
     },
     addProduct() {
-      this.$store.dispatch('cartdrawer/addRouteProduct', {
+      this.$store.dispatch("cartdrawer/addRouteProduct", {
         routeProduct: this.routeProduct,
-        variant: this.variant
-      })
+        variant: this.variant,
+      });
     },
     changeModal(val) {
-      this.openModal = val
-    }
+      this.openModal = val;
+    },
   },
   watch: {
     getSubTotalPricesWithoutRoute() {
-      this.loading = true
-      this.getQuote()
-    }
-  }
-}
+      this.loading = true;
+      this.getQuote();
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -199,7 +221,7 @@ export default {
   padding: 0 0.5rem;
 
   .pw-msg-paleo {
-    font-size: 0.8rem;
+    font-size: 0.63rem;
   }
 }
 </style>

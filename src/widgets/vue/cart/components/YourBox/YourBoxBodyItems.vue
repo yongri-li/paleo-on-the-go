@@ -14,32 +14,32 @@
 </template>
 
 <script>
-import YourBoxBodyItemsInfo from './YourBoxBodyItemsInfo.vue'
-import ProductItemBox from '../Products/ProductItemBox.vue'
+import YourBoxBodyItemsInfo from "./YourBoxBodyItemsInfo.vue";
+import ProductItemBox from "../Products/ProductItemBox.vue";
 
 export default {
   components: {
     YourBoxBodyItemsInfo,
-    ProductItemBox
+    ProductItemBox,
   },
   props: {
     items: {
       type: Array,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     filteredItems() {
-      return this.items.filter(item => item.hide !== true)
-    }
-  }
-}
+      return this.items.filter((item) => item.hide !== true);
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 .items {
-  background-color: #EFEDE6;
-  padding: .3rem .5rem .5rem;
+  background-color: #efede6;
+  padding: 0.3rem 0.5rem 0.5rem;
   margin-bottom: 2rem;
 
   &__products {
@@ -48,17 +48,28 @@ export default {
 
     @include media-tablet-up {
       @include flex();
-      padding: 0 .5rem 1rem;
+      padding: 0 0.5rem 1rem;
+    }
 
+    @include media-tablet-only {
       .item {
-        width: 32.6%;
+        width: 48%;
       }
-      .item:nth-child(3n+2) {
+      .item:nth-child(even) {
         margin-left: 1%;
         margin-right: 1%;
       }
     }
-  }
 
+    @include media-desktop-up {
+      .item {
+        width: 32.6%;
+      }
+
+      .item:nth-child(3n + 2) {
+        margin-left: 1%;
+      }
+    }
+  }
 }
 </style>

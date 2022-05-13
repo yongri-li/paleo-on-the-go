@@ -26,39 +26,45 @@
     <div class="pitem__price u-hideMobileDown">
       {{ finalPrice }}
     </div>
-    <div @click="removeItem(product.id)" class="pitem__remove u-hideMobileDown">Remove</div>
+    <div @click="removeItem(product.id)" class="pitem__remove u-hideMobileDown">
+      Remove
+    </div>
   </div>
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
-import { formatPrice } from '@shared/utils'
+import { mapMutations } from "vuex";
+import { formatPrice } from "@shared/utils";
 
 export default {
   props: {
     product: {
       type: Object,
-      required: true
-    }
+      required: true,
+    },
   },
   computed: {
     imageUrl() {
-      const imgFound = this.product.media.find(item => item.position === 1)
-      const urlFinal = imgFound.src.replace('.jpg', '_150x150.jpg').replace('.png', '_150x150.png')
-      return urlFinal
+      const imgFound = this.product.media.find((item) => item.position === 1);
+      const urlFinal = imgFound.src
+        .replace(".jpg", "_150x150.jpg")
+        .replace(".png", "_150x150.png");
+      return urlFinal;
     },
     finalPrice() {
-      const price = this.product.varPrice ? this.product.varPrice : this.product.price
-      return formatPrice(price * this.product.quantity)
-    }
+      const price = this.product.varPrice
+        ? this.product.varPrice
+        : this.product.price;
+      return formatPrice(price * this.product.quantity);
+    },
   },
   methods: {
-    ...mapMutations('cartdrawer', ['REMOVE_ITEM_FROM_CART']),
+    ...mapMutations("cartdrawer", ["REMOVE_ITEM_FROM_CART"]),
     removeItem(id) {
-      this.REMOVE_ITEM_FROM_CART(id)
-    }
-  }
-}
+      this.REMOVE_ITEM_FROM_CART(id);
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
@@ -80,6 +86,10 @@ export default {
     width: 30%;
     margin-right: 5%;
 
+    &--img {
+      display: block;
+    }
+
     @include media-tablet-up {
       width: 20%;
     }
@@ -89,8 +99,8 @@ export default {
     width: 65%;
 
     &--title {
-      font-family: Knockout, sans-serif;
-      font-size: 1.5rem;
+      font-family: $font-product-title;
+      font-size: 1.25rem;
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
       overflow: hidden;
@@ -101,12 +111,12 @@ export default {
 
     &--subtitle {
       color: #7b7979;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
     }
   }
 
   &__price {
-    font-size: 1.2rem;
+    font-size: 1rem;
     margin: 0.5rem 0;
 
     @include media-tablet-up {
@@ -117,7 +127,7 @@ export default {
   }
 
   &__qt-remove {
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     @include flex($justify: space-between);
   }
 
@@ -135,7 +145,7 @@ export default {
     cursor: pointer;
     @include media-tablet-up {
       width: 12%;
-      font-size: 1rem;
+      font-size: 0.88rem;
       text-align: right;
     }
   }

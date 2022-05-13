@@ -10,29 +10,29 @@
 </template>
 
 <script>
-import ProductItemCart from '../Products/ProductItemCart.vue'
-import { mapState } from 'vuex'
+import ProductItemCart from "../Products/ProductItemCart.vue";
+import { mapState } from "vuex";
 
 export default {
   components: {
-    ProductItemCart
+    ProductItemCart,
   },
   computed: {
-    ...mapState('cartdrawer', [
-      'cartItems'
-    ]),
+    ...mapState("cartdrawer", ["cartItems"]),
     filteredItems() {
-      return this.cartItems.general.filter(item => item.hide !== true)
-    }
-  }
-}
+      return this.cartItems.general.filter((item) => item.hide !== true);
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 .yc-body {
   &__item {
-    margin-bottom: .5rem;
+    margin-bottom: 1rem;
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 }
 </style>
-

@@ -2,7 +2,11 @@
   <div :class="[typeClass]" class="pitemcart">
     <div class="pitemcart__body">
       <div class="pitemcart__figure">
-        <img class="pitemcart__figure--img" :src="imageUrl" :alt="product.title" />
+        <img
+          class="pitemcart__figure--img"
+          :src="imageUrl"
+          :alt="product.title"
+        />
         <div class="pitemcart__figure--qt">
           {{ product.quantity }}
         </div>
@@ -23,39 +27,41 @@
 </template>
 
 <script>
-import { formatPriceDollars } from '@shared/utils'
-import { mapState } from 'vuex'
+import { formatPriceDollars } from "@shared/utils";
+import { mapState } from "vuex";
 
 export default {
   props: {
     product: {
       type: Object,
-      required: true
+      required: true,
     },
     typeClass: {
       type: String,
-      default: 'subscription'
-    }
+      default: "subscription",
+    },
   },
   computed: {
-    ...mapState('cartdrawer', ['sizeSelected']),
+    ...mapState("cartdrawer", ["sizeSelected"]),
     imageUrl() {
-      const imgFound = this.product.media.find(item => item.position === 1)
-      const urlFinal = imgFound.src.replace('.jpg', '_150x150.jpg').replace('.png', '_150x150.png')
-      return urlFinal
+      const imgFound = this.product.media.find((item) => item.position === 1);
+      const urlFinal = imgFound.src
+        .replace(".jpg", "_150x150.jpg")
+        .replace(".png", "_150x150.png");
+      return urlFinal;
     },
     finalPrice() {
-      const discount = (100 - this.sizeSelected.discount) / 100
-      const price = (this.product.price * discount) / 100
-      return formatPriceDollars(price)
-    }
-  }
-}
+      const discount = (100 - this.sizeSelected.discount) / 100;
+      const price = (this.product.price * discount) / 100;
+      return formatPriceDollars(price);
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>
 .pitemcart {
-  @include flex($justify: space-between);
+  @include flex($justify: space-between, $wrap: nowrap);
   margin-top: 1.2rem;
 
   &__body {
@@ -105,8 +111,8 @@ export default {
     width: 70%;
 
     &--title {
-      font-family: $font-heading;
-      font-size: 1.5rem;
+      font-family: $font-product-title;
+      font-size: 0.88rem;
       -webkit-line-clamp: 1;
       -webkit-box-orient: vertical;
       overflow: hidden;
@@ -117,12 +123,12 @@ export default {
 
     &--description {
       color: #7b7979;
-      font-size: 0.9rem;
+      font-size: 0.63rem;
     }
 
     &--price {
-      margin-top: 0.7rem;
-      font-size: 1rem;
+      margin-top: 0.25rem;
+      font-size: 0.75rem;
       font-weight: 500;
     }
   }
