@@ -8,7 +8,7 @@
       <h1 class="c-h1">
         {{ content.main_heading }}<span> {{ formatDayDateIOS(nextCharge.scheduledAt) }}</span>
       </h1>
-      <h5 class="c-h5">Rewards Balance: {{ rewardPoints }} </h5>
+      <h5 class="c-h5">Rewards Balance: {{ rewardPoints }} Points</h5>
       <div class="c-shipments__hero--btns">
         <button class="c-button c-button--isDefault c-button--isPrimary" @click="goToPoints('earn')">Earn Points</button>
         <button class="c-button c-button--isDefault c-button--isPrimary" @click="goToPoints('redeem')">Redeem Rewards</button>

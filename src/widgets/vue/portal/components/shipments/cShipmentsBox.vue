@@ -1,6 +1,6 @@
 <template>
   <div :class="_buildModifiers('c-shipmentsBox', modifiers)" ref="shipmentBox">
-    <button @click="addRouteProduct">test route</button>
+    <!-- <button @click="addRouteProduct">test route</button> -->
     <c-accordion>
       <c-accordionItem
         class="c-shipmentsBox__wrap"
@@ -165,6 +165,7 @@ export default {
     return {
       isUpcoming: true,
       setBoxHeight: false,
+      initial_price: '',
       route_price: '--'
     }
   },
@@ -212,8 +213,9 @@ export default {
     subProductIds() {
       return this.subItemsNoRoute.map(prd => prd.productId * 1)
     },
-    subProductQtys() {
+    subsProductQtys() {
       return this.subItemsNoRoute.map(prd => prd.quantity)
+      //return this.subsItems.map(prd => prd.quantity)
     },
 
     routeItems() {
@@ -221,6 +223,22 @@ export default {
     },
     routeProduct() {
       return this.allProducts.find(itm => itm.title.includes('Route Package'))
+    },
+    routeRcProduct() {
+      return [this.routeProduct].map(prod => {
+        return {
+          address_id: this.addressId,
+          charge_interval_frequency: 2,
+          next_charge_scheduled_at: '2022-05-14T00:00:00',
+          order_interval_frequency: 2,
+          order_interval_unit: 'week',
+          price: this.route_price / 100,
+          hash: prod.price_hashes,
+          tags: prod.tags,
+          shopify_variant_id: 42046642323655,
+          quantity: 1
+        }
+      })
     },
 
     addOnItems() {
@@ -261,13 +279,13 @@ export default {
     },
     portalProducts() {
       return {
-        items: this.subProductIds
+        items: this.subProductIds //this.subsIds
           .map((id, i) => {
             let productFound = this.allProducts.find(prod => prod.id === id)
             let item = productFound
               ? {
                   ...productFound,
-                  quantity: this.subProductQtys[i]
+                  quantity: this.subsProductQtys[i]
                 }
               : null
             return item
@@ -294,16 +312,22 @@ export default {
     setBoxMaxHeight() {
       this.setBoxHeight = !this.setBoxHeight
     },
-    getQuote() {
-      const route_api_key = window.Scoutside.api.route_api_key
-
-      routeapp.get_quote(route_api_key, this.charge.subtotal, 'USD', async ({ insurance_price }) => {
-        this.route_price = insurance_price
+    async getQuote() {
+      const route_key = window.Scoutside.api.route_api_key
+      routeapp.get_quote(route_key, this.charge.subtotal, 'USD', async ({ insurance_price }) => {
+        this.initial_price = insurance_price
       })
     },
+    async setRoutePrice() {
+      const variant = this.routeProduct.variants.find(itm => {
+        return formatPriceToNumber(itm?.price) >= this.initial_price
+      })
+      console.log(variant)
+      this.route_price = variant.price
+    },
     async addRouteProduct() {
-      let routeProduct = { ...this.routeProduct }
-      routeProduct.price = this.route_price * 100
+      let routeProduct = { ...this.routeRcProduct }
+      // routeProduct.price = this.route_price * 100
       console.log(routeProduct)
       // const data = await this.customerUpdateSubscriptions({
       //   addressId: this.addressId,
@@ -349,7 +373,7 @@ export default {
 
       const update = await this.customerCreateSubscriptions({
         addressId: this.addressId,
-        creates: [routeProduct]
+        creates: [...this.routeRcProduct]
       })
 
       console.log(update)
@@ -391,6 +415,12 @@ export default {
     editAddOns() {
       this.handleChangeMeals()
       window.location.href = '/pages/bundle/#/addons'
+    }
+  },
+  watch: {
+    initial_price() {
+      console.log('price changed?')
+      this.setRoutePrice()
     }
   },
   mounted() {
