@@ -78,7 +78,7 @@ export default {
       return this.customerUpcomingCharges?.filter(chrg => chrg.status !== ('REFUNDED' || 'CANCELLED'))
     },
     isFailedCharge() {
-      return this.charges.some(chrg => chrg.status === 'ERROR')
+      return this.charges?.some(chrg => chrg.status === 'ERROR')
     },
     faqTitle() {
       const titleArr = this.content.faqs_title.split(' ')

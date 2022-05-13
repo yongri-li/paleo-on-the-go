@@ -54,8 +54,8 @@
           <div v-if="isUpcoming" class="c-shipmentsBox__lineItems">
             <div class="c-shipmentsBox__grid">
               <c-orders-item
-                v-for="(item, subscriptionIndex) in subscriptionItems"
-                :key="subscriptionIndex"
+                v-for="(item, subIndex) in subsItems"
+                :key="subIndex"
                 :item="item"
                 :content="content"
               />
@@ -165,6 +165,7 @@ export default {
     return {
       isUpcoming: true,
       setBoxHeight: false,
+      initial_price: '',
       route_price: '--'
     }
   },
@@ -193,15 +194,53 @@ export default {
     allItems() {
       return this.charge.lineItems
     },
-    itemsNoRoute() {
-      return this.allItems.filter(itm => !itm.productTitle.includes('route'))
+
+    allSubs() {
+      return this.allItems.filter(itm => !itm.properties.find(prop => prop.name === '_addOn'))
     },
+    subObjects() {
+      return this.$store.getters['customer/customerSubscriptionsByAddressId'](this.addressId)
+    },
+    subsIds() {
+      return this.subObjects.map(sub => sub.productId * 1)
+    },
+    subsItems() {
+      return this.allSubs.filter(item => this.subsIds.includes(+item.productId))
+    },
+    subItemsNoRoute() {
+      return this.allSubs.filter(itm => !itm.productTitle.includes('route'))
+    },
+    subProductIds() {
+      return this.subItemsNoRoute.map(prd => prd.productId * 1)
+    },
+    subsProductQtys() {
+      return this.subItemsNoRoute.map(prd => prd.quantity)
+      //return this.subsItems.map(prd => prd.quantity)
+    },
+
     routeItems() {
-      return this.allItems.filter(itm => itm.productTitle.includes('route'))
+      return this.allSubs.filter(itm => itm.productTitle.includes('route'))
     },
     routeProduct() {
       return this.allProducts.find(itm => itm.title.includes('Route Package'))
     },
+    routeRcProduct() {
+      return [this.routeProduct].map(prod => {
+        return {
+          address_id: this.addressId,
+          charge_interval_frequency: 2,
+          next_charge_scheduled_at: '2022-05-14T00:00:00',
+          order_interval_frequency: 2,
+          order_interval_unit: 'week',
+          price: this.route_price / 100,
+          hash: prod.price_hashes,
+          tags: prod.tags,
+          shopify_variant_id: 42046642323655,
+          quantity: 1
+        }
+      })
+    },
+
     addOnItems() {
       return this.$store.getters['customer/customerOnetimesByAddressId'](this.addressId)
     },
@@ -211,20 +250,9 @@ export default {
     addOnItemsQtys() {
       return this.addOnItems.map(addon => addon.quantity)
     },
-    subscriptionItems() {
-      return this.allItems.filter(item => !this.addOnItemsIds.includes(item.productId))
-    },
-    subItemsNoRoute() {
-      return this.itemsNoRoute.filter(item => !this.addOnItemsIds.includes(item.productId))
-    },
-    subProductIds() {
-      return this.subItemsNoRoute.map(prd => prd.productId * 1)
-    },
-    subProductQtys() {
-      return this.subItemsNoRoute.map(prd => prd.quantity)
-    },
+
     frequency() {
-      const freqObj = this.subscriptionItems?.find(sub => sub.frequency)
+      const freqObj = this.subsItems?.find(sub => sub.frequency)
       const freqBackup = this.$store.getters['customer/customerSubscriptionsByAddressId'](
         this.addressId
       )?.find(sub => sub.frequency)
@@ -251,13 +279,13 @@ export default {
     },
     portalProducts() {
       return {
-        items: this.subProductIds
+        items: this.subProductIds //this.subsIds
           .map((id, i) => {
             let productFound = this.allProducts.find(prod => prod.id === id)
             let item = productFound
               ? {
                   ...productFound,
-                  quantity: this.subProductQtys[i]
+                  quantity: this.subsProductQtys[i]
                 }
               : null
             return item
@@ -284,16 +312,22 @@ export default {
     setBoxMaxHeight() {
       this.setBoxHeight = !this.setBoxHeight
     },
-    getQuote() {
-      const route_api_key = window.Scoutside.api.route_api_key
-
-      routeapp.get_quote(route_api_key, this.charge.subtotal, 'USD', async ({ insurance_price }) => {
-        this.route_price = insurance_price
+    async getQuote() {
+      const route_key = window.Scoutside.api.route_api_key
+      routeapp.get_quote(route_key, this.charge.subtotal, 'USD', async ({ insurance_price }) => {
+        this.initial_price = insurance_price
       })
     },
+    async setRoutePrice() {
+      const variant = this.routeProduct.variants.find(itm => {
+        return formatPriceToNumber(itm?.price) >= this.initial_price
+      })
+      console.log(variant)
+      this.route_price = variant.price
+    },
     async addRouteProduct() {
-      let routeProduct = { ...this.routeProduct }
-      routeProduct.price = this.route_price * 100
+      let routeProduct = { ...this.routeRcProduct }
+      // routeProduct.price = this.route_price * 100
       console.log(routeProduct)
       // const data = await this.customerUpdateSubscriptions({
       //   addressId: this.addressId,
@@ -339,7 +373,7 @@ export default {
 
       const update = await this.customerCreateSubscriptions({
         addressId: this.addressId,
-        creates: [routeProduct]
+        creates: [...this.routeRcProduct]
       })
 
       console.log(update)
@@ -381,6 +415,12 @@ export default {
     editAddOns() {
       this.handleChangeMeals()
       window.location.href = '/pages/bundle/#/addons'
+    }
+  },
+  watch: {
+    initial_price() {
+      console.log('price changed?')
+      this.setRoutePrice()
     }
   },
   mounted() {
