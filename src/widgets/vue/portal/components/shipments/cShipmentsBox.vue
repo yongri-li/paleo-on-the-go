@@ -84,7 +84,7 @@
                 :content="content"
               />
             </div>
-            <c-shipmentsRoute :routePrice="route_price" :hasRoute="hasRoute" @toggleRoute="toggleRoutePrd" />
+            <c-shipmentsRoute :routePrice="routePrice" :hasRoute="hasRoute" @toggleRoute="toggleRoutePrd" />
           </div>
           <div class="c-shipmentsGroups__bottom">
             <c-shipmentsDiscount
@@ -167,7 +167,8 @@ export default {
       isUpcoming: true,
       setBoxHeight: false,
       initial_price: '',
-      route_price: '--'
+      routePrice: '--',
+      routeVariant: null
     }
   },
   components: {
@@ -196,7 +197,6 @@ export default {
     allItems() {
       return this.charge.lineItems
     },
-
     allSubs() {
       return this.allItems.filter(itm => !itm.properties.find(prop => prop.name === '_addOn'))
     },
@@ -217,9 +217,7 @@ export default {
     },
     subProductQtys() {
       return this.subItemsNoRoute.map(prd => prd.quantity)
-      //return this.subItems.map(prd => prd.quantity)
     },
-
     hasRoute() {
       return this.allSubs.some(itm => itm.productTitle.includes('route'))
     },
@@ -233,20 +231,20 @@ export default {
       const routeSub = this.subObjects.filter(sub => {
         return sub.productTitle.includes('route')
       })
-      return +routeSub[0].id
+      return +routeSub[0]?.id
     },
     routeRcProduct() {
       return [this.routeProduct].map(prod => {
         return {
           address_id: this.addressId,
-          charge_interval_frequency: 2,
-          next_charge_scheduled_at: '2022-05-14T00:00:00',
-          order_interval_frequency: 2,
+          charge_interval_frequency: this.frequency,
+          next_charge_scheduled_at: this.charge.scheduledAt,
+          order_interval_frequency: this.frequency,
           order_interval_unit: 'week',
-          price: this.route_price / 100,
+          price: this.routePrice / 100,
           hash: prod.price_hashes,
           tags: prod.tags,
-          shopify_variant_id: 42046642323655,
+          shopify_variant_id: this.routeVariant,
           quantity: 1
         }
       })
@@ -264,7 +262,6 @@ export default {
     addOnItemsQtys() {
       return this.addOnItems.map(addon => addon.quantity)
     },
-
     frequency() {
       const freqObj = this.subItems?.find(sub => sub.frequency)
       const freqBackup = this.$store.getters['customer/customerSubscriptionsByAddressId'](
@@ -336,23 +333,21 @@ export default {
       const variant = this.routeProduct.variants.find(itm => {
         return formatPriceToNumber(itm?.price) >= this.initial_price
       })
-      this.route_price = variant.price
+      this.routeVariant = variant.id
+      this.routePrice = variant.price
     },
     async toggleRoutePrd(action) {
-      console.log(action)
-      let routeProduct = { ...this.routeRcProduct }
       if (action === 'add') {
-        const update = await this.customerCreateSubscriptions({
+        await this.customerCreateSubscriptions({
           addressId: this.addressId,
           creates: [...this.routeRcProduct]
         })
       } else {
-        const update = await this.customerDeleteSubscriptions({
+        await this.customerDeleteSubscriptions({
           addressId: this.addressId,
           ids: [this.routeProductId]
         })
       }
-      // addRouteProduct
     },
     setMealBox() {
       sessionStorage.setItem('boxSize', this.totalSubItems)
@@ -484,7 +479,7 @@ export default {
 
     @include media-tablet-up {
       .c-shipmentsBox__content {
-        min-height: 796px;
+        min-height: 1000px;
       }
     }
 
