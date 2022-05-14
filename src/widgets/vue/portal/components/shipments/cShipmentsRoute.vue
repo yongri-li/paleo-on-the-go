@@ -63,9 +63,6 @@ export default {
     price() {
       return this.routeAdded ? 'Added' : formatPrice(this.routePrice)
     },
-    isActive() {
-      return this.hasRoute ? (this.routeAdded = true) : (this.routeAdded = false)
-    },
     routeAction() {
       return this.routeAdded ? 'Remove' : 'Add+'
     }
@@ -80,7 +77,13 @@ export default {
         this.$emit('toggleRoute', 'add')
         this.routeAdded = true
       }
+    },
+    checkActive() {
+      this.hasRoute ? (this.routeAdded = true) : (this.routeAdded = false)
     }
+  },
+  mounted() {
+    this.checkActive()
   }
 }
 </script>
