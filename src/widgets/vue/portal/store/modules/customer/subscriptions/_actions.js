@@ -22,6 +22,19 @@ export default {
       data: { addressId, creates }
     })
     const { charges, subscriptions, error } = data
+    if (charges) await commit('CUSTOMER_UPDATE_CHARGES', { charges, keys: ['id', 'addressId'] })
+    if (subscriptions) await commit('CUSTOMER_UPDATE_SUBSCRIPTIONS', { subscriptions })
+    return { subscriptions, error }
+  },
+  async customerDeleteSubscriptions({ commit }, payload) {
+    const apiClient = new apiService()
+    const { addressId, ids } = payload
+    const { data } = await apiClient.delete('/v1/customer/subscriptions', {
+      data: { addressId, ids }
+    })
+    const { charges, subscriptions, error } = data
+    if (charges) await commit('CUSTOMER_UPDATE_CHARGES', { charges, keys: ['id', 'addressId'] })
+    if (subscriptions) await commit('CUSTOMER_UPDATE_SUBSCRIPTIONS', { subscriptions })
     return { subscriptions, error }
   }
 }

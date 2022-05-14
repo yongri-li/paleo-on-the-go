@@ -1,6 +1,5 @@
 <template>
   <div :class="_buildModifiers('c-shipmentsBox', modifiers)" ref="shipmentBox">
-    <button @click="addRouteProduct">test route</button> <span>{{ hasRouteItem }}</span>
     <c-accordion>
       <c-accordionItem
         class="c-shipmentsBox__wrap"
@@ -85,6 +84,7 @@
                 :content="content"
               />
             </div>
+            <c-shipmentsRoute :routePrice="route_price" :hasRoute="hasRoute" @toggleRoute="toggleRoutePrd" />
           </div>
           <div class="c-shipmentsGroups__bottom">
             <c-shipmentsDiscount
@@ -130,6 +130,7 @@ import cAccordion from '@shared/components/core/cAccordion.vue'
 import cAccordionItem from '@shared/components/core/cAccordionItem.vue'
 import cShipmentsDiscount from './cShipmentsDiscount.vue'
 import cShipmentsSummary from './cShipmentsSummary.vue'
+import cShipmentsRoute from './cShipmentsRoute.vue'
 import Datepicker from 'vuejs-datepicker'
 import { routeapp } from '../../utils'
 import { formatPriceToNumber } from '@shared/utils'
@@ -179,6 +180,7 @@ export default {
     cAccordionItem,
     cShipmentsDiscount,
     cShipmentsSummary,
+    cShipmentsRoute,
     Datepicker
   },
   computed: {
@@ -218,11 +220,20 @@ export default {
       //return this.subItems.map(prd => prd.quantity)
     },
 
-    hasRouteItem() {
+    hasRoute() {
       return this.allSubs.some(itm => itm.productTitle.includes('route'))
+    },
+    currentRoutePrd() {
+      return this.subItems.find(itm => itm.productTitle.includes('route'))
     },
     routeProduct() {
       return this.allProducts.find(itm => itm.title.includes('Route Package'))
+    },
+    routeProductId() {
+      const routeSub = this.subObjects.filter(sub => {
+        return sub.productTitle.includes('route')
+      })
+      return +routeSub[0].id
     },
     routeRcProduct() {
       return [this.routeProduct].map(prod => {
@@ -239,6 +250,9 @@ export default {
           quantity: 1
         }
       })
+    },
+    priceMinusRoute() {
+      return this.currentRoutePrd ? this.charge.subtotal - this.currentRoutePrd.price : this.charge.subtotal
     },
 
     addOnItems() {
@@ -307,14 +321,14 @@ export default {
   methods: {
     ...mapMutations('ui', ['UI_SET_SIDEBAR', 'UI_SET_MODAL']),
     ...mapMutations('customer', ['CUSTOMER_SET_THIS_CHARGEID', 'CUSTOMER_SET_NEXT_CHARGEDATE']),
-    ...mapActions('customer', ['customerCreateSubscriptions']),
+    ...mapActions('customer', ['customerCreateSubscriptions', 'customerDeleteSubscriptions']),
     ...mapActions('babcart', ['addToCartFromPortal']),
     setBoxMaxHeight() {
       this.setBoxHeight = !this.setBoxHeight
     },
     async getQuote() {
       const route_key = window.Scoutside.api.route_api_key
-      routeapp.get_quote(route_key, this.charge.subtotal, 'USD', async ({ insurance_price }) => {
+      routeapp.get_quote(route_key, this.priceMinusRoute, 'USD', async ({ insurance_price }) => {
         this.initial_price = insurance_price
       })
     },
@@ -322,66 +336,24 @@ export default {
       const variant = this.routeProduct.variants.find(itm => {
         return formatPriceToNumber(itm?.price) >= this.initial_price
       })
-      console.log(variant)
       this.route_price = variant.price
     },
-    async addRouteProduct() {
+    async toggleRoutePrd(action) {
+      console.log(action)
       let routeProduct = { ...this.routeRcProduct }
-      // routeProduct.price = this.route_price * 100
-      console.log(routeProduct)
-      // const data = await this.customerUpdateSubscriptions({
-      //   addressId: this.addressId,
-      //   updates: _buildUpdates({
-      //     items: [routeProduct],
-      //     values: { interval: { unit: 'week', frequency: this.frequency } }
-      //   })
-      // })
-      // console.log(data)
-      // const { addressId, creates } = payload
-
-      // EXAMPLE PRODUCT
-
-      // subscriptionUpdates() {
-      //   return this.cart?.items.map((child) => {
-      //     return {
-      //       address_id: this.addressId,
-      //       charge_interval_frequency: 1,
-      //       next_charge_scheduled_at: this.nextChargeDate,
-      //       order_interval_frequency: 1,
-      //       order_interval_unit: "week",
-      //       price: (child.variants[0].price / 100).toFixed(2),
-      //       hash: child.price_hashes,
-      //       tags: child.tags,
-      //       shopify_variant_id: child.variants[0].id,
-      //       quantity: child.quantity,
-      //     };
-      //   });
-      // }
-
-      //       {
-      //     "address_id": "88549970",
-      //     "charge_interval_frequency": 1,
-      //     "next_charge_scheduled_at": "2022-05-14T00:00:00",
-      //     "order_interval_frequency": 1,
-      //     "order_interval_unit": "week",
-      //     "price": "7.50",
-      //     "hash": "a512d82f17f6b753b4c0f073881dbf439d23e63be50b1898a28af47e5199dc4b",
-      //     "tags": ["aip", "AIP Friendly", "autoimmune protocol meals", "brocolli", "cassava-free", "detox", "Full Menu", "keto", "paleo", "pork-free", "related", "risoto", "risotto", "seafood-free", "sidedish", "sugar detox", "vegetable", "vegetable sides", "whole 30", "whole30"],
-      //     "shopify_variant_id": 14121665953847,
-      //     "quantity": 12
-      // }
-
-      const update = await this.customerCreateSubscriptions({
-        addressId: this.addressId,
-        creates: [...this.routeRcProduct]
-      })
-
-      console.log(update)
+      if (action === 'add') {
+        const update = await this.customerCreateSubscriptions({
+          addressId: this.addressId,
+          creates: [...this.routeRcProduct]
+        })
+      } else {
+        const update = await this.customerDeleteSubscriptions({
+          addressId: this.addressId,
+          ids: [this.routeProductId]
+        })
+      }
+      // addRouteProduct
     },
-
-    // async roundInsurePrice() {
-    //   this.route_price = formatPriceToNumber(this.routeProduct?.price)
-    // },
     setMealBox() {
       sessionStorage.setItem('boxSize', this.totalSubItems)
       sessionStorage.setItem('addressId', this.addressId)
@@ -419,7 +391,6 @@ export default {
   },
   watch: {
     initial_price() {
-      console.log('price changed?')
       this.setRoutePrice()
     }
   },
@@ -609,27 +580,31 @@ export default {
 
 .c-shipmentsBox__grid {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-gap: 2.5rem;
+  grid-template-columns: repeat(2, 1fr);
+  grid-gap: 2.25rem;
 
   + .c-shipmentsBox__header {
     margin-top: 1rem;
   }
 
   &.item__addOn {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: 1fr;
   }
 
-  @include media-tablet-down {
+  @include media-tablet-up {
     grid-template-columns: repeat(4, 1fr);
     grid-gap: 2rem;
-  }
-
-  @include media-mobile-down {
-    grid-template-columns: repeat(2, 1fr);
 
     &.item__addOn {
-      grid-template-columns: 1fr;
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @include media-desktop-up {
+    grid-template-columns: repeat(6, 1fr);
+
+    &.item__addOn {
+      grid-template-columns: repeat(4, 1fr);
     }
   }
 }
