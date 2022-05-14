@@ -53,5 +53,12 @@ export default {
     const addonPrice = getters.getAddonPrices
     const routePrice = getters.routeProductInCart ? getters.routeProductInCart.price : 0
     return boxPrice + addonPrice + generalPrice - routePrice
+  },
+  isCartEmpty: state => {
+    const items = [
+      ...state.cartItems.box,
+      ...state.cartItems.general
+    ].filter(item => item.hide !== true)
+    return items.length === 0
   }
 }

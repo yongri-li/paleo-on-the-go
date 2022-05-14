@@ -267,4 +267,15 @@ export default {
     }
   }
 }
+
+.cart-empty {
+
+  .subtotal__agree--label {
+    pointer-events: none;
+
+    &::before {
+      background-color: transparent;
+    }
+  }
+}
 </style>

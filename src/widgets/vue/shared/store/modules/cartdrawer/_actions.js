@@ -5,7 +5,8 @@ import {
   SET_SIZE_SELECTED,
   CREATE_ROUTE_PROTECTION_PRODUCT,
   REMOVE_ROUTE_PROTECTION_TO_CART,
-  ADD_ROUTE_PROTECTION_TO_CART
+  ADD_ROUTE_PROTECTION_TO_CART,
+  CLEAR_BOX
 } from './_mutations-type'
 
 export default {
@@ -114,5 +115,11 @@ export default {
     const where = hasSubscription ? 'box' : 'general'
 
     commit(REMOVE_ROUTE_PROTECTION_TO_CART, { where })
+  },
+  clearBox({ commit, getters, dispatch }) {
+    commit(CLEAR_BOX)
+
+    const isCartEmpty = getters.isCartEmpty
+    if(isCartEmpty) dispatch('removeRouteProductToCart')
   }
 }

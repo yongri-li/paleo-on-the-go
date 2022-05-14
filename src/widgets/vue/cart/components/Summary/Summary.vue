@@ -1,7 +1,7 @@
 <template>
   <div class="summary">
-    <summary-subtotal />
-    <summary-route />
+    <summary-subtotal :class="{ 'cart-empty':cartEmpty }"/>
+    <summary-route v-if="!cartEmpty"/>
   </div>
 </template>
 
@@ -14,6 +14,12 @@ export default {
     SummarySubtotal,
     SummaryRoute,
   },
+  props: {
+    cartEmpty: {
+      type: Boolean,
+      required: true
+    }
+  }
 };
 </script>
 
