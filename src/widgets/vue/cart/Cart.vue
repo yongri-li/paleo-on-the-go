@@ -1,11 +1,13 @@
 <template>
   <div class="page o-containerLarge">
-    <summary-component class="content-summary" />
+    <summary-component class="content-summary" :cart-empty="!hasVisibleCartItems"/>
     <div v-if="hasVisibleCartItems" class="content-box-cart">
       <your-box v-if="cartItems.box.length" />
       <your-cart v-if="visibleCartItems.length" />
     </div>
-    <div v-else>Cart is Empty</div>
+    <div v-else>
+      <your-cart-empty />
+    </div>
   </div>
 </template>
 
@@ -13,6 +15,7 @@
 import SummaryComponent from "./components/Summary/Summary.vue";
 import YourBox from "./components/YourBox/YourBox.vue";
 import YourCart from "./components/YourCart/YourCart.vue";
+import YourCartEmpty from './components/YourCart/YourCartEmpty.vue'
 
 import { mapState } from "vuex";
 
@@ -21,6 +24,7 @@ export default {
     SummaryComponent,
     YourBox,
     YourCart,
+    YourCartEmpty
   },
   computed: {
     ...mapState("cartdrawer", ["cartItems", "sizeSelected"]),

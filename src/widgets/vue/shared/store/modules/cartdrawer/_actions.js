@@ -5,7 +5,8 @@ import {
   SET_SIZE_SELECTED,
   CREATE_ROUTE_PROTECTION_PRODUCT,
   REMOVE_ROUTE_PROTECTION_TO_CART,
-  ADD_ROUTE_PROTECTION_TO_CART
+  ADD_ROUTE_PROTECTION_TO_CART,
+  CLEAR_BOX
 } from './_mutations-type'
 
 export default {
@@ -89,30 +90,32 @@ export default {
 
     // calculate where put the route product
     const hasSubscription = getters.getSubscriptionItems.length > 0
-    const where = hasSubscription ? 'box' : 'general'
 
     // Remove some product we have before
-    commit(REMOVE_ROUTE_PROTECTION_TO_CART, { where: 'box' })
-    commit(REMOVE_ROUTE_PROTECTION_TO_CART, { where: 'general' })
+    commit(REMOVE_ROUTE_PROTECTION_TO_CART)
 
     // create routeProduct to add
     routeProduct = {
       ...routeProduct,
       variants: [variant],
       hide: true,
-      order_type: hasSubscription ? 'subscription' : 'general',
+      order_type: 'general', //this is to not apply any discount
+      route_order_type: hasSubscription ? 'subscription' : 'general',
       quantity: 1,
       price: variant.price,
       route_protection: true
     }
 
     // add product
-    commit(ADD_ROUTE_PROTECTION_TO_CART, { routeProduct, where })
+    commit(ADD_ROUTE_PROTECTION_TO_CART, { routeProduct })
   },
-  removeRouteProductToCart({ commit, getters }) {
-    const hasSubscription = getters.getSubscriptionItems.length > 0
-    const where = hasSubscription ? 'box' : 'general'
+  removeRouteProductToCart({ commit }) {
+    commit(REMOVE_ROUTE_PROTECTION_TO_CART)
+  },
+  clearBox({ commit, getters, dispatch }) {
+    commit(CLEAR_BOX)
 
-    commit(REMOVE_ROUTE_PROTECTION_TO_CART, { where })
+    const isCartEmpty = getters.isCartEmpty
+    if(isCartEmpty) dispatch('removeRouteProductToCart')
   }
 }

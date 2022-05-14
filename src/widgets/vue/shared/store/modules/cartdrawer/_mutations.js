@@ -61,14 +61,14 @@ export default {
       ...routeProduct
     }
   },
-  [REMOVE_ROUTE_PROTECTION_TO_CART](state, { where }) {
-    const indexFound = state.cartItems[where].findIndex(item => item.route_protection)
+  [REMOVE_ROUTE_PROTECTION_TO_CART](state) {
+    const indexFound = state.cartItems.general.findIndex(item => item.route_protection)
     if (indexFound > -1) {
-      state.cartItems[where].splice(indexFound, 1)
+      state.cartItems.general.splice(indexFound, 1)
     }
   },
-  [ADD_ROUTE_PROTECTION_TO_CART](state, { routeProduct, where }) {
-    state.cartItems[where].push({
+  [ADD_ROUTE_PROTECTION_TO_CART](state, { routeProduct }) {
+    state.cartItems.general.push({
       ...routeProduct
     })
   },

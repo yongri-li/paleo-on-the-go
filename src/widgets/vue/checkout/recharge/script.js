@@ -48,7 +48,12 @@ window.Scoutside.checkout = {
     let sections = []
     items.forEach(item => {
       const properties = Object.keys(item.properties)
-      const propFound = properties.find(key => item.properties[key] === true)
+
+      const routeShippingProp = properties.find(key => key === '_routeshipping')
+      let propFound = routeShippingProp
+                      ? `_${item.properties[routeShippingProp]}`
+                      : properties.find(key => item.properties[key] === true)
+
       const section = this.sectionsItems.find(sec => sec.prop === propFound)
 
       if(sections.indexOf(section) === -1) {
@@ -72,6 +77,7 @@ window.Scoutside.checkout = {
   },
   createItemLI: function (section, item) {
     const ulProductList = document.querySelector(`.order-summary__section--${section.classes}`)
+    const subtitle = item.properties._subtitle ? item.properties._subtitle : ''
     ulProductList.innerHTML += `
       <li class="product product-${item.variant_id}">
         <div class="product__figure">
@@ -85,7 +91,7 @@ window.Scoutside.checkout = {
             ${item.title}
           </span>
           <span class="product__data--subtitle">
-            ${item.properties._subtitle}
+            ${subtitle}
           </span>
         </div>
         <div class="product__price">
