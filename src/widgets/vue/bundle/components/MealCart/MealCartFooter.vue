@@ -319,7 +319,7 @@ export default {
 
   .disable {
     pointer-events: none;
-    // opacity: 0.6;
+    opacity: 0.6;
     color: #4f4c4d;
     background-color: #feedaa;
     border-color: #feedaa;
