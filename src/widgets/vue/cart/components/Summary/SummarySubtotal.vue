@@ -87,7 +87,9 @@ export default {
       return this.cartItems[itemType].map((item) => {
         const isSubscription = item.order_type === "subscription";
         const otherProps = isSubscription ? subsprops : {};
-        const discount = isSubscription ? this.sizeSelected.discount / 100 : 0;
+
+        const isRouteProtection = item.route_protection
+        const routeOrderType = isRouteProtection ? item.route_order_type : null
 
         return {
           id: item.varId ? item.varId : item.variants[0].id,
@@ -102,6 +104,7 @@ export default {
             _addons: item.order_type === "addons",
             _general: item.order_type === "general",
             _subtitle: item.subtitle,
+            _routeshipping: routeOrderType,
             ...otherProps,
           },
         };
