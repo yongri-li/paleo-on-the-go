@@ -104,8 +104,9 @@ export default {
 .c-ordersItem__details {
   padding: 1rem 0 2rem;
 
-  .c-h4 {
+  .c-ordersItem__title {
     font-size: 1.25rem;
+    text-transform: capitalize;
   }
 
   p {

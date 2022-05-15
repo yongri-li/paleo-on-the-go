@@ -20,6 +20,7 @@
   padding: 3rem;
 
   h1 {
+    font-size: clamp(2.25rem, 4vw, 4rem);
     display: -webkit-box;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -27,7 +28,7 @@
     -webkit-box-orient: vertical;
   }
 
-  @include media-tablet-down {
+  @include media-mobile-down {
     text-align: center;
     padding: 1.5rem 0.5rem;
 
@@ -44,6 +45,10 @@
 .c-topHero__imgWrap {
   flex: 2;
   background-size: cover;
+
+  @media only screen and (min-width: 767px) and (max-width: 1199px) {
+    background-position-x: center;
+  }
 }
 
 // HOMEPAGE MARQUEE SECTION ***
@@ -151,10 +156,10 @@
   display: flex;
   /*height: 100vh;*/
   height: calc(100vh - 106px);
-  min-height: 480px;
+  min-height: 460px;
   background-color: #efede6;
 
-  @include media-tablet-down {
+  @include media-mobile-down {
     flex-direction: column-reverse;
     margin-bottom: 4rem;
     height: auto;
@@ -668,11 +673,12 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    max-width: 1600px;
+    width: clamp(280px, 93vw, 1600px);
     margin: 0 auto;
 
     .klaviyo-form {
       button {
+        color: $color-black !important;
         font-weight: 500 !important;
         min-width: 100px;
         @include media-desktop-up {
@@ -683,6 +689,8 @@
       input,
       input::placeholder {
         font-weight: 500 !important;
+        border: none !important;
+        color: $color-black !important;
       }
     }
 
@@ -692,13 +700,7 @@
 
     .c-h2 {
       margin: 0;
-      font-size: 2.5rem;
-      @include media-tablet-up {
-        font-size: 3.5vw;
-      }
-      @include media-desktop-up {
-        font-size: 4vw;
-      }
+      font-size: clamp(2.75rem, 4vw, 5rem);
     }
   }
 
@@ -734,6 +736,10 @@
   .klaviyo-form > div,
   .klaviyo-form form {
     width: 100%;
+  }
+
+  form.klaviyo-form {
+    padding: 0 !important;
   }
 }
 
