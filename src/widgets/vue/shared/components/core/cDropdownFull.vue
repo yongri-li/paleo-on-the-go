@@ -117,7 +117,9 @@ export default {
 	}
 
 	.inner-flexwrap > div {
-		overflow-y: scroll;
+		@include media-tablet-down {
+			overflow-x: scroll;
+		}
 	}
 
 	.inner-flexwrap > div section {
