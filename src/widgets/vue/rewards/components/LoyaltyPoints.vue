@@ -22,6 +22,8 @@ export default {
 
 .lion-rule-item {
 
+  width: 100%;
+
   @include media-tablet-up {
     width: 25%;
   }
@@ -29,17 +31,15 @@ export default {
   &__content {
     background-color: $color-ecru;
     position: relative;
+    padding: 15px 5px;
   }
 
   &__title {
     font-family: $font-heading;
     text-transform: uppercase;
     margin: 1rem 0;
-    font-size: 1.7rem;
-
-    @include media-tablet-up {
-      font-size: 1.5rem;
-    }
+    font-size: 1.5rem;
+    padding: 15px 0 5px 0;
   }
 
   &__points {
@@ -86,8 +86,8 @@ export default {
 .lion-rule-item__completed-forever {
   position: absolute;
   bottom: 15px;
-  left: 5%;
-  width: 90%;
+  left: 3%;
+  width: 94%;
   height: 60px;
   background-color: $color-white;
   border: 1px solid $color-black;
