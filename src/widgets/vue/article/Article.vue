@@ -1,6 +1,6 @@
 <template>
   <div class="page">
-    <hero-article :content="heroContent"/>
+    <hero-article :content="heroContent" :tags="data.tags"/>
     <div class="content">
       <content-article :content="data.body_html" />
       <pagination-article :link-prev="data.previous_article" :link-next="data.next_article"/>

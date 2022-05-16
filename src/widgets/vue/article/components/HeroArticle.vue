@@ -1,6 +1,9 @@
 <template>
   <section class="c-hero__imgBg" :style="bgImage">
     <div class="c-hero__imgBg--copy">
+      <span class="c-h5 c-hero__imgBg--eyebrow">
+        {{ eyebrow }}
+      </span>
       <h1 class="c-h1">
         {{ content.title }}
       </h1>
@@ -14,11 +17,21 @@ export default {
     content: {
       type: Object,
       required: true
+    },
+    tags: {
+      type: String,
+      default: ""
     }
   },
   computed: {
     bgImage() {
       return `background-image: url(${this.content.bg_image})`
+    },
+    eyebrow() {
+      const tagSplit = this.tags.split(',')
+      const primaryFound = tagSplit.find(tag => tag.includes('primary:'))
+      const eyebrow = primaryFound ? primaryFound.replace('primary:','').trim() : ''
+      return eyebrow
     }
   }
 }
@@ -34,6 +47,7 @@ export default {
     margin-left: 1rem;
     margin-bottom: 0;
     width: 90%;
+    flex-direction: column;
 
     @include media-tablet-up {
       margin-left: 6rem;
@@ -45,6 +59,12 @@ export default {
       margin-bottom: .5rem;
       color: $color-white;
     }
+  }
+
+  &--eyebrow {
+    color: $color-white;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
   }
 }
 </style>
