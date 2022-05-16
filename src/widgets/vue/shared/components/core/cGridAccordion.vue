@@ -24,13 +24,13 @@
         <div class="panel-answer">
           <div class="panel-answer__block">
             <img :src="item.img_1" :alt="item.text_1" />
-            <a class="panel-answer__block-link" :href="item.link_1">
+            <a class="panel-answer__block-link" :href="item.link_1" target="_blank">
               {{ item.text_1 }}
             </a>
           </div>
           <div class="panel-answer__block">
             <img :src="item.img_2" :alt="item.text_2" />
-            <a class="panel-answer__block-link" :href="item.link_2">
+            <a class="panel-answer__block-link" :href="item.link_2" target="_blank">
               {{ item.text_2 }}
             </a>
           </div>
@@ -62,6 +62,7 @@ export default {
       const clickEvent = new MouseEvent('click', { shiftKey: true })
 
       const faqItems = this.$refs.faqItem
+      console.log("faqItems", faqItems)
       faqItems.forEach(item => {
         item.addEventListener('click', function (e) {
 
@@ -89,7 +90,9 @@ export default {
     }
   },
   mounted() {
-    this.accordionOpenClose()
+    setTimeout(() => {
+      this.accordionOpenClose()
+    }, 2000)
   }
 }
 </script>
