@@ -269,6 +269,14 @@ $translateY: calc(100% - $height-header-title);
   &__info.show {
     transform: translateY(1px);
   }
+  /* Safari Only */
+  @media not all and (min-resolution:.001dpcm) {
+    @supports (-webkit-appearance: none) {
+      .meal-cart__info {
+        height: calc(86vh - $height-footer);
+      }
+    }
+  }
 
   &__bottom {
     position: fixed;
