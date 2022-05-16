@@ -483,7 +483,7 @@ export default {
 
     @include media-tablet-up {
       .c-shipmentsBox__content {
-        min-height: 1000px;
+        min-height: 1012px;
       }
     }
 

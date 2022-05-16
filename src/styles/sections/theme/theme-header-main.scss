@@ -51,6 +51,11 @@
   height: 44px;
 }
 
+#nav-profile-icon img {
+  width: 41px;
+  height: 41px;
+}
+
 .c-headerMain__logoText {
   @include text-heading;
   font-size: 28px;
@@ -127,6 +132,15 @@
       font-size: 10px;
       text-align: center;
       width: 20px;
+    }
+
+    @include media-mobile-down {
+      margin-right: 0.2rem;
+
+      svg {
+        height: 34px;
+        width: 40px;
+      }
     }
   }
 }
