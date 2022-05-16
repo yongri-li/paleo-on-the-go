@@ -136,7 +136,7 @@
       <hr v-if="hasSubs" />
       <c-h
         class="c-details__heading"
-        v-if="content.plans_heading && showAddresses"
+        v-if="content.plans_heading && showAddresses && !customerChargeError"
         tag="h2"
         level="2"
         :text="content.plans_heading"
@@ -170,7 +170,7 @@
         </div>
       </div>
 
-      <div class="c-details__box c-box__isEditSubs editActivate" v-if="showAddresses">
+      <div class="c-details__box c-box__isEditSubs editActivate" v-if="showAddresses && !customerChargeError">
         <div class="c-details__boxSingle" v-for="(address, i) in activateItems" :key="address.id">
           <c-detailsBlock class="c-details__boxItem withAccordion" v-if="customerRecharge">
             <c-accordion>
@@ -248,7 +248,7 @@ export default {
     }
   },
   computed: {
-    ...mapGetters('customer', ['customerShopify', 'customerRecharge']),
+    ...mapGetters('customer', ['customerShopify', 'customerRecharge', 'customerChargeError']),
     content() {
       return this.$store.getters['customize/customizeContentByKey']('details')
     },

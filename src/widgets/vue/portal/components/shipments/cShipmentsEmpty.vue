@@ -39,7 +39,9 @@ export default {
   components: { cButton },
   methods: {
     handleCta() {
-      this.isRecharge ? $router.push({ path: '/details' }) : (location.href = '/pages/bundle/#/subscription')
+      this.isRecharge
+        ? this.$router.push({ path: '/details' })
+        : (location.href = '/pages/bundle/#/subscription')
     }
   }
 }

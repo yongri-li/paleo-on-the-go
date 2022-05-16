@@ -1,3 +1,6 @@
+import { routeapp } from './route-widget-stable'
+export { routeapp }
+
 export const formatPrice = cents => {
   // cents = cents / 100
   // const price = +(Math.round(cents + 'e+2') + 'e-2')

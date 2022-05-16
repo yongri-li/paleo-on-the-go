@@ -8,47 +8,51 @@ import {
 } from './_mutations-type'
 
 export default {
-  [ADD_PRODUCT_TO_CART] (state, { product, where, quantity = 1 }) {
+  [ADD_PRODUCT_TO_CART](state, { product, where, quantity = 1 }) {
     const indexFound = state.cart[where].findIndex(item => item.id === product.id)
-    if(indexFound > -1) {
+    if (indexFound > -1) {
       state.cart[where][indexFound].quantity += quantity
-    }
-    else {
+    } else {
       state.cart[where].push({
         quantity,
         ...product
       })
     }
   },
-  [ADD_PRODUCT_TO_CART_WITH_QT] (state, { product, where, quantity }) {
+  [ADD_PRODUCT_TO_CART_WITH_QT](state, { product, where, quantity }) {
     const indexFound = state.cart[where].findIndex(item => item.id === product.id)
-    if(indexFound > -1) {
+    if (indexFound > -1) {
       state.cart[where][indexFound].quantity += quantity
-    }
-    else {
+    } else {
       state.cart[where].push({
         quantity,
         ...product
       })
     }
   },
-  [ADD_PRODUCTS_TO_CART_FROM_PORTAL] (state, { products, where }) {
+  [ADD_PRODUCTS_TO_CART_FROM_PORTAL](state, { products, where }) {
     state.cart[where] = [...products]
   },
-  [REDUCE_PRODUCT_TO_CART] (state, { idProduct, where }) {
+  [REDUCE_PRODUCT_TO_CART](state, { idProduct, where }) {
     const indexFound = state.cart[where].findIndex(item => item.id === idProduct)
-    if(indexFound > -1) {
+    if (indexFound > -1) {
       state.cart[where][indexFound].quantity--
     }
   },
-  [REMOVE_PRODUCT_TO_CART] (state, { idProduct, where }) {
+  [REMOVE_PRODUCT_TO_CART](state, { idProduct, where }) {
     const indexFound = state.cart[where].findIndex(item => item.id === idProduct)
     state.cart[where].splice(indexFound, 1)
   },
-  [CLEAN_ALL_CART] (state) {
+  [CLEAN_ALL_CART](state) {
     state.cart = {
       items: [],
       addons: []
     }
+  },
+  SET_ROUTE_PRODUCT(state, product) {
+    state.currentRouteProduct = { ...product }
+  },
+  SET_ROUTE_VARIANT(state, variant) {
+    state.currentRouteVariant = { ...variant }
   }
 }
