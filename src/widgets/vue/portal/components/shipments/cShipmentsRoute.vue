@@ -61,7 +61,7 @@ export default {
   },
   computed: {
     price() {
-      return this.routeAdded ? 'Added' : formatPrice(this.routePrice)
+      return this.routeAdded ? `(Added) ${formatPrice(this.routePrice)}` : formatPrice(this.routePrice)
     },
     routeAction() {
       return this.routeAdded ? 'Remove' : 'Add+'

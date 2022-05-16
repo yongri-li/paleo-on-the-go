@@ -25,7 +25,7 @@
 </template>
 
 <script>
-import { formatPrice } from '@shared/utils'
+import { formatPrice, routeapp, formatPriceToNumber } from '@shared/utils'
 import { mapActions, mapState } from 'vuex'
 import cButton from '@shared/components/core/cButton.vue'
 import { apiService } from '@shared/services'
@@ -78,6 +78,9 @@ export default {
     return {
       notContinue: false,
       loading: false,
+      initialRoutePrice: '',
+      routeVariant: null,
+      routePrice: null,
       rechargeSubs: [],
       rechargeAddons: [],
       rechargeSubIds: [],
@@ -90,12 +93,16 @@ export default {
   },
   computed: {
     ...mapState('cartdrawer', ['cartItems']),
+    ...mapState('babcart', ['currentRouteProduct', 'currentRouteVariant']),
     priceAddOns() {
       return this.typeClass === 'addons' ? this.cartAddOns : 0
     },
     final() {
       const total = this.subtotalWithDiscount * 100 + this.priceAddOns
       return total === 0 ? '$0.00' : formatPrice(total)
+    },
+    finalInt() {
+      return (this.subtotalWithDiscount * 100 + this.priceAddOns) / 100
     },
     isCustomer() {
       return customer.email && customer.shopify_id ? true : false
@@ -166,11 +173,23 @@ export default {
         if (curQtysSrt[i] !== rcQtysSrt[i]) return true
       }
       return false
+    },
+    newRouteVariant() {
+      if (!!this.currentRouteVariant) {
+        const route = {
+          ...this.currentRouteVariant[0],
+          price: this.routePrice / 100,
+          hash: this.currentRouteProduct.price_hashes,
+          shopify_variant_id: this.routeVariant
+        }
+        return route
+      } else return null
     }
   },
   methods: {
     ...mapActions('cartdrawer', [
       'setDataFromBox',
+      'customerCreateSubscriptions',
       'customerDeleteSubscriptions',
       'customerDeleteOnetimes',
       'customerCreateOnetimes',
@@ -198,6 +217,13 @@ export default {
         deletes: this.rechargeSubs
       })
 
+      if (!!this.currentRouteVariant) {
+        await this.customerCreateSubscriptions({
+          addressId: this.addressId,
+          creates: [this.newRouteVariant]
+        })
+      }
+
       const update = await this.customerDeleteSubscriptions({
         addressId: this.addressId,
         ids: this.rechargeSubIds
@@ -222,13 +248,27 @@ export default {
         window.location = '/cart'
       }
     },
+    async getQuote() {
+      const route_key = window.Scoutside.api.route_api_key
+      routeapp.get_quote(route_key, this.finalInt, 'USD', async ({ insurance_price }) => {
+        this.initialRoutePrice = insurance_price
+      })
+    },
+    async setRoutePrice() {
+      const variant = this.currentRouteProduct?.variants.find(itm => {
+        return +formatPriceToNumber(itm?.price) >= this.initialRoutePrice
+      })
+      this.routeVariant = variant.id
+      this.routePrice = variant.price
+    },
     async getRCdata() {
       const apiClient = new apiService()
       const { data } = await apiClient.get('/v1/customer/resources?resources=subscriptions,onetimes')
       console.log(data)
       const { subscriptions, onetimes } = data.resources
       const curSubs = subscriptions.filter(
-        sub => sub.addressId === this.addressId && !sub.productTitle.includes('route')
+        // sub => sub.addressId === this.addressId && !sub.productTitle.includes('route')
+        sub => sub.addressId === this.addressId
       )
       const subIds = curSubs.map(sub => sub.id)
       const curAddons = onetimes.filter(addon => addon.addressId === this.addressId)
@@ -241,8 +281,17 @@ export default {
       this.rechargeAddonVarIds = addonVarIds
     }
   },
+  watch: {
+    initialRoutePrice() {
+      this.setRoutePrice()
+    },
+    finalInt() {
+      this.getQuote()
+    }
+  },
   mounted() {
     this.getRCdata()
+    this.getQuote()
   }
 }
 </script>

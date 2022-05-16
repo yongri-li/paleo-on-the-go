@@ -18,9 +18,6 @@ export default {
     }
   },
   addToCartFromPortal({ commit }, { items, addons, general }) {
-    console.log('items', items)
-    console.log('addons', addons)
-    console.log('general', general)
     commit(ADD_PRODUCTS_TO_CART_FROM_PORTAL, { products: items.productsArr, where: items.where })
     commit(ADD_PRODUCTS_TO_CART_FROM_PORTAL, { products: addons.productsArr, where: addons.where })
   }

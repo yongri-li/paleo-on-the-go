@@ -132,8 +132,7 @@ import cShipmentsDiscount from './cShipmentsDiscount.vue'
 import cShipmentsSummary from './cShipmentsSummary.vue'
 import cShipmentsRoute from './cShipmentsRoute.vue'
 import Datepicker from 'vuejs-datepicker'
-import { routeapp } from '../../utils'
-import { formatPriceToNumber } from '@shared/utils'
+import { routeapp, formatPriceToNumber } from '@shared/utils'
 import { _buildUpdates } from '@vue/portal/utils'
 
 export default {
@@ -318,6 +317,7 @@ export default {
   methods: {
     ...mapMutations('ui', ['UI_SET_SIDEBAR', 'UI_SET_MODAL']),
     ...mapMutations('customer', ['CUSTOMER_SET_THIS_CHARGEID', 'CUSTOMER_SET_NEXT_CHARGEDATE']),
+    ...mapMutations('babcart', ['SET_ROUTE_PRODUCT', 'SET_ROUTE_VARIANT']),
     ...mapActions('customer', ['customerCreateSubscriptions', 'customerDeleteSubscriptions']),
     ...mapActions('babcart', ['addToCartFromPortal']),
     setBoxMaxHeight() {
@@ -367,8 +367,12 @@ export default {
       })
     },
     handleChangeMeals() {
+      if (!!this.routeProduct) {
+        this.SET_ROUTE_PRODUCT(this.routeProduct)
+        this.SET_ROUTE_VARIANT(this.routeRcProduct)
+      }
       this.setMealBox()
-      window.location.href = '/pages/bundle/#/subscription'
+      location.href = '/pages/bundle/#/subscription'
     },
     handleEditSchedule() {
       this.CUSTOMER_SET_THIS_CHARGEID(this.charge.id)
