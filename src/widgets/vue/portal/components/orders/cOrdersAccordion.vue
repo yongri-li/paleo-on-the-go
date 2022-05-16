@@ -1,5 +1,8 @@
 <template>
-  <c-accordion :class="_buildModifiers('c-ordersAccordion', modifiers)" v-if="content">
+  <c-accordion
+    :class="_buildModifiers('c-ordersAccordion', modifiers)"
+    v-if="content"
+  >
     <c-accordionItem
       class="c-ordersAccordion__item"
       v-for="(order, index) in orders"
@@ -23,7 +26,14 @@
               :text="buildInfo(order)"
             />
           </div>
-          <div :class="_buildModifiers('c-ordersAccordion__triggerInfo', infoModifiers(order))">
+          <div
+            :class="
+              _buildModifiers(
+                'c-ordersAccordion__triggerInfo',
+                infoModifiers(order)
+              )
+            "
+          >
             <c-h
               class="c-ordersAccordion__infoStatus"
               tag="h5"
@@ -41,6 +51,7 @@
               class="c-ordersAccordion__infoTrack"
               v-if="order.shippingStatus === 'transit' && order.trackingUrl"
               :attributes="{ target: '_blank' }"
+              :href="order.trackingUrl"
               :url="order.trackingUrl"
               :text="content.track"
               :modifiers="['isUnderline']"
@@ -57,8 +68,8 @@
                 address: order.shippingAddress,
                 options: {
                   hiddenFields: ['name', 'country'],
-                  provinceName: 'short'
-                }
+                  provinceName: 'short',
+                },
               })
             "
           />
@@ -86,7 +97,9 @@
 
         <!-- Add-Ons -->
         <h6 class="c-h6">
-          {{ totalAddOns }} Add-Ons &nbsp;<span class="c-basicTxt--md"> One-Time Purchase</span>
+          {{ totalAddOns }} Add-Ons &nbsp;<span class="c-basicTxt--md">
+            One-Time Purchase</span
+          >
         </h6>
         <div class="c-ordersAccordion__grid item__addOn">
           <c-ordersItem
@@ -116,8 +129,8 @@
                     address: order.shippingAddress,
                     options: {
                       hiddenFields: ['name', 'country'],
-                      provinceName: 'short'
-                    }
+                      provinceName: 'short',
+                    },
                   })
                 "
               />
@@ -142,9 +155,16 @@
               class="c-ordersAccordion__summaryLine"
               v-for="line in summaryLines(order)"
               :key="line.key"
-              :class="line.key === 'total' ? 'c-ordersAccordion__summaryLine--isTotal' : ''"
+              :class="
+                line.key === 'total'
+                  ? 'c-ordersAccordion__summaryLine--isTotal'
+                  : ''
+              "
             >
-              <span class="c-ordersAccordion__summaryLabel" v-html="content[line.key]" />
+              <span
+                class="c-ordersAccordion__summaryLabel"
+                v-html="content[line.key]"
+              />
               <span
                 class="c-ordersAccordion__summaryValue"
                 v-html="
@@ -162,97 +182,109 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
-import cAccordion from '@shared/components/core/cAccordion.vue'
-import cAccordionItem from '@shared/components/core/cAccordionItem.vue'
-import cH from '@shared/components/core/cH.vue'
-import cP from '@shared/components/core/cP.vue'
-import cSvg from '@shared/components/core/cSvg.vue'
-import cOrdersItem from './cOrdersItem.vue'
-import { _filterItemsByAddOns, _filterItemsBySubscription, filterAddOns } from '../../utils'
+import { mapGetters } from "vuex";
+import cAccordion from "@shared/components/core/cAccordion.vue";
+import cAccordionItem from "@shared/components/core/cAccordionItem.vue";
+import cH from "@shared/components/core/cH.vue";
+import cP from "@shared/components/core/cP.vue";
+import cA from "@shared/components/core/cA.vue";
+import cSvg from "@shared/components/core/cSvg.vue";
+import cOrdersItem from "./cOrdersItem.vue";
+import {
+  _filterItemsByAddOns,
+  _filterItemsBySubscription,
+  filterAddOns,
+} from "../../utils";
 
 export default {
   props: {
     orders: {
       type: Array,
-      required: true
+      required: true,
     },
     content: {
       type: Object,
-      required: true
+      required: true,
     },
     modifiers: {
       type: Array,
-      default: () => []
+      default: () => [],
     },
     open: {
       type: [Number, Boolean],
-      default: false
+      default: false,
     },
     addressId: {
-      type: String
-    }
+      type: String,
+    },
   },
   components: {
     cAccordion,
     cAccordionItem,
     cH,
     cP,
+    cA,
     cSvg,
-    cOrdersItem
+    cOrdersItem,
   },
   computed: {
     currencySymbol() {
-      return this.$store.getters['customize/customizeShopByKey']('currency_symbol')
+      return this.$store.getters["customize/customizeShopByKey"](
+        "currency_symbol"
+      );
     },
     subscriptions() {
-      return this.$store.getters['customer/customerSubscriptionsByAddressId'](this.addressId)
+      return this.$store.getters["customer/customerSubscriptionsByAddressId"](
+        this.addressId
+      );
     },
     addons() {
-      return this.$store.getters['customer/customerOnetimesByAddressId'](this.addressId)
+      return this.$store.getters["customer/customerOnetimesByAddressId"](
+        this.addressId
+      );
     },
     frequency() {
-      const freqObj = this.subscriptions?.find(sub => sub.frequency)
-      return freqObj?.frequency
+      const freqObj = this.subscriptions?.find((sub) => sub.frequency);
+      return freqObj?.frequency;
     },
     totalSubItems() {
-      return this.subscriptions?.reduce((sum, sub) => sum + sub.quantity, 0)
+      return this.subscriptions?.reduce((sum, sub) => sum + sub.quantity, 0);
     },
     totalAddOns() {
-      return this.addons?.reduce((sum, sub) => sum + sub.quantity, 0)
-    }
+      return this.addons?.reduce((sum, sub) => sum + sub.quantity, 0);
+    },
   },
   methods: {
     buildInfo(order) {
-      const { content } = this
-      let info = `${content.name} #${order.number}`
-      return info
+      const { content } = this;
+      let info = `${content.name} #${order.number}`;
+      return info;
     },
     delivered(order) {
-      return this.shippingStatus !== 'delivered'
+      return this.shippingStatus !== "delivered";
     },
     infoModifiers(order) {
-      let modifiers = []
-      const { shippingStatus } = order
-      if (shippingStatus === 'processing') modifiers.push('isProcessing')
-      if (shippingStatus === 'transit') modifiers.push('isTransit')
-      if (shippingStatus === 'delivered') modifiers.push('isDelivered')
-      return modifiers
+      let modifiers = [];
+      const { shippingStatus } = order;
+      if (shippingStatus === "processing") modifiers.push("isProcessing");
+      if (shippingStatus === "transit") modifiers.push("isTransit");
+      if (shippingStatus === "delivered") modifiers.push("isDelivered");
+      return modifiers;
     },
     infoIcon(order) {
-      const { shippingStatus } = order
-      if (shippingStatus === 'delivered') return 'check'
+      const { shippingStatus } = order;
+      if (shippingStatus === "delivered") return "check";
     },
     billingStatus(order) {
-      const status = order.billingStatus
-      const statusCap = status.charAt(0).toUpperCase() + status.slice(1)
-      return statusCap
+      const status = order.billingStatus;
+      const statusCap = status.charAt(0).toUpperCase() + status.slice(1);
+      return statusCap;
     },
     summaryLines(order) {
-      return this._buildSummary({ item: order })
-    }
-  }
-}
+      return this._buildSummary({ item: order });
+    },
+  },
+};
 </script>
 
 <style lang="scss">
@@ -348,9 +380,14 @@ export default {
 .c-ordersAccordion__infoTrack {
   display: block;
   margin-top: 6px;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 500;
   text-transform: capitalize;
+  color: $color-secondary;
+  text-decoration: underline;
+  @include media-tablet-up {
+    font-size: 18px;
+  }
 }
 .c-ordersAccordion__triggerAddress {
   width: 220px;
