@@ -34,12 +34,17 @@
               {% endif %}
           </h1>
       </a>
+      <div class="c-headerMain__secondary--cart">
+        <a href="/cart">{%- render 'icon-cart' -%}
+          <span id="cartIcon"></span>
+        </a>
+      </div>        
       <div id="nav-profile-icon" class="c-headerMobile__icon">
           <img 
             class="c-headerMain__logoImage"
             src="{{ section.settings.profile_image | img_url: 'master' }}"
             alt="{{ section.settings.profile_image.alt }}"
-            style="max-width: 150px"/>      
+          />      
       </div>
   <!--     <div class="c-headerMobile__spacer">&nbsp;</div> -->
     </div>

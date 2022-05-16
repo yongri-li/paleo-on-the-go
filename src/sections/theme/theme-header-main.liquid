@@ -46,10 +46,6 @@
       <a href="/" class="c-headerMain__logo">
         <h1 class="c-headerMain__logoBox">
           {% if section.settings.logo_image %}
-  <!--           <img class="c-headerMain__logoImage" 
-              src="{{ section.settings.logo_image | img_url }}"
-              alt="{{ section.settings.logo_image.alt }}" 
-            /> -->
             <img 
               class="c-headerMain__logoImage"
               src="{{ section.settings.logo_image | img_url: 'master' }}"
