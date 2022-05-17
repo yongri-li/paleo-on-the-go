@@ -1,12 +1,8 @@
 <template>
-  <span :class="classList"
-    v-if="svg" 
-    v-html="svg"
-  />
+  <span :class="classList" v-if="svg" v-html="svg" />
 </template>
 
 <script>
-
 export default {
   props: {
     name: {
@@ -15,7 +11,7 @@ export default {
     },
     modifiers: {
       type: Array,
-      default: () => ([])
+      default: () => []
     }
   },
   data: () => ({
@@ -30,13 +26,14 @@ export default {
 </script>
 
 <style lang="scss">
-  .c-svg {
-    display: inline-flex;
-    text-align: center;
-    pointer-events: none;
-    svg {
-      width: inherit;
-      height: inherit;
-    }
+.c-svg {
+  display: inline-flex;
+  text-align: center;
+  pointer-events: none;
+  line-height: 0;
+  svg {
+    width: inherit;
+    height: inherit;
   }
+}
 </style>

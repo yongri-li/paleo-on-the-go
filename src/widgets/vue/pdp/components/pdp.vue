@@ -334,13 +334,13 @@ export default {
           margin-bottom: 1.25rem;
         }
 
-        // &-out-of-stock {
-        //   .c-heading,
-        //   .pdp__content--wrap__subheader,
-        //   .pdp__content--wrap__price {
-        //     opacity: .5;
-        //   }
-        // }
+        &-out-of-stock {
+          .c-heading,
+          .pdp__content--wrap__subheader,
+          .pdp__content--wrap__price {
+            opacity: 0.5;
+          }
+        }
       }
 
       &--ctas {

@@ -66,7 +66,7 @@ export default {
 
     button {
       background-color: transparent;
-      line-height: 0;
+      line-height: 1.25;
     }
 
     .panel-answer {
