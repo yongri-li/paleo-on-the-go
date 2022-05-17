@@ -85,7 +85,7 @@ export default {
       const { portal, shop, bundle, customer } = await window.Scoutside
       this.state.products = { ...portal.products.catalog }
       this.heroReady = !!portal
-    }
+    },
     // apiTest() {
     //   return new apiService()
     // },
