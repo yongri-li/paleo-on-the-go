@@ -593,15 +593,11 @@
 
   .tns-item {
     img {
-      max-width: 100px;
       border-radius: 100%;
+      object-fit: cover;
+      height: clamp(100px, 10vw, 150px);
+      width: clamp(100px, 10vw, 150px);
       margin: 1rem auto;
-
-      @include media-desktop-up {
-        object-fit: cover;
-        height: clamp(125px, 10vw, 150px);
-        width: clamp(125px, 10vw, 150px);
-      }
     }
 
     &__quote {
