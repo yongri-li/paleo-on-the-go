@@ -1,30 +1,39 @@
 {% form 'contact' %}
-<div id="contactFormWrapper">
-  <div class="desktop-12 tablet-6 mobile-3">
+<div id="contactFormWrapper" class="contactFormWrapper">
+  <section class="contactFormWrapper--header">
+    <div class="contactFormWrapper--field">
+      <p>
+        <!-- <label>{{ 'contact.form.name' | t }}</label> -->
+        <label>Name</label>
+        <input type="text" id="contactFormName" class="c-input c-input--isDefault" name="contact[name]" placeholder="{{ 'contact.form.name' | t }}" />
+      </p>
+    </div>
+    <div class="contactFormWrapper--field">
+      <p>
+        <!-- <label>{{ 'contact.form.email' | t }}</label> -->
+        <label>Email</label>
+        <input type="email" id="contactFormEmail" class="c-input c-input--isDefault" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" />
+      </p>
+    </div>
+    <div class="contactFormWrapper--field">
+      <p>
+        <!-- <label>{{ 'contact.form.phone' | t }}</label> -->
+        <label>Phone</label>
+        <input type="text" id="contactFormTelephone" class="c-input c-input--isDefault" name="contact[phone]" placeholder="{{ 'contact.form.phone' | t }}" />
+      </p> 
+    </div>    
+  </section>
+  <div class="contactFormWrapper--field">
     <p>
-      <label>{{ 'contact.form.name' | t }}</label>
-      <input type="text" id="contactFormName" name="contact[name]" placeholder="{{ 'contact.form.name' | t }}" />
+      <!-- <label>{{ 'contact.form.message' | t }}</label> -->
+      <label>Message</label>
+      <textarea rows="15" cols="90" id="contactFormMessage" class="c-input c-input--isDefault" style="height: auto" name="contact[body]" placeholder="{{ 'contact.form.message' | t }}"></textarea>
     </p>
-  </div>
-  <div class="desktop-12 tablet-6 mobile-3">
     <p>
-      <label>{{ 'contact.form.email' | t }}</label>
-      <input type="email" id="contactFormEmail" name="contact[email]" placeholder="{{ 'contact.form.email' | t }}" />
-    </p>
-  </div>
-  <div class="desktop-12 tablet-6 mobile-3">
-    <p>
-      <label>{{ 'contact.form.phone' | t }}</label>
-      <input type="text" id="contactFormTelephone" name="contact[phone]" placeholder="{{ 'contact.form.phone' | t }}" />
-    </p> 
-  </div>
-  <div class="desktop-12 tablet-6 mobile-3">
-    <p>
-      <label>{{ 'contact.form.message' | t }}</label>
-      <textarea rows="15" cols="90" id="contactFormMessage" name="contact[body]" placeholder="{{ 'contact.form.message' | t }}"></textarea>
-    </p>
-    <p>
-      <input type="submit" id="contactFormSubmit" class="secondary button" value="{{ 'contact.form.send' | t }}" />
+      <input type="submit" id="contactFormSubmit" class="c-formLogin__button c-form__submit
+          c-button 
+          c-button--isDefault
+          c-button--isPrimary button" value="{{ 'contact.form.send' | t }}" />
     </p> 
   </div>
 </div>
