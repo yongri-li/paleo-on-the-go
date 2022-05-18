@@ -4,11 +4,7 @@
     <!-- &#10005; -->
     <div class="modal__product--content">
       <div class="modal__product--figure">
-        <c-product-gallery
-          :images="product.images"
-          :is-modal="true"
-          class="modal__product--img"
-        />
+        <c-product-gallery :images="product.images" :is-modal="true" class="modal__product--img" />
       </div>
       <div class="modal__product--data">
         <div class="modal__product--data-header">
@@ -19,63 +15,64 @@
             {{ product.subtitle }}
           </div>
         </div>
-        <c-select-tabs
-          :pdpinfo="product.info"
-          class="modal__product--data-pills"
+        <c-select-tabs :pdpinfo="product.info" class="modal__product--data-pills" />
+        <c-button
+          class="modal__product--add-to-cart"
+          @click="addToCartModal"
+          text="Add To Box"
+          :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
+          :attributes="{ disabled: params.outOfStock }"
         />
-        <div class="modal__product--add-to-cart" @click="addToCartModal">
-          Add To Box
-        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions } from "vuex";
-import cProductGallery from "@shared/components/parts/cProductGallery.vue";
-import cSelectTabs from "@shared/components/parts/cSelectTabs.vue";
+import { mapActions } from 'vuex'
+import cProductGallery from '@shared/components/parts/cProductGallery.vue'
+import cSelectTabs from '@shared/components/parts/cSelectTabs.vue'
+import cButton from '@shared/components/core/cButton.vue'
 
 export default {
   components: {
     cProductGallery,
     cSelectTabs,
+    cButton
   },
   props: {
     params: {
-      type: Object,
-    },
+      type: Object
+    }
   },
   computed: {
     product() {
-      return this.params.product;
+      return this.params.product
     },
     imageUrl() {
-      const imgFound = this.product.media.find((item) => item.position === 1);
-      const urlFinal = imgFound.src
-        .replace(".jpg", "_800x800.jpg")
-        .replace(".png", "_800x800.png");
-      return urlFinal;
+      const imgFound = this.product.media.find(item => item.position === 1)
+      const urlFinal = imgFound.src.replace('.jpg', '_800x800.jpg').replace('.png', '_800x800.png')
+      return urlFinal
     },
     where() {
-      const param = this.$route.params.box;
-      return param === "addons" ? "addons" : "items";
-    },
+      const param = this.$route.params.box
+      return param === 'addons' ? 'addons' : 'items'
+    }
   },
   methods: {
-    ...mapActions("babcart", ["addToCart"]),
+    ...mapActions('babcart', ['addToCart']),
     closeModal() {
-      this.$emit("close");
+      this.$emit('close')
     },
     addToCartModal() {
       this.addToCart({
         product: this.product,
-        where: this.where,
-      });
-      this.closeModal();
-    },
-  },
-};
+        where: this.where
+      })
+      this.closeModal()
+    }
+  }
+}
 </script>
 
 <style lang="scss">
@@ -261,15 +258,12 @@ export default {
   }
 
   &--add-to-cart {
-    @include flex($justify: center);
-    background-color: $color-primary;
-    cursor: pointer;
     position: absolute;
-    bottom: 0;
+    bottom: 0.25rem;
     left: 0;
+    min-height: 53px;
+    min-width: 100%;
     width: 100%;
-    padding: 1rem 0;
-    font-weight: 500;
 
     @include media-tablet-up {
       position: relative;

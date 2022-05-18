@@ -16,14 +16,15 @@ export default {
 		return {
 			activeCategory: 'All',
 			currentUrl: window.location.pathname,
-			isCategory: window.location.pathname.includes('tagged')
+			isCategory: window.location.pathname.includes('tagged'),
+			handle: window.Scoutside.blog.type
 		}
 	},
 	methods: {
 		activate(val) {
 			console.log(val)
 			if (val === 'All') {
-				window.location.pathname = '/blogs/news'
+				window.location.pathname = `/blogs/${this.handle}`
 				return
 			}
 			const newUrl = this.isCategory
