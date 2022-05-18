@@ -1,6 +1,5 @@
 <script>
   let allFeatured;
-  let mainBlog;
   let categories = {};
   let blogSettings = {{ section.settings | json }};
   window.Scoutside.blog = {};
@@ -14,11 +13,11 @@
   {% if section.settings.all_featured != blank %}
     {% assign all_featured = section.settings.all_featured %}
   {% endif %}
-
-  {% assign main_blog = blogs.foods %}
+  
   {% if section.settings.blog_type != blank %}
-    {% assign main_blog = section.settings.blog_type %}
-    mainBlog = `{{ main_blog }}`
+    {% assign main_blog = section.settings.blog_type %}    
+  {% else %}
+    {% assign main_blog = blogs.foods %}
   {% endif %}
 
   {%- for article in main_blog.articles -%} 
