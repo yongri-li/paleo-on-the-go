@@ -19,7 +19,7 @@
       :loading="loading"
       :text="ctabtn"
       :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
-      :attributes="{ disable: notContinue }"
+      :attributes="{ disabled: notContinue }"
     />
   </div>
 </template>

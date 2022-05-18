@@ -1,5 +1,6 @@
 <script>
   let allFeatured;
+  let mainBlog;
   let categories = {};
   let blogSettings = {{ section.settings | json }};
   window.Scoutside.blog = {};
@@ -14,8 +15,13 @@
     {% assign all_featured = section.settings.all_featured %}
   {% endif %}
 
-  {% assign mainBlog = blogs.news %}
-  {%- for article in mainBlog.articles -%} 
+  {% assign main_blog = blogs.foods %}
+  {% if section.settings.blog_type != blank %}
+    {% assign main_blog = section.settings.blog_type %}
+    mainBlog = `{{ main_blog }}`
+  {% endif %}
+
+  {%- for article in main_blog.articles -%} 
     {%- if article.url contains all_featured -%}             
       allFeatured = {
         author: `{{ article.author }}`,
@@ -32,6 +38,7 @@
   window.Scoutside.blog = categories
   window.Scoutside.blog.heading = blogSettings.blog_heading
   window.Scoutside.blog.all_featured = allFeatured
+  window.Scoutside.blog.type = `{{ main_blog.handle }}`
 </script>
 
 <div class="c-blog">
@@ -58,6 +65,11 @@
         "type": "text",
         "label": "Blog Page Heading"
       },
+      {
+        "id": "blog_type",
+        "type": "blog",
+        "label": "Select Blog"
+      },                
       {
         "id": "all_featured",
         "type": "article",
