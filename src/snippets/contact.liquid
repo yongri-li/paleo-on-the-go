@@ -37,10 +37,9 @@
     </p>
     <p>
       <input type="submit" id="contactFormSubmit" class="c-formLogin__button c-form__submit
-          c-button 
-          c-button--isDefault
-          c-button--isPrimary button" value="Submit" />
-          <!-- value="{{ 'contact.form.send' | t }}" -->
+        c-button 
+        c-button--isDefault
+        c-button--isPrimary button" value="Submit" />
     </p> 
   </div>
 </div>
@@ -50,14 +49,20 @@
 
 {% if form.posted_successfully? %}
 <div class="successForm feedback">
-  <p>{{ 'contact.form.post_success' | t }}</p>
+  <p>Message sent!</p>
 </div>
+<script>
+  setTimeout(()=> location.reload(), 5000)
+</script>
 {% endif %}
 
 {% if form.errors %}
 <div class="errorForm feedback">
-  <p>{{ 'general.forms.post_error' | t }}</p>
+  <p>We're sorry! Message not sent</p>
 </div>
+<script>
+  setTimeout(()=> location.reload(), 5000)
+</script>
 {% endif %}
 
 {% endform %}      
