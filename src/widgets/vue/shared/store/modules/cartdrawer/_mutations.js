@@ -67,6 +67,13 @@ export default {
       state.cartItems.general.splice(indexFound, 1)
     }
   },
+  REMOVE_ROUTE_FROM_CART(state) {
+    console.log('asdsad working 2')
+    const indexFound = state.cartItems.general.findIndex(item => item.route_protection)
+    if (indexFound > -1) {
+      state.cartItems.general.splice(indexFound, 1)
+    }
+  },
   [ADD_ROUTE_PROTECTION_TO_CART](state, { routeProduct }) {
     state.cartItems.general.push({
       ...routeProduct

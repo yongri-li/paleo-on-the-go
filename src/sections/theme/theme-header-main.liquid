@@ -124,8 +124,12 @@
     if(!cartVuex) return
     const { cartdrawer: { cartItems } } = cartVuex
     const cartIcon = document.querySelector('.c-headerMain__secondary--cart')
-    const cartNum = document.getElementById('cartIcon')      
-    const totalCart = cartItems ? cartItems.general?.length + (cartItems.box?.length ? 1 : 0) : 0;
+    const cartNum = document.getElementById('cartIcon')  
+    const hasRoute = cartItems ? cartItems.general?.some(itm => itm.route_protection) : false
+    const totalCart = cartItems ? 
+      !hasRoute ? cartItems.general?.length + (cartItems.box?.length ? 1 : 0)
+        : (cartItems.general?.length-1) + (cartItems.box?.length ? 1 : 0)
+      : 0;
     totalCart !== 0 ? cartIcon.classList.add('hasItem') : cartIcon.classList.remove('hasItem') 
     cartNum.textContent = totalCart  
     cartIcon.classList.add('scalePop')  

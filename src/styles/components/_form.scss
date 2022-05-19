@@ -36,13 +36,12 @@
 }
 
 .c-form__sub {
-  margin-top: 20px; 
+  margin-top: 20px;
 }
 
 .c-form__subText {
   line-height: 1.75 !important;
 }
-
 
 .c-form__subLink {
   font-weight: 700;
@@ -50,5 +49,74 @@
   &:hover {
     cursor: pointer;
     text-decoration: none;
+  }
+}
+
+// CONTACT US FORM
+.contact-us {
+  text-align: center;
+
+  &__hero {
+    color: #fefefe;
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__formContent {
+    padding: 3rem 1rem;
+  }
+
+  .contactFormWrapper {
+    width: clamp(320px, 54vw, 920px);
+    margin: 0 auto;
+
+    &--header {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+
+    &--field {
+      margin-bottom: 0.5rem;
+    }
+
+    &--field p {
+      text-align: left;
+
+      label {
+        font-size: 1rem;
+        font-weight: 500;
+      }
+
+      input,
+      textarea {
+        margin-top: 0.5rem;
+      }
+
+      textarea {
+        padding: 1.25rem 1rem;
+      }
+    }
+  }
+
+  @include media-tablet-up {
+    &__hero h1 {
+      color: #232323;
+      background-color: #fefefe;
+      padding: 1.5rem 2rem;
+    }
+
+    .contactFormWrapper--header {
+      grid-gap: 2rem;
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @include media-tablet-down {
+    #contactFormMessage {
+      max-width: 320px;
+      margin: 0 auto;
+    }
   }
 }
