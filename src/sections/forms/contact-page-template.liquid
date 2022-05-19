@@ -8,8 +8,8 @@
       <h2 class="c-h2">{{ page.title }}</h2>
       <div class="rte">{{ page.content }}</div>
       <p style="text-align:center; font-size:18px; margin-bottom: 3.5rem">
-        Contact us Monday - Friday, 8AM - 4PM EST.<br/>
-        Use the form below or call us at 855-447-2536
+        {{ section.settings.contact_subtitle_one }}<br/>
+        {{ section.settings.contact_subtitle_two }}
       </p>
       {% include 'contact' %}
     </div>
@@ -45,7 +45,19 @@
         "type": "text",
         "label": "Hero Heading",
         "default": "We're Here To Help"
-      },           
+      }, 
+      {
+        "id": "contact_subtitle_one",
+        "type": "text",
+        "label": "Subtitle Text 1",
+        "default": "Contact us Monday - Friday, 8AM - 4PM EST."
+      },  
+      {
+        "id": "contact_subtitle_two",
+        "type": "text",
+        "label": "Subtitle Text 2",
+        "default": "Use the form below or call us at 855-447-2536."
+      },                        
       {
         "type": "link_list",
         "id": "pagelist",
