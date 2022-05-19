@@ -99,21 +99,21 @@
         padding: 1.25rem 1rem;
       }
     }
+  }
 
-    .feedback {
-      font-weight: 500;
-      padding: 0.5rem;
-      width: clamp(320px, 54vw, 920px);
-      margin: 0 auto;
-    }
+  .feedback {
+    font-weight: 500;
+    padding: 0.5rem;
+    width: clamp(320px, 54vw, 920px);
+    margin: 0 auto;
+  }
 
-    .successForm {
-      background-color: $color-secondary;
-    }
+  .successForm {
+    background-color: $color-secondary;
+  }
 
-    .errorForm {
-      background-color: tomato;
-    }
+  .errorForm {
+    background-color: tomato;
   }
 
   @include media-tablet-up {
