@@ -6,7 +6,6 @@ export default async app => {
   const { dispatch, commit } = app.$store
   const { portal, shop, bundle } = window.Scoutside
   const { products } = portal
-  // console.log(products, portal, shop)
 
   // SET BASE DATA
   await Promise.all([

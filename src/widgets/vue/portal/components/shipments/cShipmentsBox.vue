@@ -385,7 +385,7 @@ export default {
     },
     editAddOns() {
       this.handleChangeMeals()
-      window.location.href = '/pages/bundle/#/addons'
+      location.href = '/pages/bundle/#/addons'
     }
   },
   watch: {

@@ -10,7 +10,7 @@
       @trigger="triggerFilters"
       @collection="updateCollection"
     />
-    <c-page-hero :content="asdcontent" class="c-plp__hero" />
+    <c-page-hero :content="content" class="c-plp__hero" />
     <section class="c-plp__body">
       <c-FilterNav
         v-if="!isMobile"
@@ -96,16 +96,6 @@ export default {
     },
     content() {
       let obj = {}
-      Object.entries(this.$data).map(([key, val]) => {
-        if (key.startsWith('hero_')) {
-          const name = key.replace('hero_', '')
-          obj[name] = val
-        }
-      })
-      return obj
-    },
-    asdcontent() {
-      let obj = {}
       const startTxt = this.isGifts ? 'gift_hero_' : 'hero_'
       Object.entries(this.$data).map(([key, val]) => {
         if (key.startsWith(startTxt)) {
@@ -115,15 +105,6 @@ export default {
       })
       return obj
     }
-
-    // filteredProducts() {
-    //   return this.collections[this.activeNum].products.filter(prd => {
-    //     if (prd.tags.some(tag => this.filterTags.includes(tag))) return prd
-    //   })
-    // },
-    // filteredCollection() {
-    //   return !this.filterTags.length ? this.collections[this.activeNum].products : this.filteredProducts
-    // }
   },
   methods: {
     triggerFilters(trigger) {

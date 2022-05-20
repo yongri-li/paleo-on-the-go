@@ -15,22 +15,21 @@ export default {
 	data() {
 		return {
 			activeCategory: 'All',
-			currentUrl: window.location.pathname,
-			isCategory: window.location.pathname.includes('tagged'),
-			handle: window.Scoutside.blog.type
+			currentUrl: location.pathname,
+			isCategory: location.pathname.includes('tagged'),
+			handle: Scoutside.blog.type
 		}
 	},
 	methods: {
 		activate(val) {
-			console.log(val)
 			if (val === 'All') {
-				window.location.pathname = `/blogs/${this.handle}`
+				location.pathname = `/blogs/${this.handle}`
 				return
 			}
 			const newUrl = this.isCategory
 				? (this.currentUrl.split('/tagged')[0] += `/tagged/${val}`)
 				: `${this.currentUrl}/tagged/${val}`
-			window.location.pathname = newUrl
+			location.pathname = newUrl
 		}
 	},
 	mounted() {

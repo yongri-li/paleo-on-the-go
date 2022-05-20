@@ -22,7 +22,8 @@ export default {
     src() {
       const { customerRecharge } = this
       if (customerRecharge) {
-        return `https://shopifysubscriptions.com/customer_portal_forms/${customerRecharge.hash}/customer_card/`
+        return `https://shopifysubscriptions.com/customer_portal_payment_source_form/${customerRecharge.hash}/payment_source`
+        // return `https://shopifysubscriptions.com/customer_portal_forms/${customerRecharge.hash}/customer_card/`
       }
     }
   }

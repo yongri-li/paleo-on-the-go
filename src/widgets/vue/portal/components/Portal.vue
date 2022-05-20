@@ -86,25 +86,6 @@ export default {
       this.state.products = { ...portal.products.catalog }
       this.heroReady = !!portal
     }
-    // async getRCdata() {
-    //   const apiClient = new apiService()
-    //   const { data } = await apiClient.get(
-    //     '/v1/customer/resources?resources=addresses,charges,orders,subscriptions,onetimes'
-    //   )
-    //   const accounts = await apiClient.get('/v1/customer/account')
-    //   const { rechargeCustomer, resources } = data
-    //   console.log('dataa', data, accounts)
-    //   this.state.customer.resources = { ...resources }
-    //   this.state.customer.recharge = accounts.data.rechargeCustomer
-    //   this.state.rechargeCustomer = accounts.data.rechargeCustomer
-    //   this.state.customer.ready = true
-    //   const { portal, shop, bundle, customer } = await window.Scoutside
-    //   this.state.customer.shopifyCustomer = customer
-    //   this.state.shopify = customer
-    //   this.state.customize.shop = { ...shop }
-    //   this.state.customize.content = { ...portal }
-    //   this.state.products = { ...portal.products.catalog }
-    // }
   },
   async created() {
     this.setRources()
