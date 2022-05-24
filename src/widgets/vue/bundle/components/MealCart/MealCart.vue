@@ -209,10 +209,9 @@ export default {
       // this is for wrong params
       if (box !== "subscription" && box !== "onetime" && box !== "addons") {
         console.log("entro al if de wrong params");
-        changeRouter(orderType)
+        changeRouter(orderType);
         return;
       }
-
     },
     changeCartMobile(val) {
       this.showCartMobile = val;
@@ -228,6 +227,10 @@ $translateY: calc(100% - $height-header-title);
 
 .meal-cart {
   @include media-tablet-up {
+    position: sticky;
+    top: 1rem;
+    margin-bottom: 1rem;
+
     width: 300px;
     min-height: 700px;
     display: flex;
@@ -270,7 +273,7 @@ $translateY: calc(100% - $height-header-title);
     transform: translateY(1px);
   }
   /* Safari Only */
-  @media not all and (min-resolution:.001dpcm) {
+  @media not all and (min-resolution: 0.001dpcm) {
     @supports (-webkit-appearance: none) {
       .meal-cart__info {
         height: calc(86vh - $height-footer);
