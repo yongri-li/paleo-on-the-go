@@ -1,6 +1,6 @@
 <template>
   <div class="page o-containerLarge">
-    <summary-component class="content-summary" :cart-empty="!hasVisibleCartItems"/>
+    <summary-component class="content-summary" :cart-empty="!hasVisibleCartItems" :key="sumKey" />
     <div v-if="hasVisibleCartItems" class="content-box-cart">
       <your-box v-if="cartItems.box.length" />
       <your-cart v-if="visibleCartItems.length" />
@@ -12,12 +12,12 @@
 </template>
 
 <script>
-import SummaryComponent from "./components/Summary/Summary.vue";
-import YourBox from "./components/YourBox/YourBox.vue";
-import YourCart from "./components/YourCart/YourCart.vue";
+import SummaryComponent from './components/Summary/Summary.vue'
+import YourBox from './components/YourBox/YourBox.vue'
+import YourCart from './components/YourCart/YourCart.vue'
 import YourCartEmpty from './components/YourCart/YourCartEmpty.vue'
 
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 
 export default {
   components: {
@@ -26,17 +26,27 @@ export default {
     YourCart,
     YourCartEmpty
   },
+  data() {
+    return {
+      sumKey: 0
+    }
+  },
   computed: {
-    ...mapState("cartdrawer", ["cartItems", "sizeSelected"]),
-    ...mapState("ui", ["test"]),
+    ...mapState('cartdrawer', ['cartItems', 'sizeSelected']),
+    ...mapState('ui', ['test']),
     visibleCartItems() {
-      return this.cartItems.general.filter((item) => item.hide !== true);
+      return this.cartItems.general.filter(item => item.hide !== true)
     },
     hasVisibleCartItems() {
-      return this.visibleCartItems.length || this.cartItems.box.length;
-    },
+      return this.visibleCartItems.length || this.cartItems.box.length
+    }
   },
-};
+  watch: {
+    hasVisibleCartItems() {
+      this.sumKey++
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -46,12 +56,7 @@ export default {
   @include media-tablet-up {
     max-width: 1400px;
     margin-top: 3rem;
-    @include flex(
-      $justify: space-between,
-      $align: flex-start,
-      $direction: row-reverse,
-      $wrap: nowrap
-    );
+    @include flex($justify: space-between, $align: flex-start, $direction: row-reverse, $wrap: nowrap);
 
     .content-box-cart {
       padding-right: 1.25rem;
