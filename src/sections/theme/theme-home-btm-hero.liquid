@@ -11,7 +11,7 @@
 
 <article>
   <section class="c-hero__imgBg">
-    <div class="c-hero__imgBg--copy">
+    <div class="c-hero__imgBg--copy{% if section.settings.show_white_bg %} show-whiteBg{% endif %}{% if section.settings.show_overlay_bg %} show-overlayBg{% endif %}">
       {% if section.settings.show_flair %}
         <svg width="74" height="6" viewBox="0 0 74 6" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M77 0H0V6H77V0Z" fill="#231F20"/>
@@ -67,7 +67,17 @@
         "type": "checkbox",
         "label": "Show Flair",
         "default": true
-      }                                                
+      },
+      {
+        "id": "show_white_bg",
+        "type": "checkbox",
+        "label": "Show White Background"
+      },
+      {
+        "id": "show_overlay_bg",
+        "type": "checkbox",
+        "label": "Show Overlay Background"
+      }                                                             
     ],    
     "presets": [
       {
