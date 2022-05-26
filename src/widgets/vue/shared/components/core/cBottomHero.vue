@@ -1,7 +1,10 @@
 <template>
   <article>
     <section class="c-hero__imgBg" :style="bgImage">
-      <div class="c-hero__imgBg--copy">
+      <div
+        class="c-hero__imgBg--copy"
+        :class="{ 'show-whiteBg': content.show_white_bg, 'show-overlayBg': content.show_overlay_bg }"
+      >
         <svg width="77" height="6" viewBox="0 0 77 6" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M77 0H0V6H77V0Z" fill="#231F20" />
         </svg>
