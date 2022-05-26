@@ -63,7 +63,7 @@ export default {
         align-items: flex-start;
 
         &::before {
-          width: 5%;
+          /* width: 5%;*/
         }
       }
 

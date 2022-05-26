@@ -2,11 +2,7 @@
   <div class="pitemaddons">
     <div class="pitemaddons__colum product">
       <div class="pitemaddons__figure">
-        <img
-          class="pitemaddons__figure--img"
-          :src="imageUrl"
-          :alt="product.title"
-        />
+        <img class="pitemaddons__figure--img" :src="imageUrl" :alt="product.title" />
       </div>
       <div class="pitemaddons__info">
         <div class="pitemaddons__info--title">
@@ -18,9 +14,7 @@
         <div class="pitemaddons__price u-hideTabletUp">
           {{ finalPrice }}
         </div>
-        <div class="pitemaddons__qt u-hideTabletUp">
-          QTY: {{ product.quantity }}
-        </div>
+        <div class="pitemaddons__qt u-hideTabletUp">QTY: {{ product.quantity }}</div>
       </div>
     </div>
     <div class="pitemaddons__qt u-hideMobileDown">
@@ -29,32 +23,39 @@
     <div class="pitemaddons__price u-hideMobileDown">
       {{ finalPrice }}
     </div>
+    <div class="info__remove" @click="removeAddons">Remove</div>
   </div>
 </template>
 
 <script>
-import { formatPrice } from "@shared/utils";
+import { mapMutations } from 'vuex'
+import { formatPrice } from '@shared/utils'
 
 export default {
   props: {
     product: {
       type: Object,
-      required: true,
-    },
+      required: true
+    }
   },
   computed: {
     imageUrl() {
-      const imgFound = this.product.media.find((item) => item.position === 1);
-      const urlFinal = imgFound.src
-        .replace(".jpg", "_150x150.jpg")
-        .replace(".png", "_150x150.png");
-      return urlFinal;
+      const imgFound = this.product.media.find(item => item.position === 1)
+      const urlFinal = imgFound.src.replace('.jpg', '_150x150.jpg').replace('.png', '_150x150.png')
+      return urlFinal
     },
     finalPrice() {
-      return formatPrice(this.product.price * this.product.quantity);
-    },
+      return formatPrice(this.product.price * this.product.quantity)
+    }
   },
-};
+  methods: {
+    ...mapMutations('cartdrawer', ['CLEAR_ADDONS']),
+    removeAddons() {
+      this.CLEAR_ADDONS()
+      console.log('clean add')
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

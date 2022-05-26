@@ -19,6 +19,10 @@ export default {
   [CLEAR_BOX](state) {
     state.cartItems.box = []
   },
+  CLEAR_ADDONS(state) {
+    const addonsCleared = state.cartItems.box.filter(item => item.order_type !== 'addons')
+    state.cartItems.box = addonsCleared
+  },
   CLEAR_GENERAL(state) {
     state.cartItems.general = []
   },
