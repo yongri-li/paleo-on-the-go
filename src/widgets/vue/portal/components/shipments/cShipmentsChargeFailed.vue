@@ -14,7 +14,7 @@
       >
         {{ content.charge_error_update_payment_text }}
       </button>
-      <a href="https://freshmealplan.zendesk.com/hc/en-us" class="c-calloutBlock__ctaSecondary u-btnUnset">
+      <a href="/pages/contact-us" class="c-calloutBlock__ctaSecondary u-btnUnset">
         {{ content.charge_error_contact_support_text }}
       </a>
     </div>
