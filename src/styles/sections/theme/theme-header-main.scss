@@ -502,3 +502,10 @@
     background: $color-secondary;
   }
 }
+
+.default-page-content,
+.desktop-12 {
+  width: clamp(300px, 80vw, 1560px);
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}

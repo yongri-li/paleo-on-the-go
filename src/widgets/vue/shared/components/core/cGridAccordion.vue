@@ -7,17 +7,21 @@
       {{ title.second }}
     </h2>
     <div class="c-homeFaqs__content">
-      <section
-        v-for="(item, index) in content"
-        :key="index"
-        class="c-homeFaqs__item"
-        ref="faqItem"
-      >
+      <section v-for="(item, index) in content" :key="index" class="c-homeFaqs__item" ref="faqItem">
         <button class="c-homeFaqs__item-question">
           {{ item.title }}
           <div class="c-homeFaqs__item-icon">
             <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-              <path fill-rule="evenodd" clip-rule="evenodd" d="M1.15976 1.14645C0.946747 1.34171 0.946747 1.65829 1.15976 1.85355L6.61431 6.85355C6.82732 7.04881 7.17268 7.04881 7.38569 6.85355L12.8402 1.85355C13.0533 1.65829 13.0533 1.34171 12.8402 1.14645C12.6272 0.951185 12.2819 0.951185 12.0689 1.14645L7 5.79289L1.93115 1.14645C1.71814 0.951185 1.37277 0.951184 1.15976 1.14645Z" fill="#231F20" stroke="#231F20" stroke-width="0.5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path
+                fill-rule="evenodd"
+                clip-rule="evenodd"
+                d="M1.15976 1.14645C0.946747 1.34171 0.946747 1.65829 1.15976 1.85355L6.61431 6.85355C6.82732 7.04881 7.17268 7.04881 7.38569 6.85355L12.8402 1.85355C13.0533 1.65829 13.0533 1.34171 12.8402 1.14645C12.6272 0.951185 12.2819 0.951185 12.0689 1.14645L7 5.79289L1.93115 1.14645C1.71814 0.951185 1.37277 0.951184 1.15976 1.14645Z"
+                fill="#231F20"
+                stroke="#231F20"
+                stroke-width="0.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
             </svg>
           </div>
         </button>
@@ -62,27 +66,23 @@ export default {
       const clickEvent = new MouseEvent('click', { shiftKey: true })
 
       const faqItems = this.$refs.faqItem
-      console.log("faqItems", faqItems)
+      console.log('faqItems', faqItems)
       faqItems.forEach(item => {
         item.addEventListener('click', function (e) {
-
           const panel = this.children[1]
           panel.style.maxHeight
             ? (panel.style.maxHeight = null)
             : (panel.style.maxHeight = panel.scrollHeight + 'px')
 
-
           const itemActive = document.querySelector('.c-homeFaqs__item.active')
-          console.log('itemActive',itemActive)
-          console.log('this',this)
-          if(this != itemActive && itemActive) {
+          console.log('itemActive', itemActive)
+          console.log('this', this)
+          if (this != itemActive && itemActive) {
             itemActive.dispatchEvent(clickEvent)
             this.classList.add('active')
-          }
-          else {
+          } else {
             this.classList.toggle('active')
           }
-
         })
       })
 
@@ -100,11 +100,11 @@ export default {
 <style lang="scss" scoped>
 .vueComp__foodsourcing {
   max-width: 1500px;
-  padding: 5rem 1rem;
+  padding: 5rem 1.25rem;
   margin: 0 auto;
 
-  @include media-desktop-up {
-    padding: 3rem 0 5rem;
+  @include media-tablet-up {
+    padding: 3rem 2rem 5rem;
   }
 
   .c-homeFaqs__item {
@@ -112,22 +112,20 @@ export default {
 
     button {
       background-color: transparent;
-
     }
     &-icon {
-      background-color: #EFEDE6;
+      background-color: #efede6;
       width: 30px;
       height: 30px;
       border-radius: 100%;
       margin-right: 10px;
       @include flex($justify: center);
-      transition: all .4s;
+      transition: all 0.4s;
 
       svg {
         width: 50%;
         height: auto;
       }
-
     }
 
     .panel-answer {
@@ -165,7 +163,7 @@ export default {
   }
 
   @include media-tablet-up {
-    .c-homeFaqs{
+    .c-homeFaqs {
       &__content {
         position: relative;
         height: 750px;

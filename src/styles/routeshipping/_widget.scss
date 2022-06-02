@@ -1,4 +1,4 @@
-@import "_main.scss";
+@import '_main.scss';
 
 .pw-route-protection {
   padding: 24px 0px;
@@ -136,12 +136,7 @@
     }
 
     .pw-free-toggle {
-      background: -webkit-linear-gradient(
-        311.53deg,
-        #2bffff 0%,
-        #28b8e3 47.33%,
-        #265f7b 94.66%
-      );
+      background: -webkit-linear-gradient(311.53deg, #2bffff 0%, #28b8e3 47.33%, #265f7b 94.66%);
       background-clip: text;
       background-size: 100%;
       background-repeat: repeat;
@@ -228,7 +223,6 @@
       background: $color-white1;
       border-radius: 60px;
       padding: 3px 12px 3px 14px;
-      cursor: pointer;
 
       display: flex;
       align-items: center;

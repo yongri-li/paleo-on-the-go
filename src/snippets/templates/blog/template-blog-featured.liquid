@@ -8,7 +8,7 @@
               {%- if tag contains 'Featured' -%}                
                 featured = {
                   author: `{{ article.author }}`,
-                  excerpt: `{{ article.excerpt }}`,
+                  excerpt: `{{ article.excerpt | truncate: 175 }}`,
                   image: `{{ article.image | img_url: 'master' }}`,
                   tags: `{{ article.tags }}`,
                   title: `{{ article.title }}`,

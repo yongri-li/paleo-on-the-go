@@ -27,7 +27,9 @@
         <label for="agreecheck" class="subtotal__agree--label" :class="{ agree: agree }">
           I agree with the
         </label>
-        <a href="#" target="_blank" class="subtotal__agree--redirect"> Shipping Terms and Conditions </a>
+        <a href="/pages/shipping-schedule" target="_blank" class="subtotal__agree--redirect">
+          Shipping Terms & Conditions
+        </a>
       </div>
     </div>
   </div>

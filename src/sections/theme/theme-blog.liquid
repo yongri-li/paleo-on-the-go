@@ -24,7 +24,7 @@
     {%- if article.url contains all_featured -%}             
       allFeatured = {
         author: `{{ article.author }}`,
-        excerpt: `{{ article.excerpt }}`,
+        excerpt: `{{ article.excerpt | truncate: 175 }}`,
         image: `{{ article.image | img_url: 'master' }}`,
         tags: `{{ article.tags }}`,
         title: `{{ article.title }}`,

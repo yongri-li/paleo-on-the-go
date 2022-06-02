@@ -14,13 +14,7 @@
       </div>
       <div class="info-mobile__section">
         <div class="info__edit" @click="backToEditBundle">
-          <svg
-            width="17"
-            height="17"
-            viewBox="0 0 17 17"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="8.49985" cy="8.49985" r="5.88462" fill="#231F20" />
             <path
               d="M8.5 0C3.80588 0 0 3.80588 0 8.5C0 13.1941 3.80588 17 8.5 17C13.1941 17 17 13.1941 17 8.5C17 3.80588 13.1941 0 8.5 0ZM4.95833 12.0417L5.67092 9.18283L7.871 11.3822L4.95833 12.0417ZM8.61333 10.7107L6.34525 8.44262L10.4826 4.25L12.75 6.51667L8.61333 10.7107Z"
@@ -55,13 +49,7 @@
       <div class="info-desk__colum product">
         <div class="info__item-number">{{ sizeSelected.title }} box</div>
         <div class="info__edit" @click="backToEditBundle">
-          <svg
-            width="17"
-            height="17"
-            viewBox="0 0 17 17"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg">
             <circle cx="8.49985" cy="8.49985" r="5.88462" fill="#231F20" />
             <path
               d="M8.5 0C3.80588 0 0 3.80588 0 8.5C0 13.1941 3.80588 17 8.5 17C13.1941 17 17 13.1941 17 8.5C17 3.80588 13.1941 0 8.5 0ZM4.95833 12.0417L5.67092 9.18283L7.871 11.3822L4.95833 12.0417ZM8.61333 10.7107L6.34525 8.44262L10.4826 4.25L12.75 6.51667L8.61333 10.7107Z"
@@ -102,34 +90,34 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from "vuex";
-import { formatPrice, formatPriceDollars } from "@shared/utils";
-import { CHANGE_FREQUENCY_SELECTED } from "../../store/modules/frequency/_mutations-type";
+import { mapState, mapGetters } from 'vuex'
+import { formatPrice, formatPriceDollars } from '@shared/utils'
+import { CHANGE_FREQUENCY_SELECTED } from '../../store/modules/frequency/_mutations-type'
 
 export default {
   computed: {
-    ...mapState("cartdrawer", ["sizeSelected"]),
-    ...mapState("frequency", ["frequencies", "frequencySelected"]),
-    ...mapGetters("cartdrawer", ["getBoxPrices"]),
+    ...mapState('cartdrawer', ['sizeSelected']),
+    ...mapState('frequency', ['frequencies', 'frequencySelected']),
+    ...mapGetters('cartdrawer', ['getBoxPrices']),
     isOneTime() {
-      return this.sizeSelected.order_type === "onetime";
-    },
+      return this.sizeSelected.order_type === 'onetime'
+    }
   },
   methods: {
     formatPrice,
     formatPriceDollars,
     backToEditBundle() {
-      window.location = "/pages/bundle";
+      window.location = '/pages/bundle'
     },
     removeBundle() {
       this.$store.dispatch(`cartdrawer/clearBox`)
-      console.log("clean cart");
+      console.log('clean cart')
     },
     setFrequency(val) {
-      this.$store.commit(`frequency/${CHANGE_FREQUENCY_SELECTED}`, val);
-    },
-  },
-};
+      this.$store.commit(`frequency/${CHANGE_FREQUENCY_SELECTED}`, val)
+    }
+  }
+}
 </script>
 
 <style lang="scss">
@@ -180,6 +168,8 @@ export default {
     align-items: center;
     font-weight: 500;
     text-decoration: underline;
+    text-transform: capitalize;
+    letter-spacing: 0.5px;
     cursor: pointer;
 
     svg {
@@ -258,12 +248,7 @@ export default {
 
         .vs__dropdown-option--radio {
           border-color: $color-white;
-          background: radial-gradient(
-            $color-primary 0%,
-            $color-primary 35%,
-            transparent 45%,
-            transparent
-          );
+          background: radial-gradient($color-primary 0%, $color-primary 35%, transparent 45%, transparent);
         }
       }
     }

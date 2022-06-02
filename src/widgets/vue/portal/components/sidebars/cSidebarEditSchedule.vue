@@ -9,12 +9,12 @@
     <h5 class="c-h5">{{ edit_frequency }}</h5>
     <section v-if="chrgFreq" class="c-sidebar__pills">
       <div
-        v-for="(pill, i) in 4"
-        :class="(i + 1) * 2 == chrgFreq ? 'selected' : null"
-        :data-freq="(i + 1) * 2"
+        v-for="(pill, i) in 3"
+        :class="freqCalc(i + 1) == chrgFreq ? 'selected' : null"
+        :data-freq="freqCalc(i + 1)"
         @click="freqSelect(pill)"
       >
-        {{ (i + 1) * 2 }} Weeks
+        {{ freqCalc(i + 1) }} Weeks
       </div>
     </section>
     <hr />
@@ -113,14 +113,17 @@ export default {
       'customerUpdateSubscriptions'
     ]),
     ...mapMutations('ui', ['UI_CLOSE_SIDEBAR', 'UI_SET_MODAL', 'UI_CLOSE_MODAL']),
+    freqCalc(index) {
+      return index < 3 ? index * 2 : (index + 1) * 2
+    },
     formatDayDateMMIOS(date) {
       const dateStr = convertToYYYYMMDDlocalT(date)
       return dateStr != null ? format(new Date(dateStr), 'ddd, MMM D') : null
     },
     freqSelect(freq) {
-      this.chrgFreq = freq * 2
+      this.chrgFreq = this.freqCalc(freq)
       const subFreq = +this.subscriptions[0].charge_interval_frequency
-      freq * 2 !== subFreq ? (this.freqChanged = true) : (this.freqChanged = false)
+      this.freqCalc(freq) !== subFreq ? (this.freqChanged = true) : (this.freqChanged = false)
     },
     setMonthChrgDelay(currentChrg, num) {
       const date = new Date(currentChrg)
@@ -258,7 +261,7 @@ export default {
     div {
       background-color: $color-ecru;
       font-size: 1rem;
-      padding: 0.75rem 1.65rem;
+      padding: 0.75rem 2.5rem;
       border-radius: 25px;
       cursor: pointer;
       transition: background-color 175ms;
@@ -269,13 +272,13 @@ export default {
     }
 
     @include media-mobile-down {
-      display: grid;
+      /*      display: grid;
       grid-template-columns: 1fr 1fr;
-      grid-gap: 1rem;
+      grid-gap: 1rem;*/
 
       div {
         font-size: 15px;
-        padding: 0.85rem 1rem;
+        padding: 0.85rem 1.5rem;
         text-align: center;
       }
     }

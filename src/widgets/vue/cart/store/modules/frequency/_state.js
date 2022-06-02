@@ -11,11 +11,6 @@ const state = {
       week: 4
     },
     {
-      label: 'Ships Every 6 Weeks',
-      labelOption: '6 Weeks',
-      week: 6
-    },
-    {
       label: 'Ships Every 8 Weeks',
       labelOption: '8 Weeks',
       week: 8

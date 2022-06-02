@@ -6,22 +6,20 @@
       :text="topBannerContent.text"
     />
     <section class="post-banner-container">
-      <div class="post-banner-container__text">
-        All animals are humanely raised.
-      </div>
+      <div class="post-banner-container__text">All animals are humanely raised.</div>
       <div class="post-banner-container__text">
         No antibiotics or hormones are ever used in any animal products.
       </div>
       <div class="post-banner-container__text">
         All cattle and lamb have access to pasture and grass & never fed grain.
       </div>
-      <div class="post-banner-container__text">
-        All fish must be wild-caught or organic.
-      </div>
+      <div class="post-banner-container__text">All fish must be wild-caught or organic.</div>
     </section>
     <section class="text-block-container o-container">
       <p class="text-block-container__text">
-        It is our goal to be transparent and share as much information with you as possible about our products. To provide an autoimmune protocol (AIP) and paleo meal delivery service that we believe in, we source from these quality providers.
+        It is our goal to be transparent and share as much information with you as possible about our
+        products. To provide an autoimmune protocol (AIP) and paleo meal delivery service that we believe in,
+        we source from these quality providers.
       </p>
     </section>
     <section class="grid-container">
@@ -35,10 +33,7 @@
     </section>
     <c-tiles :tiles="tilesBlocks" class="tiles-container" />
     <section class="faq-container">
-      <c-faq-accordion
-        :faqs="faqBlocks"
-        :title="['Our', 'Ingredients']"
-      />
+      <c-faq-accordion :faqs="faqBlocks" :title="['Our', 'Ingredients']" />
     </section>
   </div>
 </template>
@@ -59,7 +54,7 @@ export default {
   data() {
     return {
       dataAncillary: window.Scoutside.ancillary,
-      dataPage: window.Scoutside.foodsourcing,
+      dataPage: window.Scoutside.foodsourcing
     }
   },
   computed: {
@@ -80,21 +75,19 @@ export default {
 </script>
 
 <style lang="scss">
-
 .page {
-  // border: 1px solid blue;
+  /*  ////// border: 1px solid blue;*/
   .hero-ancillary__text {
     color: $color-black;
     top: 5%;
-    transform: translate(0,0);
+    transform: translate(0, 0);
     width: 90%;
-    font-size: clamp(2rem, 9vw, 4rem);
+    font-size: clamp(2rem, 5vw, 3.25rem);
 
     @include media-tablet-up {
       background-color: transparent;
-      left: 5%;
-      width: 52%;
-      max-width: 875px;
+      left: 5vw;
+      width: clamp(500px, 60vw, 900px);
     }
   }
 
@@ -115,7 +108,7 @@ export default {
       margin: 4rem 0;
 
       @include media-tablet-up {
-        font-size: 4rem;
+        font-size: 3.25rem;
         width: 80%;
       }
     }
@@ -146,6 +139,4 @@ export default {
     font-size: 1.5rem;
   }
 }
-
-
 </style>
