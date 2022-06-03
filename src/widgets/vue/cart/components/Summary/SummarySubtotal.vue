@@ -36,7 +36,7 @@
 </template>
 
 <script>
-import { mapState, mapGetters } from 'vuex'
+import { mapState, mapGetters, mapMutations } from 'vuex'
 import { formatPrice, formatPriceDollars } from '@shared/utils'
 import cButton from '@shared/components/core/cButton.vue'
 
@@ -68,6 +68,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations('ui', ['UI_SET_MODAL', 'UI_CLOSE_MODAL']),
     getItemForCart(itemType) {
       const subsprops = {
         shipping_interval_frequency: this.frequencySelected.week,
@@ -135,7 +136,20 @@ export default {
       return tokenJson.token
     },
     async checkout() {
+      if (!this.cartItems.box.length) {
+        this.UI_SET_MODAL({
+          component: 'cModalNeedbox',
+          content: {
+            heading: 'Please Add Meals!',
+            text: 'Merch can only be added as a one-time purchase or an add-on to a subscription.',
+            button: 'Build Your Box'
+          }
+        })
+        return
+      }
+
       this.loading = true
+
       // create cartData
       const cartData = this.buildCartData()
 

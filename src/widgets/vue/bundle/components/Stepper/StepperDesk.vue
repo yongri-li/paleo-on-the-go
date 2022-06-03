@@ -17,13 +17,7 @@
         @click="backRouter(step)"
       >
         <div v-if="step.complete" class="sp__item--number">
-          <svg
-            width="18"
-            height="12"
-            viewBox="0 0 18 12"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+          <svg width="18" height="12" viewBox="0 0 18 12" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               d="M16.8889 1L6.2963 11.1111L1 6.05578"
               stroke="#FCD32B"
@@ -50,59 +44,59 @@
 export default {
   computed: {
     isCustomer() {
-      return customer.email && customer.shopify_id ? true : false;
+      return customer.email && customer.shopify_id ? true : false
     },
     fromPortal() {
-      return !!sessionStorage.getItem("fromPortal");
+      return !!sessionStorage.getItem('fromPortal')
     },
     steps() {
-      const param = this.$route.params.box;
+      const param = this.$route.params.box
       const steps = [
         {
-          name: "Meals",
+          name: 'Choose Your Box',
           active: true,
-          param: "subscription",
-          complete: param === "addons",
+          param: 'subscription',
+          complete: param === 'addons'
         },
         {
-          name: "Add-Ons",
-          active: param === "addons",
+          name: 'Choose Add-Ons',
+          active: param === 'addons'
         },
         {
-          name: "Review",
-          active: false,
+          name: 'Review',
+          active: false
         },
         {
-          name: "Checkout",
-          active: false,
-        },
-      ];
+          name: 'Checkout',
+          active: false
+        }
+      ]
 
-      if (param === "onetime") {
-        steps.splice(1, 1);
-        steps[0].param = "onetime";
+      if (param === 'onetime') {
+        steps.splice(1, 1)
+        steps[0].param = 'onetime'
       }
 
-      if (this.isCustomer && this.fromPortal && param !== "onetime") {
-        steps.splice(3, 1);
-        steps[2].name = "Udpate Box";
+      if (this.isCustomer && this.fromPortal && param !== 'onetime') {
+        steps.splice(3, 1)
+        steps[2].name = 'Udpate Box'
       }
 
-      if (this.isCustomer && this.fromPortal && param === "addons") {
-        steps[2].active = true;
+      if (this.isCustomer && this.fromPortal && param === 'addons') {
+        steps[2].active = true
       }
 
-      return steps;
-    },
+      return steps
+    }
   },
   methods: {
     backRouter(step) {
       if (step.active && step.complete && step.param) {
-        this.$router.push(`/${step.param}`);
+        this.$router.push(`/${step.param}`)
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

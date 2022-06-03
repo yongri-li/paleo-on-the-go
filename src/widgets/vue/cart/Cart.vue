@@ -8,6 +8,7 @@
     <div v-else>
       <your-cart-empty />
     </div>
+    <c-modal class="c-portal__modal" data-portal-modal />
   </div>
 </template>
 
@@ -16,6 +17,7 @@ import SummaryComponent from './components/Summary/Summary.vue'
 import YourBox from './components/YourBox/YourBox.vue'
 import YourCart from './components/YourCart/YourCart.vue'
 import YourCartEmpty from './components/YourCart/YourCartEmpty.vue'
+import cModal from './components/theme/cModal.vue'
 
 import { mapState } from 'vuex'
 
@@ -24,7 +26,8 @@ export default {
     SummaryComponent,
     YourBox,
     YourCart,
-    YourCartEmpty
+    YourCartEmpty,
+    cModal
   },
   data() {
     return {

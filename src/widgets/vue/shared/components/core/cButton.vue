@@ -59,7 +59,7 @@ export default {
     },
     buttonText() {
       const { loading, success, text, status } = this
-      const textDefault = text.default ? text.default : text
+      const textDefault = text?.default ? text.default : text
       if (status === 'error') return text.error
       if (status === 'applied') return text.remove
       if (status === 'removed') return text.removed
