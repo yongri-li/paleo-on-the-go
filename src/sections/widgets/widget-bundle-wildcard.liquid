@@ -16,7 +16,7 @@
     {% assign _collection = collections[block.settings.collection] %}
     wildcard.collections.push({
       ...JSON.parse('{{ _collection | json }}'),
-      short_description: '{{ block.settings.short_description }}',
+      short_description: `{{ block.settings.short_description }}`,
       products: [
         {% for _product in _collection.products %}
           {

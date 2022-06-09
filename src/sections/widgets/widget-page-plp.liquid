@@ -20,7 +20,7 @@
     {%- if collection.handle == gifts_collection_handle -%}    
       gifts_collection_items.push({
         ...JSON.parse(JSON.stringify({{collection | json }})),
-        short_description: '{{ section.settings.gifts_description }}',
+        short_description: `{{ section.settings.gifts_description }}`,
         products: [
           {%- for _product in collection.products limit:999 -%}
             {
@@ -48,7 +48,7 @@
     collections.push({
       ...JSON.parse(JSON.stringify({{ _collection | json }})),
       icon: '{{ block.settings.icon | img_url: "master" }}',
-      short_description: '{{ block.settings.short_description }}',
+      short_description: `{{ block.settings.short_description }}`,
       products: [
         {%- for _product in _collection.products limit:999 -%}
           {

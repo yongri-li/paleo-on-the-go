@@ -6,7 +6,8 @@
   AncillaryAccordions.blocks = []
   {% for block in section.blocks %}
     AncillaryAccordions.blocks.push({
-      ...JSON.parse('{{ block.settings | json }}')
+      ...JSON.parse(JSON.stringify({{ block.settings | json }}))
+      ////// ...JSON.parse.JSON.stringify('{{ block.settings | json }}')
     })
   {% endfor %}
 
@@ -16,7 +17,7 @@
 
 {% schema %}
   {
-    "name": "Accordions Section",
+    "name": "FAQ Accordions Section",
     "max_blocks": 6,
     "blocks": [
       {

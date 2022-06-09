@@ -4,6 +4,7 @@
   class="{% if template == 'index' %} o-html-home{% endif %}{% if template == 'product' %} o-product{% endif %}"
 >
 <head>
+  {% render 'theme-gtm-script' %}
   {% render 'theme-meta' %}
   {% render 'theme-styles' %}
   {% render 'theme-customer' %}
@@ -18,6 +19,7 @@
   </style>
 </head>
 <body class="o-body" data-body>
+  {% render 'theme-gtm-noscript' %}
   {% if template != 'page.bundle' %}
     {% render 'theme-header' %}
   {% endif %}

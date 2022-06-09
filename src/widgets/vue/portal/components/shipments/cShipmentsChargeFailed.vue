@@ -42,10 +42,15 @@ export default {
     }
   },
   methods: {
-    ...mapMutations('ui', ['UI_SET_SIDEBAR']),
+    ...mapMutations('ui', ['UI_SET_SIDEBAR', 'UI_SET_MODAL', 'UI_CLOSE_MODAL']),
     triggerUpdatePaymentSidebar() {
-      sessionStorage.setItem('from_update_payment', true)
-      this.$router.push({ path: '/profile' })
+      this.UI_SET_MODAL({
+        component: 'cModalPayment',
+        content: {
+          heading: 'Update Payment Method',
+          text: 'Please enter your updated payment info in the form below. You may need to refesh the page after.'
+        }
+      })
     }
   }
 }

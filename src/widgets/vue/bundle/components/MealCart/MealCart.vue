@@ -33,80 +33,77 @@
 </template>
 
 <script>
-import MealCartHeader from "./MealCartHeader.vue";
-import MealCartBody from "./MealCartBody.vue";
-import MealCartFooter from "./MealCartFooter.vue";
+import MealCartHeader from './MealCartHeader.vue'
+import MealCartBody from './MealCartBody.vue'
+import MealCartFooter from './MealCartFooter.vue'
 
-import { mapState, mapGetters } from "vuex";
-import { CHANGE_SIZE_SELECTED } from "../../store/modules/mealcart/_mutations-type";
-import { CLEAN_ALL_CART } from "@shared/store/modules/babcart/_mutations-type";
+import { mapState, mapGetters } from 'vuex'
+import { CHANGE_SIZE_SELECTED } from '../../store/modules/mealcart/_mutations-type'
+import { CLEAN_ALL_CART } from '@shared/store/modules/babcart/_mutations-type'
 
-import { changeRouter } from "../../utils";
+import { changeRouter } from '../../utils'
 
 export default {
   components: {
     MealCartHeader,
     MealCartBody,
-    MealCartFooter,
+    MealCartFooter
   },
   data() {
     return {
       showCartMobile: false,
-      fromPortal: !!sessionStorage.getItem("fromPortal"),
+      fromPortal: !!sessionStorage.getItem('fromPortal'),
       addressId: null,
-      nextChargeDate: null,
-    };
+      nextChargeDate: null
+    }
   },
   computed: {
-    ...mapState("babcart", ["cart"]),
-    ...mapGetters("mealcart", ["getSizeSelected"]),
+    ...mapState('babcart', ['cart']),
+    ...mapGetters('mealcart', ['getSizeSelected']),
     haveProductsClass() {
-      return this.cart.items.length ? "with-products" : "without-products";
+      return this.cart.items.length ? 'with-products' : 'without-products'
     },
     typeClass() {
-      const orderType =
-        this.$route.params.box || this.getSizeSelected.order_type;
-      return orderType;
+      const orderType = this.$route.params.box || this.getSizeSelected.order_type
+      return orderType
     },
     cartLength() {
-      let length = 0;
-      this.cart.items.forEach((item) => {
-        length += item.quantity;
-      });
-      return length;
+      let length = 0
+      this.cart.items.forEach(item => {
+        length += item.quantity
+      })
+      return length
     },
     cartSubTotal() {
-      let subtotal = 0;
-      this.cart.items.forEach((item) => {
-        subtotal += item.price * item.quantity;
-      });
-      return subtotal;
+      let subtotal = 0
+      this.cart.items.forEach(item => {
+        subtotal += item.price * item.quantity
+      })
+      return subtotal
     },
     cartSubTotalWithDiscount() {
-      let sub = 0;
-      let final = 0;
-      const discount = (100 - this.getSizeSelected.discount) / 100;
-      this.cart.items.forEach((item) => {
-        sub += item.price * item.quantity;
-        let price = +(
-          Math.round((item.price * discount) / 100 + "e+2") + "e-2"
-        );
-        final += price * item.quantity;
-      });
-      return final;
+      let sub = 0
+      let final = 0
+      const discount = (100 - this.getSizeSelected.discount) / 100
+      this.cart.items.forEach(item => {
+        sub += item.price * item.quantity
+        let price = +(Math.round((item.price * discount) / 100 + 'e+2') + 'e-2')
+        final += price * item.quantity
+      })
+      return final
     },
     cartAddOns() {
-      let total = 0;
-      this.cart.addons.forEach((addon) => {
-        total += addon.price * addon.quantity;
-      });
-      return total;
+      let total = 0
+      this.cart.addons.forEach(addon => {
+        total += addon.price * addon.quantity
+      })
+      return total
     },
     isCustomer() {
-      return customer.email && customer.shopify_id ? true : false;
+      return customer.email && customer.shopify_id ? true : false
     },
     addOnsUpdates() {
-      return this.cart?.addons?.map((addOn) => {
+      return this.cart?.addons?.map(addOn => {
         return {
           addressId: this.addressId,
           next_charge_scheduled_at: this.nextChargeDate,
@@ -117,107 +114,109 @@ export default {
           shopify_product_id: addOn.id,
           shopify_variant_id: addOn.variants[0]?.id,
           properties: {
-            _addOn: true,
-          },
-        };
-      });
+            _addOn: true
+          }
+        }
+      })
     },
     subscriptionUpdates() {
-      return this.cart?.items.map((child) => {
+      return this.cart?.items.map(child => {
         return {
           address_id: this.addressId,
           charge_interval_frequency: 1,
           next_charge_scheduled_at: this.nextChargeDate,
           order_interval_frequency: 1,
-          order_interval_unit: "week",
+          order_interval_unit: 'week',
           price: (child.variants[0].price / 100).toFixed(2),
           hash: child.price_hashes,
           tags: child.tags,
           shopify_variant_id: child.variants[0].id,
-          quantity: child.quantity,
-        };
-      });
-    },
+          quantity: child.quantity
+        }
+      })
+    }
   },
   mounted() {
-    const addressId = sessionStorage.getItem("addressId");
-    const nextChargeDate = sessionStorage.getItem("nextChargeDate");
-    this.addressId = addressId;
-    this.nextChargeDate = nextChargeDate;
+    const addressId = sessionStorage.getItem('addressId')
+    const nextChargeDate = sessionStorage.getItem('nextChargeDate')
+    this.addressId = addressId
+    this.nextChargeDate = nextChargeDate
     // watch the params of the route to fetch the data again
     this.$watch(
       () => this.$route.params,
       () => {
-        this.setSizeSelected();
+        this.setSizeSelected()
       },
       // fetch the data when the view is created and the data is
       // already being observed
       { immediate: true }
-    );
+    )
   },
   methods: {
     setSizeSelected() {
-      const boxSize = sessionStorage.getItem("boxSize");
-      const fromStartBtn = sessionStorage.getItem("startBtnClk");
-      const referrerPage = document.referrer;
-      const orderType = this.getSizeSelected.order_type;
-      const box = this.$route.params.box;
+      let boxSize = sessionStorage.getItem('boxSize')
+      const boxes = ['8', '12', '16']
+      const fromStartBtn = sessionStorage.getItem('startBtnClk')
+      const referrerPage = document.referrer
+      const orderType = this.getSizeSelected.order_type
+      const box = this.$route.params.box
 
       if (this.fromPortal) {
         if (box) {
+          if (!boxes.includes(boxSize)) boxSize = '12'
           this.$store.commit(`mealcart/${CHANGE_SIZE_SELECTED}`, {
-            val: `${boxSize}items`,
-          });
+            val: `${boxSize}items`
+          })
         }
-        return;
+        return
       }
 
       if (fromStartBtn)
         this.$store.commit(`mealcart/${CHANGE_SIZE_SELECTED}`, {
-          val: `${boxSize}items`,
-        });
-      sessionStorage.removeItem("startBtnClk");
+          val: `${boxSize}items`
+        })
+      sessionStorage.removeItem('startBtnClk')
 
       // this is for '/'
-      if (box === undefined && !referrerPage.includes("/account")) {
+      if (box === undefined && !referrerPage.includes('/account')) {
         // set option for sizeSelected
-        console.log("entro al if del /");
-        changeRouter(orderType);
-        return;
+        console.log('entro al if del /')
+        changeRouter(orderType)
+        return
       }
 
       // this is for '/onetime'
-      if (box === "onetime" && orderType !== "onetime") {
-        console.log("entro al if del /onetime");
+      if (box === 'onetime' && orderType !== 'onetime') {
+        console.log('entro al if del /onetime')
         this.$store.commit(`mealcart/${CHANGE_SIZE_SELECTED}`, {
-          val: "onetime",
-        });
-        this.$store.commit(`babcart/${CLEAN_ALL_CART}`);
-        return;
+          val: 'onetime'
+        })
+        this.$store.commit(`babcart/${CLEAN_ALL_CART}`)
+        return
       }
 
       // this is for '/subscription'
-      if (box === "subscription" && orderType !== "subscription") {
-        console.log("entro al if del /subscription");
+      if (box === 'subscription' && orderType !== 'subscription') {
+        console.log('entro al if del /subscription')
         this.$store.commit(`mealcart/${CHANGE_SIZE_SELECTED}`, {
-          val: "12items",
-        });
-        this.$store.commit(`babcart/${CLEAN_ALL_CART}`);
-        return;
+          val: '12items'
+        })
+        this.$store.commit(`babcart/${CLEAN_ALL_CART}`)
+        return
       }
 
       // this is for wrong params
-      if (box !== "subscription" && box !== "onetime" && box !== "addons") {
-        console.log("entro al if de wrong params");
-        changeRouter(orderType);
-        return;
+      if (box !== 'subscription' && box !== 'onetime' && box !== 'addons') {
+        console.log('entro al if de wrong params')
+        changeRouter(orderType)
+        return
       }
     },
     changeCartMobile(val) {
-      this.showCartMobile = val;
-    },
-  },
-};
+      this.showCartMobile = val
+    }
+  }
+}
 </script>
 
 <style lang="scss">

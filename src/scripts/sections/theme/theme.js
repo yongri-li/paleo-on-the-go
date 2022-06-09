@@ -9,6 +9,7 @@ const boxTabs = document.querySelectorAll('.js--planClk')
 const logoutLinks = document.querySelectorAll('[data-logout-link]')
 
 if (!windowPath.includes('/bundle')) sessionStorage.removeItem('fromPortal')
+//if (windowPath.includes('/tools/recurring/portal/')) window.location.href = '/account#/shipments/'
 
 // dynamic link and boxsize on getstarted plan btn clicks
 const sendBoxInfo = btn => {
@@ -57,7 +58,7 @@ if (isHomepage) {
 	const panelNodes = document.querySelectorAll('.c-homeMenu__flex .panel-answer')
 
 	faqsWrappers.forEach(item => {
-		item.addEventListener('click', function(e) {
+		item.addEventListener('click', function (e) {
 			const panel = this.nextElementSibling
 			this.classList.toggle('active')
 
@@ -68,7 +69,7 @@ if (isHomepage) {
 	})
 
 	menuWrappers.forEach(item => {
-		item.addEventListener('click', function(e) {
+		item.addEventListener('click', function (e) {
 			const groupNum = this.dataset.index * 1
 			const menuNodes = document.querySelectorAll('[data-group]')
 			const menuItems = [...menuNodes]
