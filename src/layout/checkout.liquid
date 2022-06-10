@@ -59,26 +59,7 @@
 
 <style>
 
-  @media only screen and (min-width: 1024px) {
-/*    .checkout-shopify .wrap {
-      display: flex;
-      width: 100%;    
-      max-width: 100%;
-      padding: 0;
-      margin: 0; 
-    }
-
-    .checkout-shopify .main {
-      padding: 4rem 4rem 4rem 7.5vw;
-      flex: 2;      
-    }
-
-    .checkout-shopify aside.sidebar {
-      padding: 4rem 7.5vw 4rem 4rem;
-      flex: 1.5;      
-    }    
-  }*/
-
+@media only screen and (min-width: 1024px) {
   .checkout-shopify input:placeholder {
     color: #231F20;
     opacity: 0.7;
@@ -92,5 +73,22 @@
   .checkout-shopify .section__title {
     text-transform: capitalize;    
   }
+
+  .product-thumbnail,
+  .product-thumbnail__wrapper {
+    border-radius: 100px;
+  }
   
+  .product-thumbnail::after {
+    border: 0;
+  }
+
+  .checkout-shopify .product-thumbnail__quantity {
+    top: 0;
+    left: 0;
+    right: unset;
+    background-color: #FCD32B;
+    color: #222;
+  }
+}
 </style>

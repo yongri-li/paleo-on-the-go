@@ -1,0 +1,29 @@
+<script>
+  const bundleSectionText = {}
+  bundleSectionText.content = {{ section.settings | json }}
+
+  window.Scoutside.bundle.sectionText = bundleSectionText  
+</script>
+
+{% schema %}
+  {
+    "name": "BAB Section Text",
+    "settings": [
+      {
+        "type": "text",
+        "id": "meals_title",
+        "label": "Subs Meals Title"
+      },
+      {
+        "type": "text",
+        "id": "addons_title",
+        "label": "Add-Ons Title"
+      },
+      {
+        "type": "text",
+        "id": "onetime_title",
+        "label": "Onetimes Title"
+      }      
+    ]
+  }
+{% endschema %}
