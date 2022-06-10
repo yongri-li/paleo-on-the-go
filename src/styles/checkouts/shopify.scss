@@ -1,24 +1,26 @@
 h2.section__title {
-  color: #231F20;
+  color: #231f20;
   font-weight: 500;
 }
 
-.section__header a{
-  color: #8ECEAB;
+.section__header a {
+  color: #8eceab;
 }
 
-.input-checkbox:checked, .input-radio:checked,
-.input-checkbox:checked:hover, .input-radio:checked:hover {
-  border-color: #FCD32B;
+.input-checkbox:checked,
+.input-radio:checked,
+.input-checkbox:checked:hover,
+.input-radio:checked:hover {
+  border-color: #fcd32b;
 }
 
 .js .sidebar .btn--disabled {
-  background-color: #231F20;
+  background-color: #231f20;
   color: #fefefe;
 }
 
 .total-line-table .total-line__name {
-  color: #231F20;
+  color: #231f20;
   font-weight: 500;
 }
 
@@ -26,4 +28,12 @@ h2.section__title {
 .btn,
 .sp-modal-toggle {
   border-radius: 0;
+}
+
+.checkout-shopify .content {
+  background-color: #fefdfb;
+}
+
+.checkout-shopify .sidebar {
+  background-color: #f9f6ef;
 }
