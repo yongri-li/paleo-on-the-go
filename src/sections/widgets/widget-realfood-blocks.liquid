@@ -3,7 +3,7 @@
   blocksRealFood.blocks = []
   {% for block in section.blocks %}
     blocksRealFood.blocks.push({
-      ...JSON.parse('{{ block.settings | json }}')
+      ...JSON.parse(JSON.stringify({{ block.settings | json }}))
     })
   {% endfor %}
 

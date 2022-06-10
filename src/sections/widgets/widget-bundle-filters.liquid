@@ -3,7 +3,7 @@
 
   {% for block in section.blocks %}
     filters.push({
-      ...JSON.parse('{{ block.settings | json }}'),
+      ...JSON.parse(JSON.stringify({{ block.settings | json }})),
       active: false
     })
   {% endfor %}

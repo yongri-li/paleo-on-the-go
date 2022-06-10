@@ -4,7 +4,7 @@
   {% for block in section.blocks %}
     var _valSize = '{{ block.settings.title }}'
     sizes.push({
-      ...JSON.parse('{{ block.settings | json }}'),
+      ...JSON.parse(JSON.stringify({{ block.settings | json }})),
       val: _valSize.toLowerCase().replace(/ /g,'')
     })
   {% endfor %}

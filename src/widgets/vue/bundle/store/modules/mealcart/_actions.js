@@ -53,6 +53,16 @@ export default {
       dispatch('setPrebuiltBoxToCart', listProduct)
     }
   },
+  checkBundleProducts({ rootGetters }, listProduct) {
+    let products = []
+    listProduct.forEach(product => {
+      const [id, qt] = product.split('x')
+      const productFound = rootGetters['products/getFirstProductFromCollectionsByID'](id)
+      products.push(productFound)
+      return productFound
+    })
+    return products
+  },
   setPrebuiltBoxToCart({ rootGetters }, listProduct) {
     store.commit(`babcart/${CLEAN_ALL_CART}`)
 

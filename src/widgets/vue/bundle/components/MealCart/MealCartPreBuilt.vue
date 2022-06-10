@@ -27,56 +27,92 @@
 </template>
 
 <script>
-import { mapGetters, mapState, mapActions } from "vuex";
-import { CLEAN_ALL_CART } from "@shared/store/modules/babcart/_mutations-type";
+import { mapGetters, mapState, mapActions } from 'vuex'
+import { CLEAN_ALL_CART } from '@shared/store/modules/babcart/_mutations-type'
 
 export default {
+  props: {
+    sizeSelect: {
+      type: [String, Number, Object]
+    }
+  },
   data() {
     return {
       selected: false,
-    };
+      outOfStock: false,
+      options: []
+    }
   },
   computed: {
-    ...mapState("mealcart", ["prebuilt"]),
-    ...mapGetters("mealcart", [
-      "getSizeSelected",
-      "getPrebuiltByBox",
-      "getProductPrebuilt",
-    ]),
-    options() {
-      const sizeSelected = this.getSizeSelected;
-      const sizeNumber =
-        sizeSelected.val === "onetime" ? 0 : sizeSelected.number_size;
-      const options = this.getPrebuiltByBox(sizeNumber);
-      return options.map((option) => {
-        return {
-          label: option.bundlename,
-          size: sizeNumber,
-        };
-      });
-    },
+    ...mapState('mealcart', ['prebuilt']),
+    ...mapGetters('mealcart', ['getSizeSelected', 'getPrebuiltByBox', 'getProductPrebuilt'])
   },
   methods: {
-    ...mapActions("mealcart", ["validateSetPrebuilt"]),
+    ...mapActions('mealcart', ['validateSetPrebuilt', 'checkBundleProducts']),
+    async setOptions() {
+      const sizeSelected = this.getSizeSelected
+      const sizeNumber = sizeSelected.val === 'onetime' ? 0 : sizeSelected.number_size
+      const options = this.getPrebuiltByBox(sizeNumber)
+      const bundleProducts = await Promise.all(
+        options.map(async option => {
+          const bundle = option.products.filter(bun => bun.size * 1 === sizeNumber)
+          return this.checkBundleProducts(bundle[0].list)
+        })
+      )
+      const hasOutOfStock = bundleProducts.map(bundleArr => {
+        const bundleArray = bundleArr.map(p => {
+          const inventoryData = p.inventory[0]
+          const tags = p.tags
+
+          let inventoryTag = 0
+          const indexFound = tags.findIndex(tag => tag.includes('inventory_'))
+          if (indexFound > -1) {
+            inventoryTag = tags[indexFound].replace('inventory_', '')
+          }
+
+          const diff = parseInt(inventoryData) - parseInt(inventoryTag)
+          return diff < 0
+        })
+        return bundleArray.includes(true) ? true : false
+      })
+
+      const activeBundles = options.map((option, i) => {
+        if (!hasOutOfStock[i]) {
+          return {
+            label: option.bundlename,
+            size: sizeNumber
+          }
+        }
+      })
+
+      this.options = activeBundles.filter(Boolean)
+      return
+    },
     setBundleSelected(val) {
-      console.log("val", val);
       if (val) {
-        this.selected = true;
+        this.selected = true
 
         const products = this.getProductPrebuilt({
           bundlename: val.label,
-          size: val.size,
-        });
-        console.log("products", products);
-        this.validateSetPrebuilt(products);
-      } else {
-        this.selected = false;
+          size: val.size
+        })
 
-        this.$store.commit(`babcart/${CLEAN_ALL_CART}`);
+        this.validateSetPrebuilt(products)
+      } else {
+        this.selected = false
+        this.$store.commit(`babcart/${CLEAN_ALL_CART}`)
       }
-    },
+    }
   },
-};
+  mounted() {
+    this.setOptions()
+  },
+  watch: {
+    sizeSelect() {
+      this.setOptions()
+    }
+  }
+}
 </script>
 
 <style lang="scss">
@@ -168,12 +204,7 @@ export default {
 
         .vs__dropdown-option--radio {
           border-color: $color-white;
-          background: radial-gradient(
-            $color-primary 0%,
-            $color-primary 35%,
-            transparent 45%,
-            transparent
-          );
+          background: radial-gradient($color-primary 0%, $color-primary 35%, transparent 45%, transparent);
         }
       }
     }
