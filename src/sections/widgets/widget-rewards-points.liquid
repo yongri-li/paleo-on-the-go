@@ -13,8 +13,10 @@
 
 <style>
   {% for block in section.blocks %}
-    .v-widget .lion-rule-item__icon.lion-icon__rule.{{block.settings.target}} {
+    .v-widget #loyaltylion .lion-rule-item__icon.lion-icon__rule.{{block.settings.target}} {
       background-image: url('{{ block.settings.image_icon | img_url: '130x130'}}');
+      -webkit-mask-image: none;
+      mask-image: none;
     }
   {% endfor %}
 </style>

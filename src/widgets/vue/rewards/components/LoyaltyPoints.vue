@@ -20,97 +20,118 @@ export default {
 
 <style lang="scss">
 
-.lion-rule-item {
+#loyaltylion .lion-rules-list {
 
-  width: 100%;
+  position: relative;
+  font-size: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  padding: 10px;
+  max-width: 100%;
+  gap: 0;
 
-  @include media-tablet-up {
-    width: 25%;
-  }
+  .lion-rule-item {
 
-  &__content {
-    background-color: $color-ecru;
-    position: relative;
-    padding: 15px 5px;
-  }
+    padding: 10px;
+    display: flex;
+    flex: 1 0 auto;
+    width: 100%;
+    box-sizing: border-box;
 
-  &__title {
-    font-family: $font-heading;
-    text-transform: uppercase;
-    margin: 1rem 0;
-    font-size: 1.5rem;
-    padding: 15px 0 5px 0;
-  }
+    @include media-tablet-up {
+      width: 25%;
+    }
 
-  &__points {
-    font-family: $font-body;
-    text-transform: capitalize;
+    &__content {
+      background-color: $color-ecru;
+      position: relative;
+      padding: 15px 5px;
+    }
 
-    .text, .value {
+    &__title {
+      font-family: $font-heading;
+      text-transform: uppercase;
+      margin: 1rem 0;
+      font-size: 1.5rem;
+      padding: 15px 0 5px 0;
       color: $color-black;
-      margin: 0;
-      font-weight: 600;
-      font-size: 1.3rem;
     }
-  }
 
-  .lion-rule-item__icon {
-    margin-top: 1rem;
-    width: 60px;
-    height: 60px;
-  }
+    &__points {
+      font-family: $font-body;
+      text-transform: capitalize;
+      padding: 15px;
+      padding-top: 0;
 
-  &--authenticated {
-    .lion-action-button {
-      position: absolute;
-      bottom: 15px;
-      left: 5%;
-      width: 90%;
+      .text, .value {
+        color: $color-black;
+        margin: 0;
+        font-weight: 600;
+        font-size: 1.3rem;
+      }
+    }
+
+    .lion-rule-item__icon {
+      margin-top: 1rem;
+      width: 60px;
       height: 60px;
+      -webkit-mask: none;
+      mask: none;
       background-color: transparent;
-      font-size: 0;
-      // border: 1px solid red;
     }
-    .lion-rule-item {
-      &__points {
-        background-color: $color-primary;
+
+    &--authenticated {
+      .lion-action-button {
+        position: absolute;
+        bottom: 15px;
+        left: 5%;
+        width: 90%;
         height: 60px;
-        width: 95%;
-        padding: 0;
-        @include flex($justify: center);
+        background-color: transparent;
+        font-size: 0;
+        // border: 1px solid red;
+      }
+      .lion-rule-item {
+        &__points {
+          background-color: $color-primary;
+          height: 60px;
+          width: 95%;
+          padding: 0;
+          @include flex($justify: center);
+        }
       }
     }
   }
-}
 
-.lion-rule-item__completed-forever {
-  position: absolute;
-  bottom: 15px;
-  left: 3%;
-  width: 94%;
-  height: 60px;
-  background-color: $color-white;
-  border: 1px solid $color-black;
-  font-size: 1rem;
-  @include flex($justify: center);
-
-  &::before {
-    content: '✓';
-    color: $color-white;
-    background-color: $color-black;
-    width: 25px;
-    height: 25px;
-    border-radius: 100%;
-    margin-right: 0.5rem;
+  .lion-rule-item__completed-forever {
+    position: absolute;
+    bottom: 15px;
+    left: 3%;
+    width: 94%;
+    height: 60px;
+    background-color: $color-white;
+    border: 1px solid $color-black;
+    font-size: 1rem;
     @include flex($justify: center);
-  }
 
-  &::after {
-    content: 'Completed';
-    font-family: $font-body !important;
-    font-weight: 600;
-    line-height: initial;
-    color: $color-black;
+    &::before {
+      content: '✓';
+      color: $color-white;
+      background-color: $color-black;
+      width: 25px;
+      height: 25px;
+      border-radius: 100%;
+      margin-right: 0.5rem;
+      @include flex($justify: center);
+    }
+
+    &::after {
+      content: 'Completed';
+      font-family: $font-body !important;
+      font-weight: 600;
+      line-height: initial;
+      color: $color-black;
+    }
   }
 }
 </style>
