@@ -509,3 +509,45 @@
   margin: 0 auto;
   padding: 2rem 1rem;
 }
+
+#loyaltylion .lion-rule-item__icon {
+  // background: #fcd32b !important;
+  background-color: transparent !important;
+  height: 3rem;
+  width: 3rem;
+}
+
+#loyaltylion .lion-rule-item__actions {
+  min-height: 30px;
+}
+
+#loyaltylion .lion-rule-item__title {
+  font-size: 1.5rem;
+  color: $color-black;
+}
+
+@include media-desktop-up {
+  #loyaltylion .lion-rules-list {
+    grid-template-columns: repeat(4, minmax(220px, 1fr));
+  }
+
+  .v-widget .lion-rule-item {
+  }
+
+  #loyaltylion .lion-rule-item__icon {
+    height: 4rem;
+    width: 4rem;
+  }
+
+  #loyaltylion .lion-rule-item__actions {
+    min-height: 48px;
+  }
+
+  .v-widget .lion-tier-box {
+    width: 100% !important;
+  }
+
+  #loyaltylion .lion-rule-item__title {
+    font-size: 1.75rem;
+  }
+}

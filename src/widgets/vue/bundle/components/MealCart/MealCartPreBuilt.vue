@@ -40,8 +40,8 @@ export default {
   data() {
     return {
       selected: false,
-      outOfStock: false,
-      options: []
+      outOfStock: false
+      // options: []
     }
   },
   computed: {

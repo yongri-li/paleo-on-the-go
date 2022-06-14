@@ -1,9 +1,6 @@
 <template>
   <section>
-    <c-title-highlight
-      ecru-text="earn"
-      black-text="points"
-    />
+    <c-title-highlight ecru-text="earn" black-text="points" />
     <div data-lion-rules-list></div>
   </section>
 </template>
@@ -30,7 +27,12 @@ export default {
   max-width: 100%;
   gap: 0;
 
-  .lion-rule-item {
+.lion-rule-item {
+  width: 100%;
+
+  @include media-tablet-up {
+    /*width: 25%;*/
+  }
 
     padding: 10px;
     display: flex;
