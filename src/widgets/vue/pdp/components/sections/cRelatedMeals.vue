@@ -1,16 +1,17 @@
 <template>
   <div class="c-relatedMeals o-containerLarge">
-    <h2 class="c-h2">
+    <h2 class="c-h2" style="margin-bottom: 0">
       <span class="u-highlightText--secondary">{{ heading[0] }}</span> {{ heading[1] }}
     </h2>
-    <div class="c-relatedMeals__container">
+    <div id="cbb-also-bought-box"></div>
+    <!--     <div class="c-relatedMeals__container">
       <div class="c-relatedMeals__control isPrev" data-menu-prev>
         <c-svg class="c-relatedMeals__control--icon" name="chevron" />
       </div>
       <div class="c-relatedMeals__control isNext" data-menu-next>
         <c-svg class="c-relatedMeals__control--icon" name="chevron" />
       </div>
-    </div>
+    </div> -->
     <div class="c-relatedMeals__slider slider" data-menu-slider>
       <div v-for="(product, index) in products" :key="index" class="c-relatedMeals__product">
         <c-product-card v-if="product.available" :product="product" :related-meal="true" />

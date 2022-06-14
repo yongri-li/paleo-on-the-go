@@ -2,7 +2,12 @@
   <div class="modal__box-size">
     <div class="modal__close" @click="closeModal">x</div>
     <div class="modal__title">CHANGE BOX SIZE</div>
-    <meal-cart-box-sizes :size-selected="getSizeSelected" @change="changeSizeSelected" radio-name="popup" />
+    <meal-cart-box-sizes
+      :size-selected="getSizeSelected"
+      @change="changeSizeSelected"
+      radio-name="popup"
+      :from-portal="content.fromPortal"
+    />
     <div class="modal__options">
       <div class="modal__options--item modal__options--cancel" @click="closeModal">Cancel</div>
       <div class="modal__options--item modal__options--continue" @click="saveChanged">Save</div>
@@ -18,6 +23,11 @@ export default {
   name: 'ModalBoxSize',
   components: {
     MealCartBoxSizes
+  },
+  props: {
+    content: {
+      type: Object
+    }
   },
   data() {
     return {

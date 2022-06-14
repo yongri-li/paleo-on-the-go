@@ -1,17 +1,10 @@
 <template>
   <div :class="_buildModifiers('c-select', extendedModifiers)">
-    <span class="c-select__label"
-      v-if="label && showLabel"
-      v-html="`${label}:`"
-    />
-    <span class="c-select__text" 
-      v-html="activeOption.text" 
-    />
-    <select class="c-select__element"
-      ref="select" 
-      @change="update"
-    >
-      <option v-for="(option, index) in options" 
+    <span class="c-select__label" v-if="label && showLabel" v-html="`${label}:`" />
+    <span class="c-select__text" v-html="activeOption.text" />
+    <select class="c-select__element" ref="select" @change="update">
+      <option
+        v-for="(option, index) in options"
         :key="`option-${index}`"
         :value="option.value"
         :selected="option.value === activeOption.value"
@@ -19,20 +12,11 @@
       />
     </select>
     <span class="c-select__icon">
-      <c-svg class="c-select__iconChevron" 
-        v-if="icon === 'chevron'"
-        name="chevron"
-      />
-      <c-svg class="c-select__iconSort" 
-        v-if="icon === 'sort'"
-        name="sort"
-      />
+      <c-svg class="c-select__iconChevron" v-if="icon === 'chevron'" name="chevron" />
+      <c-svg class="c-select__iconSort" v-if="icon === 'sort'" name="sort" />
       <slot name="icon" />
     </span>
-    <input class="c-select__input"
-      v-bind="attributes"
-      @input="updateSelect"
-    />
+    <input class="c-select__input" v-bind="attributes" @input="updateSelect" />
   </div>
 </template>
 
@@ -67,22 +51,22 @@ export default {
     },
     modifiers: {
       type: Array,
-      default: () => ([])
+      default: () => []
     }
   },
   components: { cSvg },
   computed: {
     activeOption() {
-      if(this.options) {
+      if (this.options) {
         const activeOption = this.options.find(option => option.value === this.attributes.value)
         return activeOption ? activeOption : this.options[0]
       }
     },
     extendedModifiers() {
-      let modifiers = [ ...this.modifiers ]
-      if(this.attributes.disabled) modifiers.push('isDisabled')
-      if(this.label && this.showLabel) modifiers.push('hasLabel')
-      if(this.error) modifiers.push('hasError')
+      let modifiers = [...this.modifiers]
+      if (this.attributes.disabled) modifiers.push('isDisabled')
+      if (this.label && this.showLabel) modifiers.push('hasLabel')
+      if (this.error) modifiers.push('hasError')
       return modifiers
     }
   },

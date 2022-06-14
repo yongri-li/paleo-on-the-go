@@ -10,6 +10,7 @@
     </div>
     <div class="prebuilt__select">
       <v-select
+        ref="dropdownObj"
         placeholder="Select a Bundle"
         label="label"
         :options="options"
@@ -45,7 +46,10 @@ export default {
   },
   computed: {
     ...mapState('mealcart', ['prebuilt']),
-    ...mapGetters('mealcart', ['getSizeSelected', 'getPrebuiltByBox', 'getProductPrebuilt'])
+    ...mapGetters('mealcart', ['getSizeSelected', 'getPrebuiltByBox', 'getProductPrebuilt']),
+    clearBundle() {
+      return this.prebuilt.cleared
+    }
   },
   methods: {
     ...mapActions('mealcart', ['validateSetPrebuilt', 'checkBundleProducts']),
@@ -109,6 +113,12 @@ export default {
   },
   watch: {
     sizeSelect() {
+      this.setOptions()
+    },
+    clearBundle() {
+      this.$refs.dropdownObj.value = undefined
+      this.$refs.dropdownObj.clearSelection()
+      this.selected = false
       this.setOptions()
     }
   }

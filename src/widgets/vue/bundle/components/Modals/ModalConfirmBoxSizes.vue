@@ -1,8 +1,6 @@
 <template>
   <div class="modal__box-size">
-    <div class="modal__close" @click="closeModal">
-      x
-    </div>
+    <div class="modal__close" @click="closeModal">x</div>
     <div class="modal__title">
       {{ content.title }}
     </div>
@@ -10,24 +8,13 @@
       {{ content.description }}
     </div>
     <div class="modal__options">
-      <div
-        class="modal__options--item modal__options--continue"
-        @click="saveChanged"
-      >
-        Continue
-      </div>
-      <div
-        class="modal__options--item modal__options--cancel"
-        @click="closeModal"
-      >
-        Cancel
-      </div>
+      <div class="modal__options--item modal__options--continue" @click="saveChanged">Continue</div>
+      <div class="modal__options--item modal__options--cancel" @click="closeModal">Cancel</div>
     </div>
   </div>
 </template>
 
 <script>
-
 export default {
   props: {
     params: {
@@ -43,6 +30,7 @@ export default {
     },
     saveChanged() {
       this.$store.dispatch('mealcart/changeSizeSelected', this.params.newVal)
+      if (this.params.newVal === 'onetime') this.$store.commit('mealcart/CLEAR_BUNDLES')
     }
   }
 }

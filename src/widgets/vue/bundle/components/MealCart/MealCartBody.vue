@@ -6,6 +6,7 @@
       radio-name="cart"
       :class="[haveProductsClass]"
       class="meal-cart__body--boxsize"
+      :from-portal="fromPortal"
     />
     <div :class="[haveProductsClass]" class="meal-cart__body--changeboxsize" @click="openModal">
       Change box size
@@ -60,7 +61,10 @@ export default {
     },
     openModal() {
       this.$store.commit(`modals/${MODAL_SETUP}`, {
-        component: 'ModalBoxSize'
+        component: 'ModalBoxSize',
+        content: {
+          fromPortal: this.fromPortal
+        }
       })
     }
   }

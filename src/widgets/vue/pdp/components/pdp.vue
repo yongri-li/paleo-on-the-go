@@ -18,7 +18,6 @@
               :class="i + 1 > ratings ? 'unrated' : null"
             ></span>
             <button @click="scrollToReviews">{{ ratingsCount }} Reviews</button>
-            <!-- <a href="#shopify-product-reviews">test link</a> -->
           </div>
           <h1 class="c-h1 c-heading">{{ product.title }}</h1>
           <h2 v-if="subtitle" class="c-h5 pdp__content--wrap__subheader">{{ subtitle }}</h2>

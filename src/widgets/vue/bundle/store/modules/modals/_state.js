@@ -3,7 +3,9 @@ const state = {
     settings: {
       open: false,
       params: {},
-      cancel: () => { console.log('close the modal') },
+      cancel: () => {
+        console.log('close the modal')
+      },
       continue: () => {}
     },
     component: false,

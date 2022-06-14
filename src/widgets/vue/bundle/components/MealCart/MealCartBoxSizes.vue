@@ -1,11 +1,6 @@
 <template>
   <div class="box-sizes">
-    <label
-      v-for="size in sizes"
-      :key="size.title"
-      :style="{ order: size.order }"
-      class="box-sizes__option"
-    >
+    <label v-for="size in sizes" :key="size.title" :style="{ order: size.order }" class="box-sizes__option">
       <input
         type="radio"
         :name="`box-sizes-${radioName}`"
@@ -36,56 +31,59 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 
 export default {
   props: {
     sizeSelected: {
       type: Object,
-      required: true,
+      required: true
     },
     radioName: {
       type: String,
-      required: true,
+      required: true
     },
+    fromPortal: {
+      type: Boolean
+    }
   },
   computed: {
     ...mapState({
-      stateSizes: (state) => state.mealcart.sizes,
+      stateSizes: state => state.mealcart.sizes
     }),
     sizes() {
-      return this.stateSizes.map((size, index) => {
-        const isSubscription = size.order_type === "subscription";
+      const boxes = this.stateSizes.map((size, index) => {
+        const isSubscription = size.order_type === 'subscription'
 
         const info = {
-          mobile: isSubscription
-            ? `Subscribe & Save ${size.discount}%`
-            : `${size.number_size} Items Minimum`,
-          desk: isSubscription
-            ? `${size.discount}% Saving`
-            : `${size.number_size} Items Minimum`,
-        };
+          mobile: isSubscription ? `Subscribe & Save ${size.discount}%` : `${size.number_size} Items Minimum`,
+          desk: isSubscription ? `${size.discount}% Saving` : `${size.number_size} Items Minimum`
+        }
 
-        const order = isSubscription ? index + 1 : index;
+        const order = isSubscription ? index + 1 : index
+
+        if (this.fromPortal && size.val === 'onetime') return
 
         return {
           title: size.title,
           val: size.val,
           info,
-          order,
-        };
-      });
+          order
+        }
+      })
+
+      return boxes.filter(Boolean)
     },
     picked: {
       get: function () {
-        return this.sizeSelected.val;
+        return this.sizeSelected.val
       },
       set: function (newVal) {
-        this.$emit("change", newVal);
-      },
-    },
-  },
-};
+        this.$emit('change', newVal)
+      }
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
@@ -120,7 +118,7 @@ export default {
         padding: 1rem;
 
         &::before {
-          content: "";
+          content: '';
           display: inline-block;
           vertical-align: bottom;
           width: 16px;
@@ -135,7 +133,7 @@ export default {
     }
 
     &--title {
-      font-family: "Knockout";
+      font-family: 'Knockout';
       text-transform: uppercase;
       font-size: 1.38rem;
       line-height: 1;
@@ -186,12 +184,7 @@ export default {
 
         &::before {
           border-color: #fcd32b;
-          background: radial-gradient(
-            #fcd32b 0%,
-            #fcd32b 35%,
-            transparent 45%,
-            transparent
-          );
+          background: radial-gradient(#fcd32b 0%, #fcd32b 35%, transparent 45%, transparent);
         }
       }
     }

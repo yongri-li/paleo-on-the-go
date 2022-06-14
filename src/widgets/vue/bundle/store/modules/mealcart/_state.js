@@ -9,7 +9,8 @@ const state = {
   sizes,
   prebuilt: {
     content: prebuilt.content,
-    items: parseItemsFromPrebuilt(prebuilt.items)
+    items: parseItemsFromPrebuilt(prebuilt.items),
+    cleared: false
   },
   modal: {
     subscription: {
