@@ -9,10 +9,10 @@ const boxTabs = document.querySelectorAll('.js--planClk')
 const logoutLinks = document.querySelectorAll('[data-logout-link]')
 
 if (!windowPath.includes('/bundle')) sessionStorage.removeItem('fromPortal')
-//if (windowPath.includes('/tools/recurring/portal/')) window.location.href = '/account#/shipments/'
-if (windowPath.includes('/tools/recurring/portal/')) window.location.href = '/pages/under-construction'
-console.log(windowPath, windowPath.includes('/account#/'))
-if (windowPath.includes('/account')) window.location.href = '/pages/under-construction'
+if (windowPath.includes('/tools/recurring/portal/')) window.location.href = '/account#/shipments/'
+// if (windowPath.includes('/tools/recurring/portal/')) window.location.href = '/pages/under-construction'
+// console.log(windowPath, windowPath.includes('/account#/'))
+// if (windowPath.includes('/account')) window.location.href = '/pages/under-construction'
 
 // dynamic link and boxsize on getstarted plan btn clicks
 const sendBoxInfo = btn => {
