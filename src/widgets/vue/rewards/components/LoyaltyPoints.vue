@@ -16,9 +16,7 @@ export default {
 </script>
 
 <style lang="scss">
-
 #loyaltylion .lion-rules-list {
-
   position: relative;
   font-size: 10px;
   display: flex;
@@ -27,12 +25,12 @@ export default {
   max-width: 100%;
   gap: 0;
 
-.lion-rule-item {
-  width: 100%;
+  .lion-rule-item {
+    width: 100%;
 
-  @include media-tablet-up {
-    /*width: 25%;*/
-  }
+    @include media-tablet-up {
+      /*width: 25%;*/
+    }
 
     padding: 10px;
     display: flex;
@@ -65,7 +63,8 @@ export default {
       padding: 15px;
       padding-top: 0;
 
-      .text, .value {
+      .text,
+      .value {
         color: $color-black;
         margin: 0;
         font-weight: 600;
@@ -114,7 +113,7 @@ export default {
     }
 
     &--completed-forever {
-      .lion-rule-item__actions{
+      .lion-rule-item__actions {
         position: absolute;
         bottom: 15px;
         left: 3%;
@@ -124,7 +123,7 @@ export default {
         border: 1px solid $color-black;
         font-size: 1rem;
 
-        .lion-action-button{
+        .lion-action-button {
           @include flex($justify: center);
           &::before {
             content: '✓';
@@ -151,5 +150,6 @@ export default {
         }
       }
     }
+  }
 }
 </style>
