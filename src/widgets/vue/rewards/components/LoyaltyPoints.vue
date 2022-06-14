@@ -83,17 +83,26 @@ export default {
     }
 
     &--authenticated {
-      .lion-action-button {
-        position: absolute;
-        bottom: 15px;
-        left: 5%;
-        width: 90%;
-        height: 60px;
-        background-color: transparent;
-        font-size: 0;
-        // border: 1px solid red;
-      }
       .lion-rule-item {
+        &__actions {
+          position: absolute;
+          bottom: 15px;
+          left: 5%;
+          width: 90%;
+          height: 60px;
+          background-color: transparent;
+          font-size: 0;
+
+          .lion-action-button {
+            width: 100%;
+            height: 100%;
+            border: none;
+
+            &:hover {
+              background: transparent;
+            }
+          }
+        }
         &__points {
           background-color: $color-primary;
           height: 60px;
@@ -103,37 +112,44 @@ export default {
         }
       }
     }
-  }
 
-  .lion-rule-item__completed-forever {
-    position: absolute;
-    bottom: 15px;
-    left: 3%;
-    width: 94%;
-    height: 60px;
-    background-color: $color-white;
-    border: 1px solid $color-black;
-    font-size: 1rem;
-    @include flex($justify: center);
+    &--completed-forever {
+      .lion-rule-item__actions{
+        position: absolute;
+        bottom: 15px;
+        left: 3%;
+        width: 94%;
+        height: 60px;
+        background-color: $color-white;
+        border: 1px solid $color-black;
+        font-size: 1rem;
 
-    &::before {
-      content: '✓';
-      color: $color-white;
-      background-color: $color-black;
-      width: 25px;
-      height: 25px;
-      border-radius: 100%;
-      margin-right: 0.5rem;
-      @include flex($justify: center);
+        .lion-action-button{
+          @include flex($justify: center);
+          &::before {
+            content: '✓';
+            color: $color-white;
+            background-color: $color-black;
+            width: 25px;
+            height: 25px;
+            border-radius: 100%;
+            margin-right: 0.5rem;
+            @include flex($justify: center);
+          }
+
+          &::after {
+            content: 'Completed';
+            font-family: $font-body !important;
+            font-weight: 600;
+            line-height: initial;
+            color: $color-black;
+          }
+        }
+
+        .lion-rule-item__completed {
+          display: none;
+        }
+      }
     }
-
-    &::after {
-      content: 'Completed';
-      font-family: $font-body !important;
-      font-weight: 600;
-      line-height: initial;
-      color: $color-black;
-    }
-  }
 }
 </style>
