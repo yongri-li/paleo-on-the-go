@@ -1,9 +1,6 @@
 <template>
   <section>
-    <c-title-highlight
-      ecru-text="earn"
-      black-text="points"
-    />
+    <c-title-highlight ecru-text="earn" black-text="points" />
     <div data-lion-rules-list></div>
   </section>
 </template>
@@ -19,13 +16,11 @@ export default {
 </script>
 
 <style lang="scss">
-
 .lion-rule-item {
-
   width: 100%;
 
   @include media-tablet-up {
-    width: 25%;
+    /*width: 25%;*/
   }
 
   &__content {
@@ -46,7 +41,8 @@ export default {
     font-family: $font-body;
     text-transform: capitalize;
 
-    .text, .value {
+    .text,
+    .value {
       color: $color-black;
       margin: 0;
       font-weight: 600;
