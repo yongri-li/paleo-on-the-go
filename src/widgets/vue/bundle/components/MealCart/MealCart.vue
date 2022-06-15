@@ -95,7 +95,7 @@ export default {
     cartAddOns() {
       let total = 0
       this.cart.addons.forEach(addon => {
-        total += addon.price * addon.quantity
+        total += addon?.price * addon?.quantity
       })
       return total
     },
@@ -107,12 +107,12 @@ export default {
         return {
           addressId: this.addressId,
           next_charge_scheduled_at: this.nextChargeDate,
-          price: (addOn.variants[0].price / 100).toFixed(2),
-          product_title: addOn.title,
-          product_type: addOn.type,
-          quantity: addOn.quantity,
-          shopify_product_id: addOn.id,
-          shopify_variant_id: addOn.variants[0]?.id,
+          price: (addOn?.variants[0].price / 100).toFixed(2),
+          product_title: addOn?.title,
+          product_type: addOn?.type,
+          quantity: addOn?.quantity,
+          shopify_product_id: addOn?.id,
+          shopify_variant_id: addOn?.variants[0]?.id,
           properties: {
             _addOn: true
           }
@@ -225,6 +225,16 @@ $height-header-title: 59px;
 $translateY: calc(100% - $height-header-title);
 
 .meal-cart {
+  position: relative;
+
+  @include media-mobile-down {
+    /*    height: 100vh;*/
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+  }
+
   @include media-tablet-up {
     position: sticky;
     top: 1rem;
@@ -250,12 +260,12 @@ $translateY: calc(100% - $height-header-title);
   }
 
   &__info {
-    position: fixed;
+    position: absolute;
     bottom: $height-footer;
     left: 0;
     width: 100%;
     background-color: $color-white;
-    height: calc(96vh - $height-footer);
+    height: calc(100vh - 55px);
     z-index: 100;
     filter: drop-shadow(0px -4px 34px rgba(0, 0, 0, 0.1));
     border-radius: 20px 20px 0px 0px;
@@ -263,8 +273,8 @@ $translateY: calc(100% - $height-header-title);
     transition: all 0.3s ease-out;
 
     @include media-tablet-up {
-      position: relative;
       bottom: 0;
+      position: relative;
       transform: translateY(0);
       /*height: calc(100% - $height-footer);*/
       z-index: 1;
@@ -276,13 +286,14 @@ $translateY: calc(100% - $height-header-title);
     }
   }
   &__info.show {
-    transform: translateY(1px);
+    /*transform: translateY(1px);*/
+    transform: translateY(100px);
   }
   /* Safari Only */
   @media not all and (min-resolution: 0.001dpcm) {
     @supports (-webkit-appearance: none) {
       .meal-cart__info {
-        height: calc(86vh - $height-footer);
+        height: calc(100vh - $height-footer);
       }
     }
   }

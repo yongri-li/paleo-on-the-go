@@ -3,17 +3,8 @@
     <div class="product-list__items">
       <div class="product-list__title" @click="toggleHiddens('items')">
         {{ cartBoxLength }} ITEM BOX
-        <div
-          :class="{ show: productsHidden.items }"
-          class="product-list__title--drop-down"
-        >
-          <svg
-            width="14"
-            height="8"
-            viewBox="0 0 14 8"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
+        <div :class="{ show: productsHidden.items }" class="product-list__title--drop-down">
+          <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path
               fill-rule="evenodd"
               clip-rule="evenodd"
@@ -27,10 +18,7 @@
           </svg>
         </div>
       </div>
-      <div
-        :class="{ hidden: productsHidden.items }"
-        class="product-list__products"
-      >
+      <div :class="{ hidden: productsHidden.items }" class="product-list__products">
         <product-item-cart
           v-for="item in cart.items"
           :key="item.id"
@@ -46,17 +34,8 @@
         ONE TIME ADD-ONS
         <div class="product-list__title--qt">
           {{ cartAddOnsCount }}
-          <div
-            :class="{ show: productsHidden.addons }"
-            class="product-list__title--drop-down"
-          >
-            <svg
-              width="14"
-              height="8"
-              viewBox="0 0 14 8"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
+          <div :class="{ show: productsHidden.addons }" class="product-list__title--drop-down">
+            <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
               <path
                 fill-rule="evenodd"
                 clip-rule="evenodd"
@@ -71,13 +50,10 @@
           </div>
         </div>
       </div>
-      <div
-        :class="{ hidden: productsHidden.addons }"
-        class="product-list__products"
-      >
+      <div :class="{ hidden: productsHidden.addons }" class="product-list__products">
         <product-item-cart
           v-for="item in cart.addons"
-          :key="item.id"
+          :key="item ? item.id : null"
           :product="item"
           :from-portal="fromPortal"
           where="addons"
@@ -88,85 +64,85 @@
 </template>
 
 <script>
-import ProductItemCart from "../Products/ProductItemCart.vue";
+import ProductItemCart from '../Products/ProductItemCart.vue'
 
-import { mapState } from "vuex";
+import { mapState } from 'vuex'
 
 export default {
   components: {
-    ProductItemCart,
+    ProductItemCart
   },
   props: {
     typeClass: {
       type: String,
-      default: "subscription",
+      default: 'subscription'
     },
     fromPortal: {
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   created() {
-    if (this.typeClass === "addons") {
-      this.setHiddensAddOns();
+    if (this.typeClass === 'addons') {
+      this.setHiddensAddOns()
     }
   },
   data() {
     return {
       productsHidden: {
         items: false,
-        addons: false,
-      },
-    };
+        addons: false
+      }
+    }
   },
   computed: {
-    ...mapState("babcart", ["cart"]),
+    ...mapState('babcart', ['cart']),
     cartAddOnsCount() {
-      let length = 0;
-      this.cart.addons.forEach((addon) => {
-        length += addon.quantity;
-      });
+      let length = 0
+      this.cart.addons.forEach(addon => {
+        length += addon?.quantity
+      })
       if (length === 1) {
-        length += " ITEM";
+        length += ' ITEM'
       } else {
-        length += " ITEMS";
+        length += ' ITEMS'
       }
-      return length;
+      return length
     },
     cartBoxLength() {
-      let length = 0;
-      this.cart.items.forEach((item) => {
-        length += item.quantity;
-      });
-      return length;
-    },
+      let length = 0
+      this.cart.items.forEach(item => {
+        length += item.quantity
+      })
+      return length
+    }
   },
   methods: {
     setHiddensAddOns() {
-      this.productsHidden.items = true;
-      this.productsHidden.addons = false;
+      this.productsHidden.items = true
+      this.productsHidden.addons = false
     },
     toggleHiddens(typeCart) {
-      Object.keys(this.productsHidden).forEach((key) => {
+      Object.keys(this.productsHidden).forEach(key => {
         if (key === typeCart) {
-          this.productsHidden[key] = !this.productsHidden[key];
+          this.productsHidden[key] = !this.productsHidden[key]
         } else {
-          this.productsHidden[key] = true;
+          this.productsHidden[key] = true
         }
-      });
-    },
+      })
+    }
   },
   watch: {
     typeClass(newVal, oldVal) {
       // console.log('newVal',newVal)
-      if (newVal === "addons") {
-        this.setHiddensAddOns();
+      if (newVal === 'addons') {
+        this.setHiddensAddOns()
       }
-    },
-  },
-};
+    }
+  }
+}
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .product-list {
   &__title,
   &__addons {
@@ -174,14 +150,28 @@ export default {
   }
 
   &__products {
-    height: calc(96vh - 430px);
+    height: calc(96vh - 349px);
     overflow-y: auto;
+    padding: 0 2px 2.5rem;
     // transition: all 0.7s ease-out;
 
     @include media-tablet-up {
       height: auto;
       max-height: none;
+      padding-bottom: 0.5rem;
     }
+  }
+}
+
+.meal-cart__body--prebuilt + .product-list .product-list__products {
+  padding-bottom: 180px;
+  /*asd*/
+}
+
+@include media-tablet-up {
+  .meal-cart__body--prebuilt + .product-list .product-list__products {
+    padding-bottom: 1rem;
+    /*asd*/
   }
 }
 
@@ -238,6 +228,7 @@ export default {
 
     &__products.hidden {
       height: 0;
+      padding: 0;
     }
   }
 }

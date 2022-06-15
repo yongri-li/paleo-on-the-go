@@ -541,13 +541,15 @@
 
   #loyaltylion .lion-rule-item__actions {
     min-height: 48px;
+
+    & > div {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
   }
 
   .v-widget .lion-tier-box {
     width: 100% !important;
-  }
-
-  #loyaltylion .lion-rule-item__title {
-    font-size: 1.75rem;
   }
 }

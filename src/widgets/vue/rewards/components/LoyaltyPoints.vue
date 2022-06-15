@@ -55,6 +55,12 @@ export default {
       font-size: 1.5rem;
       padding: 15px 0 5px 0;
       color: $color-black;
+      min-height: 74px;
+      margin-bottom: 0;
+
+      @include media-desktop-up {
+        font-size: 1.75rem;
+      }
     }
 
     &__points {

@@ -33,7 +33,7 @@
           <header class="c-shipmentsBox__header">
             <div v-if="isUpcoming" class="c-shipmentsBox__headings">
               <h2 class="c-shipmentsBox__heading c-h2">
-                Order Ships <span class="u-colorPrimary">{{ shipDate }}</span>
+                Order Processes <span class="u-colorPrimary">{{ shipDate }}</span>
               </h2>
 
               <!--  <div> -->
@@ -252,9 +252,10 @@ export default {
     priceMinusRoute() {
       return this.currentRoutePrd ? this.charge.subtotal - this.currentRoutePrd.price : this.charge.subtotal
     },
-
     addOnItems() {
-      return this.$store.getters['customer/customerOnetimesByAddressId'](this.addressId)
+      const allAddons = this.$store.getters['customer/customerOnetimesByAddressId'](this.addressId)
+      const filterAddons = allAddons.filter(addon => !['CANCELLED', 'REFUNDED'].includes(addon.status))
+      return filterAddons
     },
     addOnItemsIds() {
       return this.addOnItems.map(addon => addon.productId)
@@ -488,6 +489,7 @@ export default {
     @include media-tablet-up {
       .c-shipmentsBox__content {
         min-height: 1020px;
+        height: fit-content;
       }
     }
 
