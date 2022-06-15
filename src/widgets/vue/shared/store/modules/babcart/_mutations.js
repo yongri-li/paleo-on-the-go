@@ -50,6 +50,7 @@ export default {
     }
   },
   SET_ROUTE_PRODUCT(state, product) {
+    console.log(product)
     state.currentRouteProduct = { ...product }
   },
   SET_ROUTE_VARIANT(state, variant) {

@@ -230,8 +230,12 @@ $translateY: calc(100% - $height-header-title);
     top: 1rem;
     margin-bottom: 1rem;
 
+    max-height: calc(100vh - 100px);
+    min-height: 300px;
+    padding-bottom: 90px;
+
     width: 300px;
-    min-height: 700px;
+    /*    min-height: 700px;*/
     display: flex;
     flex-direction: column;
     flex-shrink: 0;
@@ -262,10 +266,13 @@ $translateY: calc(100% - $height-header-title);
       position: relative;
       bottom: 0;
       transform: translateY(0);
-      height: calc(100% - $height-footer);
+      /*height: calc(100% - $height-footer);*/
       z-index: 1;
       border-radius: 0;
       flex-grow: 1;
+
+      overflow-y: scroll;
+      height: 100%;
     }
   }
   &__info.show {
@@ -281,13 +288,16 @@ $translateY: calc(100% - $height-header-title);
   }
 
   &__bottom {
-    position: fixed;
+    /*   position: fixed;*/
     bottom: 0;
     left: 0;
     width: 100%;
     height: $height-footer;
     background-color: $color-white;
     z-index: 101;
+
+    position: absolute;
+    top: unset;
 
     @include media-tablet-up {
       position: relative;

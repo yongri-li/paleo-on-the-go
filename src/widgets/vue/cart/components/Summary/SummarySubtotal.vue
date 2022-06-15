@@ -25,10 +25,10 @@
           class="subtotal__agree--check"
         />
         <label for="agreecheck" class="subtotal__agree--label" :class="{ agree: agree }">
-          I agree with the
+          {{ settings.terms_1 }}
         </label>
-        <a href="/pages/shipping-schedule" target="_blank" class="subtotal__agree--redirect">
-          Shipping Terms & Conditions
+        <a :href="settings.terms_link" target="_blank" class="subtotal__agree--redirect">
+          {{ settings.terms_2 }}
         </a>
       </div>
     </div>

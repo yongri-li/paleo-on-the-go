@@ -283,7 +283,8 @@ export default {
   },
   watch: {
     initialRoutePrice() {
-      this.setRoutePrice()
+      const hasRoutePrd = { ...this.currentRouteProduct }
+      if (Object.keys(hasRoutePrd).length) this.setRoutePrice()
     },
     finalInt() {
       this.getQuote()

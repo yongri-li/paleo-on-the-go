@@ -6,6 +6,7 @@
         v-if="sidebarHeadings"
         :open="true"
         :setBoxHeight="setBoxHeight"
+        :fromPortalShipments="true"
       >
         <div class="c-shipmentsSummary__trigger" slot="trigger">
           <div class="c-shipmentsSummary__triggerLabel">
@@ -367,9 +368,12 @@ export default {
       })
     },
     handleChangeMeals() {
-      if (!!this.routeProduct) {
+      if (!!this.routeProduct && this.hasRoute) {
         this.SET_ROUTE_PRODUCT(this.routeProduct)
         this.SET_ROUTE_VARIANT(this.routeRcProduct)
+      } else {
+        this.SET_ROUTE_PRODUCT({})
+        this.SET_ROUTE_VARIANT({})
       }
       this.setMealBox()
       location.href = '/pages/bundle/#/subscription'
@@ -483,7 +487,7 @@ export default {
 
     @include media-tablet-up {
       .c-shipmentsBox__content {
-        min-height: 1012px;
+        min-height: 1020px;
       }
     }
 

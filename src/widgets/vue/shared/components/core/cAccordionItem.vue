@@ -39,6 +39,9 @@ export default {
     },
     mountToggle: {
       type: Boolean
+    },
+    fromPortalShipments: {
+      type: Boolean
     }
   },
   data: () => ({
@@ -52,7 +55,8 @@ export default {
     },
     extendedModifiers() {
       let modifiers = [...this.modifiers]
-      if (this.transition) modifiers.push('hasTransition')
+      if (this.transition && !this.fromPortalShipments) modifiers.push('hasTransition')
+      if (this.transition && this.fromPortalShipments) setTimeout(() => modifiers.push('hasTransition'), 1250)
       return modifiers
     },
     triggerModifiers() {
