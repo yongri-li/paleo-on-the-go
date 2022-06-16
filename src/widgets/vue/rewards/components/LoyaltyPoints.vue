@@ -53,9 +53,9 @@ export default {
       text-transform: uppercase;
       margin: 1rem 0;
       font-size: 1.5rem;
-      padding: 15px 0 5px 0;
+      padding: 15px 0 0;
       color: $color-black;
-      min-height: 74px;
+      min-height: 80px;
       margin-bottom: 0;
 
       @include media-desktop-up {
