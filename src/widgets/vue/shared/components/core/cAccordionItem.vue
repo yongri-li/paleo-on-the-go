@@ -7,7 +7,7 @@
     >
       <slot name="trigger" />
     </div>
-    <div class="c-accordionItem__content" ref="content" :style="contentStyle">
+    <div class="c-accordionItem__content" ref="content" style="max-height: fit-content" :style="contentStyle">
       <slot name="content" />
     </div>
   </div>

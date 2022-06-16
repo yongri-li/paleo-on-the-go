@@ -1,8 +1,6 @@
 <template>
   <section>
-    <c-title-highlight
-      black-text="tiers"
-    />
+    <c-title-highlight black-text="tiers" />
     <div data-lion-tier-overview></div>
   </section>
 </template>
@@ -18,9 +16,7 @@ export default {
 </script>
 
 <style lang="scss">
-
 #loyaltylion .lion-tier-overview {
-
   display: flex;
   justify-content: center;
   align-items: stretch;
@@ -44,7 +40,7 @@ export default {
 
     @include media-tablet-up {
       width: 24% !important;
-      margin: 0 .5%;
+      margin: 0 0.5%;
     }
 
     &::before {
@@ -57,7 +53,7 @@ export default {
       top: 25px;
       left: 50%;
       transform: translate(-50%, 0);
-      background-image: url('https://cdn.shopify.com/s/files/1/0088/3163/1415/files/icon-make-a-purchase_256x256_crop_center.png');
+      /*      background-image: url('https://cdn.shopify.com/s/files/1/0088/3163/1415/files/icon-make-a-purchase_256x256_crop_center.png');*/
       background-repeat: no-repeat;
       background-position: center;
       background-size: cover;
@@ -87,7 +83,7 @@ export default {
       font-family: $font-body;
       font-weight: 500;
       font-size: 1.3rem;
-      margin: .5rem 0;
+      margin: 0.5rem 0;
     }
 
     &__benefits-list {

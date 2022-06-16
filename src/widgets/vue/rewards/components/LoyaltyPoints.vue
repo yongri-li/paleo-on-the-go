@@ -92,8 +92,8 @@ export default {
         &__actions {
           position: absolute;
           bottom: 15px;
-          left: 5%;
-          width: 90%;
+          left: 3.5%;
+          width: 93%;
           height: 60px;
           background-color: transparent;
           font-size: 0;
@@ -115,6 +115,24 @@ export default {
           padding: 0;
           @include flex($justify: center);
         }
+      }
+      .lion-rule-item__limit-reached {
+        width: 100%;
+        height: 100%;
+        background: #fff;
+        color: #231300;
+        font-weight: 900;
+        font-size: 1.25rem;
+        justify-content: center;
+        gap: 0.5rem;
+      }
+      .lion-rule-item__limit-reached::before {
+        width: 1rem;
+        height: 1rem;
+        background-color: #000;
+      }
+      .lion-action-button--disabled {
+        padding: 0;
       }
     }
 

@@ -40,8 +40,8 @@ export default {
   data() {
     return {
       selected: false,
-      outOfStock: false
-      // options: []
+      outOfStock: false,
+      outOfStockItems: []
     }
   },
   computed: {
@@ -54,6 +54,7 @@ export default {
       const sizeSelected = this.getSizeSelected
       const sizeNumber = sizeSelected.val === 'onetime' ? 0 : sizeSelected.number_size
       const options = this.getPrebuiltByBox(sizeNumber)
+
       return options.map(option => {
         return {
           label: option.bundlename,
@@ -64,51 +65,91 @@ export default {
   },
   methods: {
     ...mapActions('mealcart', ['validateSetPrebuilt', 'checkBundleProducts']),
+    // OLDhideBundlesIfContainOneOOSitem(){
+    //   const sizeSelected = this.getSizeSelected
+    //   const sizeNumber = sizeSelected.val === 'onetime' ? 0 : sizeSelected.number_size
+    //   const options = this.getPrebuiltByBox(sizeNumber)
+    //   const bundleProducts = await Promise.all(
+    //     options.map(async option => {
+    //       const bundle = option.products.filter(bun => bun.size * 1 === sizeNumber)
+    //       return this.checkBundleProducts(bundle[0].list)
+    //     })
+    //   )
+
+    //   const removeOOSitems = bundleProducts.map(bundleArr => {
+    //     const bundleArray = bundleArr.filter(p => {
+    //       const inventoryData = p.inventory[0]
+    //       const tags = p.tags
+    //       const inventoryTag = tags.filter(tag => tag.includes('inventory_'))
+    //       if (!inventoryTag.length) return p
+
+    //       const inventoryAmount = inventoryTag[0].replace('inventory_', '')
+    //       console.log(+inventoryAmount, +inventoryData, +inventoryAmount - +inventoryTag < 0)
+    //       if (+inventoryData - +inventoryAmount < 0) {
+    //         return null
+    //       }
+    //       return p
+    //     })
+
+    //     console.log({ bundleArray })
+
+    //     return bundleArray.includes(true) ? true : false
+    //   })
+
+    //   const activeBundles = options.map((option, i) => {
+    //     if (!hasOutOfStock[i]) {
+    //       return {
+    //         label: option.bundlename,
+    //         size: sizeNumber
+    //       }
+    //     }
+    //   })
+    //   this.options = activeBundles.filter(Boolean)
+    //   return
+    // }
     async setOptions() {
-      // const sizeSelected = this.getSizeSelected
-      // const sizeNumber = sizeSelected.val === 'onetime' ? 0 : sizeSelected.number_size
-      // const options = this.getPrebuiltByBox(sizeNumber)
-      // const bundleProducts = await Promise.all(
-      //   options.map(async option => {
-      //     const bundle = option.products.filter(bun => bun.size * 1 === sizeNumber)
-      //     return this.checkBundleProducts(bundle[0].list)
-      //   })
-      // )
-      // const hasOutOfStock = bundleProducts.map(bundleArr => {
-      //   const bundleArray = bundleArr.map(p => {
-      //     const inventoryData = p.inventory[0]
-      //     const tags = p.tags
-      //     let inventoryTag = 0
-      //     const indexFound = tags.findIndex(tag => tag.includes('inventory_'))
-      //     if (indexFound > -1) {
-      //       inventoryTag = tags[indexFound].replace('inventory_', '')
-      //     }
-      //     const diff = parseInt(inventoryData) - parseInt(inventoryTag)
-      //     return diff < 0
-      //   })
-      //   return bundleArray.includes(true) ? true : false
-      // })
-      // const activeBundles = options.map((option, i) => {
-      //   if (!hasOutOfStock[i]) {
-      //     return {
-      //       label: option.bundlename,
-      //       size: sizeNumber
-      //     }
-      //   }
-      // })
-      // this.options = activeBundles.filter(Boolean)
-      // return
+      const sizeSelected = this.getSizeSelected
+      const sizeNumber = sizeSelected.val === 'onetime' ? 0 : sizeSelected.number_size
+      const options = this.getPrebuiltByBox(sizeNumber)
+      const bundleProducts = await Promise.all(
+        options.map(async option => {
+          const bundle = option.products.filter(bun => bun.size * 1 === sizeNumber)
+          return this.checkBundleProducts(bundle[0].list)
+        })
+      )
+      bundleProducts.map(bundleArr => {
+        const bundleArray = bundleArr.filter(p => {
+          const inventoryData = p.inventory[0]
+          const tags = p.tags
+          const inventoryTag = tags.filter(tag => tag.includes('inventory_'))
+          if (!inventoryTag.length) return p
+          const inventoryAmount = inventoryTag[0].replace('inventory_', '')
+          ;+inventoryData - +inventoryAmount < 0 ? this.outOfStockItems.push(p.id) : null
+        })
+      })
+      return
     },
     setBundleSelected(val) {
       if (val) {
         this.selected = true
 
-        const products = this.getProductPrebuilt({
+        const bundleProducts = this.getProductPrebuilt({
           bundlename: val.label,
           size: val.size
         })
 
-        this.validateSetPrebuilt(products)
+        const objs = bundleProducts.map(bp => {
+          return {
+            id: +bp.split('x')[0],
+            qt: +bp.split('x')[1]
+          }
+        })
+
+        const filteredProducts = objs
+          .filter(id => !this.outOfStockItems.includes(id.id))
+          .map(p => `${p.id}x${p.qt}`)
+
+        this.validateSetPrebuilt(filteredProducts)
       } else {
         this.selected = false
         this.$store.commit(`babcart/${CLEAN_ALL_CART}`)
