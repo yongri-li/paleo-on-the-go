@@ -1,9 +1,5 @@
 <template>
-  <div
-    :class="[typeClass, haveProductsClass]"
-    class="meal-cart__header"
-    @click="sendShowCartMobile"
-  >
+  <div :class="[typeClass, haveProductsClass]" class="meal-cart__header" @click="sendShowCartMobile">
     <div class="meal-cart__header--title">MY BOX</div>
     <div class="meal-cart__header--items">
       <div class="meal-cart__header--items-qt">
@@ -15,17 +11,8 @@
       <div class="meal-cart__header--items-info">
         {{ itemsInfo }}
       </div>
-      <div
-        :class="{ show: showCartMobile }"
-        class="meal-cart__header--drop-down"
-      >
-        <svg
-          width="14"
-          height="8"
-          viewBox="0 0 14 8"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
+      <div :class="{ show: showCartMobile }" class="meal-cart__header--drop-down">
+        <svg width="14" height="8" viewBox="0 0 14 8" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path
             fill-rule="evenodd"
             clip-rule="evenodd"
@@ -47,48 +34,46 @@ export default {
   props: {
     typeClass: {
       type: String,
-      default: "subscription",
+      default: 'subscription'
     },
     haveProductsClass: {
       type: String,
-      default: "without-products",
+      default: 'without-products'
     },
     sizeSelected: {
-      type: Object,
+      type: Object
     },
     cartLength: {
       type: Number,
-      default: 0,
-    },
+      default: 0
+    }
   },
   data() {
     return {
-      showCartMobile: false,
-    };
+      showCartMobile: false
+    }
   },
   computed: {
     itemsQt() {
-      return this.sizeSelected.order_type === "onetime"
-        ? ` items`
-        : `/${this.sizeSelected.number_size} items`;
+      return this.sizeSelected.order_type === 'onetime' ? ` items` : `/${this.sizeSelected.number_size} items`
     },
     itemsInfo() {
-      return this.sizeSelected.order_type === "onetime"
+      return this.sizeSelected.order_type === 'onetime'
         ? `${this.sizeSelected.number_size} item minimum`
-        : `${this.sizeSelected.discount}% discount`;
+        : `${this.sizeSelected.discount}% discount`
     },
     warning() {
-      const diff = this.cartLength - this.sizeSelected.number_size;
-      return diff > 0 && !(this.sizeSelected.order_type === "onetime");
-    },
+      const diff = this.cartLength - this.sizeSelected.number_size
+      return diff > 0 && !(this.sizeSelected.order_type === 'onetime')
+    }
   },
   methods: {
     sendShowCartMobile() {
-      this.showCartMobile = !this.showCartMobile;
-      this.$emit("changecartmobile", this.showCartMobile);
-    },
-  },
-};
+      this.showCartMobile = !this.showCartMobile
+      if (window.innerWidth < 768) this.$emit('changecartmobile', this.showCartMobile)
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
