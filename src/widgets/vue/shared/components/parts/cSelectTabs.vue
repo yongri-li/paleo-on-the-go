@@ -113,7 +113,7 @@ export default {
 		position: relative;
 		padding: 0.25rem 0;
 		margin: 1rem 0 1.25rem;
-		max-height: clamp(300px, 24vw, 460px);
+		height: clamp(300px, 24vw, 460px);
 		overflow-y: scroll;
 
 		article {

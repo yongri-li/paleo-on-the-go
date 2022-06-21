@@ -197,12 +197,18 @@
   }
 }
 
-@include media-tablet-up {
+@media only screen and (min-width: 1025px) {
   #shopify-section-theme-header-mobile,
   .c-headerMobile {
     display: none;
   }
 }
+// @include media-tablet-up {
+//   #shopify-section-theme-header-mobile,
+//   .c-headerMobile {
+//     display: none;
+//   }
+// }
 
 ////////
 // MOBILE HEADER STYLES ***
@@ -215,7 +221,8 @@
   }
 }
 
-@include media-tablet-down {
+@media only screen and (max-width: 1024px) {
+  // @include media-mobile-down {
   #shopify-section-theme-header-main {
     display: none;
   }
@@ -387,7 +394,7 @@
   -webkit-overflow-scrolling: touch;
   transition: 400ms;
   background-color: $color-ecru;
-  @include media-mobile-down {
+  @include media-medium-down {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
