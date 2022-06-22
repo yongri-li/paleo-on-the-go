@@ -1,14 +1,14 @@
 <article class="c-homeTestimonial__slider u-relative">
   <span class="c-homeTestimonial__slider--bgIcon">
     {%- comment -%}{% render 'testimonial-slider__bg' %}{%- endcomment -%}
-    <img src="{{ section.settings.bg_image | img_url: 'master' }}" alt="">
+    <img src="{{ section.settings.bg_image | img_url: 'master' }}" alt="{{section.settings.bg_image.alt}}">
   </span>
   <div data-testimony-slider>    
     {% for block in section.blocks %}
       <section>
         <div class="tns-item__quoteIcon">{%- render 'icon-quote' -%}</div> 
         <div class="tns-item__quote">{{ block.settings.quote }}</div>
-        <div><img src="{{ block.settings.avatar_image | img_url: 'master' }}" alt=""></div>
+        <div><img src="{{ block.settings.avatar_image | img_url: 'master' }}" alt="{{block.settings.avatar_image.alt}}"></div>
         <div><h6 class="c-h6">{{ block.settings.user_name }}</h6></div>
       </section>
     {% endfor %}

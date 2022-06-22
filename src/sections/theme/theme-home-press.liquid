@@ -2,7 +2,7 @@
   <section>
     {%- for block in section.blocks -%}
       <div class="c-homePress__item">
-        <img src="{{block.settings.image | img_url: 'master'}}" alt="">
+        <img src="{{block.settings.image | img_url: 'master'}}" alt="{{block.settings.image.alt}}">
       </div>
     {%- endfor -%}
   </section>

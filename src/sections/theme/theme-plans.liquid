@@ -6,7 +6,7 @@
 
 <article class="c-homePlans">
   <span class="c-homePlans__floatingBadge">
-    <img src="{{ section.settings.badge_image | img_url: 'master' }}" alt="">  
+    <img src="{{ section.settings.badge_image | img_url: 'master' }}" alt="{{section.settings.badge_image.alt}}">  
   </span>    
 
   <div class="c-homePlans__inner">
@@ -34,7 +34,7 @@
             {% if block.settings.show_flag %}
               <span class="c-plansGrid__plan--flag">{{block.settings.flag_text}}</span>
             {% endif %}
-            <img src="{{ block.settings.image | img_url: 'master' }}" alt="">
+            <img src="{{ block.settings.image | img_url: 'master' }}" alt="{{block.settings.image.alt}}">
             <h2 class="c-h2">{{ boxSizes[forloop.index0] }} Items</h2>
             <div>
               <span class="c-plansGrid__plan--savings u-hideMobileDown" >
