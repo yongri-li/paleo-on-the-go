@@ -6,7 +6,6 @@
         <button class="pdp__thumbnailButton" type="button" @click="() => handleThumbnailClick(index)">
           <img
             :src="image"
-            :alt="image.alt"
             :class="{ 'pdp__thumbnail--active': index == activeIndex }"
             class="pdp__thumbnail"
           />

@@ -5,6 +5,7 @@
         class="main__column"
         :autoplay="gallery_autoplay"
         :images="product.images"
+        :alts="product.media"
         :flag="flagComputed"
       />
 

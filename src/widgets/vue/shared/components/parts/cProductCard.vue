@@ -1,6 +1,6 @@
 <template>
   <div :class="[`c-product--cta`, { 'c-product--selected': selected }]">
-    <!-- c-product--${modifier} -->
+    <!--  c-product--${modifier} -->
     <div class="c-product__inner">
       <a :href="productLink" class="">
         <div class="c-product__image-side">
@@ -8,7 +8,7 @@
             {{ flag }}
           </span>
           <div class="c-product__image-wrapper">
-            <img class="c-product__image" :src="product.images[0]" />
+            <img class="c-product__image" :src="product.images[0]" :alt="product.title" />
           </div>
         </div>
         <div class="c-product__info">
@@ -71,7 +71,7 @@ export default {
       const inventoryData = this.product.inventory[0]
       const tags = this.product.tags
 
-      return getOutOfStock({tags, inventoryData})
+      return getOutOfStock({ tags, inventoryData })
     },
     flag() {
       return this.outOfStock ? 'Out Of Stock' : this.product.flag
@@ -111,7 +111,7 @@ export default {
   }
 
   &__flag--out-of-stock {
-    background-color: #C63636;
+    background-color: #c63636;
     color: $color-white;
     text-transform: uppercase;
     display: block !important;

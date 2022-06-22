@@ -4,7 +4,12 @@
     <div v-show="!loading" class="pdp__thumbnails u-hideMobileDown">
       <div v-for="(image, i) in images" v-if="i < 5" :key="i" class="pdp__thumbnailWrapper">
         <button class="pdp__thumbnailButton" type="button" @click="() => handleThumbnailClick(i)">
-          <img :src="image" :class="{ 'pdp__thumbnail--active': i == activeIndex }" class="pdp__thumbnail" />
+          <img
+            :src="image"
+            :class="{ 'pdp__thumbnail--active': i == activeIndex }"
+            class="pdp__thumbnail"
+            :alt="alts[i].alt"
+          />
         </button>
       </div>
     </div>
@@ -15,7 +20,7 @@
       <div v-show="!loading" class="pdp__gallery">
         <div v-for="(image, i) in images" v-if="i < 5" :key="i">
           <div class="pdp__galleryImageWrapper" :data-index="i">
-            <img :src="image" class="pdp__galleryImage" />
+            <img :src="image" class="pdp__galleryImage" :alt="alts[i].alt" />
           </div>
         </div>
       </div>
@@ -32,6 +37,9 @@ export default {
     images: {
       required: true,
       type: Array
+    },
+    alts: {
+      type: [Object, Array]
     },
     autoplay: {
       default: false,
