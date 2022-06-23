@@ -106,7 +106,15 @@ export default {
     },
     closeNavClk() {
       this.open = false
+    },
+    repositionPortalHeader() {
+      const messageBar = document.querySelector('.c-headerBar__message')
+      const portalHeader = document.querySelector('.c-portalHeader')
+      if (messageBar) portalHeader.style.top = '106px'
     }
+  },
+  created() {
+    if (window.innerWidth < 1025) this.repositionPortalHeader()
   },
   mounted() {
     window.addEventListener('resize', this.handleResize)
@@ -136,7 +144,7 @@ export default {
   @include media-mobile-down {
     background-color: $color-black;
     position: sticky;
-    top: 106px;
+    top: 70px;
   }
 }
 .c-portalHeader__main {
