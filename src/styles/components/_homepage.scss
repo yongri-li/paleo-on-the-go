@@ -2,6 +2,8 @@
 // TOP HERO SECTION ***
 .o-homepage {
   @include media-tablet-down {
+    overflow-x: hidden;
+
     .marquee {
       bottom: -2.5rem;
     }

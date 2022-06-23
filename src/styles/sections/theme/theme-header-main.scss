@@ -6,14 +6,14 @@
   .o-html-home {
     overflow-x: hidden;
 
-    header.c-header {
-      position: fixed;
-      width: 100%;
-    }
+    // header.c-header {
+    //   position: fixed;
+    //   width: 100%;
+    // }
 
-    .o-main {
-      padding-top: 106px;
-    }
+    // .o-main {
+    //   padding-top: 106px;
+    // }
   }
 
   button {
@@ -412,7 +412,7 @@
     color: $color-white;
     left: unset;
     right: -100%;
-    padding-top: 1.5rem;
+    padding-top: 0.25rem;
     z-index: 12;
 
     .c-headerMobile__menuNav-primaryLinks a {
