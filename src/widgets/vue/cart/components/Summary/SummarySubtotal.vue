@@ -65,6 +65,14 @@ export default {
       const box = this.getItemForCart('box')
       const general = this.getItemForCart('general')
       return [...box, ...general]
+    },
+    hasGiftCard() {
+      return this.cartItems.general.some(itm => itm.type === 'Gift Card')
+    },
+    hasNonGiftCardGeneralItem() {
+      return this.cartItems.general.some(
+        itm => !itm.type.includes('Gift Card') && !itm.type.includes('Insurance')
+      )
     }
   },
   methods: {
@@ -136,13 +144,25 @@ export default {
       return tokenJson.token
     },
     async checkout() {
-      if (!this.cartItems.box.length) {
+      if (!this.cartItems.box.length && !this.hasGiftCard) {
         this.UI_SET_MODAL({
           component: 'cModalNeedbox',
           content: {
             heading: 'Please Add Meals!',
             text: 'Merch can only be added as a one-time purchase or an add-on to a subscription.',
             button: 'Build Your Box'
+          }
+        })
+        return
+      }
+
+      if (!this.cartItems.box.length && this.hasGiftCard && this.hasNonGiftCardGeneralItem) {
+        this.UI_SET_MODAL({
+          component: 'cModalNeedbox',
+          content: {
+            heading: 'Remove Non-GiftCard Items or Add Meals',
+            text: 'GiftCards must be purchased by themselves or with a meal subscription. Merch can only be added as a one-time purchase or add-on to a subscription.',
+            button: 'Back to Cart Edit'
           }
         })
         return
