@@ -230,6 +230,7 @@ export default {
       })
 
       removeReloadWarning()
+      this.loading = false
       if (update) window.location = '/account#/shipments'
     },
     async nextStep() {
@@ -247,6 +248,7 @@ export default {
         })
         window.location = '/cart'
       }
+      this.loading = false
     },
     async getQuote() {
       const route_key = window.Scoutside.api.route_api_key

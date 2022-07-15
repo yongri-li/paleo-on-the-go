@@ -1,11 +1,6 @@
 <template>
   <section class="content-article">
-    <a
-      href="/blogs/news"
-      class="content-article__back link-article"
-    >
-      Back To Blog
-    </a>
+    <a href="/blogs/foods" class="content-article__back link-article"> Back To Blog </a>
     <div v-html="content"></div>
   </section>
 </template>
