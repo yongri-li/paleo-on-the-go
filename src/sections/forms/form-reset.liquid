@@ -23,7 +23,7 @@
       </p>
     {% endif %}
     <div class="c-formReset__content c-form__content">
-      {%- form 'recover_customer_password', return_to: '/account#/shipments' -%}
+      {%- form 'reset_customer_password', return_to: '/account#/shipments' -%}
         {%- if form.errors -%}
           <div class="c-formReset__alert c-form__alert c-form__alert--isError">
             {{ form.errors | default_errors }}

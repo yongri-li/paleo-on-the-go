@@ -206,6 +206,7 @@ export default {
         })
         const appResponse = await appRequest.json()
         const domain = 'paleo-on-the-go-sandbox.myshopify.com'
+        this.loading = false
         window.location = `https://checkout.rechargeapps.com/r/checkout/${appResponse.token}?myshopify_domain=${domain}`
       } else window.location = '/checkout'
     }
