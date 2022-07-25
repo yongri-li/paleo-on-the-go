@@ -230,8 +230,10 @@ export default {
       })
 
       removeReloadWarning()
-      this.loading = false
+
+      console.log('updateee', { update })
       if (update) window.location = '/account#/shipments'
+      if (update) setTimeout(() => (this.loading = false), 1000)
     },
     async nextStep() {
       const param = this.$route.params.box
@@ -248,7 +250,7 @@ export default {
         })
         window.location = '/cart'
       }
-      this.loading = false
+      //this.loading = false
     },
     async getQuote() {
       const route_key = window.Scoutside.api.route_api_key
