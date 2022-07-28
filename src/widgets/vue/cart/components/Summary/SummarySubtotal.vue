@@ -44,6 +44,11 @@ export default {
   components: {
     cButton
   },
+  props: {
+    cartNote: {
+      type: String
+    }
+  },
   data() {
     return {
       agree: false,
@@ -114,7 +119,7 @@ export default {
         items: this.items,
         note_attributes: [],
         attributes: {},
-        note: null,
+        note: this.cartNote,
         email: null
       }
     },
