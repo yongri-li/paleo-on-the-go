@@ -286,7 +286,8 @@ export default {
 
   .vdp-datepicker__calendar {
     width: 100%;
-    height: 450px;
+    height: fit-content;
+    min-height: 450px;
     padding: 1.5rem;
 
     @include media-mobile-down {
@@ -337,10 +338,6 @@ export default {
       font-size: 1.875rem;
       text-transform: uppercase;
       pointer-events: none;
-    }
-
-    span.cell:nth-child(36) {
-      display: none;
     }
 
     @include media-mobile-down {
