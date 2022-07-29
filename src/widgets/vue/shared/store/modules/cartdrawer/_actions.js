@@ -10,11 +10,12 @@ import {
 } from './_mutations-type'
 
 export default {
-  async setDataFromBox({ commit }, { items, addons, sizeSelected }) {
+  async setDataFromBox({ commit }, { items, addons, generalitems, sizeSelected }) {
     let products = items.map(item => ({
       ...item,
       order_type: sizeSelected.order_type
     }))
+    let general = []
     addons.forEach(item => {
       products.push({
         ...item,
@@ -22,7 +23,17 @@ export default {
       })
     })
 
-    commit(ADD_BOX_TO_CART, { items: products })
+    console.log('generalgeneral', generalitems)
+    generalitems.forEach(item => {
+      general.push({
+        ...item,
+        order_type: 'general'
+      })
+    })
+
+    console.log('productsproducts', products)
+
+    commit(ADD_BOX_TO_CART, { items: products, generals: general })
     commit(SET_SIZE_SELECTED, { sizeSelected })
   },
   // UPDATES to Existing PORTAL Customers
@@ -87,12 +98,13 @@ export default {
     return routeProduct
   },
   async addRouteProduct({ commit, getters }, { routeProduct, variant }) {
-
     // calculate where put the route product
     const hasSubscription = getters.getSubscriptionItems.length > 0
 
     // Remove some product we have before
     commit(REMOVE_ROUTE_PROTECTION_TO_CART)
+
+    console.log('variantvariantvariant', variant)
 
     // create routeProduct to add
     routeProduct = {
@@ -116,6 +128,6 @@ export default {
     commit(CLEAR_BOX)
 
     const isCartEmpty = getters.isCartEmpty
-    if(isCartEmpty) dispatch('removeRouteProductToCart')
+    if (isCartEmpty) dispatch('removeRouteProductToCart')
   }
 }

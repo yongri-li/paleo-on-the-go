@@ -8,14 +8,15 @@ import {
 } from './_mutations-type'
 
 export default {
-  [ADD_PRODUCT_TO_CART](state, { product, where, quantity = 1 }) {
+  [ADD_PRODUCT_TO_CART](state, { product, where, varInfo, quantity = 1 }) {
     const indexFound = state.cart[where].findIndex(item => item.id === product.id)
     if (indexFound > -1) {
       state.cart[where][indexFound].quantity += quantity
     } else {
       state.cart[where].push({
         quantity,
-        ...product
+        ...product,
+        ...varInfo
       })
     }
   },

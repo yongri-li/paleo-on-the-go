@@ -10,8 +10,9 @@ import {
 } from './_mutations-type'
 
 export default {
-  [ADD_BOX_TO_CART](state, { items }) {
+  [ADD_BOX_TO_CART](state, { items, generals }) {
     state.cartItems.box = [...items]
+    state.cartItems.general = [...generals]
   },
   [SET_SIZE_SELECTED](state, { sizeSelected }) {
     state.sizeSelected = sizeSelected

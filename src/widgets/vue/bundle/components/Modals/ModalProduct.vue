@@ -15,7 +15,8 @@
             {{ product.subtitle }}
           </div>
         </div>
-        <c-select-tabs :pdpinfo="product.info" class="modal__product--data-pills" />
+        <cVariantTabs v-if="isSwag" :variantInfo="variants" @selectedVar="selectVariant" />
+        <cSelectTabs :pdpinfo="product.info" :isSwag="isSwag" class="modal__product--data-pills" />
         <c-button
           class="modal__product--add-to-cart"
           @click="addToCartModal"
@@ -29,15 +30,17 @@
 </template>
 
 <script>
-import { mapActions } from 'vuex'
+import { mapActions, mapMutations } from 'vuex'
 import cProductGallery from '@shared/components/parts/cProductGallery.vue'
 import cSelectTabs from '@shared/components/parts/cSelectTabs.vue'
 import cButton from '@shared/components/core/cButton.vue'
+import cVariantTabs from '@shared/components/parts/cVariantTabs.vue'
 
 export default {
   components: {
     cProductGallery,
     cSelectTabs,
+    cVariantTabs,
     cButton
   },
   props: {
@@ -45,9 +48,31 @@ export default {
       type: Object
     }
   },
+  data: () => ({
+    selectedVar: null
+  }),
   computed: {
     product() {
       return this.params.product
+    },
+    isSwag() {
+      return this.product.tags.includes('swag') || this.product.type === 'Shirts'
+    },
+    variants() {
+      return this.product.variants
+    },
+    selectedVariant() {
+      return this.variants[this.selectedVar]
+    },
+    swagVariantInfo() {
+      return {
+        quantity: 1,
+        varId: this.selectedVariant.id,
+        varNum: this.selectedVar,
+        varPrice: this.selectedVariant.price,
+        varTitle: this.selectedVariant.title,
+        order_type: 'general'
+      }
     },
     imageUrl() {
       const imgFound = this.product.media.find(item => item.position === 1)
@@ -56,19 +81,49 @@ export default {
     },
     where() {
       const param = this.$route.params.box
-      return param === 'addons' ? 'addons' : 'items'
+      if (param === 'addons' && !this.isSwag) return 'addons'
+      if (this.isSwag) return 'general'
+      return 'items'
     }
   },
   methods: {
     ...mapActions('babcart', ['addToCart']),
+    ...mapMutations('cartdrawer', ['ADD_GENERAL_TO_CART', 'CLEAR_GENERAL']),
+    selectVariant(val) {
+      this.selectedVar = val
+    },
     closeModal() {
       this.$emit('close')
     },
     addToCartModal() {
       this.addToCart({
         product: this.product,
-        where: this.where
+        where: this.where,
+        varInfo: this.swagVariantInfo
       })
+      // if (this.isSwag) {
+      //   const variantProduct = {
+      //     ...this.product,
+      //     quantity: 1,
+      //     varId: this.selectedVariant.id,
+      //     varNum: this.selectedVar,
+      //     varPrice: this.selectedVariant.price,
+      //     varTitle: this.selectedVariant.title,
+      //     order_type: 'general'
+      //   }
+      //   this.ADD_GENERAL_TO_CART(variantProduct)
+      //   this.addToCart({
+      //     product: this.product,
+      //     where: this.where,
+      //     varInfo: this.swagVariantInfo
+      //   })
+      // } else {
+      //   this.addToCart({
+      //     product: this.product,
+      //     where: this.where,
+      //     varInfo: this.swagVariantInfo
+      //   })
+      // }
       this.closeModal()
     }
   }

@@ -246,6 +246,7 @@ export default {
         await this.setDataFromBox({
           items: this.cart.items,
           addons: this.cart.addons,
+          generalitems: this.cart.general,
           sizeSelected: this.sizeSelected
         })
         window.location = '/cart'

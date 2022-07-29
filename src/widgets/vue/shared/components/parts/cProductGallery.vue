@@ -8,7 +8,7 @@
             :src="image"
             :class="{ 'pdp__thumbnail--active': i == activeIndex }"
             class="pdp__thumbnail"
-            :alt="alts[i].alt"
+            :alt="altTags[i]"
           />
         </button>
       </div>
@@ -20,7 +20,7 @@
       <div v-show="!loading" class="pdp__gallery">
         <div v-for="(image, i) in images" v-if="i < 5" :key="i">
           <div class="pdp__galleryImageWrapper" :data-index="i">
-            <img :src="image" class="pdp__galleryImage" :alt="alts[i].alt" />
+            <img :src="image" class="pdp__galleryImage" :alt="altTags[i]" />
           </div>
         </div>
       </div>
@@ -64,14 +64,19 @@ export default {
     //   return this.images.slice(1, 6)
     // },
     flagHandle() {
-      return handleize(this.flag)
+      return this.flag ? handleize(this.flag) : false
+    },
+    altTags() {
+      return this.alts
+        ? this.alts
+        : ['POTG Image', 'POTG Image', 'POTG Image', 'POTG Image', 'POTG Image', 'POTG Image', 'POTG Image']
     }
   },
   methods: {
     buildSlider() {
       this.loading = true
 
-      const enableThumbnails = this.images.length > 1 ? true : false
+      const enableThumbnails = this.images?.length > 1 ? true : false
       const slider = tns({
         autoplay: this.autoplay,
         autoplayButtonOutput: false,

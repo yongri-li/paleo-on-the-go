@@ -22,16 +22,7 @@
             :where="where"
             class="pcard__add-to-cart--open"
           />
-          <div
-            v-else
-            class="pcard__add-to-cart--first"
-            @click="
-              addToCart({
-                product,
-                where
-              })
-            "
-          >
+          <div v-else class="pcard__add-to-cart--first" @click="addItemFunc({ product, where })">
             <span> + </span>
             <span class="pcard__add-to-cart--txt"> Add </span>
           </div>
@@ -137,6 +128,9 @@ export default {
     },
     flagHandle() {
       return this.flag ? handleize(this.flag) : null
+    },
+    isSwag() {
+      return this.product.tags.includes('swag') || this.product.type === 'Shirts'
     }
   },
   methods: {
@@ -151,6 +145,13 @@ export default {
           }
         }
       })
+    },
+    addItemFunc({ product, where }) {
+      if (this.isSwag) {
+        this.openModal()
+      } else {
+        this.addToCart({ product, where })
+      }
     }
   }
 }

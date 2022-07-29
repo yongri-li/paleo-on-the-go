@@ -52,11 +52,11 @@
       </div>
       <div :class="{ hidden: productsHidden.addons }" class="product-list__products">
         <product-item-cart
-          v-for="item in cart.addons"
+          v-for="item in addOnsAndGeneral"
           :key="item ? item.id : null"
           :product="item"
           :from-portal="fromPortal"
-          where="addons"
+          :where="item.type === 'Shirts' || item.tags.includes('swag') ? 'general' : 'addons'"
         />
       </div>
     </div>
@@ -114,6 +114,9 @@ export default {
         length += item.quantity
       })
       return length
+    },
+    addOnsAndGeneral() {
+      return this.cart.addons.concat(this.cart.general)
     }
   },
   methods: {

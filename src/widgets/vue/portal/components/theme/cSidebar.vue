@@ -108,7 +108,7 @@ export default {
 
   &.c-drawer {
     @include media-tablet-up {
-      top: 84px;
+      top: 48px;
       padding-top: 2rem;
     }
   }

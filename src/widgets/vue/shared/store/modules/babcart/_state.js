@@ -1,7 +1,8 @@
 const state = {
   cart: {
     items: [],
-    addons: []
+    addons: [],
+    general: []
   },
   currentRouteProduct: {},
   currentRouteVariant: {}

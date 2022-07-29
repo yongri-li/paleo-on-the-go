@@ -6,13 +6,14 @@ import {
 } from './_mutations-type'
 
 export default {
-  addToCart({ commit }, { product, where }) {
-    commit(ADD_PRODUCT_TO_CART, { product, where })
+  addToCart({ commit }, { product, where, varInfo }) {
+    commit(ADD_PRODUCT_TO_CART, { product, where, varInfo })
   },
   reduceToCart({ commit, getters }, { idProduct, where }) {
     commit(REDUCE_PRODUCT_TO_CART, { idProduct, where })
 
     const productAfterReduce = getters.getProductFromCartByID({ id: idProduct, where })
+    console.log('asdasd', idProduct, where, productAfterReduce)
     if (productAfterReduce.quantity === 0) {
       commit(REMOVE_PRODUCT_TO_CART, { idProduct, where })
     }

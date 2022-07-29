@@ -2,14 +2,8 @@
   <div :class="[typeClass]" class="pitemcart">
     <div class="pitemcart__body">
       <div class="pitemcart__figure">
-        <div class="pitemcart__figure--remove" @click="removeProductToCart">
-          x
-        </div>
-        <img
-          class="pitemcart__figure--img"
-          :src="imageUrl"
-          :alt="product.title"
-        />
+        <div class="pitemcart__figure--remove" @click="removeProductToCart">x</div>
+        <img class="pitemcart__figure--img" :src="imageUrl" :alt="product.title" />
       </div>
       <div class="pitemcart__info">
         <div class="pitemcart__info--title">
@@ -17,6 +11,7 @@
         </div>
         <div class="pitemcart__info--description">
           {{ product.subtitle }}
+          <span v-if="product.varTitle">/ {{ product.varTitle }}</span>
         </div>
         <div class="pitemcart__info--price">
           {{ finalPrice }}
@@ -33,59 +28,59 @@
 </template>
 
 <script>
-import ProductBtnAddToCart from "./ProductBtnAddToCart.vue";
-import { mapGetters } from "vuex";
-import { formatPriceDollars } from "@shared/utils";
-import { REMOVE_PRODUCT_TO_CART } from "@shared/store/modules/babcart/_mutations-type";
+import ProductBtnAddToCart from './ProductBtnAddToCart.vue'
+import { mapGetters } from 'vuex'
+import { formatPriceDollars } from '@shared/utils'
+import { REMOVE_PRODUCT_TO_CART } from '@shared/store/modules/babcart/_mutations-type'
 
 export default {
   components: {
-    ProductBtnAddToCart,
+    ProductBtnAddToCart
   },
   props: {
     product: {
       type: Object,
-      required: true,
+      required: true
     },
     typeClass: {
       type: String,
-      default: "subscription",
+      default: 'subscription'
     },
     where: {
       type: String,
-      required: true,
+      required: true
     },
     fromPortal: {
-      type: Boolean,
-    },
+      type: Boolean
+    }
   },
   computed: {
-    ...mapGetters("mealcart", ["getSizeSelected"]),
+    ...mapGetters('mealcart', ['getSizeSelected']),
     imageUrl() {
-      const imgFound = this.product.media.find((item) => item.position === 1);
-      const urlFinal = imgFound.src
-        .replace(".jpg", "_150x150.jpg")
-        .replace(".png", "_150x150.png");
-      return urlFinal;
+      const imgFound = this.product.media.find(item => item.position === 1)
+      const urlFinal = imgFound.src.replace('.jpg', '_150x150.jpg').replace('.png', '_150x150.png')
+      return urlFinal
     },
     finalPrice() {
-      const discount = (100 - this.getSizeSelected.discount) / 100;
-      const price =
-        this.where !== "addons"
-          ? (this.product.price * discount) / 100
-          : this.product.price / 100;
-      return formatPriceDollars(price);
-    },
+      const discount = (100 - this.getSizeSelected.discount) / 100
+      console.log('discounasd', discount)
+      // const price = this.where === 'items' ? (this.product.price * discount) / 100 : this.product.price / 100
+      let price
+      if (this.where === 'items') price = this.product.price * discount
+      if (this.where === 'general') price = this.product.varPrice / 100
+      price = this.product.price / 100
+      return formatPriceDollars(price)
+    }
   },
   methods: {
     removeProductToCart() {
       this.$store.commit(`babcart/${REMOVE_PRODUCT_TO_CART}`, {
         idProduct: this.product.id,
-        where: this.where,
-      });
-    },
-  },
-};
+        where: this.where
+      })
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>
