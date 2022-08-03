@@ -8,7 +8,7 @@
       ...collectionJSON,
       url: '{{ block.settings.url }}',
       products: [
-        {% paginate _collection.products by 50 %}
+        {% paginate _collection.products by 250 %}
           {% for _product in _collection.products %}
             {
               ...JSON.parse( JSON.stringify({{ _product | json }}) ),
