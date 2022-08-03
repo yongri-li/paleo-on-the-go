@@ -1,5 +1,5 @@
 <template>
-  <div class="modal__product">
+  <div class="modal__product" :class="{ 'swag-product': isSwag }">
     <div class="modal__close" @click="closeModal">&#10006;</div>
     <!-- &#10005; -->
     <div class="modal__product--content">
@@ -99,31 +99,8 @@ export default {
       this.addToCart({
         product: this.product,
         where: this.where,
-        varInfo: this.swagVariantInfo
+        varInfo: this.isSwag && this.swagVariantInfo
       })
-      // if (this.isSwag) {
-      //   const variantProduct = {
-      //     ...this.product,
-      //     quantity: 1,
-      //     varId: this.selectedVariant.id,
-      //     varNum: this.selectedVar,
-      //     varPrice: this.selectedVariant.price,
-      //     varTitle: this.selectedVariant.title,
-      //     order_type: 'general'
-      //   }
-      //   this.ADD_GENERAL_TO_CART(variantProduct)
-      //   this.addToCart({
-      //     product: this.product,
-      //     where: this.where,
-      //     varInfo: this.swagVariantInfo
-      //   })
-      // } else {
-      //   this.addToCart({
-      //     product: this.product,
-      //     where: this.where,
-      //     varInfo: this.swagVariantInfo
-      //   })
-      // }
       this.closeModal()
     }
   }
@@ -143,13 +120,19 @@ export default {
   overflow: hidden;
 
   @include media-tablet-up {
-    width: 84%;
-    max-width: 1400px;
+    /*    width: 84%;*/
+    /*    max-width: 1400px;*/
+    width: clamp(300px, 84%, 1480px);
     left: 8%;
     height: 80%;
     min-height: 500px;
     max-height: 698px;
     border-radius: 0;
+
+    &.swag-product {
+      width: clamp(300px, 90%, 1620px);
+      left: 5%;
+    }
   }
 
   &--content {

@@ -10,7 +10,11 @@ import {
 export default {
   [ADD_PRODUCT_TO_CART](state, { product, where, varInfo, quantity = 1 }) {
     const indexFound = state.cart[where].findIndex(item => item.id === product.id)
-    if (indexFound > -1) {
+    const varIndex = varInfo ? state.cart[where].findIndex(itm => itm.varId === varInfo.varId) : -1
+    console.log('varInfovarInfo', varInfo, indexFound, varIndex)
+    if (varIndex > -1) {
+      state.cart[where][varIndex].quantity += quantity
+    } else if (indexFound > -1 && !varInfo) {
       state.cart[where][indexFound].quantity += quantity
     } else {
       state.cart[where].push({

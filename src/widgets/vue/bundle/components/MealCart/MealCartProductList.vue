@@ -52,8 +52,8 @@
       </div>
       <div :class="{ hidden: productsHidden.addons }" class="product-list__products">
         <product-item-cart
-          v-for="item in addOnsAndGeneral"
-          :key="item ? item.id : null"
+          v-for="(item, i) in addOnsAndGeneral"
+          :key="item ? item.id + i : null"
           :product="item"
           :from-portal="fromPortal"
           :where="item.type === 'Shirts' || item.tags.includes('swag') ? 'general' : 'addons'"

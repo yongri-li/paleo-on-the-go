@@ -66,7 +66,7 @@ export default {
 			font-size: 1rem;
 			font-weight: 500;
 			letter-spacing: 0.25px;
-			min-width: 124px;
+			min-width: 120px;
 			padding: 0.5rem 1.75rem;
 			text-align: center;
 			text-transform: capitalize;
