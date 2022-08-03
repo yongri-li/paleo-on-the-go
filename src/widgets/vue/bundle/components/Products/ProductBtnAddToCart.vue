@@ -20,7 +20,7 @@
         addToCart({
           product,
           where,
-          varInfo: swagVarInfo
+          varInfo: !!swagVarInfo.varId && swagVarInfo
         })
       "
     >

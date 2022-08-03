@@ -1,8 +1,8 @@
 <template>
   <div class="yc-body">
     <product-item-cart
-      v-for="item in filteredItems"
-      :key="item.id"
+      v-for="(item, i) in filteredItems"
+      :key="item.id + i"
       :product="item"
       class="yc-body__item"
     />
@@ -10,20 +10,20 @@
 </template>
 
 <script>
-import ProductItemCart from "../Products/ProductItemCart.vue";
-import { mapState } from "vuex";
+import ProductItemCart from '../Products/ProductItemCart.vue'
+import { mapState } from 'vuex'
 
 export default {
   components: {
-    ProductItemCart,
+    ProductItemCart
   },
   computed: {
-    ...mapState("cartdrawer", ["cartItems"]),
+    ...mapState('cartdrawer', ['cartItems']),
     filteredItems() {
-      return this.cartItems.general.filter((item) => item.hide !== true);
-    },
-  },
-};
+      return this.cartItems.general.filter(item => item.hide !== true)
+    }
+  }
+}
 </script>
 
 <style lang="scss" scoped>

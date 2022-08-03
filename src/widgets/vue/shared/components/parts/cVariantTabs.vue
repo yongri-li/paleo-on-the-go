@@ -48,6 +48,10 @@ export default {
 	padding: 1rem 0;
 	margin-bottom: 1rem;
 
+	width: 100%;
+	overflow-x: auto;
+	min-height: 70px;
+
 	&__wrap {
 		display: flex;
 		align-items: center;
