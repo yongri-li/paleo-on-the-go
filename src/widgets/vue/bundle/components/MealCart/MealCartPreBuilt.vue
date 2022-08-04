@@ -178,8 +178,8 @@ export default {
   @include flex($justify: space-between);
   border-top: 1px solid $color-ecru;
   border-bottom: 1px solid $color-ecru;
-  padding: 0.5rem;
-  margin-top: 0.5rem;
+  padding: 1rem 0.5rem;
+  margin: 0.5rem 0 1rem;
 
   &__info {
     width: 100%;

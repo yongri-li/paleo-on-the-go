@@ -20,7 +20,7 @@
       </div>
       <div :class="{ hidden: productsHidden.items }" class="product-list__products">
         <product-item-cart
-          v-for="item in cart.items"
+          v-for="item in cartItems"
           :key="item.id"
           :product="item"
           :type-class="typeClass"
@@ -56,7 +56,7 @@
           :key="item ? item.id + i : null"
           :product="item"
           :from-portal="fromPortal"
-          :where="item.type === 'Shirts' || item.tags.includes('swag') ? 'general' : 'addons'"
+          :where="item && (item.type === 'Shirts' || item.tags.includes('swag')) ? 'general' : 'addons'"
         />
       </div>
     </div>
@@ -116,7 +116,11 @@ export default {
       return length
     },
     addOnsAndGeneral() {
-      return this.cart.addons.concat(this.cart.general)
+      console.log(!!this.cart.general, this.cart.general, this.cart.addons)
+      return !!this.cart.general ? this.cart.addons.concat(this.cart.general) : this.cart.addons
+    },
+    cartItems() {
+      return this.cart.items
     }
   },
   methods: {

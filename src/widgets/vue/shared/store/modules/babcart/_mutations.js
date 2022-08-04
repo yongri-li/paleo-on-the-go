@@ -9,6 +9,7 @@ import {
 
 export default {
   [ADD_PRODUCT_TO_CART](state, { product, where, varInfo, quantity = 1 }) {
+    console.log(where, varInfo)
     const indexFound = state.cart[where].findIndex(item => item.id === product.id)
     const varIndex = varInfo ? state.cart[where].findIndex(itm => itm.varId === varInfo.varId) : -1
     if (varIndex > -1) {
@@ -50,7 +51,8 @@ export default {
   [CLEAN_ALL_CART](state) {
     state.cart = {
       items: [],
-      addons: []
+      addons: [],
+      general: []
     }
   },
   SET_ROUTE_PRODUCT(state, product) {
