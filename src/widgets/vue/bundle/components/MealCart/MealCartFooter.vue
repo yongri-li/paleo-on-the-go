@@ -57,6 +57,9 @@ export default {
       type: Number,
       required: true
     },
+    cartGeneral: {
+      type: Number
+    },
     addons: {
       type: Array
     },
@@ -98,17 +101,18 @@ export default {
       return this.typeClass === 'addons' ? this.cartAddOns : 0
     },
     final() {
-      const total = this.subtotalWithDiscount * 100 + this.priceAddOns
+      const total = this.subtotalWithDiscount * 100 + this.priceAddOns + this.cartGeneral
+      console.log('asdad', this.cartGeneral)
       return total === 0 ? '$0.00' : formatPrice(total)
     },
     finalInt() {
-      return (this.subtotalWithDiscount * 100 + this.priceAddOns) / 100
+      return (this.subtotalWithDiscount * 100 + this.priceAddOns + this.cartGeneral) / 100
     },
     isCustomer() {
       return customer.email && customer.shopify_id ? true : false
     },
     subtotalFormat() {
-      return formatPrice(this.subtotal + this.priceAddOns)
+      return formatPrice(this.subtotal + this.priceAddOns + this.cartGeneral)
     },
     ctabtn() {
       if (this.cartLength === 0) {

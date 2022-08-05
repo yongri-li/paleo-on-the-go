@@ -22,6 +22,7 @@
       :size-selected="getSizeSelected"
       :cart-length="cartLength"
       :cart-add-ons="cartAddOns"
+      :cart-general="cartGeneral"
       :addons="addOnsUpdates"
       :addressId="addressId"
       :subs="subscriptionUpdates"
@@ -100,12 +101,6 @@ export default {
       return total
     },
     cartGeneral() {
-      // let total = 0
-      // this.cart.general.forEach(item => {
-      //   total += item?.price * item?.quantity
-      // })
-      // return total
-
       return this.cart.general.reduce((sum, itm) => sum + itm?.varPrice * itm?.quantity, 0)
     },
     isCustomer() {
