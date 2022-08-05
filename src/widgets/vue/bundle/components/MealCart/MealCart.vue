@@ -99,6 +99,15 @@ export default {
       })
       return total
     },
+    cartGeneral() {
+      // let total = 0
+      // this.cart.general.forEach(item => {
+      //   total += item?.price * item?.quantity
+      // })
+      // return total
+
+      return this.cart.general.reduce((sum, itm) => sum + itm?.varPrice * itm?.quantity, 0)
+    },
     isCustomer() {
       return customer.email && customer.shopify_id ? true : false
     },

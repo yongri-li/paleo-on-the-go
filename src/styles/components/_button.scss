@@ -1,5 +1,5 @@
 .c-button,
-.klaviyo-form button {
+.c-homeBtm__form .klaviyo-form button {
   @include button-unset;
   position: relative;
   @include flex($display: inline-flex, $justify: center, $align: center);
@@ -36,9 +36,14 @@
   }
 }
 
+.kl-private-reset-css-Xuajs1 svg {
+  height: 30px;
+  width: 30px;
+}
+
 .c-button--isDefault,
 .c-button--isHollow,
-.klaviyo-form button {
+.c-homeBtm__form .klaviyo-form button {
   padding: 1rem 40px;
   text-transform: capitalize;
   border-radius: none;
