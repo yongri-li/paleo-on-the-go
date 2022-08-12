@@ -63,10 +63,9 @@ export default {
     },
     finalPrice() {
       const discount = (100 - this.getSizeSelected.discount) / 100
-      console.log('discounasd', discount)
       // const price = this.where === 'items' ? (this.product.price * discount) / 100 : this.product.price / 100
       let price
-      if (this.where === 'items') price = this.product.price * discount
+      if (this.where === 'items') price = (this.product.price * discount) / 100
       if (this.where === 'addons') price = this.product.price / 100
       if (this.where === 'general') price = this.product.varPrice / 100
       return formatPriceDollars(price)
