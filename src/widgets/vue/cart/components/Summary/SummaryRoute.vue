@@ -135,6 +135,11 @@ export default {
     },
     cta() {
       return this.haveRouteProductInCart ? 'REMOVE' : 'ADD+'
+    },
+    onlyGiftCard() {
+      const hasGiftCard = this.cartItems.general.some(itm => itm.type === 'Gift Card')
+      const hasItemOrAddon = this.cartItems.box.length && true
+      return hasGiftCard && !hasItemOrAddon
     }
   },
   mounted() {
@@ -151,7 +156,7 @@ export default {
         this.loading = false
         if (this.haveRouteProductInCart && this.cta === 'ADD+') this.addProduct()
 
-        if (firstLoad) this.addProduct()
+        if (firstLoad && !this.onlyGiftCard) this.addProduct()
       })
     },
     async roundInsurePrice() {
