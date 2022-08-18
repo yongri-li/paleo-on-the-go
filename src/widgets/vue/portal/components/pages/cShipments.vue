@@ -24,11 +24,15 @@
             :shipDate="formatDayDateIOS(charge.scheduledAt)"
           />
         </section>
-        <c-shipmentsEmpty v-if="!charges.length" :content="content" :isRecharge="isRecharge" />
+        <c-shipmentsEmpty v-if="!charges" :content="content" :isRecharge="isRecharge" />
       </div>
     </article>
 
-    <c-faqAccordion v-if="content && charges.length" :faqs="content.portal_faq" :title="faqTitle" />
+    <c-faqAccordion
+      v-if="content && charges && charges.length"
+      :faqs="content.portal_faq"
+      :title="faqTitle"
+    />
   </div>
 </template>
 

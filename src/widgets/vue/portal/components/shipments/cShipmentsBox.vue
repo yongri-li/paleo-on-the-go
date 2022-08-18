@@ -210,7 +210,9 @@ export default {
       return this.allSubs.filter(item => this.subIds.includes(+item.productId))
     },
     subItemsNoRoute() {
-      return this.subItems.filter(itm => !itm.productTitle.includes('route'))
+      return this.subItems.filter(
+        itm => !itm.productTitle.includes('route') && !itm.productTitle.includes('protection')
+      )
     },
     subProductIds() {
       return this.subItemsNoRoute.map(prd => prd.productId * 1)
@@ -218,18 +220,27 @@ export default {
     subProductQtys() {
       return this.subItemsNoRoute.map(prd => prd.quantity)
     },
-    hasRoute() {
-      return this.allSubs.some(itm => itm.productTitle.includes('route'))
-    },
     currentRoutePrd() {
-      return this.subItems.find(itm => itm.productTitle.includes('route'))
+      //return this.subItems.find(itm => itm.productTitle.includes('route'))
+      const route = this.subItems.filter(
+        itm => itm.productTitle.includes('route') || itm.productTitle.includes('protection')
+      )
+      return route[0]
+    },
+    hasRoute() {
+      //return this.allSubs.some(itm => itm.vendor.includes('Route'))
+      return !!this.currentRoutePrd
     },
     routeProduct() {
-      return this.allProducts.find(itm => itm.title.includes('Route Package'))
+      // return this.allProducts.find(itm => itm.title.includes('Green Package'))
+      const route = this.allProducts.filter(
+        itm => itm.type.includes('Insurance') && itm.vendor.includes('Route')
+      )
+      return route[0]
     },
     routeProductId() {
       const routeSub = this.subObjects.filter(sub => {
-        return sub.productTitle.includes('route')
+        return sub.productTitle.includes('route') || sub.productTitle.includes('protection')
       })
       return +routeSub[0]?.id
     },
