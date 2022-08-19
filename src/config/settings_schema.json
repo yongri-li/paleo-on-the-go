@@ -4,8 +4,8 @@
     "theme_name": "Skeleton theme",
     "theme_version": "1.0.0",
     "theme_author": "Shopify",
-    "theme_documentation_url": "https://github.com/Shopify/skeleton-theme",
-    "theme_support_url": "https://github.com/Shopify/skeleton-theme/issues"
+    "theme_documentation_url": "https:\/\/github.com\/Shopify\/skeleton-theme",
+    "theme_support_url": "https:\/\/github.com\/Shopify\/skeleton-theme\/issues"
   },
   {
     "name": "Shop",
@@ -30,7 +30,7 @@
         "id": "site_favicon",
         "type": "image_picker",
         "label": "Site Favicon"
-      }      
+      }
     ]
   },
   {
@@ -40,6 +40,16 @@
         "type": "link_list",
         "id": "test_footer",
         "label": "Checkout Footer"
+      }
+    ]
+  },
+  {
+    "name": "Custom CSS",
+    "settings": [
+      {
+        "type": "textarea",
+        "id": "custom_css",
+        "label": "CSS Goes Here"
       }
     ]
   }
