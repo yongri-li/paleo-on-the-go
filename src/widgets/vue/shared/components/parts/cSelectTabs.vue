@@ -126,6 +126,8 @@ export default {
 
 		article.isActive {
 			opacity: 1;
+			position: relative;
+			z-index: 10;
 		}
 
 		article:not(:first-child) {
