@@ -85,7 +85,7 @@ export default {
 <style lang="scss" scoped>
 .pitemcart {
   @include flex($justify: space-between);
-  margin-top: 1.2rem;
+  margin-top: 1.325rem;
 
   @include media-desktop-up {
     @include flex($justify: space-between, $wrap: nowrap);
@@ -134,7 +134,7 @@ export default {
     &--title {
       font-family: $font-product-title;
       font-size: 1rem;
-      -webkit-line-clamp: 1;
+      -webkit-line-clamp: 2;
       -webkit-box-orient: vertical;
       overflow: hidden;
       text-overflow: ellipsis;
