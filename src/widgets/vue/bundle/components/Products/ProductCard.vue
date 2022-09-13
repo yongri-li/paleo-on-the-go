@@ -239,9 +239,9 @@ export default {
       margin-bottom: 0.2rem;
 
       @include media-tablet-up {
-        height: 1.38rem;
+        /*height: 1.38rem;*/
         font-size: 1.25rem;
-        -webkit-line-clamp: 1;
+        -webkit-line-clamp: 2;
       }
     }
 
