@@ -219,7 +219,7 @@ export default {
     position: relative;
 
     @include media-tablet-up {
-      height: 78px;
+      height: 84px;
       margin-bottom: 1rem;
     }
 
