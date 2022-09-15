@@ -5,36 +5,21 @@
         <c-svg name="filter" />
       </div>
       <div class="fas__filter--types">
-        <div
-          class="fas__filter--types-item"
-          @click="toggleContent('showPreference')"
-        >
+        <div class="fas__filter--types-item" @click="toggleContent('showPreference')">
           <div class="fas__filter--types-text">Preference</div>
-          <div
-            v-if="lengthFilterActive(preferences)"
-            class="fas__filter--types-number"
-          >
+          <div v-if="lengthFilterActive(preferences)" class="fas__filter--types-number">
             ({{ lengthFilterActive(preferences) }})
           </div>
         </div>
-        <div
-          class="fas__filter--types-item"
-          @click="toggleContent('showProductType')"
-        >
+        <div class="fas__filter--types-item" @click="toggleContent('showProductType')">
           <div class="fas__filter--types-text">Product Type</div>
-          <div
-            v-if="lengthFilterActive(productType)"
-            class="fas__filter--types-number"
-          >
+          <div v-if="lengthFilterActive(productType)" class="fas__filter--types-number">
             ({{ lengthFilterActive(productType) }})
           </div>
         </div>
       </div>
       <div class="fas__filter--content" :class="{ show: contents.showFilters }">
-        <div
-          class="fas__filter--options"
-          :class="{ show: contents.showPreference }"
-        >
+        <div class="fas__filter--options" :class="{ show: contents.showPreference }">
           <div class="fas__filter--title">PREFERENCE</div>
           <ul class="fas__filter--list">
             <li
@@ -48,10 +33,7 @@
             </li>
           </ul>
         </div>
-        <div
-          class="fas__filter--options"
-          :class="{ show: contents.showProductType }"
-        >
+        <div class="fas__filter--options" :class="{ show: contents.showProductType }">
           <div class="fas__filter--title">PRODUCT TYPE</div>
           <ul class="fas__filter--list">
             <li
@@ -68,13 +50,7 @@
       </div>
     </div>
     <div class="fas__items">{{ lengthProducts }} items</div>
-    <div
-      v-if="contents.showFilters"
-      class="fas__close"
-      @click="toggleContent('showFilters')"
-    >
-      &times;
-    </div>
+    <div v-if="contents.showFilters" class="fas__close" @click="toggleContent('showFilters')">&times;</div>
     <div :class="{ hide: contents.showFilters }" class="fas__sort">
       <!-- Sort By -->
       <v-select
@@ -102,177 +78,179 @@
 </template>
 
 <script>
-import { mapState } from "vuex";
-import {
-  FILTER_TOGGLE_ACTIVE,
-  CLEAN_ALL_FILTERS,
-} from "../../store/modules/filters/_mutations-type";
-import { notScrollBody } from "../../../shared/utils";
+import { mapState } from 'vuex'
+import { FILTER_TOGGLE_ACTIVE, CLEAN_ALL_FILTERS } from '../../store/modules/filters/_mutations-type'
+import { notScrollBody } from '../../../shared/utils'
 
-import cOverlay from "@shared/components/core/cOverlay.vue";
-import cSvg from "@shared/components/core/cSvg.vue";
+import cOverlay from '@shared/components/core/cOverlay.vue'
+import cSvg from '@shared/components/core/cSvg.vue'
 
 export default {
   components: {
     cOverlay,
-    cSvg,
+    cSvg
   },
   props: {
     lengthProducts: {
-      type: Number,
-    },
+      type: Number
+    }
   },
   data() {
     return {
       contents: {
         showFilters: false,
         showPreference: false,
-        showProductType: false,
+        showProductType: false
       },
       options: [
         {
-          label: "Best Selling",
+          label: 'Best Selling'
         },
         {
-          label: "Newest",
+          label: 'Newest'
         },
-      ],
-    };
+        {
+          label: 'A-Z'
+        },
+        {
+          label: 'Z-A'
+        },
+        {
+          label: 'Price'
+        }
+      ]
+    }
   },
   computed: {
-    ...mapState("filters", ["filters"]),
+    ...mapState('filters', ['filters']),
     preferences() {
-      return filters.filter((fil) => fil.filter_type === "preference");
+      return filters.filter(fil => fil.filter_type === 'preference')
     },
     productType() {
-      return filters.filter((fil) => fil.filter_type === "product_type");
+      return filters.filter(fil => fil.filter_type === 'product_type')
     },
     selected() {
-      const sortRouter = this.$route.query.sort;
-      return sortRouter ? { label: sortRouter } : { label: "Best Selling" };
-    },
+      const sortRouter = this.$route.query.sort
+      return sortRouter ? { label: sortRouter } : { label: 'Best Selling' }
+    }
   },
   created() {
     // watch the params of the route to fetch the data again
     this.$watch(
       () => this.$route.params,
       () => {
-        this.setFiltersRouter();
+        this.setFiltersRouter()
       },
       // fetch the data when the view is created and the data is
       // already being observed
       { immediate: true }
-    );
+    )
   },
   methods: {
     toggleContent(content) {
-      if (content === "showPreference") {
-        this.contents.showProductType = false;
-        this.showFiltersContent(content);
+      if (content === 'showPreference') {
+        this.contents.showProductType = false
+        this.showFiltersContent(content)
       }
-      if (content === "showProductType") {
-        this.contents.showPreference = false;
-        this.showFiltersContent(content);
+      if (content === 'showProductType') {
+        this.contents.showPreference = false
+        this.showFiltersContent(content)
       }
 
-      this.contents[content] = !this.contents[content];
+      this.contents[content] = !this.contents[content]
     },
     showFiltersContent(content) {
       if (this.contents.showFilters && this.contents[content]) {
-        this.contents.showFilters = false;
+        this.contents.showFilters = false
       } else {
-        this.contents.showFilters = true;
+        this.contents.showFilters = true
       }
     },
     addFilter(item) {
-      const queryRouter = this.$route.query;
-      const keys = Object.keys(queryRouter);
-      let query = {};
-      let val;
+      const queryRouter = this.$route.query
+      const keys = Object.keys(queryRouter)
+      let query = {}
+      let val
 
       if (item.active) {
         // remove filter from router
-        const valSplit = queryRouter[item.filter_type].split(",");
-        const indexTag = valSplit.indexOf(item.tag);
-        valSplit.splice(indexTag, 1);
+        const valSplit = queryRouter[item.filter_type].split(',')
+        const indexTag = valSplit.indexOf(item.tag)
+        valSplit.splice(indexTag, 1)
 
-        val = valSplit.length ? valSplit.join(",") : undefined;
+        val = valSplit.length ? valSplit.join(',') : undefined
         query = {
           ...queryRouter,
-          [item.filter_type]: val,
-        };
+          [item.filter_type]: val
+        }
 
         // change active to false
         this.$store.commit(`filters/${FILTER_TOGGLE_ACTIVE}`, {
           tag: item.tag,
-          active: false,
-        });
+          active: false
+        })
       } else {
         // add filter to router
-        const hasOtherParam =
-          keys.includes(item.filter_type) &&
-          queryRouter[item.filter_type] !== undefined;
-        val = hasOtherParam
-          ? `${queryRouter[item.filter_type]},${item.tag}`
-          : item.tag;
+        const hasOtherParam = keys.includes(item.filter_type) && queryRouter[item.filter_type] !== undefined
+        val = hasOtherParam ? `${queryRouter[item.filter_type]},${item.tag}` : item.tag
 
         query = {
           ...queryRouter,
-          [item.filter_type]: val,
-        };
+          [item.filter_type]: val
+        }
 
         // change active to true
         this.$store.commit(`filters/${FILTER_TOGGLE_ACTIVE}`, {
           tag: item.tag,
-          active: true,
-        });
+          active: true
+        })
       }
 
       // change query
-      this.$router.push({ query });
+      this.$router.push({ query })
     },
     setFiltersRouter() {
-      const queryRouter = this.$route.query;
-      const keys = Object.keys(queryRouter);
+      const queryRouter = this.$route.query
+      const keys = Object.keys(queryRouter)
 
-      this.$store.commit(`filters/${CLEAN_ALL_FILTERS}`);
+      this.$store.commit(`filters/${CLEAN_ALL_FILTERS}`)
 
-      keys.forEach((key) => {
-        if (key === "preference" || key === "product_type") {
+      keys.forEach(key => {
+        if (key === 'preference' || key === 'product_type') {
           if (queryRouter[key]) {
-            const valSplit = queryRouter[key].split(",");
-            valSplit.forEach((val) => {
+            const valSplit = queryRouter[key].split(',')
+            valSplit.forEach(val => {
               this.$store.commit(`filters/${FILTER_TOGGLE_ACTIVE}`, {
                 tag: val,
-                active: true,
-              });
-            });
+                active: true
+              })
+            })
           }
         }
-      });
+      })
     },
     lengthFilterActive(filters) {
-      const filtersActive = filters.filter((item) => item.active);
-      return filtersActive.length;
+      const filtersActive = filters.filter(item => item.active)
+      return filtersActive.length
     },
     setSorting(val) {
-      const queryRouter = this.$route.query;
+      const queryRouter = this.$route.query
       if (queryRouter.sort !== val.label) {
         const query = {
           ...queryRouter,
-          sort: val.label,
-        };
-        this.$router.push({ query });
+          sort: val.label
+        }
+        this.$router.push({ query })
       }
-    },
+    }
   },
   watch: {
-    "contents.showFilters"(current) {
-      const isMobile = window.innerWidth < 768;
-      if (isMobile) notScrollBody(current);
-    },
-  },
-};
+    'contents.showFilters'(current) {
+      const isMobile = window.innerWidth < 768
+      if (isMobile) notScrollBody(current)
+    }
+  }
+}
 </script>
 
 <style lang="scss">
@@ -406,7 +384,7 @@ export default {
           @include flex();
 
           &::before {
-            content: "";
+            content: '';
             border: 1px solid #a7a5a6;
             width: 15px;
             height: 15px;
@@ -435,7 +413,7 @@ export default {
           text-decoration: underline;
 
           &::before {
-            content: "✓";
+            content: '✓';
             color: $color-white;
             background-color: $color-black;
           }
@@ -446,7 +424,7 @@ export default {
             background-color: $color-black;
 
             &::after {
-              content: "x";
+              content: 'x';
               font-family: $font-heading;
               margin-left: 7px;
             }
@@ -523,6 +501,10 @@ export default {
           min-width: 80%;
           left: 20%;
         }
+      }
+
+      .vs__selected {
+        position: absolute;
       }
 
       .vs__selected-options {

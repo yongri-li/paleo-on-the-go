@@ -220,8 +220,69 @@ export const sortProducts = ({ products, sortType }) => {
   if (sortType) {
     sortType = sortType.toLowerCase().replace(/ /g, '-')
 
+    // const sorts = {
+    //   newest: () => {
+    //     products.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+    //   },
+    //   price: () => {
+    //     products.sort((a, b) => a.price - b.price)
+    //   },
+    //   'a-z': () => {
+    //     products.sort((a, b) => {
+    //       if (a.title < b.title) {
+    //         return -1
+    //       }
+    //       if (a.title > b.title) {
+    //         return 1
+    //       }
+    //       return 0
+    //     })
+    //   },
+    //   'z-a': () => {
+    //     products.sort((a, b) => {
+    //       if (a.title > b.title) {
+    //         return -1
+    //       }
+    //       if (a.title < b.title) {
+    //         return 1
+    //       }
+    //       return 0
+    //     })
+    //   }
+    // }
+
+    // sorts[sortType]()
+
     if (sortType === 'newest') {
       products.sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+    }
+
+    if (sortType === 'price') {
+      products.sort((a, b) => a.price - b.price)
+    }
+
+    if (sortType === 'a-z') {
+      products.sort((a, b) => {
+        if (a.title < b.title) {
+          return -1
+        }
+        if (a.title > b.title) {
+          return 1
+        }
+        return 0
+      })
+    }
+
+    if (sortType === 'z-a') {
+      products.sort((a, b) => {
+        if (a.title > b.title) {
+          return -1
+        }
+        if (a.title < b.title) {
+          return 1
+        }
+        return 0
+      })
     }
   }
 
