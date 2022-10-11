@@ -6,17 +6,19 @@
 
   // master collection
   const master_collection_items = [];
-  {%- for collection in collections limit: 100 -%}
-    {%- if collection.handle == master_collection_handle -%}
-      {%- for _product in collection.products limit: 999 -%}
-        master_collection_items.push({{ _product | json }});
-      {%- endfor -%}
-    {%- endif -%}
-  {%- endfor -%}
+  {% paginate collections by 250 %}
+    {%- for collection in collections limit: 500 -%}
+      {%- if collection.handle == master_collection_handle -%}
+        {%- for _product in collection.products limit: 999 -%}
+          master_collection_items.push({{ _product | json }});
+        {%- endfor -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {% endpaginate %}  
 
   // gifts collection
   const gifts_collection_items = [];
-  {%- for collection in collections limit: 100 -%}
+  {%- for collection in collections limit: 500 -%}
     {%- if collection.handle == gifts_collection_handle -%}    
       gifts_collection_items.push({
         ...JSON.parse(JSON.stringify({{collection | json }})),
@@ -50,19 +52,21 @@
       icon: '{{ block.settings.icon | img_url: "master" }}',
       short_description: `{{ block.settings.short_description }}`,
       products: [
-        {%- for _product in _collection.products limit:999 -%}
-          {
-            ...JSON.parse(JSON.stringify({{ _product | json }})),
-            subtitle: `{{ _product.metafields.my_fields.subtitle }}`,
-            url: '{{ _product.url }}',
-            flag: '{{ _product.metafields.my_fields.flag }}',
-            inventory: [
-              {% for variant in _product.variants %}
-                '{{ variant.inventory_quantity }}',
-              {% endfor %}
-            ]
-          },
-        {%- endfor -%}
+        {% paginate _collection.products by 250 %}
+          {%- for _product in _collection.products limit: 999 -%}
+            {
+              ...JSON.parse(JSON.stringify({{ _product | json }})),
+              subtitle: `{{ _product.metafields.my_fields.subtitle }}`,
+              url: '{{ _product.url }}',
+              flag: '{{ _product.metafields.my_fields.flag }}',
+              inventory: [
+                {% for variant in _product.variants %}
+                  '{{ variant.inventory_quantity }}',
+                {% endfor %}
+              ]
+            },
+          {%- endfor -%}
+        {% endpaginate %}
       ]
     });
   {% endfor %}

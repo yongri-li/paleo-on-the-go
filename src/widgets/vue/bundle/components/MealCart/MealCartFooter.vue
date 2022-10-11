@@ -1,5 +1,11 @@
 <template>
   <div class="meal-cart__footer">
+    <!--     <c-shipmentsDiscount
+      class="c-shipmentsGroups__discount c-shipmentsGroups__bottom--block"
+      :address="address"
+      :shipment="charge"
+      :content="content"
+    /> -->
     <div class="meal-cart__box-total">
       <div class="meal-cart__box-total--title">BOX TOTAL</div>
       <div class="meal-cart__box-total--amounts">
@@ -28,6 +34,7 @@
 import { formatPrice, routeapp, formatPriceToNumber } from '@shared/utils'
 import { mapActions, mapState } from 'vuex'
 import cButton from '@shared/components/core/cButton.vue'
+import cShipmentsDiscount from '@vue/portal/components/shipments/cShipmentsDiscount.vue'
 import { apiService } from '@shared/services'
 import { stillProcessingWarningPopup, removeReloadWarning } from '@shared/utils'
 
@@ -92,7 +99,8 @@ export default {
     }
   },
   components: {
-    cButton
+    cButton,
+    cShipmentsDiscount
   },
   computed: {
     ...mapState('cartdrawer', ['cartItems']),
