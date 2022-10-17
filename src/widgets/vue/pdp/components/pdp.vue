@@ -39,11 +39,12 @@
               class="c-cta pdp__main--atcButton"
               @click="handleCTA"
               :loading="loading"
-              :text="isCustomer || isSwag ? (added ? addedTxt : labels.atc) : labels.getStarted"
+              :text="isCustomer || isSwag ? (added ? addedTxt : labels.atc) : 'Add to Box'"
               :modifiers="['isDefault', 'isPrimary', 'hideTextLoading']"
               :attributes="{ disabled: loading || added }"
               :class="added ? 'item--added' : null"
             />
+            <!-- :text="isCustomer || isSwag ? (added ? addedTxt : labels.atc) : labels.getStarted" -->
           </div>
 
           <cSelectTabs :pdpinfo="info" :isSwag="isSwag" />
@@ -147,6 +148,7 @@ export default {
     }
   },
   methods: {
+    ...mapActions('babcart', ['addToCart']),
     ...mapMutations('cartdrawer', ['ADD_GENERAL_TO_CART', 'CLEAR_GENERAL']),
     onResize() {
       this.isMobile = window.innerWidth < 768
@@ -162,7 +164,7 @@ export default {
       sessionStorage.setItem('boxSize', 12)
       window.location = '/pages/bundle/#/subscriptions'
     },
-    addToCart() {
+    addSwagToCart() {
       const evt = new CustomEvent('swagCartAdded', { detail: { added: true } }, false)
       document.dispatchEvent(evt)
 
@@ -181,9 +183,17 @@ export default {
         this.added = true
       }, 625)
     },
+    addItemToCart() {
+      this.addToCart({
+        product: this.product,
+        where: 'items'
+      })
+      window.location.pathname = '/pages/bundle/'
+    },
     handleCTA() {
       this.loading = true
-      this.isSwag ? this.addToCart() : this.getStarted()
+      this.isSwag ? this.addSwagToCart() : this.addItemToCart()
+      // this.isSwag ? this.addSwagToCart() : this.getStarted()
     },
     scrollToReviews() {
       const reviews = document.getElementById('shopify-product-reviews')

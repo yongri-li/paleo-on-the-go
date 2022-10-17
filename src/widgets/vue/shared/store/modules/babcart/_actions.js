@@ -13,7 +13,6 @@ export default {
     commit(REDUCE_PRODUCT_TO_CART, { idProduct, where })
 
     const productAfterReduce = getters.getProductFromCartByID({ id: idProduct, where })
-    console.log('asdasd', idProduct, where, productAfterReduce)
     if (productAfterReduce.quantity === 0) {
       commit(REMOVE_PRODUCT_TO_CART, { idProduct, where })
     }
