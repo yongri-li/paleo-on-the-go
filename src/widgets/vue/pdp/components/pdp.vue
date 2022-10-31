@@ -118,6 +118,10 @@ export default {
     isSwag() {
       return this.is_swag === 'true'
     },
+    isOneTime() {
+      const tags = this.product.tags
+      return tags.some(tag => tag === 'One Time' || tag === 'onetime' || tag === 'one time')
+    },
     ratingLeaf() {
       return `<svg width="18" height="30" viewBox="0 0 18 30" fill="none" xmlns="http://www.w3.org/2000/svg">
       <path d="M9.16859 -3.09007e-05L0.403564 16.3262L8.03129 23.6963L8.03129 29.0255L10.2961 29.0255L10.2961 23.6963L17.9238 16.3262L9.16859 -3.09007e-05ZM3.20759 15.891L8.03129 6.89608L8.03129 20.5626L3.20759 15.891ZM10.2961 6.89608L15.1296 15.891L10.2961 20.5626L10.2961 6.89608Z" fill="#8ECEAB"/>
@@ -186,7 +190,7 @@ export default {
     addItemToCart() {
       this.addToCart({
         product: this.product,
-        where: 'items'
+        where: this.isOneTime ? 'addons' : 'items'
       })
       window.location.pathname = '/pages/bundle/'
     },
