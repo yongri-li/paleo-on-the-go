@@ -5,7 +5,11 @@ import { CHANGE_SIZE_SELECTED } from './_mutations-type'
 
 import { MODAL_CLOSE, MODAL_SETUP } from '../modals/_mutations-type'
 
-import { ADD_PRODUCT_TO_CART, CLEAN_ALL_CART } from '@shared/store/modules/babcart/_mutations-type'
+import {
+  ADD_PRODUCT_TO_CART,
+  CLEAN_ALL_CART,
+  CLEAN_ITEMS
+} from '@shared/store/modules/babcart/_mutations-type'
 
 export default {
   setSizeFromRoute({ commit }, { val }) {
@@ -64,7 +68,9 @@ export default {
     return products
   },
   setPrebuiltBoxToCart({ rootGetters }, listProduct) {
-    store.commit(`babcart/${CLEAN_ALL_CART}`)
+    // Used to clear the entire cart with CLEAN_ALL_CART, now just clears the subscription box items
+    // store.commit(`babcart/${CLEAN_ALL_CART}`)
+    store.commit(`babcart/${CLEAN_ITEMS}`)
 
     listProduct.forEach(product => {
       const [id, qt] = product.split('x')

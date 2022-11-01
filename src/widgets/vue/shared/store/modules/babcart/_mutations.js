@@ -4,7 +4,8 @@ import {
   ADD_PRODUCTS_TO_CART_FROM_PORTAL,
   REDUCE_PRODUCT_TO_CART,
   REMOVE_PRODUCT_TO_CART,
-  CLEAN_ALL_CART
+  CLEAN_ALL_CART,
+  CLEAN_ITEMS
 } from './_mutations-type'
 
 export default {
@@ -54,6 +55,9 @@ export default {
       addons: [],
       general: []
     }
+  },
+  [CLEAN_ITEMS](state) {
+    state.cart.items = []
   },
   SET_ROUTE_PRODUCT(state, product) {
     console.log(product)
