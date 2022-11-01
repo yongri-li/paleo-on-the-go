@@ -6,6 +6,18 @@
       :shipment="charge"
       :content="content"
     /> -->
+
+    <!-- New test code for discounts -->
+    <!--     <section class="meal-cart__discount">
+      <form @submit.prevent="submitDiscountCode($event)">
+        <input type="text" id="code" placeholder="Enter Code" /><br />
+        <input type="submit" value="Submit" />
+      </form>
+      <div v-if="discountOff" class="meal-cart__discount--box">
+        <span>Discount Code Savings: {{ discountOff }}</span>
+      </div>
+    </section> -->
+
     <div class="meal-cart__box-total">
       <div class="meal-cart__box-total--title">BOX TOTAL</div>
       <div class="meal-cart__box-total--amounts">
@@ -95,7 +107,8 @@ export default {
       rechargeAddons: [],
       rechargeSubIds: [],
       rechargeAddonIds: [],
-      rechargeAddonVarIds: []
+      rechargeAddonVarIds: [],
+      discountOff: false
     }
   },
   components: {
@@ -110,7 +123,6 @@ export default {
     },
     final() {
       const total = this.subtotalWithDiscount * 100 + this.priceAddOns + this.cartGeneral
-      console.log('asdad', this.cartGeneral)
       return total === 0 ? '$0.00' : formatPrice(total)
     },
     finalInt() {
@@ -207,6 +219,10 @@ export default {
       'customerCreateOnetimes',
       'customerUpdatePlan'
     ]),
+    submitDiscountCode(e) {
+      sessionStorage.setItem('discCode', e.target.querySelector('#code').value)
+      this.getDiscount()
+    },
     async updateAddonsAndSubs() {
       this.loading = true
       stillProcessingWarningPopup()
@@ -295,6 +311,19 @@ export default {
       this.rechargeSubIds = subIds
       this.rechargeAddonIds = addonIds
       this.rechargeAddonVarIds = addonVarIds
+    },
+    getDiscount() {
+      const discountCodes = window.Scoutside.discountCodes
+      const currentDiscCode = sessionStorage.getItem('discCode')
+
+      if (currentDiscCode) {
+        if (discountCodes[`${currentDiscCode}`]) {
+          this.discountOff = formatPrice(discountCodes[`${currentDiscCode}`] * this.finalInt)
+        } else {
+          this.discountOff = 'Invalid Code'
+          setTimeout(() => sessionStorage.removeItem('discCode'), 2000)
+        }
+      }
     }
   },
   watch: {
@@ -304,11 +333,13 @@ export default {
     },
     finalInt() {
       this.getQuote()
+      this.getDiscount()
     }
   },
   mounted() {
     this.getRCdata()
     this.getQuote()
+    this.getDiscount()
   }
 }
 </script>
@@ -321,6 +352,19 @@ export default {
 
     @include media-tablet-up {
       padding: 0;
+    }
+  }
+
+  &__discount--box {
+    padding: 0.125rem 0.5rem;
+    text-align: right;
+    font-size: 0.75rem;
+    margin-top: 0.75rem;
+
+    span {
+      background-color: #d2ebdd;
+      padding: 0.25rem 0.5rem;
+      border-radius: 1rem;
     }
   }
 

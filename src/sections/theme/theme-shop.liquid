@@ -1,8 +1,10 @@
 <script>
   window.Scoutside = window.Scoutside || {}
   window.Scoutside.shop = window.Scoutside.shop || {}
+  window.Scoutside.discountCodes = window.Scoutside.discountCodes || {}  
 
-  var shop = {}
+  let shop = {}
+  let discountCodes = {}
 
   shop = {{ section.settings | json }}
 
@@ -10,9 +12,12 @@
   {% for block in section.blocks %}
     shop['{{ block.type }}'] = shop['{{ block.type }}'] || []
     shop['{{ block.type }}'].push({{ block.settings | json }})
+
+    discountCodes.{{ block.settings.disc_code }} = '{{ block.settings.disc_percent }}', 
   {% endfor %}
 
   window.Scoutside.shop = shop
+  window.Scoutside.discountCodes = discountCodes
 </script>
 
 {% schema %}
@@ -76,7 +81,23 @@
             "label": "Cancel Reason"
           }
         ]
-      }
+      },
+      {
+        "type": "discount_codes",
+        "name": "Discount Codes",
+        "settings": [
+          {
+            "type": "text",
+            "id": "disc_code",
+            "label": "Discount Code"
+          },
+          {
+            "type": "number",
+            "id": "disc_percent",
+            "label": "Percent Off Total"
+          } 
+        ]
+      }      
     ]
   }
 {% endschema %}

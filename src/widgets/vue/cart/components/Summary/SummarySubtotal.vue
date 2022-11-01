@@ -83,6 +83,8 @@ export default {
   methods: {
     ...mapMutations('ui', ['UI_SET_MODAL', 'UI_CLOSE_MODAL']),
     getItemForCart(itemType) {
+      const discountCode = sessionStorage.getItem('discCode')
+
       const subsprops = {
         shipping_interval_frequency: this.frequencySelected.week,
         shipping_interval_unit_type: 'week'
@@ -109,6 +111,7 @@ export default {
             _general: item.order_type === 'general',
             _subtitle: item.subtitle,
             _routeshipping: routeOrderType,
+            _discount: discountCode,
             ...otherProps
           }
         }
