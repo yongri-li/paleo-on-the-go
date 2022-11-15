@@ -1,0 +1,41 @@
+{%- if section.settings.visible -%}
+  {%- if section.settings.home_page_only == false or template.name == 'index' -%}
+    <div class="container hidden md:block text-base text-center font-bold font-shape uppercase tracking-wider py-4">
+      {{- section.settings.content -}}
+    </div>
+    <div class="container block md:hidden text-xs text-center font-bold font-shape uppercase tracking-wider py-2">
+      {{- section.settings.content_mobile | default: section.settings.content -}}
+    </div>
+  {%- endif -%}
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "t:sections.announcement-bar.name",
+  "class": "announcement-bar bg-sage text-cream",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "visible",
+      "label": "Show Announcement Bar Everywhere",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "home_page_only",
+      "label": "Show On Homepage Only",
+      "default": true
+    },
+    {
+      "type": "richtext",
+      "id": "content",
+      "label": "Announcement Bar Text"
+    },
+    {
+      "type": "richtext",
+      "id": "content_mobile",
+      "label": "Content For Mobile Only"
+    }
+  ]
+}
+{% endschema %}
